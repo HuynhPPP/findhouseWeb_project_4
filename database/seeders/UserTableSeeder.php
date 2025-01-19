@@ -31,6 +31,15 @@ class UserTableSeeder extends Seeder
                 'role' => 'poster',
                 'status' => '1',
             ],
+            // Admin
+            [
+                'name' => 'Admin',
+                'email' => 'Admin@gmail.com',
+                'phone' => '0900123456',
+                'password' => Hash::make('12345'),
+                'role' => 'admin',
+                'status' => '1',
+            ],
         ]);
     }
 }
