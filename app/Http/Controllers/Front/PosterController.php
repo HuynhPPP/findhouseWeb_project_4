@@ -9,6 +9,6 @@ class PosterController extends Controller
 {
     public function PosterDashboard()
     {
-        return view('front.poster.poster_dashboard');
+        return view('front.poster.index');
     }
 }

@@ -7,10 +7,11 @@ use App\Http\Controllers\Admin\AdminController;
 use Illuminate\Support\Facades\Route;
 
 /// Route Accessable for All
-Route::get('/', function () {
-    return view('welcome');
-});
-Route::get('/user/dashboard', [UserController::class, 'UserDashboard'])->name('user.dashboard');
+// Route::get('/', function () {
+//     return view('welcome');
+// });
+Route::get('/', [UserController::class, 'Index'])->name('index');
+
 
 Route::get('/dashboard', function () {
     return view('dashboard');
@@ -23,6 +24,11 @@ Route::middleware('auth')->group(function () {
 });
 
 require __DIR__.'/auth.php';
+
+/// Admin group middleware
+Route::middleware(['auth','roles:user'])->group(function() {
+    Route::get('/user/dashboard', [UserController::class, 'UserDashboard'])->name('user.dashboard');
+}); // End Admin group middleware
 
 /// Admin group middleware
 Route::middleware(['auth','roles:admin'])->group(function() {

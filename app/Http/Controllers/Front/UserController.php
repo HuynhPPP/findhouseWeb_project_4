@@ -11,4 +11,9 @@ class UserController extends Controller
     {
         return view('front.user.user_dashboard');
     }
+
+    public function Index()
+    {
+        return view('front.index');
+    }
 }
