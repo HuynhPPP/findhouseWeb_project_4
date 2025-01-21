@@ -18,11 +18,29 @@
                 <div class="tab">
                     <div id="tab-1" class="tab-contents">
                         <div class="custom-form">
-                            <form method="post" name="registerform">
+                            <form method="POST" action="{{ route('login') }}" name="registerform">
+                                @csrf
                                 <label>Username or Email Address * </label>
-                                <input name="email" type="text" onClick="this.select()" value="">
+                                <input name="email" :value="old('email')"
+                                       id="email" 
+                                       type="text"
+                                       class="@error('email') is-invalid @enderror" 
+                                       onClick="this.select()" 
+                                       value=""
+                                >
+                                @error('email')
+                                    <span style="color: red">{{ $message }}</span>
+                                @enderror
                                 <label>Password * </label>
-                                <input name="password" type="password" onClick="this.select()" value="">
+                                <input name="password" 
+                                       class="@error('password') is-invalid @enderror"
+                                       id="password" 
+                                       type="password" 
+                                       onClick="this.select()"
+                                >
+                                @error('password')
+                                    <span style="color: red">{{ $message }}</span>
+                                @enderror
                                 <button type="submit" class="log-submit-btn"><span>Log In</span></button>
                                 <div class="clearfix"></div>
                                 <div class="filter-tags">

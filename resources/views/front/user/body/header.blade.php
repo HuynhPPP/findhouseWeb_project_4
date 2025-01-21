@@ -20,9 +20,9 @@
                     <!-- Main Navigation -->
                     <nav id="navigation" class="style-1">
                         <ul id="responsive">
-                            <li><a href="{{ route('index') }}">Trang phòng trọ</a>
+                        <li><a href="#">Trang phòng trọ</a>
                             
-                            </li>
+                        </li>
                             <li><a href="#">Listing</a>
                                 <ul>
                                     <li><a href="#">Listing Grid</a>

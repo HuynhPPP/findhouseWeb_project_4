@@ -7,11 +7,9 @@ use App\Http\Controllers\Admin\AdminController;
 use Illuminate\Support\Facades\Route;
 
 /// Route Accessable for All
-// Route::get('/', function () {
-//     return view('welcome');
-// });
-Route::get('/', [UserController::class, 'Index'])->name('index');
 
+Route::get('/', [UserController::class, 'Index'])->name('index');
+Route::get('/logout', [UserController::class, 'UserLogout'])->name('user.logout');
 
 Route::get('/dashboard', function () {
     return view('dashboard');
