@@ -2,22 +2,26 @@
   <div class="nav-list">
     <div class="pcoded-inner-navbar main-menu">
       <ul class="pcoded-item pcoded-left-item">
-        <li class="active pcoded-trigger">
+        <li
+          class="{{ Route::currentRouteName() == 'admin.dashboard' ? 'active' : '' }} ">
           <a href="{{ route('admin.dashboard') }}"
             class="waves-effect waves-dark">
             <span class="pcoded-micon"><i class="feather icon-home"></i></span>
             <span class="pcoded-mtext">Tổng quan</span>
           </a>
         </li>
-        <li class="pcoded-hasmenu">
+        <li
+          class="pcoded-hasmenu {{ Route::currentRouteName() == 'all.category' ? 'active  pcoded-trigger' : '' }}">
           <a href="javascript:void(0)" class="waves-effect waves-dark">
             <span class="pcoded-micon"><i
                 class="feather icon-sidebar"></i></span>
             <span class="pcoded-mtext">Danh mục</span>
           </a>
           <ul class="pcoded-submenu">
-            <li>
-              <a href="javascript:void(0)" class="waves-effect waves-dark">
+            <li
+              class="{{ Route::currentRouteName() == 'all.category' ? 'active' : '' }}">
+              <a href="{{ route('all.category') }}"
+                class="waves-effect waves-dark">
                 <span class="pcoded-mtext">Tất cả danh mục</span>
               </a>
             </li>

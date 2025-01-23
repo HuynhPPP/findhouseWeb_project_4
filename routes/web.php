@@ -4,6 +4,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Front\PosterController;
 use App\Http\Controllers\Front\UserController;
 use App\Http\Controllers\Admin\AdminController;
+use App\Http\Controllers\admin\CategoryController;
 use Illuminate\Support\Facades\Route;
 
 /// Route Accessable for All
@@ -31,6 +32,9 @@ Route::middleware(['auth', 'roles:user'])->group(function () {
 /// Admin group middleware
 Route::middleware(['auth', 'roles:admin'])->group(function () {
   Route::get('/admin/dashboard', [AdminController::class, 'AdminDashboard'])->name('admin.dashboard');
+  Route::controller(CategoryController::class)->group(function () {
+    Route::get('all/category', "AllCategory")->name('all.category');
+  });
 }); // End Admin group middleware
 
 
