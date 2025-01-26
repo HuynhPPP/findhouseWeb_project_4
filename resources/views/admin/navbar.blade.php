@@ -11,7 +11,7 @@
           </a>
         </li>
         <li
-          class="pcoded-hasmenu {{ Route::currentRouteName() == 'all.category' ? 'active  pcoded-trigger' : '' }}">
+          class="pcoded-hasmenu {{ in_array(Route::currentRouteName(), ['admin.all.category', 'admin.create.category']) ? 'active pcoded-trigger' : '' }}">
           <a href="javascript:void(0)" class="waves-effect waves-dark">
             <span class="pcoded-micon"><i
                 class="feather icon-sidebar"></i></span>
@@ -19,14 +19,16 @@
           </a>
           <ul class="pcoded-submenu">
             <li
-              class="{{ Route::currentRouteName() == 'all.category' ? 'active' : '' }}">
-              <a href="{{ route('all.category') }}"
+              class="{{ Route::currentRouteName() == 'admin.all.category' ? 'active' : '' }}">
+              <a href="{{ route('admin.all.category') }}"
                 class="waves-effect waves-dark">
                 <span class="pcoded-mtext">Tất cả danh mục</span>
               </a>
             </li>
-            <li>
-              <a href="javascript:void(0)" class="waves-effect waves-dark">
+            <li
+              class="{{ Route::currentRouteName() == 'admin.create.category' ? 'active' : '' }}">
+              <a href="{{ route('admin.create.category') }}"
+                class="waves-effect waves-dark">
                 <span class="pcoded-mtext">Thêm danh mục</span>
               </a>
             </li>

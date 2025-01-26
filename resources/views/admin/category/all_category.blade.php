@@ -14,20 +14,16 @@
       <!-- DOM/Jquery table start -->
       <div class="card">
         <div class="card-header">
-          <h5>DOM/Jquery</h5>
-          <span>Events assigned to the table can be exceptionally useful for user
-            interaction, however you must be aware that DataTables will add and
-            remove rows from the DOM as they are needed (i.e. when paging only the
-            visible elements are actually available in the DOM). As such, this can
-            lead to the odd hiccup when working with events.</span>
+          <h5>Danh mục</h5>
         </div>
         <div class="card-block">
           <div class="table-responsive dt-responsive">
-            <table id="dom-jqry"
+            <table id="order-table"
               class="table table-striped table-bordered nowrap">
               <thead>
                 <tr>
                   <th>Tên danh mục</th>
+                  <th>Slug</th>
                   <th>Trạng thái</th>
                   <th>Ngày tạo</th>
                   <th>Ngày cập nhật</th>
@@ -38,11 +34,12 @@
                 @foreach ($categories as $item)
                   <tr>
                     <td>{{ $item->category_name }}</td>
+                    <td>{{ $item->category_slug }}</td>
                     <td>
                       @if ($item->status == 'show')
                         <label class="form-label label label-success">Hiện</label>
                       @else
-                        <label class="form-label label label-success">Ẩn</label>
+                        <label class="form-label label label-warning">Ẩn</label>
                       @endif
                     </td>
                     <td>
@@ -52,14 +49,20 @@
                       {{ Carbon\Carbon::parse($item->updated_at)->format('d/m/Y') }}
                     </td>
                     <td>
-                      <a href=""
+                      <a href="{{ route('admin.edit.category', [$item->id, $item->category_slug]) }}"
                         class="btn waves-effect waves-light btn-primary btn-square">
                         <i class="fa fa-pencil"></i>
                       </a>
-                      <a href=""
-                        class="btn waves-effect waves-light btn-danger btn-square">
-                        <i class="fa fa-trash"></i>
-                      </a>
+                      <form
+                        action="{{ route('admin.delete.category', $item->id) }}"
+                        class="d-inline deleteForm" method="post">
+                        @method('DELETE')
+                        @csrf
+                        <button type="button"
+                          class="delete btn waves-effect waves-light btn-danger btn-square">
+                          <i class="fa fa-trash"></i>
+                        </button>
+                      </form>
                     </td>
                   </tr>
                 @endforeach
@@ -96,28 +99,5 @@
   </script>
   <script
     src="{{ asset('admin/components/datatables.net-responsive-bs4/js/responsive.bootstrap4.min.js') }}">
-  </script>
-  <script>
-    $(document).ready(function() {
-      $('#dom-jqry').DataTable({
-        language: {
-          "sProcessing": "Đang xử lý...",
-          "sLengthMenu": "Hiển thị _MENU_ mục",
-          "sZeroRecords": "Không tìm thấy dòng nào phù hợp",
-          "sInfo": "Đang hiển thị _START_ đến _END_ trong tổng số _TOTAL_ mục",
-          "sInfoEmpty": "Đang hiển thị 0 đến 0 của 0 mục",
-          "sInfoFiltered": "(được lọc từ _MAX_ mục)",
-          "sInfoPostFix": "",
-          "sSearch": "Tìm kiếm:",
-          "sUrl": "",
-          "oPaginate": {
-            "sFirst": "Đầu",
-            "sPrevious": "Trước",
-            "sNext": "Tiếp",
-            "sLast": "Cuối"
-          }
-        }
-      });
-    });
   </script>
 @endsection
