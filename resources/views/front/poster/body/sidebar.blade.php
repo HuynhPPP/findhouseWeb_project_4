@@ -10,12 +10,12 @@
         <ul class="mb-0">
             <li>
                 <a class="active" href="dashboard.html">
-                    <i class="fa fa-map-marker"></i> Dashboard
+                    <i class="fa fa-map-marker"></i> Trang thống kê
                 </a>
             </li>
             <li>
-                <a href="user-profile.html">
-                    <i class="fa fa-user"></i>Profile
+                <a href="{{ route('poster.profile') }}">
+                    <i class="fa fa-user"></i>Quản lý tài khoản
                 </a>
             </li>
             <li>

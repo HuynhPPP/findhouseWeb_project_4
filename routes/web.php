@@ -23,10 +23,10 @@ Route::middleware('auth')->group(function () {
 
 require __DIR__ . '/auth.php';
 
-/// Admin group middleware
+/// User group middleware
 Route::middleware(['auth', 'roles:user'])->group(function () {
   Route::get('/user/dashboard', [UserController::class, 'UserDashboard'])->name('user.dashboard');
-}); // End Admin group middleware
+}); // End User group middleware
 
 /// Admin group middleware
 Route::middleware(['auth', 'roles:admin'])->group(function () {
@@ -37,4 +37,5 @@ Route::middleware(['auth', 'roles:admin'])->group(function () {
 //// Poster group middleware
 Route::middleware(['auth', 'roles:poster'])->group(function () {
   Route::get('/poster/dashboard', [PosterController::class, 'PosterDashboard'])->name('poster.dashboard');
+  Route::get('/poster/profile', [PosterController::class, 'PosterProfile'])->name('poster.profile');
 }); // End Poster group middleware
