@@ -143,9 +143,17 @@
                 </div>
                 <!-- Left Side Content / End -->
                 <!-- Right Side Content / --> 
+
+                @php
+                    $id = Auth::user()->id;
+                    $profileData = App\Models\User::find($id);
+                @endphp
+
                 <div class="header-user-menu user-menu">
                     <div class="header-user-name">
-                        <span><img src="{{ asset('front/images/testimonials/ts-1.jpg') }}" alt=""></span>Hi, Mary!
+                        <span>
+                            <img src="{{ (!empty($profileData->photo)) ? url('front/upload/poster_images/'.$profileData->photo) : url('front/upload/no_img.jpg') }}" alt="">
+                        </span>{{ $profileData->name }}
                     </div>
                     <ul>
                         <li><a href="user-profile.html"> Edit profile</a></li>

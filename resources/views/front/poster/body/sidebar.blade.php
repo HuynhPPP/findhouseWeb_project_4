@@ -1,10 +1,15 @@
 <div class="user-profile-box mb-0">
-    <div class="sidebar-header"><img src="{{ asset('front/images/logo-blue.svg') }}" alt="header-logo2.png"> </div>
+    @php
+        $id = Auth::user()->id;
+        $profileData = App\Models\User::find($id);
+    @endphp
+
+    <div class="sidebar-header"><a href="{{ route('index') }}"><img src="{{ asset('front/images/logo-blue.svg') }}" alt="header-logo2.png"> </a></div>
     <div class="header clearfix">
-        <img src="{{ asset('front/images/testimonials/ts-1.jpg') }}" alt="avatar" class="img-fluid profile-img">
+        <img src="{{ (!empty($profileData->photo)) ? url('front/upload/poster_images/'.$profileData->photo) : url('front/upload/no_img.jpg') }}" alt="avatar" class="img-fluid profile-img">
     </div>
     <div class="active-user">
-        <h2>Mary Smith</h2>
+        <h2>{{ $profileData->name }}</h2>
     </div>
     <div class="detail clearfix">
         <ul class="mb-0">

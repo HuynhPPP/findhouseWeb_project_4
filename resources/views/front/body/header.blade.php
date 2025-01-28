@@ -190,16 +190,31 @@
             <div class="right-side d-none d-none d-lg-none d-xl-flex">
                 <!-- Header Widget -->
                 <div class="header-widget">
-                    <a href="add-property.html" class="button border">Add Listing<i class="fas fa-laptop-house ml-2"></i></a>
+                    <a href="add-property.html" class="button border">Đăng tin<i class="fas fa-laptop-house ml-2"></i></a>
                 </div>
                 <!-- Header Widget / End -->
             </div>
             <!-- Right Side Content / End -->
-
             <!-- Right Side Content / End -->
             <div class="header-user-menu user-menu add">
+                @php
+                    $profileData = Auth::check() ? App\Models\User::find(Auth::user()->id) : null;
+                @endphp
                 <div class="header-user-name">
-                    <span><img src="{{ asset('front/images/testimonials/ts-1.jpg') }}" alt=""></span>Hi, Mary!
+                    @auth
+                        <span>
+                            @if ($profileData->role === 'poster')
+                                <img src="{{ (!empty($profileData->photo)) ? url('front/upload/poster_images/'.$profileData->photo) : url('front/upload/no_img.jpg') }}" alt="">
+                            @elseif ($profileData->role === 'user')
+                                <img src="{{ (!empty($profileData->photo)) ? url('front/upload/user_images/'.$profileData->photo) : url('front/upload/no_img.jpg') }}" alt="">
+                            @else
+                                <img src="{{ url('front/upload/no_img.jpg') }}" alt="">
+                            @endif
+                        </span>
+                        {{ $profileData->name }}
+                    @else
+                        <span><img src="{{ asset('front/upload/no_img.jpg') }}" alt=""></span>Tài khoản
+                    @endauth
                 </div>
                 <ul>
                     <li><a href="user-profile.html"> Edit profile</a></li>
@@ -220,19 +235,7 @@
             </div>
             <!-- Right Side Content / End -->
 
-            <!-- lang-wrap-->
-            <div class="header-user-menu user-menu add d-none d-lg-none d-xl-flex">
-                <div class="lang-wrap">
-                    <div class="show-lang"><span><i class="fas fa-globe-americas"></i><strong>ENG</strong></span><i class="fa fa-caret-down arrlan"></i></div>
-                    <ul class="lang-tooltip lang-action no-list-style">
-                        <li><a href="#" class="current-lan" data-lantext="En">English</a></li>
-                        <li><a href="#" data-lantext="Fr">Francais</a></li>
-                        <li><a href="#" data-lantext="Es">Espanol</a></li>
-                        <li><a href="#" data-lantext="De">Deutsch</a></li>
-                    </ul>
-                </div>
-            </div>
-            <!-- lang-wrap end-->
+            
 
         </div>
     </div>

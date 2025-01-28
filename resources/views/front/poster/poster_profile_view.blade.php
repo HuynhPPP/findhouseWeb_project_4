@@ -1,6 +1,8 @@
 @extends('front.poster.poster_dashboard')
 @section('poster')
 
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+
 <div class="col-lg-6 col-md-6 col-xs-6 widget-boxed mt-33 mt-0 offset-lg-2 offset-md-3 mt-4">
     <div class="col-lg-12 mobile-dashbord dashbord">
         <div class="dashboard_navigationbar dashxl">
@@ -60,30 +62,42 @@
         <h4>Thông tin cá nhân</h4>
     </div>
     <div class="sidebar-widget author-widget2">
-        <div class="author-box clearfix">
-            <img src="" 
-                 alt="author-image" 
-                 class="author__img"
-            >
-            <h4 class="author__title">Lisa Clark</h4>
-            <p class="author__meta">Agent of Property</p>
-        </div>
-        <ul class="author__contact">
-            <li><span class="la la-map-marker"><i class="fa fa-map-marker"></i></span>302 Av Park, New York</li>
-            <li><span class="la la-phone"><i class="fa fa-phone" aria-hidden="true"></i></span><a href="#">(234) 0200 17813</a></li>
-            <li><span class="la la-envelope-o"><i class="fa fa-envelope" aria-hidden="true"></i></span><a href="#">lisa@gmail.com</a></li>
-        </ul>
-        <div class="agent-contact-form-sidebar">
-            <h4>Request Inquiry</h4>
-            <form name="contact_form" method="post" action="https://code-theme.com/html/findhouses/functions.php">
-                <input type="text" id="fname" name="full_name" placeholder="Full Name" required />
-                <input type="number" id="pnumber" name="phone_number" placeholder="Phone Number" required />
-                <input type="email" id="emailid" name="email_address" placeholder="Email Address" required />
-                <textarea placeholder="Message" name="message" required></textarea>
-                <input type="submit" name="sendmessage" class="multiple-send-message" value="Submit Request" />
-            </form>
-        </div>
+        <form name="contact_form" method="post" action="{{ route('poster.store.profile') }}" enctype="multipart/form-data">
+            @csrf
+            <div class="author-box clearfix">
+                <img src="{{ (!empty($profileData->photo)) ? url('front/upload/poster_images/'.$profileData->photo) : url('front/upload/no_img.jpg') }}" 
+                    alt="author-image" 
+                    class="author__img"
+                    id="showImage"
+                >
+                <h4 class="author__title">{{ $profileData->name }}</h4>
+                <input type="file" id="image" name="photo" />
+            </div>
+        
+            <ul class="author__contact">
+                <li><span class="la la-phone"><i class="fa fa-phone" aria-hidden="true"></i></span><a href="#">(84) {{ $profileData->phone }}</a></li>
+                <li><span class="la la-envelope-o"><i class="fa fa-envelope" aria-hidden="true"></i></span><a href="#">{{ $profileData->email }}</a></li>
+            </ul>
+            <div class="agent-contact-form-sidebar">
+                <h4>Cập nhật thông tin</h4>
+                <input type="text" id="fname" name="name" placeholder="Tên liên hệ" value="{{ $profileData->name }}" />
+                <input type="number" id="pnumber" name="phone" placeholder="Số điện thoại" value="{{ $profileData->phone }}" />
+                <input type="email" id="emailid" name="email" placeholder="Email" value="{{ $profileData->email }}" />
+                <input type="submit" name="sendmessage" class="multiple-send-message" value="Xác nhận" />
+            </div>
+        </form>
     </div>
 </div>
 
+<script type="text/javascript">
+    $(document).ready(function(){
+        $('#image').change(function(e){
+            var reader = new FileReader();
+            reader.onload = function(e){
+                $('#showImage').attr('src',e.target.result);
+            }
+            reader.readAsDataURL(e.target.files['0']);
+        });
+    });
+</script>
 @endsection
