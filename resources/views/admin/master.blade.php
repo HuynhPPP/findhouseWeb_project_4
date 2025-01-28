@@ -8,13 +8,6 @@
     <meta name="viewport"
       content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui">
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    {{-- <meta name="description"
-      content="Admindek Bootstrap admin template made using Bootstrap 4 and it has huge amount of ready made feature, UI components, pages which completely fulfills any dashboard needs." />
-    <meta name="keywords"
-      content="flat ui, admin Admin , Responsive, Landing, Bootstrap, App, Template, Mobile, iOS, Android, apple, creative app">
-    <meta name="author" content="colorlib" /> --}}
-    <!-- Favicon icon -->
-    <!-- Favicon icon -->
     <link rel="icon" href="{{ asset('admin/images/favicon.ico') }}"
       type="image/x-icon">
     <!-- Google font-->
@@ -43,6 +36,13 @@
       href="{{ asset('admin/css/style.css') }}">
     <link rel="stylesheet" type="text/css"
       href="{{ asset('admin/css/pages.css') }}">
+    <link href="{{ asset('admin/sweetalert2/sweetalert2.min.css') }}"
+      rel="stylesheet" type="text/css" id="app-style" />
+    <link href="{{ asset('admin/icon/icofont/css/icofont.css') }}"
+      rel="stylesheet" type="text/css" id="app-style" />
+    <link rel="stylesheet" href="{{ asset('toastr/toastr.min.css') }}">
+    <link href="{{ asset('admin/sweetalert2/sweetalert2.min.css') }}"
+      rel="stylesheet" type="text/css" id="app-style" />
     @yield('customCss')
   </head>
 
@@ -61,7 +61,8 @@
             <div class="navbar-logo">
               <a href="index.html">
                 <img class="img-fluid"
-                  src="{{ asset('admin/images/logo.png') }}" alt="Theme-Logo" />
+                  src="{{ asset('admin/images/logo.png') }}"
+                  alt="Theme-Logo" />
               </a>
               <a class="mobile-menu" id="mobile-collapse" href="#!">
                 <i class="feather icon-menu icon-toggle-right"></i>
@@ -399,6 +400,59 @@
     <script src="{{ asset('admin/js/jquery.mCustomScrollbar.concat.min.js') }}">
     </script>
     <script type="text/javascript" src="{{ asset('admin/js/script.js') }}">
+    </script>
+    <script src="{{ asset('toastr/toastr.min.js') }}"></script>
+    <script>
+      $(document).ready(function() {
+        // Cấu hình mặc định DataTables với ngôn ngữ tiếng Việt
+        $.extend(true, $.fn.dataTable.defaults, {
+          language: {
+            "sProcessing": "Đang xử lý...",
+            "sLengthMenu": "Hiển thị _MENU_ mục",
+            "sZeroRecords": "Không tìm thấy dòng nào phù hợp",
+            "sInfo": "Đang hiển thị _START_ đến _END_ trong tổng số _TOTAL_ mục",
+            "sInfoEmpty": "Đang hiển thị 0 đến 0 của 0 mục",
+            "sInfoFiltered": "(được lọc từ _MAX_ mục)",
+            "sInfoPostFix": "",
+            "sSearch": "Tìm kiếm:",
+            "sUrl": "",
+            "oPaginate": {
+              "sFirst": "Đầu",
+              "sPrevious": "Trước",
+              "sNext": "Tiếp",
+              "sLast": "Cuối"
+            }
+          }
+        });
+      });
+    </script>
+    <script>
+      toastr.options = {
+        timeOut: 2000,
+        progressBar: true,
+      };
+      $(document).ready(function() {
+        @if (Session::has('message'))
+          var type = "{{ Session::get('alert-type', 'info') }}"
+          switch (type) {
+            case 'info':
+              toastr.info(" {{ Session::get('message') }} ");
+              break;
+            case 'success':
+              toastr.success(" {{ Session::get('message') }} ");
+              break;
+            case 'warning':
+              toastr.warning(" {{ Session::get('message') }} ");
+              break;
+            case 'error':
+              toastr.error(" {{ Session::get('message') }} ");
+              break;
+          }
+        @endif
+      });
+    </script>
+    <script src="{{ asset('admin/sweetalert2/sweetalert2.min.js') }}"></script>
+    <script src="{{ asset('admin/sweetalert2/extended-sweetalerts.js') }}">
     </script>
     @yield('customJs')
   </body>

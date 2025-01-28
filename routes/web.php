@@ -4,6 +4,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Front\PosterController;
 use App\Http\Controllers\Front\UserController;
 use App\Http\Controllers\Admin\AdminController;
+use App\Http\Controllers\admin\CategoryController;
 use Illuminate\Support\Facades\Route;
 
 /// Route Accessable for All
@@ -31,6 +32,16 @@ Route::middleware(['auth', 'roles:user'])->group(function () {
 /// Admin group middleware
 Route::middleware(['auth', 'roles:admin'])->group(function () {
   Route::get('/admin/dashboard', [AdminController::class, 'AdminDashboard'])->name('admin.dashboard');
+  Route::controller(CategoryController::class)->group(function () {
+    Route::get('all/category', "AllCategory")->name('admin.all.category');
+    Route::delete('delete/category/{category_id}', 'DeleteCategory')->name('admin.delete.category');
+    Route::get('create/category', 'CreateCategory')->name('admin.create.category');
+    Route::post('store/create/category', 'StoreCreateCategory')->name('admin.storeCreate.category');
+    Route::get('edit/category/{category_id}/{slug}.html', 'EditCategory')->name('admin.edit.category');
+    Route::post('store/update/category', 'StoreUpdateCategory')->name('admin.storeUpdate.category');
+    Route::get('get/category/create', 'FetchCategoryCreate')->name('admin.get.categoryCreate');
+    Route::get('get/category/update', 'FetchCategoryUpdate')->name('admin.get.categoryUpdate');
+  });
 }); // End Admin group middleware
 
 

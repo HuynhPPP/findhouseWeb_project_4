@@ -18,8 +18,8 @@ class PostsTableSeeder extends Seeder
 
     foreach (range(1, 100) as $index) {
       DB::table('posts')->insert([
-        'user_id' => $faker->numberBetween(1, 50), // Giả sử có 50 users
-        'category_id' => $faker->numberBetween(1, 10), // Giả sử có 10 categories
+        'user_id' => $faker->numberBetween(1, 50),
+        'category_id' => $faker->numberBetween(1, 20),
         'title' => $faker->sentence,
         'post_slug' => $faker->slug,
         'description' => $faker->paragraph,

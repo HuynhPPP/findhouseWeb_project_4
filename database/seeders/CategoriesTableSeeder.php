@@ -16,7 +16,7 @@ class CategoriesTableSeeder extends Seeder
   {
     $faker = Faker::create();
 
-    foreach (range(1, 10) as $index) {
+    foreach (range(1, 20) as $index) {
       DB::table('categories')->insert([
         'category_name' => $faker->word,
         'category_slug' => $faker->slug,
