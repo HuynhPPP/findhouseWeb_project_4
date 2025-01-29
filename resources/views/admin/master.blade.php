@@ -32,8 +32,8 @@
     <!-- Font Awesome -->
     <link rel="stylesheet" type="text/css"
       href="{{ asset('admin/icon/font-awesome/css/font-awesome.min.css') }}">
-    <link rel="stylesheet" type="text/css"
-      href="{{ asset('admin/css/style.css') }}">
+    <link rel="stylesheet"
+      type="text/css"href="{{ asset('admin/css/style.css') }}">
     <link rel="stylesheet" type="text/css"
       href="{{ asset('admin/css/pages.css') }}">
     <link href="{{ asset('admin/sweetalert2/sweetalert2.min.css') }}"
@@ -170,8 +170,10 @@
                 </li>
                 <li class="user-profile header-notification">
                   <div class="dropdown-primary dropdown">
-                    <div class="dropdown-toggle" data-bs-toggle="dropdown">
-                      <img src="{{ asset('admin/images/avatar-4.jpg') }}"
+                    <div style="user-select: none" class="dropdown-toggle"
+                      data-bs-toggle="dropdown">
+                      <img
+                        src="{{ Auth::user()->photo ? asset('admin/upload/' . Auth::user()->photo) : asset('admin/images/no_image.jpg') }}"
                         class="img-radius" alt="User-Profile-Image">
                       <span>{{ Auth::user()->name }}</span>
                       <i class="feather icon-chevron-down"></i>
@@ -180,7 +182,7 @@
                       class="show-notification profile-notification dropdown-menu"
                       data-dropdown-in="fadeIn" data-dropdown-out="fadeOut">
                       <li>
-                        <a href="#">
+                        <a href="{{ route('admin.profile') }}">
                           <i class="feather icon-user"></i> Tài khoản
                         </a>
                       </li>
@@ -393,6 +395,7 @@
     <!-- waves js -->
     <script src="{{ asset('admin/pages/waves/js/waves.min.js') }}"></script>
     <!-- Custom js -->
+    {{-- error --}}
     <script src="{{ asset('admin/pages/data-table/js/data-table-custom.js') }}">
     </script>
     <script src="{{ asset('admin/js/pcoded.min.js') }}"></script>
