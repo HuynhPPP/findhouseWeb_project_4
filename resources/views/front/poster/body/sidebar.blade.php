@@ -14,7 +14,7 @@
     <div class="detail clearfix">
         <ul class="mb-0">
             <li>
-                <a class="active" href="dashboard.html">
+                <a class="active" href="{{ route('poster.dashboard') }}">
                     <i class="fa fa-map-marker"></i> Trang thống kê
                 </a>
             </li>
@@ -25,20 +25,15 @@
             </li>
             <li>
                 <a href="my-listings.html">
-                    <i class="fa fa-list" aria-hidden="true"></i>My Properties
-                </a>
-            </li>
-            <li>
-                <a href="favorited-listings.html">
-                    <i class="fa fa-heart" aria-hidden="true"></i>Favorited Properties
+                    <i class="fa fa-list" aria-hidden="true"></i>Danh sách tin đăng
                 </a>
             </li>
             <li>
                 <a href="add-property.html">
-                    <i class="fa fa-list" aria-hidden="true"></i>Add Property
+                    <i class="fa fa-list" aria-hidden="true"></i>Đăng tin
                 </a>
             </li>
-            <li>
+            {{-- <li>
                 <a href="payment-method.html">
                     <i class="fas fa-credit-card"></i>Payments
                 </a>
@@ -47,15 +42,20 @@
                 <a href="invoice.html">
                     <i class="fas fa-paste"></i>Invoices
                 </a>
-            </li>
+            </li> --}}
             <li>
                 <a href="change-password.html">
-                    <i class="fa fa-lock"></i>Change Password
+                    <i class="fa fa-lock"></i>Xác minh tài khoản
                 </a>
             </li>
             <li>
-                <a href="index.html">
-                    <i class="fas fa-sign-out-alt"></i>Log Out
+                <a href="{{ route('poster.change-password') }}">
+                    <i class="fa fa-lock"></i>Đổi mật khẩu
+                </a>
+            </li>
+            <li>
+                <a href="{{ route('logout') }}">
+                    <i class="fas fa-sign-out-alt"></i>Đăng xuất
                 </a>
             </li>
         </ul>

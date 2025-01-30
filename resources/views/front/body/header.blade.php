@@ -217,20 +217,26 @@
                     @endauth
                 </div>
                 <ul>
-                    <li><a href="user-profile.html"> Edit profile</a></li>
-                    <li><a href="add-property.html"> Add Property</a></li>
-                    <li><a href="payment-method.html">  Payments</a></li>
-                    <li><a href="change-password.html"> Change Password</a></li>
-                    <li><a href="#">Log Out</a></li>
+                    @auth
+                        <li><a href="{{ route('poster.profile') }}"> Quản lý tài khoản</a></li>
+                        <li><a href="{{ route('logout') }}">Đăng xuất</a></li>
+                    @else
+                        <li class="show-reg-form modal-open">
+                            <a href="user-profile.html"> Đăng nhập</a>
+                        </li>
+
+                        <li class="show-reg-form modal-open">
+                            <a href="user-profile.html"> Tạo tài khoản mới</a>
+                        </li>
+                    @endauth
+                    
                 </ul>
             </div>
             <!-- Right Side Content / End -->
 
             <div class="right-side d-none d-none d-lg-none d-xl-flex sign ml-0">
                 <!-- Header Widget -->
-                <div class="header-widget sign-in">
-                    <div class="show-reg-form modal-open"><a href="#">Sign In</a></div>
-                </div>
+                
                 <!-- Header Widget / End -->
             </div>
             <!-- Right Side Content / End -->

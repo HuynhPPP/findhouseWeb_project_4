@@ -47,4 +47,9 @@ class PosterController extends Controller
 
         return redirect()->back()->with($notification);
     }
+
+    public function PosterChangePassword()
+    {
+        return view('front.poster.poster_change_password');
+    }
 }
