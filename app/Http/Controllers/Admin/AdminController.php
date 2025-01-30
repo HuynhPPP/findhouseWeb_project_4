@@ -8,6 +8,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Validator;
+use Intervention\Image\ImageManager;
+use Intervention\Image\Drivers\Gd\Driver;
 
 class AdminController extends Controller
 {
@@ -23,16 +25,17 @@ class AdminController extends Controller
   }
   public function AdminStoreUpdateProfile(Request $request)
   {
+    // dd($request->all());
     $id = Auth::user()->id;
     $file = $request->file('photo');
     $validator = Validator::make($request->all(), [
-      'photo' => 'nullable|mimes:jpg,jpeg,png|max:10240',
+      'photo' => 'image|mimes:jpg,jpeg,png',
       'name' => 'required|max:200',
       'email' => 'required|email',
       'phone' => 'nullable'
     ], [
       'photo.mimes' => 'Ảnh phải có định dạng jpg, jpeg, hoặc png.',
-      'photo.max'   => 'Ảnh không được lớn hơn 10MB.',
+      'photo.image' => 'Ảnh không hợp lệ.',
       'name.required' => 'Tên là bắt buộc.',
       'name.max' => 'Tên không được vượt quá 200 ký tự.',
       'email.required' => 'Email là bắt buộc.',
@@ -49,23 +52,21 @@ class AdminController extends Controller
         File::delete(public_path('/admin/upload/' . Auth::user()->photo));
         $fileName = $id . '-' . time() . '.' . $file->getClientOriginalExtension();
         $file->move(public_path('admin/upload/'), $fileName);
+        $url = public_path('admin/upload/' . $fileName);
+        $manager = new ImageManager(new Driver());
+        $file = $manager->read($url);
+        $file->cover(150, 150);
+        $file->save($url);
         $data->photo = $fileName;
       }
       $data->save();
-      // $notification = array(
-      //   'message' => 'Cập nhật thành công!',
-      //   'alert-type' => 'success'
-      // );
-      // return redirect()->back()->with($notification);
-      session()->flash('toastr', ['success' => 'Cập nhật thành công!']);
-      return response()->json([
-        'status' => true,
-        'errors' => [],
-      ]);
+      $notification = array(
+        'message' => 'Cập nhật thành công!',
+        'alert-type' => 'success'
+      );
+      return redirect()->back()->with($notification);
+    } else {
+      return redirect()->back()->withErrors($validator)->withInput();
     }
-    return response()->json([
-      'status' => false,
-      'errors' =>  $validator->errors()
-    ]);
   }
 }
