@@ -77,6 +77,7 @@ class CategoryController extends Controller
   }
   public function StoreUpdateCategory(Request $request)
   {
+    dd($request->all());
     $validator = Validator::make($request->all(), [
       'category_name' => 'required|max:200|unique:categories,category_name,' . $request->category_id,
       'status' => 'required',
