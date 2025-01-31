@@ -56,9 +56,9 @@
       <div class="pcoded-overlay-box"></div>
       <div class="pcoded-container navbar-wrapper">
         <!-- [ Header ] start -->
-        <nav class="navbar header-navbar pcoded-header">
+        <nav class="navbar header-navbar pcoded-header" header-theme="theme6">
           <div class="navbar-wrapper">
-            <div class="navbar-logo">
+            <div class="navbar-logo" logo-theme="theme6">
               <a href="index.html">
                 <img class="img-fluid"
                   src="{{ asset('admin/images/logo.png') }}"
@@ -395,7 +395,6 @@
     <!-- waves js -->
     <script src="{{ asset('admin/pages/waves/js/waves.min.js') }}"></script>
     <!-- Custom js -->
-    {{-- error --}}
     <script src="{{ asset('admin/pages/data-table/js/data-table-custom.js') }}">
     </script>
     <script src="{{ asset('admin/js/pcoded.min.js') }}"></script>
@@ -407,7 +406,6 @@
     <script src="{{ asset('toastr/toastr.min.js') }}"></script>
     <script>
       $(document).ready(function() {
-        // Cấu hình mặc định DataTables với ngôn ngữ tiếng Việt
         $.extend(true, $.fn.dataTable.defaults, {
           language: {
             "sProcessing": "Đang xử lý...",

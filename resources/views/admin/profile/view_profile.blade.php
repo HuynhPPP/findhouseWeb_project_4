@@ -2,72 +2,70 @@
 @section('content')
   <div class="pcoded-content">
     <div class="pcoded-inner-content">
-      <form id="updateProfile" name="createCategoryForm"
+      <form id="updateProfile" name="createCategoryForm" class="row"
         action="{{ route('admin.storeUpdate.profile') }}"
         enctype="multipart/form-data" method="POST">
         @csrf
-        <div class="row">
-          <div class="col-lg-12 col-xl-4">
-            <div class="mb-4 card mb-xl-0">
-              <div class="text-center card-body">
-                <div class="col">
-                  <img id="avatar" width="150px" height="150px"
-                    class="mb-2 img-account-profile rounded-circle"
-                    src="{{ $adminAccount->photo ? asset('admin/upload/' . $adminAccount->photo) : asset('admin/images/no_image.jpg') }}"
-                    alt="avatar">
-                </div>
-                <div class="col">
-                  <input type="file" name="photo" id="photo"
-                    class="d-none @error('photo') is-invalid @enderror">
-                  @error('photo')
-                    <p class="invalid-feedback">{{ $message }}</p>
-                  @enderror
-                </div>
-                <label for="photo" class="btn btn-primary" type="button">Thay
-                  đổi hình ảnh</label>
+        <div class="col-lg-12 col-xl-4">
+          <div class="mb-4 card mb-xl-0">
+            <div class="text-center card-body">
+              <div class="col">
+                <img id="avatar" width="150px" height="150px"
+                  class="mb-2 img-account-profile rounded-circle"
+                  src="{{ $adminAccount->photo ? asset('admin/upload/' . $adminAccount->photo) : asset('admin/images/no_image.jpg') }}"
+                  alt="avatar">
               </div>
+              <div class="col">
+                <input type="file" name="photo" id="photo"
+                  class="d-none @error('photo') is-invalid @enderror">
+                @error('photo')
+                  <p class="invalid-feedback">{{ $message }}</p>
+                @enderror
+              </div>
+              <label for="photo" class="btn btn-primary" type="button">Thay
+                đổi hình ảnh</label>
             </div>
           </div>
-          <div class="col-lg-12 col-xl-8">
-            <div class="card">
-              <div class="card-header">
-                <h5>Tài khoản</h5>
-              </div>
-              <div class="card-block">
-                <div class="mb-3">
-                  <label class="form-label col-form-label">Tên quản trị</label>
-                  <input type="text"
-                    class="form-control @error('name')
+        </div>
+        <div class="col-lg-12 col-xl-8">
+          <div class="card">
+            <div class="card-header">
+              <h5>Tài khoản</h5>
+            </div>
+            <div class="card-block">
+              <div class="mb-3">
+                <label class="form-label col-form-label">Tên quản trị</label>
+                <input type="text"
+                  class="form-control @error('name')
                       is-invalid
                   @enderror"
-                    id="name" name="name"
-                    value="{{ old('name', $adminAccount->name) }}">
-                  @error('name')
+                  id="name" name="name"
+                  value="{{ old('name', $adminAccount->name) }}">
+                @error('name')
+                  <p class="invalid-feedback">{{ $message }}</p>
+                @enderror
+              </div>
+              <div class="mb-3">
+                <label class="form-label col-form-label">Email</label>
+                <div class="">
+                  <input type="text"
+                    class="form-control @error('email')is-invalid @enderror"
+                    id="email" name="email"
+                    value="{{ old('name', $adminAccount->email) }}">
+                  @error('email')
                     <p class="invalid-feedback">{{ $message }}</p>
                   @enderror
                 </div>
-                <div class="mb-3">
-                  <label class="form-label col-form-label">Email</label>
-                  <div class="">
-                    <input type="text"
-                      class="form-control @error('email')is-invalid @enderror"
-                      id="email" name="email"
-                      value="{{ old('name', $adminAccount->email) }}">
-                    @error('email')
-                      <p class="invalid-feedback">{{ $message }}</p>
-                    @enderror
-                  </div>
-                </div>
-                <div class="mb-3">
-                  <label class="form-label col-form-label">Số điện thoại</label>
-                  <div class="">
-                    <input type="text" class="form-control " id="phone"
-                      name="phone" value="{{ $adminAccount->phone }}">
-                    <p></p>
-                  </div>
-                </div>
-                <button type="submit" class="btn btn-primary">Cập nhật</button>
               </div>
+              <div class="mb-3">
+                <label class="form-label col-form-label">Số điện thoại</label>
+                <div class="">
+                  <input type="text" class="form-control " id="phone"
+                    name="phone" value="{{ $adminAccount->phone }}">
+                  <p></p>
+                </div>
+              </div>
+              <button type="submit" class="btn btn-primary">Cập nhật</button>
             </div>
           </div>
         </div>

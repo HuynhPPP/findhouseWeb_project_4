@@ -24,7 +24,7 @@
               </div>
               <div class="card-block">
                 <form id="createCategoryForm" name="createCategoryForm"
-                  method="POST" {{-- action="{{ route('admin.store.category') }}" --}}>
+                  method="POST">
                   @csrf
                   <div class="mb-3">
                     <label class="form-label col-form-label">Tên danh mục</label>
@@ -33,10 +33,6 @@
                         class="form-control @error('category_name') is-invalid @enderror"
                         id="category_name" name="category_name">
                       <p></p>
-                      {{-- @if ($errors->has('category_name'))
-                        <span
-                          class="invalid-feedback">{{ $errors->first('category_name') }}</span>
-                      @endif --}}
                     </div>
                   </div>
                   <div class="mb-3 ">
@@ -76,7 +72,7 @@
               <div class="card-block table-border-style">
                 <div class="table-responsive dt-responsive">
                   <table id="order-table"
-                    class="table table-striped table-bordered nowrap">
+                    class="table table-bordered nowrap border">
                     <thead>
                       <tr>
                         <th>#</th>

@@ -16621,4 +16621,7 @@ table.dataTable.dtr-inline.collapsed > tbody > tr > th:first-child:before {
 .img-account-profile {
     height: 10rem;
 }
+td {
+    vertical-align: middle !important;
+}
 /*# sourceMappingURL=style.css.map */
