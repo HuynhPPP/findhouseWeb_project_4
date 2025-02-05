@@ -32,8 +32,8 @@
     <!-- Font Awesome -->
     <link rel="stylesheet" type="text/css"
       href="{{ asset('admin/icon/font-awesome/css/font-awesome.min.css') }}">
-    <link rel="stylesheet" type="text/css"
-      href="{{ asset('admin/css/style.css') }}">
+    <link rel="stylesheet"
+      type="text/css"href="{{ asset('admin/css/style.css') }}">
     <link rel="stylesheet" type="text/css"
       href="{{ asset('admin/css/pages.css') }}">
     <link href="{{ asset('admin/sweetalert2/sweetalert2.min.css') }}"
@@ -56,9 +56,9 @@
       <div class="pcoded-overlay-box"></div>
       <div class="pcoded-container navbar-wrapper">
         <!-- [ Header ] start -->
-        <nav class="navbar header-navbar pcoded-header">
+        <nav class="navbar header-navbar pcoded-header" header-theme="theme6">
           <div class="navbar-wrapper">
-            <div class="navbar-logo">
+            <div class="navbar-logo" logo-theme="theme6">
               <a href="index.html">
                 <img class="img-fluid"
                   src="{{ asset('admin/images/logo.png') }}"
@@ -73,20 +73,6 @@
             </div>
             <div class="navbar-container container-fluid">
               <ul class="nav-left">
-                <li class="header-search">
-                  <div class="main-search morphsearch-search">
-                    <div class="input-group">
-                      <span class="input-group-text search-close">
-                        <i class="feather icon-x input-group-text"></i>
-                      </span>
-                      <input type="text" class="form-control"
-                        placeholder="Enter Keyword">
-                      <span class="input-group-text search-btn">
-                        <i class="feather icon-search input-group-text"></i>
-                      </span>
-                    </div>
-                  </div>
-                </li>
                 <li>
                   <a href="#!" onclick="javascript:toggleFullScreen()"
                     class="waves-effect waves-light">
@@ -170,8 +156,10 @@
                 </li>
                 <li class="user-profile header-notification">
                   <div class="dropdown-primary dropdown">
-                    <div class="dropdown-toggle" data-bs-toggle="dropdown">
-                      <img src="{{ asset('admin/images/avatar-4.jpg') }}"
+                    <div style="user-select: none" class="dropdown-toggle"
+                      data-bs-toggle="dropdown">
+                      <img
+                        src="{{ Auth::user()->photo ? asset('admin/upload/' . Auth::user()->photo) : asset('admin/images/no_image.jpg') }}"
                         class="img-radius" alt="User-Profile-Image">
                       <span>{{ Auth::user()->name }}</span>
                       <i class="feather icon-chevron-down"></i>
@@ -180,7 +168,7 @@
                       class="show-notification profile-notification dropdown-menu"
                       data-dropdown-in="fadeIn" data-dropdown-out="fadeOut">
                       <li>
-                        <a href="#">
+                        <a href="{{ route('admin.profile') }}">
                           <i class="feather icon-user"></i> Tài khoản
                         </a>
                       </li>
@@ -404,7 +392,6 @@
     <script src="{{ asset('toastr/toastr.min.js') }}"></script>
     <script>
       $(document).ready(function() {
-        // Cấu hình mặc định DataTables với ngôn ngữ tiếng Việt
         $.extend(true, $.fn.dataTable.defaults, {
           language: {
             "sProcessing": "Đang xử lý...",

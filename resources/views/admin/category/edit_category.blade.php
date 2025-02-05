@@ -81,7 +81,7 @@
               <div class="card-block table-border-style">
                 <div class="table-responsive dt-responsive">
                   <table id="order-table"
-                    class="table table-striped table-bordered nowrap">
+                    class="table table-bordered nowrap border">
                     <thead>
                       <tr>
                         <th>#</th>
@@ -137,7 +137,6 @@
         method: "GET",
         url: "{{ route('admin.get.categoryUpdate') }}",
         success: function(response) {
-          console.log(response)
           let html = '';
           response.forEach(function(item, index) {
             const itemId = item.id;

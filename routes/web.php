@@ -42,6 +42,11 @@ Route::middleware(['auth', 'roles:admin'])->group(function () {
     Route::get('get/category/create', 'FetchCategoryCreate')->name('admin.get.categoryCreate');
     Route::get('get/category/update', 'FetchCategoryUpdate')->name('admin.get.categoryUpdate');
   });
+  Route::controller(AdminController::class)->group(function () {
+    Route::get('admin/profile', 'AdminProfile')->name('admin.profile');
+    Route::post('admin/store/profile', 'AdminStoreUpdateProfile')->name('admin.storeUpdate.profile');
+    Route::post('admin/change-password', 'ChangePassword')->name('admin.change.password');
+  });
 }); // End Admin group middleware
 
 

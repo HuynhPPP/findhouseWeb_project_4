@@ -18,8 +18,7 @@
         </div>
         <div class="card-block">
           <div class="table-responsive dt-responsive">
-            <table id="order-table"
-              class="table table-striped table-bordered nowrap">
+            <table id="order-table" class="table table-bordered nowrap border">
               <thead>
                 <tr>
                   <th>Tên danh mục</th>
@@ -50,7 +49,7 @@
                     </td>
                     <td>
                       <a href="{{ route('admin.edit.category', [$item->id, $item->category_slug]) }}"
-                        class="btn waves-effect waves-light btn-primary btn-square">
+                        class="btn btn-primary waves-effect waves-light">
                         <i class="fa fa-pencil"></i>
                       </a>
                       <form
