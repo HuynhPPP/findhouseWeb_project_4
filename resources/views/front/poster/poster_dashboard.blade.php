@@ -18,6 +18,11 @@
     <!-- FONT AWESOME -->
     <link rel="stylesheet" href="{{ asset('front/css/fontawesome-all.min.css') }}">
     <link rel="stylesheet" href="{{ asset('front/css/font-awesome.min.css') }}">
+    <!-- LEAFLET MAP -->
+    <link rel="stylesheet" href="{{ asset('front/css/leaflet.css') }}">
+    <link rel="stylesheet" href="{{ asset('front/css/leaflet-gesture-handling.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('front/css/leaflet.markercluster.css') }}">
+    <link rel="stylesheet" href="{{ asset('front/css/leaflet.markercluster.default.css') }}">
     <!-- ARCHIVES CSS -->
     <link rel="stylesheet" href="{{ asset('front/css/search.css') }}">
     <link rel="stylesheet" href="{{ asset('front/css/dashbord-mobile-menu.css') }}">
@@ -38,7 +43,7 @@
 	<!-- End Toastr -->
 </head>
 
-<body class="maxw1600 m0a dashboard-bd">
+<body class="inner-pages maxw1600 m0a dashboard-bd">
     <!-- Wrapper -->
     <div id="wrapper" class="int_main_wraapper">
         <!-- START SECTION HEADINGS -->
@@ -102,6 +107,11 @@
         <script src="{{ asset('front/js/dashbord-mobile-menu.js') }}"></script>
         <script src="{{ asset('front/js/forms-2.js') }}"></script>
         <script src="{{ asset('front/js/color-switcher.js') }}"></script>
+        <script src="{{ asset('front/js/js/leaflet.js') }}"></script>
+        <script src="{{ asset('front/js/js/leaflet-gesture-handling.min.js') }}"></script>
+        <script src="{{ asset('front/js/leaflet-providers.js') }}"></script>
+        <script src="{{ asset('front/js/leaflet.markercluster.js') }}"></script>
+        <script src="{{ asset('front/js/map-single.js') }}"></script>
         <script src="{{ asset('front/js/dropzone.js') }}"></script>
 
         <script>
@@ -117,7 +127,7 @@
 
         <script>
             $(".dropzone").dropzone({
-                dictDefaultMessage: "<i class='fa fa-cloud-upload'></i> Click here or drop files to upload",
+                dictDefaultMessage: "<i class='fa fa-cloud-upload'></i> Tải file lên từ thiết bị",
             });
 
         </script>
@@ -146,6 +156,20 @@
         }
         @endif 
         </script>	
+
+    <script>
+        $(document).ready(function() {
+            $('.popup-youtube, .popup-vimeo, .popup-gmaps').magnificPopup({
+                disableOn: 700,
+                type: 'iframe',
+                mainClass: 'mfp-fade',
+                removalDelay: 160,
+                preloader: false,
+                fixedContentPos: false
+            });
+        });
+
+    </script>
 
     </div>
     <!-- Wrapper / End -->
