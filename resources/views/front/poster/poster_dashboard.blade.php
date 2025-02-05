@@ -9,10 +9,10 @@
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="description" content="html 5 template">
     <meta name="author" content="">
-    <title>Find Houses - HTML5 Template</title>
+    <title>Find Houses</title>
     <!-- FAVICON -->
-    <link rel="shortcut icon" type="image/x-icon" href="favicon.ico">
-    <link rel="stylesheet" href="{{ asset('front/') }}css/jquery-ui.css">
+    <link rel="shortcut icon" type="image/x-icon" href="{{ asset('front/favicon.ico') }}">
+    <link rel="stylesheet" href="{{ asset('front/css/jquery-ui.css') }}">
     <!-- GOOGLE FONTS -->
     <link href="https://fonts.googleapis.com/css?family=Lato:300,300i,400,400i%7CMontserrat:600,800" rel="stylesheet">
     <!-- FONT AWESOME -->
@@ -73,6 +73,7 @@
 
         <!-- ARCHIVES JS -->
         <script src="{{ asset('front/js/jquery-3.5.1.min.js') }}"></script>
+        <script src="{{ asset('front/js/popper.min.js') }}"></script>
         <script src="{{ asset('front/js/jquery-ui.js') }}"></script>
         <script src="{{ asset('front/js/tether.min.js') }}"></script>
         <script src="{{ asset('front/js/moment.js') }}"></script>
@@ -101,6 +102,7 @@
         <script src="{{ asset('front/js/dashbord-mobile-menu.js') }}"></script>
         <script src="{{ asset('front/js/forms-2.js') }}"></script>
         <script src="{{ asset('front/js/color-switcher.js') }}"></script>
+        <script src="{{ asset('front/js/dropzone.js') }}"></script>
 
         <script>
             $(".header-user-name").on("click", function() {
@@ -112,6 +114,13 @@
 
         <!-- MAIN JS -->
         <script src="{{ asset('front/js/script.js') }}"></script>
+
+        <script>
+            $(".dropzone").dropzone({
+                dictDefaultMessage: "<i class='fa fa-cloud-upload'></i> Click here or drop files to upload",
+            });
+
+        </script>
 
         <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 

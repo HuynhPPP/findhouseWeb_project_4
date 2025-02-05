@@ -49,6 +49,7 @@ Route::middleware(['auth', 'roles:admin'])->group(function () {
 Route::middleware(['auth', 'roles:poster'])->group(function () {
   Route::get('/poster/dashboard', [PosterController::class, 'PosterDashboard'])->name('poster.dashboard');
   Route::get('/poster/profile', [PosterController::class, 'PosterProfile'])->name('poster.profile');
+  Route::get('/poster/post', [PosterController::class, 'PosterPost'])->name('poster.post');
   Route::get('/poster/change-password', [PosterController::class, 'PosterChangePassword'])->name('poster.change-password');
   Route::post('/poster/store/profile', [PosterController::class, 'PosterStoreProfile'])->name('poster.store.profile');
 }); // End Poster group middleware

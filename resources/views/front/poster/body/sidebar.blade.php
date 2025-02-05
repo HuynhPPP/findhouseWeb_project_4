@@ -29,7 +29,7 @@
                 </a>
             </li>
             <li>
-                <a href="add-property.html">
+                <a href="{{ route('poster.post') }}">
                     <i class="fa fa-list" aria-hidden="true"></i>Đăng tin
                 </a>
             </li>
