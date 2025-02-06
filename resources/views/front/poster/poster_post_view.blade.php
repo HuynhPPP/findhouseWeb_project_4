@@ -1,6 +1,15 @@
 @extends('front.poster.poster_dashboard')
 @section('poster')
 
+<style>
+    .inner-pages .nice-select.open .list {
+        max-height: 300px; 
+        overflow-y: auto !important; 
+        overflow: visible;
+        z-index: 99999;
+        width: 100%;
+    }
+</style>
 
 <div class="col-lg-9 col-md-12 col-xs-12 royal-add-property-area section_100 pl-0 user-dash2">
     <div class="single-add-property">
@@ -19,7 +28,7 @@
                     <div class="col-md-12">
                         <p>
                             <label for="description">Nội dung mô tả</label>
-                            <textarea id="description" name="pro-dexc" placeholder=""></textarea>
+                            <textarea class="textarea" id="description" name="pro-dexc" placeholder=""></textarea>
                         </p>
                     </div>
                 </div>
@@ -104,24 +113,33 @@
         <div class="property-form-group">
             <div class="row">
                 <div class="col-lg-6 col-md-12">
-                    <p>
-                        <label for="address">Tỉnh/Thành phố</label>
-                        <input type="text" name="address" placeholder="Enter Your Address" id="address">
-                    </p>
+                    <div class="form-group mb-3">
+                        <label for="province">Tỉnh/Thành phố</label>
+                        <select id="province" class="form-control">
+                            <option value="">Chọn Tỉnh/Thành phố</option>
+                        </select>
+                        <input type="hidden" id="province_name" name="province_name">
+                    </div>
                 </div>
-                <div class="col-lg-6 col-md-12">
-                    <p>
-                        <label for="city">Quận/Huyện</label>
-                        <input type="text" name="city" placeholder="Enter Your City" id="city">
-                    </p>
+                <div class="col-lg-6 col-md-12 mb-3">
+                    <div class="form-group">
+                        <label for="district">Quận/Huyện</label>
+                        <select id="district" class="form-control">
+                            <option value="">Chọn Quận/Huyện</option>
+                        </select>
+                        <input type="hidden" id="district_name" name="district_name">
+                    </div>
                 </div>
             </div>
             <div class="row">
                 <div class="col-lg-6 col-md-12">
-                    <p>
-                        <label for="state">Phường/Xã</label>
-                        <input type="text" name="state" placeholder="Enter Your State" id="state">
-                    </p>
+                    <div class="form-group">
+                        <label for="wards">Phường/Xã</label>
+                        <select id="wards" class="form-control">
+                            <option value="">Chọn Phường/Xã</option>
+                        </select>
+                        <input type="hidden" id="ward_name" name="ward_name">
+                    </div>
                 </div>
                 <div class="col-lg-6 col-md-12">
                     <p>
@@ -342,7 +360,118 @@
         </div>
     </div>
 </div>
-
-
-
 @endsection
+
+
+@section('customJs')
+<script>
+    $(document).ready(function() {
+  // Lấy danh sách tỉnh
+  $.getJSON('/api/proxy/provinces', function(data_tinh) {
+    if (data_tinh.error === 0) {
+      $.each(data_tinh.data, function(key_tinh, val_tinh) {
+        $("#province").append('<option value="' + val_tinh.id + '">' + val_tinh.full_name + '</option>');
+      });
+
+      // Khởi tạo nice-select sau khi thêm option
+      $("#province").niceSelect('update');
+
+      // Khi chọn tỉnh
+      $("#province").change(function() {
+        var idtinh = $(this).val();
+        var tentinh = $("#province option:selected").text();
+        $("#province_name").val(tentinh); // Lưu tên tỉnh
+
+        // Kiểm tra xem tỉnh đã được chọn hay chưa
+        if (idtinh != "") {
+          $.getJSON('/api/proxy/districts/' + idtinh, function(data_quan) {
+            if (data_quan.error === 0) {
+              // Reset lại các thẻ huyện và xã trước khi thêm mới
+              $("#district").html('<option value="0">Chọn Quận / Huyện</option>');
+              $("#wards").html('<option value="0">Chọn Phường / Xã</option>');
+
+              // Thêm các huyện vào dropdown
+              $.each(data_quan.data, function(key_quan, val_quan) {
+                $("#district").append('<option value="' + val_quan.id + '">' + val_quan.full_name + '</option>');
+              });
+
+              // Khởi tạo lại nice-select sau khi thêm các huyện vào
+              $("#district").niceSelect('update');
+
+              // Khi chọn quận
+              $("#district").change(function() {
+                var idquan = $(this).val();
+                var tenquan = $("#district option:selected").text();
+                $("#district_name").val(tenquan); // Lưu tên huyện
+
+                // Lấy danh sách xã/phường
+                $.getJSON('/api/proxy/wards/' + idquan, function(data_phuong) {
+                  if (data_phuong.error === 0) {
+                    $("#wards").html('<option value="0">Chọn Phường / Xã</option>'); // Reset lại xã/phường
+
+                    // Thêm xã vào dropdown
+                    $.each(data_phuong.data, function(key_phuong, val_phuong) {
+                      $("#wards").append('<option value="' + val_phuong.id + '">' + val_phuong.full_name + '</option>');
+                    });
+
+                    // Khởi tạo lại nice-select sau khi thêm xã/phường
+                    $("#wards").niceSelect('update');
+
+                    // Khi chọn xã
+                    $("#wards").change(function() {
+                      var tenxa = $("#wards option:selected").text();
+                      $("#ward_name").val(tenxa); // Lưu tên xã
+                    });
+                  }
+                });
+              });
+            } else {
+              alert("Không thể lấy dữ liệu quận/huyện!");
+            }
+          });
+        }
+      });
+    }
+  });
+});
+
+
+</script>
+
+<script>
+    // Cấu hình Dropzone
+    Dropzone.options.myDropzone = {
+        // Xử lý khi ảnh được tải lên thành công
+        success: function(file, response) {
+            // Ẩn thông báo lỗi "Server responded with 0 code"
+            $(".dz-error-message").hide();
+
+            // Tạo nút xóa cho từng file tải lên
+            const removeButton = Dropzone.createElement("<button class='dz-remove'>Xóa</button>");
+            removeButton.addEventListener("click", function() {
+                file.previewElement.remove();  // Xóa ảnh khỏi Dropzone
+            });
+            file.previewElement.appendChild(removeButton);  // Thêm nút xóa vào preview của ảnh
+        },
+        
+        // Xử lý khi có lỗi khi tải lên
+        error: function(file, response) {
+            // Ẩn thông báo lỗi mặc định
+            $(".dz-error-message").hide();
+        },
+        
+        // Xử lý khi hình ảnh được xóa
+        removedfile: function(file) {
+            // Đảm bảo ảnh được xóa khỏi form
+            var _ref;
+            return (_ref = file.previewElement) != null ? _ref.parentNode.removeChild(file.previewElement) : void 0;
+        },
+        
+        // Cấu hình thêm vào nếu bạn muốn
+        maxFiles: 5,  // Giới hạn số lượng file tải lên
+        maxFilesize: 5,  // Giới hạn kích thước mỗi file tải lên (MB)
+        acceptedFiles: "image/*"  // Chỉ cho phép tải lên hình ảnh
+    };
+</script>
+@endsection
+

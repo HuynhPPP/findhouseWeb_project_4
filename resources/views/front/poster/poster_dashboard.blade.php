@@ -37,6 +37,9 @@
     <link rel="stylesheet" href="{{ asset('front/css/slick.css') }}">
     <link rel="stylesheet" href="{{ asset('front/css/styles.css') }}">
     <link rel="stylesheet" id="color" href="{{ asset('front/css/default.css') }}">
+    <link rel="stylesheet" href="{{ asset('front/trumbowyg/trumbowyg.min.css') }}" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" />
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2-bootstrap-5-theme@1.3.0/dist/select2-bootstrap-5-theme.min.css" />
 
     <!-- Toastr -->
 	<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.css">
@@ -113,7 +116,9 @@
         <script src="{{ asset('front/js/leaflet.markercluster.js') }}"></script>
         <script src="{{ asset('front/js/map-single.js') }}"></script>
         <script src="{{ asset('front/js/dropzone.js') }}"></script>
-
+        <script src="{{ asset('front/select2/js/select2.min.js') }}"></script>
+        <script src="{{ asset('front/select2/js/select2-custom.js') }}"></script>
+        <script src="{{ asset('front/trumbowyg/trumbowyg.min.js') }}"></script>
         <script>
             $(".header-user-name").on("click", function() {
                 $(".header-user-menu ul").toggleClass("hu-menu-vis");
@@ -170,6 +175,10 @@
         });
 
     </script>
+    <script>
+		$('.textarea').trumbowyg();
+	</script>
+    @yield('customJs')
 
     </div>
     <!-- Wrapper / End -->

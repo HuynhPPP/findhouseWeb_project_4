@@ -3,6 +3,7 @@
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Front\PosterController;
 use App\Http\Controllers\Front\UserController;
+use App\Http\Controllers\Front\ApiController;
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\admin\CategoryController;
 use Illuminate\Support\Facades\Route;
@@ -11,6 +12,9 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', [UserController::class, 'Index'])->name('index');
 Route::get('/logout', [UserController::class, 'UserLogout'])->name('user.logout');
+Route::get('/api/proxy/provinces', [ApiController::class, 'getProvinces']);
+Route::get('/api/proxy/districts/{provinceId}', [ApiController::class, 'getDistricts']);
+Route::get('/api/proxy/wards/{districtId}', [ApiController::class, 'getWards']);
 
 // Route::get('/dashboard', function () {
 //   return view('dashboard');
@@ -58,3 +62,4 @@ Route::middleware(['auth', 'roles:poster'])->group(function () {
   Route::get('/poster/change-password', [PosterController::class, 'PosterChangePassword'])->name('poster.change-password');
   Route::post('/poster/store/profile', [PosterController::class, 'PosterStoreProfile'])->name('poster.store.profile');
 }); // End Poster group middleware
+
