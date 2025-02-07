@@ -13,8 +13,7 @@
         <li
           class="pcoded-hasmenu {{ in_array(Route::currentRouteName(), ['admin.all.category', 'admin.create.category']) ? 'active pcoded-trigger' : '' }}">
           <a href="javascript:void(0)" class="waves-effect waves-dark">
-            <span class="pcoded-micon"><i
-                class="feather icon-sidebar"></i></span>
+            <span class="pcoded-micon"><i class="feather icon-menu"></i></span>
             <span class="pcoded-mtext">Danh mục</span>
           </a>
           <ul class="pcoded-submenu">
@@ -32,47 +31,37 @@
                 <span class="pcoded-mtext">Thêm danh mục</span>
               </a>
             </li>
-            <li class="">
-              <a href="menu-bottom.html" class="waves-effect waves-dark">
-                <span class="pcoded-mtext">Bottom Menu</span>
-              </a>
-            </li>
           </ul>
         </li>
-        <li class="">
-          <a href="navbar-light.html" class="waves-effect waves-dark">
-            <span class="pcoded-micon">
-              <i class="feather icon-menu"></i>
-            </span>
-            <span class="pcoded-mtext">Navigation</span>
-          </a>
-        </li>
-        <li class="pcoded-hasmenu">
+        <li
+          class="pcoded-hasmenu {{ in_array(Route::currentRouteName(), ['admin.all.post', 'admin.edit.post']) ? 'active pcoded-trigger' : '' }}">
           <a href="javascript:void(0)" class="waves-effect waves-dark">
-            <span class="pcoded-micon">
-              <i class="feather icon-layers"></i>
-            </span>
-            <span class="pcoded-mtext">Widget</span>
-            <span class="pcoded-badge label label-danger">100+</span>
+            <span class="pcoded-micon"><i class="feather icon-menu"></i></span>
+            <span class="pcoded-mtext">Đăng tin</span>
           </a>
           <ul class="pcoded-submenu">
-            <li class="">
-              <a href="widget-statistic.html" class="waves-effect waves-dark">
-                <span class="pcoded-mtext">Statistic</span>
+            <li
+              class="{{ Route::currentRouteName() == 'admin.all.post' ? 'active' : '' }}">
+              <a href="{{ route('admin.all.post') }}"
+                class="waves-effect waves-dark">
+                <span class="pcoded-mtext">Tất cả tin</span>
               </a>
             </li>
             <li class="">
-              <a href="widget-data.html" class="waves-effect waves-dark">
-                <span class="pcoded-mtext">Data</span>
+              <a href="{{ route('admin.create.category') }}"
+                class="waves-effect waves-dark">
+                <span class="pcoded-mtext">Tin phê duyệt</span>
               </a>
             </li>
             <li class="">
-              <a href="widget-chart.html" class="waves-effect waves-dark">
-                <span class="pcoded-mtext">Chart Widget</span>
+              <a href="{{ route('admin.create.category') }}"
+                class="waves-effect waves-dark">
+                <span class="pcoded-mtext">Tin chờ phê duyệt</span>
               </a>
             </li>
           </ul>
         </li>
+
       </ul>
       <div class="pcoded-navigation-label">UI Element</div>
       <ul class="pcoded-item pcoded-left-item">

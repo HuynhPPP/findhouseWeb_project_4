@@ -6,6 +6,7 @@ use App\Http\Controllers\Front\UserController;
 use App\Http\Controllers\Front\ApiController;
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\admin\CategoryController;
+use App\Http\Controllers\admin\PostController;
 use Illuminate\Support\Facades\Route;
 
 /// Route Accessable for All
@@ -51,6 +52,10 @@ Route::middleware(['auth', 'roles:admin'])->group(function () {
     Route::post('admin/store/profile', 'AdminStoreUpdateProfile')->name('admin.storeUpdate.profile');
     Route::post('admin/change-password', 'ChangePassword')->name('admin.change.password');
   });
+  Route::controller(PostController::class)->group(function () {
+    Route::get('all/post/', 'AllPost')->name('admin.all.post');
+    Route::get('edit/post/{post_id}/{slug}.html', 'EditPost')->name('admin.edit.post');
+  });
 }); // End Admin group middleware
 
 
@@ -62,4 +67,3 @@ Route::middleware(['auth', 'roles:poster'])->group(function () {
   Route::get('/poster/change-password', [PosterController::class, 'PosterChangePassword'])->name('poster.change-password');
   Route::post('/poster/store/profile', [PosterController::class, 'PosterStoreProfile'])->name('poster.store.profile');
 }); // End Poster group middleware
-
