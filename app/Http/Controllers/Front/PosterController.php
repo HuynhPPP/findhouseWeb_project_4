@@ -50,7 +50,12 @@ class PosterController extends Controller
 
     public function PosterPost()
     {
-        return view('front.poster.poster_post_view');
+        return view('front.poster.post.poster_post_view');
+    }
+
+    public function PosterListPost()
+    {
+        return view('front.poster.post.poster_list_post_view');
     }
 
     public function PosterChangePassword()

@@ -24,7 +24,7 @@
                 </a>
             </li>
             <li>
-                <a href="my-listings.html">
+                <a href="{{ route('poster.list-post') }}">
                     <i class="fa fa-list" aria-hidden="true"></i>Danh sách tin đăng
                 </a>
             </li>
