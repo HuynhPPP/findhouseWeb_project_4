@@ -1,17 +1,14 @@
 @extends('front.poster.poster_dashboard')
 @section('poster')
 
-<style>
-    .inner-pages .nice-select.open .list {
-        max-height: 300px; 
-        overflow-y: auto !important; 
-        overflow: visible;
-        z-index: 99999;
-        width: 100%;
-    }
-</style>
+<link rel="stylesheet" href="{{ asset('front/css/poster_post_view.css') }}">
 
 <div class="col-lg-9 col-md-12 col-xs-12 royal-add-property-area section_100 pl-0 user-dash2">
+
+    @php
+        $categories = App\Models\Category::get();
+    @endphp
+
     <div class="single-add-property">
         <h3>Thông tin mô tả</h3>
         <div class="property-form-group">
@@ -33,41 +30,15 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-lg-4 col-md-12 dropdown faq-drop">
-                        <div class="form-group categories">
-                            <div class="nice-select form-control wide" tabindex="0"><span class="current">Select
-                                    status</span>
-                                <ul class="list">
-                                    <li data-value="1" class="option">Rent</li>
-                                    <li data-value="2" class="option">Sale</li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-4 col-md-12 dropdown faq-drop">
-                        <div class="form-group categories">
-                            <div class="nice-select form-control wide" tabindex="0"><span class="current">Type</span>
-                                <ul class="list">
-                                    <li data-value="1" class="option">house</li>
-                                    <li data-value="2" class="option">commercial</li>
-                                    <li data-value="3" class="option">apartment</li>
-                                    <li data-value="4" class="option">lot</li>
-                                    <li data-value="5" class="option">garage</li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-4 col-md-12 dropdown faq-drop">
-                        <div class="form-group categories">
-                            <div class="nice-select form-control wide" tabindex="0"><span class="current">Rooms</span>
-                                <ul class="list">
-                                    <li data-value="1" class="option">1</li>
-                                    <li data-value="2" class="option">2</li>
-                                    <li data-value="3" class="option">3</li>
-                                    <li data-value="4" class="option">4</li>
-                                    <li data-value="5" class="option">5</li>
-                                </ul>
-                            </div>
+                    <div class="col-lg-6 col-md-12 dropdown faq-drop">
+                        <div class="form-group mb-3">
+                            <label for="province">Loại chuyên mục</label>
+                            <select class="form-control">
+                                <option selected="" disabled>-- Chọn loại chuyên mục --</option>
+                                @foreach ($categories as $item)
+                                    <option value="{{ $item->id }}">{{ $item->category_name }}</option>
+                                @endforeach 
+                            </select>
                         </div>
                     </div>
                 </div>
@@ -103,7 +74,18 @@
         <div class="property-form-group">
             <div class="row">
                 <div class="col-md-12">
-                    <form action="https://code-theme.com/file-upload" class="dropzone"></form>
+                    <div class="video-upload-container">
+                        <input type="file" id="videoUpload" name="video" accept="video/*" hidden>
+                        
+                        <label for="videoUpload" class="upload-box">
+                            <i class="fa fa-video-camera" aria-hidden="true"></i>
+                            <span>Tải Video từ thiết bị</span>
+                        </label>
+                    
+                        <video id="videoPreview" controls style="display: none;"></video>
+                    
+                        <button id="removeVideo" class="remove-btn" style="display: none;">Xóa</button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -116,7 +98,7 @@
                     <div class="form-group mb-3">
                         <label for="province">Tỉnh/Thành phố</label>
                         <select id="province" class="form-control">
-                            <option value="">Chọn Tỉnh/Thành phố</option>
+                            <option selected="" disabled>-- Chọn Tỉnh/Thành phố --</option>
                         </select>
                         <input type="hidden" id="province_name" name="province_name">
                     </div>
@@ -125,7 +107,7 @@
                     <div class="form-group">
                         <label for="district">Quận/Huyện</label>
                         <select id="district" class="form-control">
-                            <option value="">Chọn Quận/Huyện</option>
+                            <option selected="" disabled>-- Chọn Quận/Huyện --</option>
                         </select>
                         <input type="hidden" id="district_name" name="district_name">
                     </div>
@@ -136,7 +118,7 @@
                     <div class="form-group">
                         <label for="wards">Phường/Xã</label>
                         <select id="wards" class="form-control">
-                            <option value="">Chọn Phường/Xã</option>
+                            <option selected="" disabled>-- Chọn Phường/Xã --</option>
                         </select>
                         <input type="hidden" id="ward_name" name="ward_name">
                     </div>
@@ -144,7 +126,7 @@
                 <div class="col-lg-6 col-md-12">
                     <p>
                         <label for="country">Đường/Phố</label>
-                        <input type="text" name="country" placeholder="Enter Your Country" id="country">
+                        <input type="text" name="country" placeholder="Nhập tên đường/phố" id="country">
                     </p>
                 </div>
             </div>
@@ -244,7 +226,7 @@
                             <div class="checkboxes float-left">
                                 <div class="filter-tags-wrap">
                                     <input id="check-a" type="checkbox" name="check">
-                                    <label for="check-a">Air Conditioning</label>
+                                    <label for="check-a">Đầy đủ nội thất</label>
                                 </div>
                             </div>
                         </li>
@@ -252,7 +234,7 @@
                             <div class="checkboxes float-left">
                                 <div class="filter-tags-wrap">
                                     <input id="check-b" type="checkbox" name="check">
-                                    <label for="check-b">Swimming Pool</label>
+                                    <label for="check-b">Có máy lạnh</label>
                                 </div>
                             </div>
                         </li>
@@ -260,7 +242,7 @@
                             <div class="checkboxes float-left">
                                 <div class="filter-tags-wrap">
                                     <input id="check-c" type="checkbox" name="check">
-                                    <label for="check-c">Central Heating</label>
+                                    <label for="check-c">Có thang máy</label>
                                 </div>
                             </div>
                         </li>
@@ -268,7 +250,7 @@
                             <div class="checkboxes float-left">
                                 <div class="filter-tags-wrap">
                                     <input id="check-d" type="checkbox" name="check">
-                                    <label for="check-d">Laundry Room</label>
+                                    <label for="check-d">Có kệ bếp</label>
                                 </div>
                             </div>
                         </li>
@@ -276,7 +258,7 @@
                             <div class="checkboxes float-left">
                                 <div class="filter-tags-wrap">
                                     <input id="check-e" type="checkbox" name="check">
-                                    <label for="check-e">Gym</label>
+                                    <label for="check-e">Có hầm để xe</label>
                                 </div>
                             </div>
                         </li>
@@ -284,7 +266,7 @@
                             <div class="checkboxes float-left">
                                 <div class="filter-tags-wrap">
                                     <input id="check-g" type="checkbox" name="check">
-                                    <label for="check-g">Alarm</label>
+                                    <label for="check-g">Có gác</label>
                                 </div>
                             </div>
                         </li>
@@ -292,7 +274,7 @@
                             <div class="checkboxes float-left">
                                 <div class="filter-tags-wrap">
                                     <input id="check-h" type="checkbox" name="check">
-                                    <label for="check-h">Window Covering</label>
+                                    <label for="check-h">Có bảo vệ 24/24</label>
                                 </div>
                             </div>
                         </li>
@@ -300,7 +282,7 @@
                             <div class="checkboxes float-left">
                                 <div class="filter-tags-wrap">
                                     <input id="check-i" type="checkbox" name="check">
-                                    <label for="check-i">Refrigerator</label>
+                                    <label for="check-i">Có hồ bơi</label>
                                 </div>
                             </div>
                         </li>
@@ -308,7 +290,7 @@
                             <div class="checkboxes float-left">
                                 <div class="filter-tags-wrap">
                                     <input id="check-j" type="checkbox" name="check">
-                                    <label for="check-j">TV Cable & WIFI</label>
+                                    <label for="check-j">Giờ giấc tự do</label>
                                 </div>
                             </div>
                         </li>
@@ -316,7 +298,7 @@
                             <div class="checkboxes float-left">
                                 <div class="filter-tags-wrap">
                                     <input id="check-k" type="checkbox" name="check">
-                                    <label for="check-k">Microwave</label>
+                                    <label for="check-k">Không chung chủ</label>
                                 </div>
                             </div>
                         </li>
@@ -325,6 +307,12 @@
             </div>
         </div>
     </div>
+
+    @php
+        $id = Auth::user()->id;
+        $profileData = App\Models\User::find($id);
+    @endphp
+
     <div class="single-add-property">
         <h3>thông tin liên hệ</h3>
         <div class="property-form-group">
@@ -332,20 +320,35 @@
                 <div class="col-lg-4 col-md-12">
                     <p>
                         <label for="con-name">Họ tên</label>
-                        <input type="text" placeholder="Enter Your Name" id="con-name" name="con-name">
+                        <input type="text" 
+                               placeholder="Nhập họ tên" 
+                               id="con-name" 
+                               name="con-name"
+                               value="{{ $profileData->name }}"
+                        >
                     </p>
                 </div>
             
                 <div class="col-lg-4 col-md-12">
                     <p class="no-mb first">
                         <label for="con-email">Email</label>
-                        <input type="email" placeholder="Enter Your Email" id="con-email" name="con-email">
+                        <input type="email" 
+                               placeholder="Enter Your Email" 
+                               id="con-email" 
+                               name="con-email"
+                               value="{{ $profileData->email }}"
+                        >
                     </p>
                 </div>
                 <div class="col-lg-4 col-md-12">
                     <p class="no-mb last">
                         <label for="con-phn">Số điện thoại</label>
-                        <input type="text" placeholder="Enter Your Phone Number" id="con-phn" name="con-phn">
+                        <input type="text" 
+                               placeholder="Enter Your Phone Number" 
+                               id="con-phn" 
+                               name="con-phn"
+                               value="{{ $profileData->phone }}"
+                        >
                     </p>
                 </div>
             </div>
@@ -358,6 +361,7 @@
                 </div>
             </div>
         </div>
+    </div>
     </div>
 </div>
 @endsection
@@ -436,6 +440,39 @@
 });
 
 
+</script>
+
+<script type="text/javascript">
+    document.getElementById('videoUpload').addEventListener('change', function(event) {
+        const file = event.target.files[0];
+        if (file) {
+            const videoPreview = document.getElementById('videoPreview');
+            const removeButton = document.getElementById('removeVideo');
+            
+            videoPreview.src = URL.createObjectURL(file);
+            videoPreview.style.display = "block";
+            removeButton.style.display = "inline-block";
+        }
+    });
+
+    // Xóa video
+    document.getElementById('removeVideo').addEventListener('click', function() {
+        const videoPreview = document.getElementById('videoPreview');
+
+        // Dừng phát video
+        videoPreview.pause();
+        videoPreview.currentTime = 0;
+        
+        // Xóa src để giải phóng bộ nhớ
+        videoPreview.src = "";
+
+        // Ẩn video và nút xóa
+        videoPreview.style.display = "none";
+        this.style.display = "none";
+
+        // Reset input file
+        document.getElementById('videoUpload').value = "";
+    });
 </script>
 
 <script>
