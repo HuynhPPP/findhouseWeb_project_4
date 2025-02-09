@@ -18,11 +18,6 @@
     <!-- FONT AWESOME -->
     <link rel="stylesheet" href="{{ asset('front/css/fontawesome-all.min.css') }}">
     <link rel="stylesheet" href="{{ asset('front/css/font-awesome.min.css') }}">
-    <!-- LEAFLET MAP -->
-    <link rel="stylesheet" href="{{ asset('front/css/leaflet.css') }}">
-    <link rel="stylesheet" href="{{ asset('front/css/leaflet-gesture-handling.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('front/css/leaflet.markercluster.css') }}">
-    <link rel="stylesheet" href="{{ asset('front/css/leaflet.markercluster.default.css') }}">
     <!-- ARCHIVES CSS -->
     <link rel="stylesheet" href="{{ asset('front/css/search.css') }}">
     <link rel="stylesheet" href="{{ asset('front/css/dashbord-mobile-menu.css') }}">
@@ -38,8 +33,6 @@
     <link rel="stylesheet" href="{{ asset('front/css/styles.css') }}">
     <link rel="stylesheet" id="color" href="{{ asset('front/css/default.css') }}">
     <link rel="stylesheet" href="{{ asset('front/trumbowyg/trumbowyg.min.css') }}" />
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" />
-	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2-bootstrap-5-theme@1.3.0/dist/select2-bootstrap-5-theme.min.css" />
 
     <!-- Toastr -->
 	<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.css">
@@ -110,15 +103,8 @@
         <script src="{{ asset('front/js/dashbord-mobile-menu.js') }}"></script>
         <script src="{{ asset('front/js/forms-2.js') }}"></script>
         <script src="{{ asset('front/js/color-switcher.js') }}"></script>
-        <script src="{{ asset('front/js/js/leaflet.js') }}"></script>
-        <script src="{{ asset('front/js/js/leaflet-gesture-handling.min.js') }}"></script>
-        <script src="{{ asset('front/js/leaflet-providers.js') }}"></script>
-        <script src="{{ asset('front/js/leaflet.markercluster.js') }}"></script>
-        <script src="{{ asset('front/js/map-single.js') }}"></script>
-        <script src="{{ asset('front/js/dropzone.js') }}"></script>
-        <script src="{{ asset('front/select2/js/select2.min.js') }}"></script>
-        <script src="{{ asset('front/select2/js/select2-custom.js') }}"></script>
         <script src="{{ asset('front/trumbowyg/trumbowyg.min.js') }}"></script>
+       
         <script>
             $(".header-user-name").on("click", function() {
                 $(".header-user-menu ul").toggleClass("hu-menu-vis");
@@ -129,13 +115,6 @@
 
         <!-- MAIN JS -->
         <script src="{{ asset('front/js/script.js') }}"></script>
-
-        <script>
-            $(".dropzone").dropzone({
-                dictDefaultMessage: "<i class='fa fa-cloud-upload'></i> Tải file lên từ thiết bị",
-            });
-
-        </script>
 
         <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 

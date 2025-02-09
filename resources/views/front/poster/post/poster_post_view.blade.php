@@ -2,6 +2,12 @@
 @section('poster')
 
 <link rel="stylesheet" href="{{ asset('front/css/poster_post_view.css') }}">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.3.1/dist/leaflet.css" />
+
+<style>
+    
+
+</style>
 
 <div class="col-lg-9 col-md-12 col-xs-12 royal-add-property-area section_100 pl-0 user-dash2">
 
@@ -64,7 +70,14 @@
         <div class="property-form-group">
             <div class="row">
                 <div class="col-md-12">
-                    <form action="https://code-theme.com/file-upload" class="dropzone"></form>
+                    <!-- Khu vực kéo thả hoặc nhấn để tải ảnh -->
+                    <div class="drop-zone" id="dropZone">
+                        <p> Kéo thả ảnh vào đây hoặc <b>Nhấn để chọn ảnh</b></p>
+                        <input type="file" id="image" name="photos[]" multiple style="display: none;" />
+                    </div>
+
+                    <!-- Hiển thị ảnh xem trước -->
+                    <div class="image-preview" id="imagePreview"></div>
                 </div>
             </div>
         </div>
@@ -148,73 +161,7 @@
     </div>
     <div class="single-add-property">
         <h3>Bản đồ</h3>
-        <div id="map-contact" class="contact-map leaflet-container leaflet-fade-anim" tabindex="0"
-            data-gesture-handling-touch-content="Use two fingers to move the map"
-            data-gesture-handling-scroll-content="Use ctrl + scroll to zoom the map" style="position: relative;">
-            <div class="leaflet-map-pane" style="transform: translate3d(-1005px, 342px, 0px);">
-                <div class="leaflet-tile-pane">
-                    <div class="leaflet-layer">
-                        <div class="leaflet-tile-container leaflet-zoom-animated" style=""></div>
-                        <div class="leaflet-tile-container leaflet-zoom-animated" style=""><img
-                                class="leaflet-tile leaflet-tile-loaded"
-                                src="https://a.tile.openstreetmap.de/tiles/osmde/1/0/0.png"
-                                style="height: 256px; width: 256px; left: 975px; top: -433px;"><img
-                                class="leaflet-tile leaflet-tile-loaded"
-                                src="https://b.tile.openstreetmap.de/tiles/osmde/1/0/1.png"
-                                style="height: 256px; width: 256px; left: 975px; top: -177px;"><img
-                                class="leaflet-tile leaflet-tile-loaded"
-                                src="https://b.tile.openstreetmap.de/tiles/osmde/1/1/0.png"
-                                style="height: 256px; width: 256px; left: 719px; top: -433px;"><img
-                                class="leaflet-tile leaflet-tile-loaded"
-                                src="https://b.tile.openstreetmap.de/tiles/osmde/1/1/0.png"
-                                style="height: 256px; width: 256px; left: 1231px; top: -433px;"><img
-                                class="leaflet-tile leaflet-tile-loaded"
-                                src="https://c.tile.openstreetmap.de/tiles/osmde/1/1/1.png"
-                                style="height: 256px; width: 256px; left: 719px; top: -177px;"><img
-                                class="leaflet-tile leaflet-tile-loaded"
-                                src="https://c.tile.openstreetmap.de/tiles/osmde/1/1/1.png"
-                                style="height: 256px; width: 256px; left: 1231px; top: -177px;"><img
-                                class="leaflet-tile leaflet-tile-loaded"
-                                src="https://a.tile.openstreetmap.de/tiles/osmde/1/0/0.png"
-                                style="height: 256px; width: 256px; left: 1487px; top: -433px;"><img
-                                class="leaflet-tile leaflet-tile-loaded"
-                                src="https://b.tile.openstreetmap.de/tiles/osmde/1/0/1.png"
-                                style="height: 256px; width: 256px; left: 1487px; top: -177px;"><img
-                                class="leaflet-tile leaflet-tile-loaded"
-                                src="https://b.tile.openstreetmap.de/tiles/osmde/1/1/0.png"
-                                style="height: 256px; width: 256px; left: 1743px; top: -433px;"><img
-                                class="leaflet-tile leaflet-tile-loaded"
-                                src="https://c.tile.openstreetmap.de/tiles/osmde/1/1/1.png"
-                                style="height: 256px; width: 256px; left: 1743px; top: -177px;"></div>
-                    </div>
-                </div>
-                <div class="leaflet-objects-pane">
-                    <div class="leaflet-shadow-pane"></div>
-                    <div class="leaflet-overlay-pane"></div>
-                    <div class="leaflet-marker-pane">
-                        <div class="leaflet-marker-icon leaflet-div-icon leaflet-zoom-animated leaflet-clickable"
-                            tabindex="0"
-                            style="margin-left: -50px; margin-top: -50px; width: 50px; height: 50px; transform: translate3d(1125px, -241px, 0px); z-index: -241;">
-                            <i class="fa fa-building"></i></div>
-                    </div>
-                    <div class="leaflet-popup-pane"></div>
-                </div>
-            </div>
-            <div class="leaflet-control-container">
-                <div class="leaflet-top leaflet-left">
-                    <div class="leaflet-control-zoom leaflet-bar leaflet-control"><a class="leaflet-control-zoom-in"
-                            href="#" title="Zoom in">+</a><a class="leaflet-control-zoom-out" href="#"
-                            title="Zoom out">-</a></div>
-                </div>
-                <div class="leaflet-top leaflet-right"></div>
-                <div class="leaflet-bottom leaflet-left"></div>
-                <div class="leaflet-bottom leaflet-right">
-                    <div class="leaflet-control-attribution leaflet-control"><a href="http://leafletjs.com"
-                            title="A JS library for interactive maps">Leaflet</a> | © <a
-                            href="http://osm.org/copyright">OpenStreetMap</a> contributors</div>
-                </div>
-            </div>
-        </div>
+        <div id="map"></div>
     </div>
     <div class="single-add-property">
         <h3>Đặc điểm nổi bật</h3>
@@ -368,6 +315,9 @@
 
 
 @section('customJs')
+<script src="https://unpkg.com/leaflet@1.3.1/dist/leaflet.js"></script>
+<script src="{{ asset('front/js/map_post_view.js') }}"></script>
+
 <script>
     $(document).ready(function() {
   // Lấy danh sách tỉnh
@@ -476,39 +426,75 @@
 </script>
 
 <script>
-    // Cấu hình Dropzone
-    Dropzone.options.myDropzone = {
-        // Xử lý khi ảnh được tải lên thành công
-        success: function(file, response) {
-            // Ẩn thông báo lỗi "Server responded with 0 code"
-            $(".dz-error-message").hide();
+    $(document).ready(function () {
+        let dropZone = $("#dropZone");
+        let inputFile = $("#image");
+        let previewContainer = $("#imagePreview");
 
-            // Tạo nút xóa cho từng file tải lên
-            const removeButton = Dropzone.createElement("<button class='dz-remove'>Xóa</button>");
-            removeButton.addEventListener("click", function() {
-                file.previewElement.remove();  // Xóa ảnh khỏi Dropzone
+        // Khi click vào khu vực kéo thả thì mở hộp thoại chọn ảnh
+        let isTriggering = false;
+
+        dropZone.on("click", function (e) {
+            if (!isTriggering) {
+                isTriggering = true;
+                inputFile.trigger("click");
+                
+                // Đặt lại trạng thái sau khi chọn file
+                setTimeout(() => isTriggering = false, 500);
+            }
+        });
+
+        // Khi chọn ảnh từ input file
+        inputFile.on("change", function (e) {
+            let files = e.target.files;
+            previewImages(files);
+        });
+
+        // Kéo thả ảnh vào khu vực
+        dropZone.on("dragover", function (e) {
+            e.preventDefault();
+            dropZone.addClass("dragover");
+        });
+
+        dropZone.on("dragleave", function () {
+            dropZone.removeClass("dragover");
+        });
+
+        dropZone.on("drop", function (e) {
+            e.preventDefault();
+            dropZone.removeClass("dragover");
+
+            let files = e.originalEvent.dataTransfer.files;
+            previewImages(files);
+        });
+
+        // Hiển thị ảnh xem trước và thêm nút xóa ảnh
+        function previewImages(files) {
+            $.each(files, function (index, file) {
+                let reader = new FileReader();
+                reader.onload = function (e) {
+                    let imgContainer = $("<div>").css({
+                        position: "relative",
+                        display: "inline-block",
+                    });
+
+                    let img = $("<img>").attr("src", e.target.result).addClass("preview-img");
+
+                    let removeBtn = $("<button>")
+                        .addClass("remove-img")
+                        .html("&times;") // Dấu x
+                        .click(function () {
+                            imgContainer.remove(); // Xóa ảnh khi nhấn x
+                        });
+
+                    imgContainer.append(img).append(removeBtn);
+                    previewContainer.append(imgContainer);
+                };
+                reader.readAsDataURL(file);
             });
-            file.previewElement.appendChild(removeButton);  // Thêm nút xóa vào preview của ảnh
-        },
-        
-        // Xử lý khi có lỗi khi tải lên
-        error: function(file, response) {
-            // Ẩn thông báo lỗi mặc định
-            $(".dz-error-message").hide();
-        },
-        
-        // Xử lý khi hình ảnh được xóa
-        removedfile: function(file) {
-            // Đảm bảo ảnh được xóa khỏi form
-            var _ref;
-            return (_ref = file.previewElement) != null ? _ref.parentNode.removeChild(file.previewElement) : void 0;
-        },
-        
-        // Cấu hình thêm vào nếu bạn muốn
-        maxFiles: 5,  // Giới hạn số lượng file tải lên
-        maxFilesize: 5,  // Giới hạn kích thước mỗi file tải lên (MB)
-        acceptedFiles: "image/*"  // Chỉ cho phép tải lên hình ảnh
-    };
+        }
+    });
 </script>
+
 @endsection
 
