@@ -55,6 +55,7 @@ Route::middleware(['auth', 'roles:admin'])->group(function () {
   Route::controller(PostController::class)->group(function () {
     Route::get('all/post/', 'AllPost')->name('admin.all.post');
     Route::get('edit/post/{post_id}/{slug}.html', 'EditPost')->name('admin.edit.post');
+    Route::post('store/update/post', 'StoreUpdatePost')->name('admin.storeUpdate.Post');
   });
 }); // End Admin group middleware
 

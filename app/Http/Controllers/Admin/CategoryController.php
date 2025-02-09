@@ -14,7 +14,7 @@ class CategoryController extends Controller
   public function AllCategory()
   {
     $categories = Category::all();
-    return view('admin.category.all_category', compact('categories'));
+    return view('admin.category.all_category', compact('categories'), ['title' => 'Tất cả danh mục']);
   }
   public function DeleteCategory($category_id)
   {
@@ -36,7 +36,7 @@ class CategoryController extends Controller
   }
   public function CreateCategory()
   {
-    return view('admin.category.create_category');
+    return view('admin.category.create_category', ['title' => 'Thêm danh mục']);
   }
   public function StoreCreateCategory(Request $request)
   {
@@ -69,17 +69,16 @@ class CategoryController extends Controller
       ]);
     }
   }
-  public function EditCategory($category_id, $slug)
+  public function EditCategory($category_id)
   {
     $categories = Category::orderBy('updated_at', 'DESC')->limit(6)->get();
     $category = Category::where('id', $category_id)->first();
-    return view('admin.category.edit_category', compact('category', 'categories'));
+    return view('admin.category.edit_category', compact('category', 'categories'), ['title' => 'Cập nhật danh mục']);
   }
   public function StoreUpdateCategory(Request $request)
   {
-    dd($request->all());
     $validator = Validator::make($request->all(), [
-      'category_name' => 'required|max:200|unique:categories,category_name,' . $request->category_id,
+      'category_name' => 'required|max:200|unique:categories,id,' . $request->category_id,
       'status' => 'required',
     ], [
       'category_name.required' => 'Vui lòng nhập tên danh mục.',

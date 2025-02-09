@@ -16625,3 +16625,9 @@ td {
     vertical-align: middle !important;
 }
 /*# sourceMappingURL=style.css.map */
+.trumbowyg-editor ul {
+    list-style: disc;
+}
+.trumbowyg-editor strong {
+    font-weight: bolder;
+}

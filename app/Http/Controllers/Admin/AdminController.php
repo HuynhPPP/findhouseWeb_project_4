@@ -18,7 +18,7 @@ class AdminController extends Controller
 {
   public function AdminDashboard()
   {
-    return view('admin.home');
+    return view('admin.home', ['title' => 'Tổng quan']);
   }
   public function AdminProfile()
   {

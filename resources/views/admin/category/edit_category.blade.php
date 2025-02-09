@@ -81,7 +81,7 @@
               <div class="card-block table-border-style">
                 <div class="table-responsive dt-responsive">
                   <table id="order-table"
-                    class="table table-bordered nowrap border">
+                    class="table border table-bordered nowrap">
                     <thead>
                       <tr>
                         <th>#</th>
@@ -210,7 +210,6 @@
               .siblings('p')
               .removeClass('invalid-feedback')
               .html('');
-            $("#category_name").val('');
             toastr.success('Cập nhật thành công!');
             getCategory()
           } else {

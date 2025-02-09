@@ -2,7 +2,7 @@
 <html lang="en">
 
   <head>
-    <title>Admindek | Admin Template</title>
+    <title>{{ $title ?? 'Trang quản trị' }}</title>
     <!-- Meta -->
     <meta charset="utf-8">
     <meta name="viewport"
