@@ -9,6 +9,7 @@
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="description" content="html 5 template">
     <meta name="author" content="">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>Find Houses - HTML5 Template</title>
     <!-- FAVICON -->
     <link rel="shortcut icon" type="image/x-icon" href="favicon.ico">
@@ -34,6 +35,10 @@
     <link rel="stylesheet" href="{{ asset('front/css/styles.css') }}">
     <link rel="stylesheet" href="{{ asset('front/css/maps.css') }}">
     <link rel="stylesheet" id="color" href="{{ asset('front/css/colors/pink.css') }}">
+
+    <!-- Toastr -->
+	<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.css">
+	<!-- End Toastr -->
 </head>
 
 <body class="homepage-9 hp-6 homepage-1 mh">
@@ -105,6 +110,31 @@
             });
 
         </script>
+
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+
+        <script>
+        @if(Session::has('message'))
+        var type = "{{ Session::get('alert-type','info') }}"
+        switch(type){
+            case 'info':
+            toastr.info(" {{ Session::get('message') }} ");
+            break;
+
+            case 'success':
+            toastr.success(" {{ Session::get('message') }} ");
+            break;
+
+            case 'warning':
+            toastr.warning(" {{ Session::get('message') }} ");
+            break;
+
+            case 'error':
+            toastr.error(" {{ Session::get('message') }} ");
+            break; 
+        }
+        @endif 
+        </script>	
 
         <!-- Slider Revolution scripts -->
         <script src="{{ asset('front/revolution/js/jquery.themepunch.tools.min.js') }}"></script>
@@ -233,6 +263,7 @@
 
         <!-- MAIN JS -->
         <script src="{{ asset('front/js/script.js') }}"></script>
+        @yield('customJs')
 
     </div>
     <!-- Wrapper / End -->

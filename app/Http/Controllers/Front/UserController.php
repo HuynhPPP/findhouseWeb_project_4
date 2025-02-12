@@ -4,7 +4,11 @@ namespace App\Http\Controllers\Front;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\Request;
+use Carbon\Carbon;
+use App\Models\User;
+use Illuminate\Support\Facades\Validator;
 
 class UserController extends Controller
 {
@@ -27,5 +31,144 @@ class UserController extends Controller
         $request->session()->regenerateToken();
 
         return redirect('/');
+    }
+
+    public function UserRegister(Request $request)
+    {
+        $request->merge([
+            'name' => preg_replace('/\s+/', ' ', trim($request->input('name'))),
+          ]);
+      
+          $messages = [
+            'name.required' => 'Tên không được để trống.',
+            'name.regex' => 'Tên không được chứa ký tự đặc biệt.',
+            'name.max' => 'Tên không được dài quá 20 ký tự.',
+            'contact.required' => 'Vui lòng nhập email hoặc số điện thoại.',
+            'contact.email_or_phone' => 'Email hoặc số điện thoại không hợp lệ.',
+            'contact.unique' => 'Email hoặc số điện thoại đã tồn tại trong hệ thống.',
+            'password.required' => 'Mật khẩu không được để trống.',
+            'password.min' => 'Mật khẩu phải có ít nhất 8 ký tự.',
+            'password.regex' => 'Mật khẩu không được chỉ chứa số.',
+            'account_type.required' => 'Vui lòng chọn loại tài khoản.',
+            'account_type.in' => 'Loại tài khoản không hợp lệ.',
+          ];
+
+          Validator::extend('email_or_phone', function ($attribute, $value, $parameters, $validator) {
+            return filter_var($value, FILTER_VALIDATE_EMAIL) || preg_match('/^(0[3|5|7|8|9])+([0-9]{8})$/', $value);
+          });
+      
+          $validator = Validator::make($request->all(), [
+            'name' => [
+                'required',
+                'regex:/^[\p{L}\s]+$/u', // Chỉ cho phép chữ cái và khoảng trắng
+                'max:20',
+            ],
+            'contact' => [
+                'required',
+                'email_or_phone', // Kiểm tra nếu là email hợp lệ hoặc số điện thoại
+                function ($attribute, $value, $fail) {
+                    // Kiểm tra nếu là email
+                    if (filter_var($value, FILTER_VALIDATE_EMAIL)) {
+                        if (User::where('email', $value)->exists()) {
+                            $fail('Email đã tồn tại.');
+                        }
+                    }
+                    // Kiểm tra nếu là số điện thoại
+                    elseif (preg_match('/^(0[3|5|7|8|9])+([0-9]{8})$/', $value)) {
+                        if (User::where('phone', $value)->exists()) {
+                            $fail('Số điện thoại đã tồn tại.');
+                        }
+                    }
+                }
+            ],
+            'password' => [
+                'required',
+                'min:8',
+            ],
+            'account_type' => ['required', 'in:user,poster'],
+          ], $messages);
+      
+          if ($validator->passes()) {
+            $user = new User();
+            $user->name = $request->name;
+
+            if (filter_var($request->contact, FILTER_VALIDATE_EMAIL)) {
+              $user->email = $request->contact;
+              $user->phone = null;
+            } else {
+              $user->phone = $request->contact;
+              $user->email = null;
+            }
+            $user->password = Hash::make($request->password);
+            $user->role = $request->input('role', 'user');
+            $user->save();
+      
+            session()->flash('message', 'Đăng ký thành công');
+            session()->flash('alert-type', 'success');
+      
+            return response()->json([
+              'status' => true,
+              'errors' => []
+            ]);
+          } else {
+            return response()->json([
+              'status' => false,
+              'errors' => $validator->errors()
+            ]);
+          }
+    }
+
+    public function UserLogin(Request $request)
+    {
+        $messages = [
+            'contact.required' => 'Vui lòng nhập email hoặc số điện thoại.',
+            'password.required' => 'Mật khẩu không được để trống.',
+        ];
+
+        $validator = Validator::make($request->all(), [
+            'contact' => 'required',
+            'password' => 'required',
+        ], $messages);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'status' => false,
+                'errors' => $validator->errors(),
+            ]);
+        }
+
+        $credentials = [];
+        if (filter_var($request->contact, FILTER_VALIDATE_EMAIL)) {
+            $credentials['email'] = $request->contact;
+        } else {
+            $credentials['phone'] = $request->contact;
+        }
+        $credentials['password'] = $request->password;
+
+        if (Auth::attempt($credentials)) {
+            $request->session()->regenerate();
+
+            // Điều hướng theo quyền
+            $url = '';
+            if (Auth::user()->role === 'admin') {
+                $url = route('admin.dashboard');
+            } elseif (Auth::user()->role === 'poster') {
+                $url = route('poster.dashboard');
+            } elseif (Auth::user()->role === 'user') {
+                $url = route('user.dashboard');
+            }
+
+            return response()->json([
+                'status' => true,
+                'redirect_url' => $url,
+            ]);
+        } else {
+            return response()->json([
+                'status' => false,
+                'errors' => [
+                    'password' => ['Tài khoản hoặc mật khẩu không đúng.']
+                ],
+            ]);
+        }
     }
 }

@@ -8,7 +8,10 @@ use App\Providers\RouteServiceProvider;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\View\View;
+use App\Models\User;
+use Illuminate\Support\Facades\Hash;
 
 class AuthenticatedSessionController extends Controller
 {
@@ -28,7 +31,8 @@ class AuthenticatedSessionController extends Controller
         $request->authenticate();
 
         $request->session()->regenerate();
-        
+        dd(Auth::check(), Auth::user());
+
         $url = '';
         if ($request->user()->role === 'admin') {
             $url = 'admin/dashboard';

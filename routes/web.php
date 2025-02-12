@@ -12,6 +12,9 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', [UserController::class, 'Index'])->name('index');
 Route::get('/logout', [UserController::class, 'UserLogout'])->name('user.logout');
+Route::post('/user/register', [UserController::class, 'UserRegister'])->name('user.register');
+Route::post('/login', [UserController::class, 'UserLogin'])->name('user.login');
+
 Route::get('/api/proxy/provinces', [ApiController::class, 'getProvinces']);
 Route::get('/api/proxy/districts/{provinceId}', [ApiController::class, 'getDistricts']);
 Route::get('/api/proxy/wards/{districtId}', [ApiController::class, 'getWards']);
@@ -20,11 +23,11 @@ Route::get('/api/proxy/wards/{districtId}', [ApiController::class, 'getWards']);
 //   return view('dashboard');
 // })->middleware(['auth', 'verified'])->name('dashboard');
 
-Route::middleware('auth')->group(function () {
-  Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-  Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-  Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-});
+// Route::middleware('auth')->group(function () {
+//   Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+//   Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+//   Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+// });
 
 require __DIR__ . '/auth.php';
 
