@@ -24,9 +24,9 @@
                 <!-- Header Widget -->
                 <div class="header-widget">
                     @if(Auth::guest())
-                    <a href="#" class="button border modal-open">Đăng tin<i class="fas fa-laptop-house ml-2"></i></a>
+
                     @else
-                    <a href="add-property.html" class="button border">Đăng tin<i class="fas fa-laptop-house ml-2"></i></a>
+                    <a href="{{ route('poster.post') }}" class="button border">Đăng tin<i class="fas fa-laptop-house ml-2"></i></a>
                     @endif
                 </div>
                 <!-- Header Widget / End -->

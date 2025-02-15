@@ -8,4 +8,10 @@ use Illuminate\Database\Eloquent\Model;
 class Video extends Model
 {
     use HasFactory;
+    protected $fillable = ['post_id', 'video_url'];
+
+    public function post()
+    {
+        return $this->belongsTo(Post::class);
+    }
 }

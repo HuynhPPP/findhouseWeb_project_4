@@ -63,7 +63,9 @@ Route::middleware(['auth', 'roles:poster'])->group(function () {
   Route::get('/poster/profile', [PosterController::class, 'PosterProfile'])->name('poster.profile');
   Route::get('/poster/post', [PosterController::class, 'PosterPost'])->name('poster.post');
   Route::get('/poster/list-post', [PosterController::class, 'PosterListPost'])->name('poster.list-post');
+  Route::get('/poster/verification', [PosterController::class, 'PosterVerification'])->name('poster.verification');
   Route::get('/poster/change-password', [PosterController::class, 'PosterChangePassword'])->name('poster.change-password');
   Route::post('/poster/store/profile', [PosterController::class, 'PosterStoreProfile'])->name('poster.store.profile');
+  Route::post('/poster/post/store', [PosterController::class, 'PosterPostStore'])->name('poster.post.store');
 }); // End Poster group middleware
 

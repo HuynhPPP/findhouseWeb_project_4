@@ -46,8 +46,4 @@ var baseMaps = {
   "Tối (Dark Mode)": dark,
 };
 
-var overlayMaps = {
-  "Viền Cần Thơ": boundary,
-};
-
-L.control.layers(baseMaps, overlayMaps).addTo(map);
+L.control.layers(baseMaps).addTo(map);
