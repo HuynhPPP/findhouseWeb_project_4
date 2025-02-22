@@ -60,7 +60,14 @@ class PosterController extends Controller
 
     public function PosterListPost()
     {
-        return view('front.poster.post.poster_list_post_view');
+        $id = Auth::user()->id;
+        $list_post = Post::where('user_id', $id)
+                ->with('images') 
+                ->orderBy('id', 'desc')
+                ->get();
+
+
+        return view('front.poster.post.poster_list_post_view',compact('list_post',));
     }
 
     public function PosterChangePassword()
@@ -89,12 +96,10 @@ class PosterController extends Controller
             'ward_name' => 'required',
             'street'      => 'required|string',
             'house_number'=> 'required|string',
-            // 'name_poster' => 'required|string',
-            // 'email_poster'=> 'required|email',
-            // 'phone_poster'=> 'required|numeric',
             'features'    => 'nullable|array',
-            // 'images.*'    => 'image|mimes:jpeg,png,jpg,gif|max:2048',
-            // 'videos.*'    => 'mimes:mp4,mov,avi,wmv|max:10240'
+            'images'      => 'nullable|array|max:20',
+            'images.*'    => 'image|mimes:jpeg,png,jpg,gif|max:2048',
+            'video'       => 'nullable|mimes:mp4,mov,avi,wmv|max:10240',
         ], [
             'title.required'       => 'Vui lòng nhập tiêu đề.',
             'description.required' => 'Vui lòng nhập mô tả.',
@@ -106,6 +111,9 @@ class PosterController extends Controller
             'ward.required'        => 'Vui lòng chọn phường/xã.',
             'street.required'      => 'Vui lòng nhập tên đường.',
             'house_number.required'=> 'Vui lòng nhập số nhà.',
+            'images.max'           => 'Bạn chỉ có thể tải lên tối đa 20 ảnh.',
+            'video.mimes'          => 'Chỉ chấp nhận định dạng MP4, MOV, AVI, WMV.',
+            'video.max'            => 'Video không được vượt quá 10MB.',
         ]);
         
 
@@ -132,36 +140,40 @@ class PosterController extends Controller
         $post->features      = $features;
         $post->status        = 'pending';
         $post->created_at    = now();
-
-        // dd($post);
         $post->save();
 
 
-        
+         // Đường dẫn thư mục lưu ảnh & video
+        $imageDir = public_path('front/upload/post_images');
+        $videoDir = public_path('front/upload/post_video');
 
+        // Upload images (tối đa 20 ảnh)
+        if ($request->hasFile('images')) {
+            foreach ($request->file('images') as $image) {
+                $imageName = time().'_'.$image->getClientOriginalName();
+                $image->move($imageDir, $imageName); 
+    
+                Image::create([
+                    'post_id'    => $post->id,
+                    'image_name' => $image->getClientOriginalName(),
+                    'image_url'  => 'front/upload/post_images/'.$imageName, 
+                    'created_at' => Carbon::now(),
+                ]);
+            }
+        }
 
-        // Upload images
-        // if ($request->hasFile('images')) {
-        //     foreach ($request->file('images') as $image) {
-        //         $imagePath = $image->store('uploads/images', 'public');
-        //         Image::create([
-        //             'post_id'   => $post->id,
-        //             'image_name'=> $image->getClientOriginalName(),
-        //             'image_url' => $imagePath
-        //         ]);
-        //     }
-        // }
-
-        // Upload videos
-        // if ($request->hasFile('videos')) {
-        //     foreach ($request->file('videos') as $video) {
-        //         $videoPath = $video->store('uploads/videos', 'public');
-        //         Video::create([
-        //             'post_id'   => $post->id,
-        //             'video_url' => $videoPath
-        //         ]);
-        //     }
-        // }
+        // Upload video (chỉ cho phép 1 video)
+        if ($request->hasFile('videos')) {
+            $video = $request->file('videos');
+            $videoName = time().'_'.$video->getClientOriginalName();
+            $video->move($videoDir, $videoName); 
+    
+            Video::create([
+                'post_id'    => $post->id,
+                'video_url'  => 'front/upload/post_video/'.$videoName,
+                'created_at' => Carbon::now(),
+            ]);
+        }
 
         $notification = array(
             'message' => 'Đăng tin thành công !',

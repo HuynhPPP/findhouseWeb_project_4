@@ -126,11 +126,12 @@
                         <!-- Khu vực kéo thả hoặc nhấn để tải ảnh -->
                         <div class="drop-zone" id="dropZone">
                             <p> Kéo thả ảnh vào đây hoặc <b>Nhấn để chọn ảnh</b></p>
-                            <input type="file" id="image" name="photos[]" multiple style="display: none;" />
+                            <input type="file" id="image" name="images[]" multiple style="display: none;" />
                         </div>
 
                         <!-- Hiển thị ảnh xem trước -->
                         <div class="image-preview" id="imagePreview"></div>
+                        @error('images') <p style="color:red">{{ $message }}</p> @enderror
                     </div>
                 </div>
             </div>
@@ -142,7 +143,7 @@
                 <div class="row">
                     <div class="col-md-12">
                         <div class="video-upload-container">
-                            <input type="file" id="videoUpload" name="video" accept="video/*" hidden>
+                            <input type="file" id="videoUpload" name="videos" accept="video/*" hidden>
                             
                             <label for="videoUpload" class="upload-box">
                                 <i class="fa fa-video-camera" aria-hidden="true"></i>
@@ -153,6 +154,7 @@
                         
                             <button id="removeVideo" class="remove-btn" style="display: none;">Xóa</button>
                         </div>
+                        @error('video') <p style="color:red">{{ $message }}</p> @enderror
                     </div>
                 </div>
             </div>
@@ -364,15 +366,15 @@
                         </p>
                     </div>
                 </div>
-            <div class="add-property-button pt-5">
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="prperty-submit-button">
-                            <button type="submit">Xác nhận</button>
+                <div class="add-property-button pt-5">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="prperty-submit-button">
+                                <button type="submit">Xác nhận</button>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
             </div>
         </div>
     </form>

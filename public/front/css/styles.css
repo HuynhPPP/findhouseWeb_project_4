@@ -19261,11 +19261,11 @@ body.dashboard-bd {
 }
 
 .my-properties table tbody tr .image {
-  width: 150px;
+  width: 168px;
 }
 
 .my-properties table tbody tr .image a img {
-  width: 100%;
+  width: 70%;
   border-radius: 5px;
 }
 
