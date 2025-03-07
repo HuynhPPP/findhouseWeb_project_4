@@ -6,11 +6,11 @@
                     <div class="hero-inner">
                         <!-- Welcome Text -->
                         <div class="welcome-text">
-                            <h1 class="h1">Find Your Dream
+                            <h1 class="h1">Tìm
                             <br class="d-md-none">
                             <span class="typed border-bottom"></span>
                         </h1>
-                            <p class="mt-4">We Have Over Million Properties For You.</p>
+                            <p class="mt-4">Chúng tôi có hàng triệu lựa chọn dành cho bạn.</p>
                         </div>
                         <!--/ End Welcome Text -->
                         <!-- Search Form -->
@@ -18,10 +18,10 @@
                             <div class="banner-search-wrap">
                                 <ul class="nav nav-tabs rld-banner-tab">
                                     <li class="nav-item">
-                                        <a class="nav-link active" data-toggle="tab" href="#tabs_1">For Sale</a>
+                                        <a class="nav-link active" data-toggle="tab" href="#tabs_1">Cho Bán</a>
                                     </li>
                                     <li class="nav-item">
-                                        <a class="nav-link" data-toggle="tab" href="#tabs_2">For Rent</a>
+                                        <a class="nav-link" data-toggle="tab" href="#tabs_2">Cho Thuê</a>
                                     </li>
                                 </ul>
                                 <div class="tab-content">

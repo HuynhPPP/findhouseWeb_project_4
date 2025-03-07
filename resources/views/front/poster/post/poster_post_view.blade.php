@@ -152,7 +152,7 @@
                         
                             <video id="videoPreview" controls style="display: none;"></video>
                         
-                            <button id="removeVideo" class="remove-btn" style="display: none;">Xóa</button>
+                            <button type="button" id="removeVideo" class="remove-btn" style="display: none;">Xóa</button>
                         </div>
                         @error('video') <p style="color:red">{{ $message }}</p> @enderror
                     </div>
@@ -479,81 +479,6 @@
     });
 </script>
 
-
-
-{{-- <script>
-    $(document).ready(function() {
-    // Lấy danh sách tỉnh
-    $.getJSON('/api/proxy/provinces', function(data_tinh) {
-        if (data_tinh.error === 0) {
-        $.each(data_tinh.data, function(key_tinh, val_tinh) {
-            $("#province").append('<option value="' + val_tinh.id + '">' + val_tinh.full_name + '</option>');
-    });
-
-      // Khởi tạo nice-select sau khi thêm option
-      $("#province").niceSelect('update');
-
-      // Khi chọn tỉnh
-      $("#province").change(function() {
-        var idtinh = $(this).val();
-        var tentinh = $("#province option:selected").text();
-        $("#province_name").val(tentinh); // Lưu tên tỉnh
-
-        // Kiểm tra xem tỉnh đã được chọn hay chưa
-        if (idtinh != "") {
-          $.getJSON('/api/proxy/districts/' + idtinh, function(data_quan) {
-            if (data_quan.error === 0) {
-              // Reset lại các thẻ huyện và xã trước khi thêm mới
-              $("#district").html('<option value="0">Chọn Quận / Huyện</option>');
-              $("#wards").html('<option value="0">Chọn Phường / Xã</option>');
-
-              // Thêm các huyện vào dropdown
-              $.each(data_quan.data, function(key_quan, val_quan) {
-                $("#district").append('<option value="' + val_quan.id + '">' + val_quan.full_name + '</option>');
-              });
-
-              // Khởi tạo lại nice-select sau khi thêm các huyện vào
-              $("#district").niceSelect('update');
-
-              // Khi chọn quận
-              $("#district").change(function() {
-                var idquan = $(this).val();
-                var tenquan = $("#district option:selected").text();
-                $("#district_name").val(tenquan); // Lưu tên huyện
-
-                // Lấy danh sách xã/phường
-                $.getJSON('/api/proxy/wards/' + idquan, function(data_phuong) {
-                  if (data_phuong.error === 0) {
-                    $("#wards").html('<option value="0">Chọn Phường / Xã</option>'); // Reset lại xã/phường
-
-                    // Thêm xã vào dropdown
-                    $.each(data_phuong.data, function(key_phuong, val_phuong) {
-                      $("#wards").append('<option value="' + val_phuong.id + '">' + val_phuong.full_name + '</option>');
-                    });
-
-                    // Khởi tạo lại nice-select sau khi thêm xã/phường
-                    $("#wards").niceSelect('update');
-
-                    // Khi chọn xã
-                    $("#wards").change(function() {
-                      var tenxa = $("#wards option:selected").text();
-                      $("#ward_name").val(tenxa); // Lưu tên xã
-                    });
-                  }
-                });
-              });
-            } else {
-              alert("Không thể lấy dữ liệu quận/huyện!");
-            }
-          });
-        }
-      });
-    }
-  });
-});
-
-
-</script> --}}
 
 <script type="text/javascript">
     document.getElementById('videoUpload').addEventListener('change', function(event) {
