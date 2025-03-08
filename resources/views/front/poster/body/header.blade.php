@@ -38,7 +38,7 @@
                 <div class="header-user-menu user-menu">
                     <div class="header-user-name">
                         <span>
-                            <img src="{{ (!empty($profileData->photo)) ? url('front/upload/poster_images/'.$profileData->photo) : url('front/upload/no_img.jpg') }}" alt="">
+                            <img src="{{ (!empty($profileData->photo)) ? url('upload/poster_images/'.$profileData->photo) : url('upload/no_img.jpg') }}" alt="">
                         </span>{{ $profileData->name }}
                     </div>
                     <ul>

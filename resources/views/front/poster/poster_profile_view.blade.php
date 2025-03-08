@@ -65,7 +65,7 @@
         <form name="contact_form" method="post" action="{{ route('poster.store.profile') }}" enctype="multipart/form-data">
             @csrf
             <div class="author-box clearfix">
-                <img src="{{ (!empty($profileData->photo)) ? url('front/upload/poster_images/'.$profileData->photo) : url('front/upload/no_img.jpg') }}" 
+                <img src="{{ (!empty($profileData->photo)) ? url('upload/poster_images/'.$profileData->photo) : url('upload/no_img.jpg') }}" 
                     alt="author-image" 
                     class="author__img"
                     id="showImage"

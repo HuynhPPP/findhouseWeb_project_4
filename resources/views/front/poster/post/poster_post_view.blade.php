@@ -336,6 +336,7 @@
                                 id="con-name" 
                                 name="name_poster"
                                 value="{{ old('name_poster', $profileData->name) }}"
+                                readonly
                             >
                             @error('name_poster') <p style="color:red">{{ $message }}</p> @enderror
                         </p>
@@ -349,6 +350,7 @@
                                 id="con-email" 
                                 name="email_poster"
                                 value="{{ $profileData->email }}"
+                                readonly
                             >
                             @error('email_poster') <p style="color:red">{{ $message }}</p> @enderror
                         </p>
@@ -361,6 +363,7 @@
                                 id="con-phn" 
                                 name="phone_poster"
                                 value="{{ $profileData->phone }}"
+                                readonly
                             >
                             @error('phone_poster') <p style="color:red">{{ $message }}</p> @enderror
                         </p>

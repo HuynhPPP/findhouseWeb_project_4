@@ -32,6 +32,10 @@
     <link rel="stylesheet" href="{{ asset('front/css/slick.css') }}">
     <link rel="stylesheet" href="{{ asset('front/css/styles.css') }}">
     <link rel="stylesheet" id="color" href="{{ asset('front/css/default.css') }}">
+
+    <!-- Toastr -->
+	<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.css">
+	<!-- End Toastr -->
 </head>
 
 <body class="maxw1600 m0a dashboard-bd">
@@ -103,11 +107,35 @@
                 $(".header-user-menu ul").toggleClass("hu-menu-vis");
                 $(this).toggleClass("hu-menu-visdec");
             });
-
         </script>
 
         <!-- MAIN JS -->
         <script src="{{ asset('front/js/script.js') }}"></script>
+
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+
+        <script>
+        @if(Session::has('message'))
+        var type = "{{ Session::get('alert-type','info') }}"
+        switch(type){
+            case 'info':
+            toastr.info(" {{ Session::get('message') }} ");
+            break;
+        
+            case 'success':
+            toastr.success(" {{ Session::get('message') }} ");
+            break;
+        
+            case 'warning':
+            toastr.warning(" {{ Session::get('message') }} ");
+            break;
+        
+            case 'error':
+            toastr.error(" {{ Session::get('message') }} ");
+            break; 
+        }
+        @endif 
+        </script>	
 
     </div>
     <!-- Wrapper / End -->

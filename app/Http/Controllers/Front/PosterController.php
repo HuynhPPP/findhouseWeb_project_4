@@ -38,9 +38,9 @@ class PosterController extends Controller
 
         if ($request->file('photo')) {
             $file = $request->file('photo');
-            @unlink(public_path('front/upload/poster_images/' . $data->photo));
+            @unlink(public_path('upload/poster_images/' . $data->photo));
             $filename = date('YmdHi') . $file->getClientOriginalName();
-            $file->move(public_path('front/upload/poster_images'), $filename);
+            $file->move(public_path('upload/poster_images'), $filename);
             $data['photo'] = $filename;
         }
 
@@ -144,8 +144,8 @@ class PosterController extends Controller
         $post->save();
 
 
-        $imageDir = public_path('front/upload/post_images');
-        $videoDir = public_path('front/upload/post_video');
+        $imageDir = public_path('upload/post_images');
+        $videoDir = public_path('upload/post_video');
 
         if ($request->hasFile('images')) {
             foreach ($request->file('images') as $image) {
@@ -155,7 +155,7 @@ class PosterController extends Controller
                 Image::create([
                     'post_id'    => $post->id,
                     'image_name' => $image->getClientOriginalName(),
-                    'image_url'  => 'front/upload/post_images/' . $imageName,
+                    'image_url'  => 'upload/post_images/' . $imageName,
                     'created_at' => Carbon::now(),
                 ]);
             }
@@ -168,7 +168,7 @@ class PosterController extends Controller
 
             Video::create([
                 'post_id'    => $post->id,
-                'video_url'  => 'front/upload/post_video/' . $videoName,
+                'video_url'  => 'upload/post_video/' . $videoName,
                 'created_at' => Carbon::now(),
             ]);
         }
@@ -258,7 +258,7 @@ class PosterController extends Controller
             'updated_at'   => now(),
         ]);
 
-        $imageDir = public_path('front/upload/post_images');
+        $imageDir = public_path('upload/post_images');
         if ($request->hasFile('images')) {
             foreach ($request->file('images') as $image) {
                 $imageName = time() . '_' . $image->getClientOriginalName();
@@ -267,14 +267,14 @@ class PosterController extends Controller
                 Image::create([
                     'post_id'    => $post_id,
                     'image_name' => $image->getClientOriginalName(),
-                    'image_url'  => 'front/upload/post_images/' . $imageName,
+                    'image_url'  => 'upload/post_images/' . $imageName,
                     'created_at' => Carbon::now(),
                 ]);
             }
         }
     
         // Xử lý video
-        $videoDir = public_path('front/upload/post_video');
+        $videoDir = public_path('upload/post_video');
         if ($request->hasFile('videos')) {
             $video = $request->file('videos');
             $videoName = time() . '_' . $video->getClientOriginalName();
@@ -282,7 +282,7 @@ class PosterController extends Controller
     
             Video::create([
                 'post_id'    => $post_id,
-                'video_url'  => 'front/upload/post_video/' . $videoName,
+                'video_url'  => 'upload/post_video/' . $videoName,
                 'created_at' => Carbon::now(),
             ]);
         }

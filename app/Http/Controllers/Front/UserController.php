@@ -171,4 +171,37 @@ class UserController extends Controller
             ]);
         }
     }
+
+    public function UserProfile()
+    {
+        $id = Auth::user()->id;
+        $profileData = User::find($id);
+        return view('front.user.user_profile_view', compact('profileData'));
+    }
+
+    public function UserStoreProfile(Request $request)
+    {
+        $id = Auth::user()->id;
+        $data = User::find($id);
+        $data->name = $request->name;
+        $data->email = $request->email;
+        $data->phone = $request->phone;
+
+        if ($request->file('photo')) {
+            $file = $request->file('photo');
+            @unlink(public_path('upload/user_images/' . $data->photo));
+            $filename = date('YmdHi') . $file->getClientOriginalName();
+            $file->move(public_path('upload/user_images'), $filename);
+            $data['photo'] = $filename;
+        }
+
+        $data->save();
+
+        $notification = array(
+            'message' => 'Cập nhật thành công',
+            'alert-type' => 'success',
+        );
+
+        return redirect()->back()->with($notification);
+    }
 }

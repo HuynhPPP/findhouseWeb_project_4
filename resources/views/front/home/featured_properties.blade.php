@@ -1,8 +1,8 @@
 <section class="featured portfolio bg-white-2 rec-pro full-l">
     <div class="container-fluid">
         <div class="sec-title">
-            <h2><span>Featured </span>Properties</h2>
-            <p>These are our featured properties</p>
+            <h2><span>Đề </span>xuất</h2>
+            <p>Những bài đăng nổi bật chúng tôi đề xuất cho bạn</p>
         </div>
         <div class="row portfolio-items">
             <div class="item col-xl-6 col-lg-12 col-md-12 col-xs-12 landscapes sale">
@@ -388,7 +388,7 @@
             </div>
         </div>
         <div class="bg-all">
-            <a href="properties-full-grid-1.html" class="btn btn-outline-light">View More</a>
+            <a href="properties-full-grid-1.html" class="btn btn-outline-light">Xem thêm</a>
         </div>
     </div>
 </section>

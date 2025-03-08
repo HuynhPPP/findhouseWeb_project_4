@@ -10,9 +10,9 @@
     <meta name="description" content="html 5 template">
     <meta name="author" content="">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>Find Houses - HTML5 Template</title>
+    <title>Find Houses</title>
     <!-- FAVICON -->
-    <link rel="shortcut icon" type="image/x-icon" href="favicon.ico">
+    <link rel="shortcut icon" type="image/x-icon" href="{{ asset('front/favicon.ico') }}">
     <link rel="stylesheet" href="{{ asset('front/css/jquery-ui.css') }}">
     <!-- GOOGLE FONTS -->
     <link href="https://fonts.googleapis.com/css?family=Lato:300,300i,400,400i%7CMontserrat:600,800" rel="stylesheet">
