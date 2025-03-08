@@ -11,7 +11,7 @@
             alt="avatar" class="img-fluid profile-img">
     </div>
     <div class="active-user">
-        <h2>Mary Smith</h2>
+        <h2>{{ $profileData->name }}</h2>
     </div>
     <div class="detail clearfix">
         <ul class="mb-0">

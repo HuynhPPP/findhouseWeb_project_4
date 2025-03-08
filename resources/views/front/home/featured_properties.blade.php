@@ -7,6 +7,12 @@
         <div class="row portfolio-items">
             <div class="item col-xl-6 col-lg-12 col-md-12 col-xs-12 landscapes sale">
                 <div class="project-single" data-aos="fade-right">
+
+                    @php
+                        $video_url = 'https://www.youtube.com/embed/SXuUCPPe2Jg'; // Lấy từ database
+                        $video_url_fixed = str_replace('embed/', 'watch?v=', $video_url);
+                    @endphp
+
                     <div class="project-inner project-head">
                         <div class="homes">
                             <!-- homes img -->
@@ -16,9 +22,11 @@
                                 <img src="images/blog/b-11.jpg" alt="home-1" class="img-responsive">
                             </a>
                         </div>
+
                         <div class="button-effect">
                             <a href="single-property-1.html" class="btn"><i class="fa fa-link"></i></a>
-                            <a href="https://www.youtube.com/watch?v=14semTlwyUY" class="btn popup-video popup-youtube"><i class="fas fa-video"></i></a>
+                            <a href="{{ $video_url_fixed }}" class="btn popup-video popup-youtube"><i
+                                    class="fas fa-video"></i></a>
                             <a href="single-property-2.html" class="img-poppu btn"><i class="fa fa-photo"></i></a>
                         </div>
                     </div>
@@ -52,7 +60,7 @@
                         </ul>
                         <div class="price-properties footer pt-3 pb-0">
                             <h3 class="title mt-3">
-                             <a href="single-property-1.html">$ 150,000</a>
+                                <a href="single-property-1.html">$ 150,000</a>
                             </h3>
                             <div class="compare">
                                 <a href="#" title="Compare">
@@ -81,7 +89,8 @@
                         </div>
                         <div class="button-effect">
                             <a href="single-property-1.html" class="btn"><i class="fa fa-link"></i></a>
-                            <a href="https://www.youtube.com/watch?v=14semTlwyUY" class="btn popup-video popup-youtube"><i class="fas fa-video"></i></a>
+                            <a href="{{ $video_url_fixed }}"
+                                class="btn popup-video popup-youtube"><i class="fas fa-video"></i></a>
                             <a href="single-property-2.html" class="img-poppu btn"><i class="fa fa-photo"></i></a>
                         </div>
                     </div>
@@ -115,7 +124,7 @@
                         </ul>
                         <div class="price-properties footer pt-3 pb-0">
                             <h3 class="title mt-3">
-                             <a href="single-property-1.html">$ 150,000</a>
+                                <a href="single-property-1.html">$ 150,000</a>
                             </h3>
                             <div class="compare">
                                 <a href="#" title="Compare">
@@ -144,7 +153,8 @@
                         </div>
                         <div class="button-effect">
                             <a href="single-property-1.html" class="btn"><i class="fa fa-link"></i></a>
-                            <a href="https://www.youtube.com/watch?v=14semTlwyUY" class="btn popup-video popup-youtube"><i class="fas fa-video"></i></a>
+                            <a href="https://www.youtube.com/watch?v=14semTlwyUY"
+                                class="btn popup-video popup-youtube"><i class="fas fa-video"></i></a>
                             <a href="single-property-2.html" class="img-poppu btn"><i class="fa fa-photo"></i></a>
                         </div>
                     </div>
@@ -178,7 +188,7 @@
                         </ul>
                         <div class="price-properties footer pt-3 pb-0">
                             <h3 class="title mt-3">
-                             <a href="single-property-1.html">$ 150,000</a>
+                                <a href="single-property-1.html">$ 150,000</a>
                             </h3>
                             <div class="compare">
                                 <a href="#" title="Compare">
@@ -208,7 +218,8 @@
                         </div>
                         <div class="button-effect">
                             <a href="single-property-1.html" class="btn"><i class="fa fa-link"></i></a>
-                            <a href="https://www.youtube.com/watch?v=14semTlwyUY" class="btn popup-video popup-youtube"><i class="fas fa-video"></i></a>
+                            <a href="https://www.youtube.com/watch?v=14semTlwyUY"
+                                class="btn popup-video popup-youtube"><i class="fas fa-video"></i></a>
                             <a href="single-property-2.html" class="img-poppu btn"><i class="fa fa-photo"></i></a>
                         </div>
                     </div>
@@ -242,7 +253,7 @@
                         </ul>
                         <div class="price-properties footer pt-3 pb-0">
                             <h3 class="title mt-3">
-                             <a href="single-property-1.html">$ 150,000</a>
+                                <a href="single-property-1.html">$ 150,000</a>
                             </h3>
                             <div class="compare">
                                 <a href="#" title="Compare">
@@ -272,7 +283,8 @@
                         </div>
                         <div class="button-effect">
                             <a href="single-property-1.html" class="btn"><i class="fa fa-link"></i></a>
-                            <a href="https://www.youtube.com/watch?v=14semTlwyUY" class="btn popup-video popup-youtube"><i class="fas fa-video"></i></a>
+                            <a href="https://www.youtube.com/watch?v=14semTlwyUY"
+                                class="btn popup-video popup-youtube"><i class="fas fa-video"></i></a>
                             <a href="single-property-2.html" class="img-poppu btn"><i class="fa fa-photo"></i></a>
                         </div>
                     </div>
@@ -306,7 +318,7 @@
                         </ul>
                         <div class="price-properties footer pt-3 pb-0">
                             <h3 class="title mt-3">
-                             <a href="single-property-1.html">$ 150,000</a>
+                                <a href="single-property-1.html">$ 150,000</a>
                             </h3>
                             <div class="compare">
                                 <a href="#" title="Compare">
@@ -335,7 +347,8 @@
                         </div>
                         <div class="button-effect">
                             <a href="single-property-1.html" class="btn"><i class="fa fa-link"></i></a>
-                            <a href="https://www.youtube.com/watch?v=14semTlwyUY" class="btn popup-video popup-youtube"><i class="fas fa-video"></i></a>
+                            <a href="https://www.youtube.com/watch?v=14semTlwyUY"
+                                class="btn popup-video popup-youtube"><i class="fas fa-video"></i></a>
                             <a href="single-property-2.html" class="img-poppu btn"><i class="fa fa-photo"></i></a>
                         </div>
                     </div>
@@ -369,7 +382,7 @@
                         </ul>
                         <div class="price-properties footer pt-3 pb-0">
                             <h3 class="title mt-3">
-                             <a href="single-property-1.html">$ 150,000</a>
+                                <a href="single-property-1.html">$ 150,000</a>
                             </h3>
                             <div class="compare">
                                 <a href="#" title="Compare">
@@ -392,3 +405,12 @@
         </div>
     </div>
 </section>
+@section('customJs')
+    <script>
+        $(document).ready(function() {
+            $('.popup-youtube').magnificPopup({
+                type: 'iframe'
+            });
+        });
+    </script>
+@endsection

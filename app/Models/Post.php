@@ -27,11 +27,14 @@ class Post extends Model
         'ward',
         'street',
         'house_number',
-        'name_poster',
-        'email_poster',
-        'phone_poster',
         'features',
+        'video_url',
     ];
+
+    public function users()
+    {
+        return $this->belongsTo(User::class, 'user_id', 'id');
+    }
 
     public function category()
     {

@@ -10,6 +10,7 @@ use App\Models\Post;
 use App\Models\Image;
 use App\Models\Video;
 use App\Models\Category;
+use Cocur\Slugify\Slugify;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
@@ -81,6 +82,20 @@ class PosterController extends Controller
         return view('front.poster.poster_verification');
     }
 
+    private function convertVideoUrl($url)
+    {
+        if (preg_match('/youtube\.com\/watch\?v=([a-zA-Z0-9_-]+)/', $url, $matches)) {
+            return "https://www.youtube.com/embed/" . $matches[1];
+        }
+
+        if (preg_match('/youtu\.be\/([a-zA-Z0-9_-]+)/', $url, $matches)) {
+            return "https://www.youtube.com/embed/" . $matches[1];
+        }
+
+        // Nếu là TikTok hoặc không phù hợp, trả về URL gốc
+        return $url;
+    }
+
     public function PosterPostStore(Request $request)
     {
         $request->validate([
@@ -100,7 +115,7 @@ class PosterController extends Controller
             'features'    => 'nullable|array',
             'images'      => 'nullable|array|max:20',
             'images.*'    => 'image|mimes:jpeg,png,jpg,gif|max:2048',
-            'video'       => 'nullable|mimes:mp4,mov,avi,wmv|max:10240',
+            'video_url'   => 'nullable|string',
         ], [
             'title.required'       => 'Vui lòng nhập tiêu đề.',
             'description.required' => 'Vui lòng nhập mô tả.',
@@ -113,19 +128,18 @@ class PosterController extends Controller
             'street.required'      => 'Vui lòng nhập tên đường.',
             'house_number.required' => 'Vui lòng nhập số nhà.',
             'images.max'           => 'Bạn chỉ có thể tải lên tối đa 20 ảnh.',
-            'video.mimes'          => 'Chỉ chấp nhận định dạng MP4, MOV, AVI, WMV.',
-            'video.max'            => 'Video không được vượt quá 10MB.',
         ]);
 
+        $videoUrl = $request->video_url ? $this->convertVideoUrl($request->video_url) : null;
 
         $features = $request->filled('features') ? json_encode($request->features, JSON_UNESCAPED_UNICODE) : null;
-
+        $slugify = new Slugify();
 
         $post = new Post();
         $post->user_id       = Auth::id();
         $post->category_id   = $request->category_id;
         $post->title         = $request->title;
-        $post->post_slug     = strtolower(str_replace(' ', '-', $request->title));
+        $post->post_slug     = $slugify->slugify($request->title);
         $post->description   = $request->description;
         $post->price         = $request->price;
         $post->area          = $request->area;
@@ -135,17 +149,14 @@ class PosterController extends Controller
         $post->ward          = $request->ward_name;
         $post->street        = $request->street;
         $post->house_number  = $request->house_number;
-        $post->name_poster   = $request->name_poster;
-        $post->email_poster  = $request->email_poster;
-        $post->phone_poster  = $request->phone_poster;
         $post->features      = $features;
+        $post->video_url     = $videoUrl;
         $post->status        = 'pending';
         $post->created_at    = now();
         $post->save();
 
 
         $imageDir = public_path('upload/post_images');
-        $videoDir = public_path('upload/post_video');
 
         if ($request->hasFile('images')) {
             foreach ($request->file('images') as $image) {
@@ -161,18 +172,6 @@ class PosterController extends Controller
             }
         }
 
-        if ($request->hasFile('videos')) {
-            $video = $request->file('videos');
-            $videoName = time() . '_' . $video->getClientOriginalName();
-            $video->move($videoDir, $videoName);
-
-            Video::create([
-                'post_id'    => $post->id,
-                'video_url'  => 'upload/post_video/' . $videoName,
-                'created_at' => Carbon::now(),
-            ]);
-        }
-
         $notification = array(
             'message' => 'Đăng tin thành công !',
             'alert-type' => 'success',
@@ -186,14 +185,13 @@ class PosterController extends Controller
         $post = Post::findOrFail($id);
         $categories = Category::latest()->get();
         $images = Image::where('post_id', $id)->get();
-        $videos = Video::where('post_id', $id)->get();
 
         $selectedFeatures = json_decode($post->features, true) ?? [];
 
 
         return view(
             'front.poster.post.poster_post_edit',
-            compact('post', 'categories', 'images', 'videos', 'selectedFeatures')
+            compact('post', 'categories', 'images', 'selectedFeatures')
         );
     }
 
@@ -235,13 +233,19 @@ class PosterController extends Controller
 
         $post_id = $request->id;
 
+
+        $slugify = new Slugify();
+
         $features = $request->filled('features') ? json_encode($request->features, JSON_UNESCAPED_UNICODE) : null;
+
+        $videoUrl = $request->video_url ? $this->convertVideoUrl($request->video_url) : null;
+       
 
         Post::find($post_id)->update([
             'user_id' => Auth::id(),
             'category_id'  => $request->category_id,
             'title'        => $request->title,
-            'post_slug'    => strtolower(str_replace(' ', '-', $request->title)),
+            'post_slug'    => $slugify->slugify($request->title),
             'description'  => $request->description,
             'price'        => $request->price,
             'area'         => $request->area,
@@ -251,10 +255,8 @@ class PosterController extends Controller
             'ward'         => $request->ward_name,
             'street'       => $request->street,
             'house_number' => $request->house_number,
-            'name_poster'  => $request->name_poster,
-            'email_poster' => $request->email_poster,
-            'phone_poster' => $request->phone_poster,
             'features'     => $features,
+            'video_url'     => $videoUrl,
             'updated_at'   => now(),
         ]);
 
@@ -263,7 +265,7 @@ class PosterController extends Controller
             foreach ($request->file('images') as $image) {
                 $imageName = time() . '_' . $image->getClientOriginalName();
                 $image->move($imageDir, $imageName);
-    
+
                 Image::create([
                     'post_id'    => $post_id,
                     'image_name' => $image->getClientOriginalName(),
@@ -272,49 +274,17 @@ class PosterController extends Controller
                 ]);
             }
         }
-    
-        // Xử lý video
-        $videoDir = public_path('upload/post_video');
-        if ($request->hasFile('videos')) {
-            $video = $request->file('videos');
-            $videoName = time() . '_' . $video->getClientOriginalName();
-            $video->move($videoDir, $videoName);
-    
-            Video::create([
-                'post_id'    => $post_id,
-                'video_url'  => 'upload/post_video/' . $videoName,
-                'created_at' => Carbon::now(),
-            ]);
-        }
-    
+
+
         // Thông báo cập nhật thành công
         $notification = [
             'message' => 'Cập nhật bài đăng thành công!',
             'alert-type' => 'success',
         ];
-    
+
         return redirect()->route('poster.list-post')->with($notification);
     }
 
-    public function PosterDeleteVideo(Request $request)
-    {
-        $video = Video::find($request->id);
-
-        if (!$video) {
-            return response()->json(['success' => false, 'message' => 'Video không tồn tại']);
-        }
-
-        // Xóa file video trong thư mục storage hoặc public
-        $videoPath = public_path($video->video_url);
-        if (File::exists($videoPath)) {
-            File::delete($videoPath);
-        }
-
-        // Xóa video trong database
-        $video->delete();
-
-        return response()->json(['success' => true, 'message' => 'Video đã được xóa']);
-    }
 
     public function PosterDeleteImage(Request $request)
     {
@@ -336,7 +306,7 @@ class PosterController extends Controller
     public function PosterDeletePost($id)
     {
         $post = Post::find($id);
-            
+
         if (!$post) {
             return redirect()->back()->with([
                 'message' => 'Bài đăng không tồn tại!',
@@ -369,5 +339,4 @@ class PosterController extends Controller
             'alert-type' => 'success'
         ]);
     }
-
 }

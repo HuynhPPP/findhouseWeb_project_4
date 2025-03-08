@@ -30,7 +30,7 @@ class UserController extends Controller
 
         $request->session()->regenerateToken();
 
-        return redirect('/');
+        return redirect('/user/login');
     }
 
     public function UserRegister(Request $request)
@@ -100,7 +100,7 @@ class UserController extends Controller
               $user->email = null;
             }
             $user->password = Hash::make($request->password);
-            $user->role = $request->input('role', 'user');
+            $user->role = $request->input('account_type', 'user');
             $user->save();
       
             session()->flash('message', 'Đăng ký thành công');

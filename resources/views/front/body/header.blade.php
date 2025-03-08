@@ -67,12 +67,12 @@
 
                         <li><a href="{{ route('logout') }}">Đăng xuất</a></li>
                     @else
-                        <li class="show-reg-form modal-open">
-                            <a href="user-profile.html"> Đăng nhập</a>
+                        <li class="">
+                            <a href="{{ route('login') }}"> Đăng nhập</a>
                         </li>
 
-                        <li class="show-reg-form modal-open">
-                            <a href="user-profile.html"> Tạo tài khoản mới</a>
+                        <li class="">
+                            <a href="{{ route('register') }}"> Tạo tài khoản mới</a>
                         </li>
                     @endauth
 

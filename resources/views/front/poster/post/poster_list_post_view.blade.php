@@ -32,7 +32,7 @@
                                     <a href="{{ route('poster.edit.post', $post->id) }}">
                                         <h2>{{ $post->title }}</h2>
                                     </a>
-                                    <figure><i class="lni-map-marker"></i> Est St, 77 - Central Park South, NYC</figure>
+                                    <figure><i class="lni-map-marker"></i> {{ $post->address }}</figure>
                                     <ul class="starts text-left mb-0">
                                         <li class="mb-0"><i class="fa fa-star"></i>
                                         </li>

@@ -161,33 +161,40 @@
                 <div class="property-form-group">
                     <div class="row">
                         <div class="col-md-12">
-                            <div class="video-upload-container">
-                                <!-- Hiển thị video đã có -->
-                                <div id="existingVideos">
-                                    @foreach ($videos as $video)
-                                        <div class="video-item" id="video-{{ $video->id }}">
-                                            <video class="video-preview" controls>
-                                                <source src="{{ asset($video->video_url) }}" type="video/mp4">
-                                            </video>
-                                            <button type="button" class="remove-btn mb-4 delete-video"
-                                                data-id="{{ $video->id }}">
-                                                &times;
-                                            </button>
-                                        </div>
-                                    @endforeach
-                                </div>
+                            <!-- Nhập link từ YouTube hoặc TikTok -->
 
-                                <input type="file" id="videoUpload" name="videos" accept="video/*" hidden>
+                            @php
+                                $video_url = $post->video_url ?? ''; // Lấy giá trị từ database, tránh lỗi nếu null
+                                if (strpos($video_url, 'youtube.com/embed/') !== false) {
+                                    $video_url_fixed = str_replace('embed/', 'watch?v=', $video_url);
+                                } else {
+                                    $video_url_fixed = $video_url;
+                                }
+                            @endphp
 
-                                <label for="videoUpload" class="upload-box">
-                                    <i class="fa fa-video-camera" aria-hidden="true"></i>
-                                    <span>Tải Video từ thiết bị</span>
-                                </label>
+                            <div class="video-link-container">
+                                <label for="videoLink">Video Link (Youtube/Tiktok)</label>
+                                <input type="text" id="videoLink" name="video_url" class="form-control"
+                                    placeholder="Dán link video vào đây..." value="{{ $video_url_fixed ?? '' }}">
+                                <p class="text-muted">
+                                    📌 <strong>Lưu ý:</strong> Chỉ hỗ trợ YouTube & TikTok. Vui lòng nhập đúng định dạng
+                                    sau:<br>
+                                    <br>
+                                    🔹 <strong>Đối với YouTube:</strong><br>
+                                    - <code>https://www.youtube.com/watch?v=<b>xxxxxxxxxxx</b></code> ✅<br>
+                                    - <code>https://youtu.be/<b>xxxxxxxxxxx</b></code> ✅<br>
+                                    <br>
+                                    🔹 <strong>Đối với TikTok:</strong><br>
+                                    - <code>https://www.tiktok.com/@<b>username</b>/video/<b>xxxxxxxxxxx</b></code> ✅<br>
+                                    <br>
+                                    🚫 <strong>Không hỗ trợ</strong>:<br>
+                                    - Các link rút gọn hoặc link nhúng không đúng định dạng.<br>
+                                </p>
+                            </div>
 
-                                <!-- Khu vực xem trước video mới -->
-                                <video id="videoPreview" controls style="display: none;"></video>
-                                <button type="button" id="removeVideo" class="remove-btn"
-                                    style="display: none;">&times;</button>
+                            <!-- Hiển thị video nhúng -->
+                            <div id="embeddedVideoContainer" style="display: none; margin-top: 15px;">
+                                <div id="embeddedVideo"></div> <!-- Khu vực hiển thị video -->
                             </div>
                             @error('video')
                                 <p style="color:red">{{ $message }}</p>
@@ -295,148 +302,7 @@
                 <div id="map"></div>
             </div>
 
-            <div class="single-add-property">
-                <h3>Đặc điểm nổi bật</h3>
-                <div class="property-form-group">
-                    <div class="row">
-                        {{-- <div class="col-md-12">
-                            <ul class="pro-feature-add pl-0">
-                                @php
-                                    $featureOptions = [
-                                        "Đầy đủ nội thất",
-                                        "Có máy lạnh",
-                                        "Có thang máy",
-                                        "Có kệ bếp",
-                                        "Có hầm để xe",
-                                        "Có gác",
-                                        "Có bảo vệ 24/24",
-                                        "Có hồ bơi",
-                                        "Giờ giấc tự do",
-                                        "Không chung chủ"
-                                    ];
-                                @endphp
-                                <li class="fl-wrap filter-tags clearfix">
-                                    <div class="checkboxes float-left">
-                                        <div class="filter-tags-wrap">
-                                            <input id="check-a" type="checkbox" name="features[]"
-                                                value="Đầy đủ nội thất">
-                                            <label for="check-a">Đầy đủ nội thất</label>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li class="fl-wrap filter-tags clearfix">
-                                    <div class="checkboxes float-left">
-                                        <div class="filter-tags-wrap">
-                                            <input id="check-b" type="checkbox" name="features[]" value="Có máy lạnh">
-                                            <label for="check-b">Có máy lạnh</label>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li class="fl-wrap filter-tags clearfix">
-                                    <div class="checkboxes float-left">
-                                        <div class="filter-tags-wrap">
-                                            <input id="check-c" type="checkbox" name="features[]"
-                                                value="Có thang máy">
-                                            <label for="check-c">Có thang máy</label>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li class="fl-wrap filter-tags clearfix">
-                                    <div class="checkboxes float-left">
-                                        <div class="filter-tags-wrap">
-                                            <input id="check-d" type="checkbox" name="features[]" value="Có kệ bếp">
-                                            <label for="check-d">Có kệ bếp</label>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li class="fl-wrap filter-tags clearfix">
-                                    <div class="checkboxes float-left">
-                                        <div class="filter-tags-wrap">
-                                            <input id="check-e" type="checkbox" name="features[]"
-                                                value="Có hầm để xe">
-                                            <label for="check-e">Có hầm để xe</label>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li class="fl-wrap filter-tags clearfix">
-                                    <div class="checkboxes float-left">
-                                        <div class="filter-tags-wrap">
-                                            <input id="check-g" type="checkbox" name="features[]" value="Có gác">
-                                            <label for="check-g">Có gác</label>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li class="fl-wrap filter-tags clearfix">
-                                    <div class="checkboxes float-left">
-                                        <div class="filter-tags-wrap">
-                                            <input id="check-h" type="checkbox" name="features[]"
-                                                value="Có bảo vệ 24/24">
-                                            <label for="check-h">Có bảo vệ 24/24</label>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li class="fl-wrap filter-tags clearfix">
-                                    <div class="checkboxes float-left">
-                                        <div class="filter-tags-wrap">
-                                            <input id="check-i" type="checkbox" name="features[]" value="Có hồ bơi">
-                                            <label for="check-i">Có hồ bơi</label>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li class="fl-wrap filter-tags clearfix">
-                                    <div class="checkboxes float-left">
-                                        <div class="filter-tags-wrap">
-                                            <input id="check-j" type="checkbox" name="features[]"
-                                                value="Giờ giấc tự do">
-                                            <label for="check-j">Giờ giấc tự do</label>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li class="fl-wrap filter-tags clearfix">
-                                    <div class="checkboxes float-left">
-                                        <div class="filter-tags-wrap">
-                                            <input id="check-k" type="checkbox" name="features[]"
-                                                value="Không chung chủ">
-                                            <label for="check-k">Không chung chủ</label>
-                                        </div>
-                                    </div>
-                                </li>
-                            </ul>
-                        </div> --}}
-                        <div class="col-md-12">
-                            <ul class="pro-feature-add pl-0">
-                                @php
-                                    $featureOptions = [
-                                        "Đầy đủ nội thất",
-                                        "Có máy lạnh",
-                                        "Có thang máy",
-                                        "Có kệ bếp",
-                                        "Có hầm để xe",
-                                        "Có gác",
-                                        "Có bảo vệ 24/24",
-                                        "Có hồ bơi",
-                                        "Giờ giấc tự do",
-                                        "Không chung chủ"
-                                    ];
-                                @endphp
-                        
-                                @foreach ($featureOptions as $key => $feature)
-                                    <li class="fl-wrap filter-tags clearfix">
-                                        <div class="checkboxes float-left">
-                                            <div class="filter-tags-wrap">
-                                                <input id="check-{{ $key }}" type="checkbox" name="features[]"
-                                                       value="{{ $feature }}"
-                                                       {{ in_array($feature, $selectedFeatures) ? 'checked' : '' }}>
-                                                <label for="check-{{ $key }}">{{ $feature }}</label>
-                                            </div>
-                                        </div>
-                                    </li>
-                                @endforeach
-                            </ul>
-                        </div>                        
-                    </div>
-                </div>
-            </div>
+           
             @php
                 $id = Auth::user()->id;
                 $profileData = App\Models\User::find($id);
@@ -596,86 +462,75 @@
         });
     </script>
 
-    {{-- Hiển thị video --}}
-    <script type="text/javascript">
-        document.getElementById('videoUpload').addEventListener('change', function(event) {
-            const file = event.target.files[0];
-            if (file) {
-                const videoPreview = document.getElementById('videoPreview');
-                const removeButton = document.getElementById('removeVideo');
 
-                videoPreview.src = URL.createObjectURL(file);
-                videoPreview.style.display = "block";
-                removeButton.style.display = "inline-block";
-            }
-        });
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const videoInput = document.getElementById("videoLink");
+            const videoContainer = document.getElementById("embeddedVideoContainer");
+            const videoEmbed = document.getElementById("embeddedVideo");
 
-        // Xóa video
-        document.getElementById('removeVideo').addEventListener('click', function() {
-            const videoPreview = document.getElementById('videoPreview');
+            function getEmbeddedVideo(url) {
+                let embedHtml = "";
 
-            // Dừng phát video
-            videoPreview.pause();
-            videoPreview.currentTime = 0;
-
-            // Xóa src để giải phóng bộ nhớ
-            videoPreview.src = "";
-
-            // Ẩn video và nút xóa
-            videoPreview.style.display = "none";
-            this.style.display = "none";
-
-            // Reset input file
-            document.getElementById('videoUpload').value = "";
-        });
-    </script>
-
-    {{-- Xoá video --}}
-    <script type="text/javascript">
-        $(document).ready(function() {
-            $(document).on("click", ".delete-video", function(e) {
-                e.preventDefault();
-                var videoId = $(this).data("id"); // Lấy ID của video cần xóa
-
-                Swal.fire({
-                    title: "Bạn có chắc chắn?",
-                    text: "Bạn muốn xóa video đã tải lên?",
-                    icon: "warning",
-                    showCancelButton: true,
-                    confirmButtonColor: "#3085d6",
-                    cancelButtonColor: "#d33",
-                    confirmButtonText: "Có, xóa nó!",
-                    cancelButtonText: "Huỷ"
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        $.ajax({
-                            url: "{{ route('poster.delete.video') }}",
-                            type: "POST",
-                            data: {
-                                id: videoId,
-                                _token: "{{ csrf_token() }}"
-                            },
-                            success: function(data) {
-                                if (data.success) {
-                                    $("#video-" + videoId)
-                                .remove(); // Xóa phần tử video khỏi giao diện
-                                    Swal.fire("Đã xóa!", "Video đã được xóa.",
-                                        "success");
-                                } else {
-                                    Swal.fire("Lỗi!", "Không thể xóa video.", "error");
-                                }
-                            },
-                            error: function() {
-                                Swal.fire("Lỗi!", "Đã xảy ra lỗi khi xóa video.",
-                                    "error");
-                            }
-                        });
+                // Kiểm tra nếu là link YouTube
+                if (url.includes("youtube.com/watch?v=") || url.includes("youtu.be/")) {
+                    let videoId = url.split("v=")[1]?.split("&")[0] || url.split("youtu.be/")[1];
+                    if (videoId) {
+                        embedHtml =
+                            `<iframe width="100%" height="600" src="https://www.youtube.com/embed/${videoId}" frameborder="0" allowfullscreen></iframe>`;
                     }
-                });
-            });
+                }
+                // Kiểm tra nếu là link TikTok
+                else if (url.includes("tiktok.com/")) {
+                    const match = url.match(/video\/(\d+)/);
+                    const videoId = match ? match[1] : null;
+                    if (videoId) {
+                        embedHtml = `
+                        <blockquote class="tiktok-embed" cite="${url}" data-video-id="${videoId}" style="max-width: 100%;">
+                            <section></section>
+                        </blockquote>
+                    `;
+                    }
+                }
+
+                return embedHtml;
+            }
+
+            function updateVideoPreview() {
+                const url = videoInput.value.trim();
+                const embedHtml = getEmbeddedVideo(url);
+
+                if (embedHtml) {
+                    videoEmbed.innerHTML = embedHtml;
+                    videoContainer.style.display = "block";
+
+                    // Kiểm tra và nạp script TikTok nếu cần
+                    if (url.includes("tiktok.com/")) {
+                        if (!window.tiktokEmbedLoaded) {
+                            var script = document.createElement("script");
+                            script.src = "https://www.tiktok.com/embed.js";
+                            script.async = true;
+                            script.onload = () => {
+                                window.tiktokEmbedLoaded = true;
+                            };
+                            document.body.appendChild(script);
+                        } else if (window.tiktokEmbedLoad) {
+                            window.tiktokEmbedLoad(); // Tải lại video TikTok nếu script đã có
+                        }
+                    }
+                } else {
+                    videoEmbed.innerHTML = "";
+                    videoContainer.style.display = "none";
+                }
+            }
+
+            // Khi trang tải, nếu đã có video_url thì hiển thị video
+            updateVideoPreview();
+
+            // Khi người dùng nhập URL mới, cập nhật video nhúng
+            videoInput.addEventListener("input", updateVideoPreview);
         });
     </script>
-
 
     {{-- Hiển thị ảnh --}}
     <script type="text/javascript">
@@ -777,7 +632,7 @@
                             success: function(data) {
                                 if (data.success) {
                                     $("#image-" + imageId)
-                                .remove(); // Xóa ảnh khỏi giao diện
+                                        .remove(); // Xóa ảnh khỏi giao diện
                                     Swal.fire("Đã xóa!", "Ảnh đã được xóa.", "success");
                                 } else {
                                     Swal.fire("Lỗi!", "Không thể xóa ảnh.", "error");
@@ -785,7 +640,7 @@
                             },
                             error: function() {
                                 Swal.fire("Lỗi!", "Đã xảy ra lỗi khi xóa ảnh.",
-                                "error");
+                                    "error");
                             }
                         });
                     }
