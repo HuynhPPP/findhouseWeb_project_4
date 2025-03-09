@@ -1,4 +1,4 @@
-const deleteButton = document.querySelectorAll(".delete");
+const deleteButton = document.querySelectorAll(".delete-sweetalert");
 deleteButton.forEach((item) =>
     item.addEventListener("click", function (t) {
         Swal.fire({

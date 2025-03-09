@@ -5,10 +5,8 @@
     href="{{ asset('admin/components/datatables.net-bs4/css/dataTables.bootstrap4.min.css') }}">
   <link rel="stylesheet" type="text/css"
     href="{{ asset('admin/pages/data-table/css/buttons.dataTables.min.css') }}">
-  <link rel="stylesheet" type="text/css"
-    href="{{ asset('admin/components/datatables.net-responsive-bs4/css/responsive.bootstrap4.min.css') }}">
-  <link href="{{ asset('admin/sweetalert2/sweetalert2.min.css') }}"
-    rel="stylesheet" type="text/css" id="app-style" />
+  <link href="{{ asset('admin/sweetalert2/sweetalert2.min.css') }}" rel="stylesheet"
+    type="text/css" id="app-style" />
   <link rel="stylesheet" href="{{ asset('vendor/flasher/flasher.min.css') }}">
 @endsection
 @section('content')
@@ -72,7 +70,7 @@
               <div class="card-block table-border-style">
                 <div class="table-responsive dt-responsive">
                   <table id="order-table"
-                    class="table table-bordered nowrap border">
+                    class="table border table-bordered nowrap">
                     <thead>
                       <tr>
                         <th>#</th>
@@ -99,29 +97,11 @@
   <script
     src="{{ asset('admin/components/datatables.net/js/jquery.dataTables.min.js') }}">
   </script>
-  <script
-    src="{{ asset('admin/components/datatables.net-buttons/js/dataTables.buttons.min.js') }}">
-  </script>
   <script src="{{ asset('admin/pages/data-table/js/jszip.min.js') }}"></script>
   <script src="{{ asset('admin/pages/data-table/js/pdfmake.min.js') }}"></script>
   <script src="{{ asset('admin/pages/data-table/js/vfs_fonts.js') }}"></script>
   <script
-    src="{{ asset('admin/components/datatables.net-buttons/js/buttons.print.min.js') }}">
-  </script>
-  <script
-    src="{{ asset('admin/components/datatables.net-buttons/js/buttons.html5.min.js') }}">
-  </script>
-  <script
     src="{{ asset('admin/components/datatables.net-bs4/js/dataTables.bootstrap4.min.js') }}">
-  </script>
-  <script
-    src="{{ asset('admin/components/datatables.net-responsive/js/dataTables.responsive.min.js') }}">
-  </script>
-  <script
-    src="{{ asset('admin/components/datatables.net-responsive-bs4/js/responsive.bootstrap4.min.js') }}">
-  </script>
-  <script src="{{ asset('admin/sweetalert2/sweetalert2.min.js') }}"></script>
-  <script src="{{ asset('admin/sweetalert2/extended-sweetalerts.js') }}">
   </script>
   <script>
     $(document).ready(function() {
@@ -167,7 +147,8 @@
               `;
             });
             $('#data-category').html(html);
-            const deleteButton = document.querySelectorAll(".delete");
+            const deleteButton = document.querySelectorAll(
+              ".delete");
             deleteButton.forEach((item) =>
               item.addEventListener("click", function(t) {
                 Swal.fire({
@@ -219,5 +200,8 @@
         })
       })
     });
+  </script>
+  <script src="{{ asset('admin/sweetalert2/sweetalert2.min.js') }}"></script>
+  <script src="{{ asset('admin/sweetalert2/extended-sweetalerts.js') }}">
   </script>
 @endsection

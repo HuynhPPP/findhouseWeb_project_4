@@ -24,6 +24,7 @@ return new class extends Migration
       $table->string('city');
       $table->string('district');
       $table->string('ward');
+      $table->string('video_url');
       $table->enum('is_favorite', ["0", "1"]);
       $table->tinyInteger('is_featured');
       $table->timestamp('published_at');

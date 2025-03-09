@@ -55,7 +55,15 @@ Route::middleware(['auth', 'roles:admin'])->group(function () {
   Route::controller(PostController::class)->group(function () {
     Route::get('all/post/', 'AllPost')->name('admin.all.post');
     Route::get('edit/post/{post_id}/{slug}.html', 'EditPost')->name('admin.edit.post');
-    Route::post('store/update/post', 'StoreUpdatePost')->name('admin.storeUpdate.Post');
+    Route::post('store/update/post/{post_id}', 'StoreUpdatePost')->name('admin.store.update.post');
+    Route::delete('delete/post/{post_id}', 'DeletePost')->name('admin.delete.post');
+    // route image post
+    Route::get('edit/post-image/{post_id}/{slug}.html', 'EditPostImage')->name('admin.edit.post-image');
+    Route::post('/upload-image', 'StoreUploadImagePost')->name('admin.update.image.post');
+    Route::get('/get/post-images', 'GetPostImages')->name('admin.get.post.images');
+    Route::post('/delete/post-image', 'DeletePostImages')->name('admin.delete.post.image');
+    //route video post
+    Route::delete('/delete-video/{id}',  'deleteVideo');
   });
 }); // End Admin group middleware
 

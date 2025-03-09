@@ -59,20 +59,38 @@
                       {{ Carbon\Carbon::parse($item->updated_at)->format('d/m/Y') }}
                     </td>
                     <td>
-                      <a href="{{ route('admin.edit.post', [$item->id, $item->post_slug]) }}"
-                        class="btn btn-primary waves-effect waves-light">
-                        <i class="fa fa-pencil"></i>
-                      </a>
-                      <form
-                        action="{{ route('admin.delete.category', $item->id) }}"
-                        class="d-inline deleteForm" method="post">
-                        @method('DELETE')
-                        @csrf
-                        <button type="button"
-                          class="delete btn waves-effect waves-light btn-danger btn-square">
-                          <i class="fa fa-trash"></i>
+                      <div class="dropdown">
+                        <button
+                          class="border-0 btn btn-primary waves-effect waves-light"
+                          type="button" data-bs-toggle="dropdown"
+                          aria-expanded="false">
+                          <i class="fa fa-ellipsis-h" aria-expanded="false"></i>
                         </button>
-                      </form>
+                        <ul class="dropdown-menu">
+                          <li><a class="dropdown-item"
+                              href="{{ route('admin.edit.post', [$item->id, $item->post_slug]) }}">
+                              Cập nhật tin đăng
+                            </a>
+                          </li>
+                          <li><a class="dropdown-item"
+                              href="{{ route('admin.edit.post-image', [$item->id, $item->post_slug]) }}">
+                              Cập nhật ảnh tin
+                            </a>
+                          </li>
+                          <li>
+                            <form
+                              action="{{ route('admin.delete.post', $item->id) }}"
+                              class="d-inline deleteForm" role="button"
+                              method="post">
+                              @method('DELETE')
+                              @csrf
+                              <a class="delete-sweetalert dropdown-item">
+                                Xóa tin đăng
+                              </a>
+                            </form>
+                          </li>
+                        </ul>
+                      </div>
                     </td>
                   </tr>
                 @endforeach
