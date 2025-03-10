@@ -103,16 +103,12 @@ class PosterController extends Controller
             'description' => 'required|string',
             'category_id' => 'required',
             'price'       => 'required',
-            'address'     => 'required',
             'province' => 'required',
             'province_name' => 'required',
             'district' => 'required',
             'district_name' => 'required',
             'ward' => 'required',
             'ward_name' => 'required',
-            'street'      => 'required|string',
-            'house_number' => 'required|string',
-            'features'    => 'nullable|array',
             'images'      => 'nullable|array|max:20',
             'images.*'    => 'image|mimes:jpeg,png,jpg,gif|max:2048',
             'video_url'   => 'nullable|string',
@@ -132,7 +128,6 @@ class PosterController extends Controller
 
         $videoUrl = $request->video_url ? $this->convertVideoUrl($request->video_url) : null;
 
-        $features = $request->filled('features') ? json_encode($request->features, JSON_UNESCAPED_UNICODE) : null;
         $slugify = new Slugify();
 
         $post = new Post();
@@ -143,13 +138,11 @@ class PosterController extends Controller
         $post->description   = $request->description;
         $post->price         = $request->price;
         $post->area          = $request->area;
-        $post->address       = $request->address;
         $post->province      = $request->province_name;
         $post->district      = $request->district_name;
         $post->ward          = $request->ward_name;
         $post->street        = $request->street;
         $post->house_number  = $request->house_number;
-        $post->features      = $features;
         $post->video_url     = $videoUrl;
         $post->status        = 'pending';
         $post->created_at    = now();
@@ -202,19 +195,15 @@ class PosterController extends Controller
             'description' => 'required|string',
             'category_id' => 'required',
             'price'       => 'required',
-            'address'     => 'required',
             'province' => 'required',
             'province_name' => 'required',
             'district' => 'required',
             'district_name' => 'required',
             'ward' => 'required',
             'ward_name' => 'required',
-            'street'      => 'required|string',
-            'house_number' => 'required|string',
-            'features'    => 'nullable|array',
             'images'      => 'nullable|array|max:20',
             'images.*'    => 'image|mimes:jpeg,png,jpg,gif|max:2048',
-            'video'       => 'nullable|mimes:mp4,mov,avi,wmv|max:10240',
+            'video_url'   => 'nullable|string',
         ], [
             'title.required'       => 'Vui lòng nhập tiêu đề.',
             'description.required' => 'Vui lòng nhập mô tả.',
@@ -227,16 +216,12 @@ class PosterController extends Controller
             'street.required'      => 'Vui lòng nhập tên đường.',
             'house_number.required' => 'Vui lòng nhập số nhà.',
             'images.max'           => 'Bạn chỉ có thể tải lên tối đa 20 ảnh.',
-            'video.mimes'          => 'Chỉ chấp nhận định dạng MP4, MOV, AVI, WMV.',
-            'video.max'            => 'Video không được vượt quá 10MB.',
         ]);
 
         $post_id = $request->id;
 
 
         $slugify = new Slugify();
-
-        $features = $request->filled('features') ? json_encode($request->features, JSON_UNESCAPED_UNICODE) : null;
 
         $videoUrl = $request->video_url ? $this->convertVideoUrl($request->video_url) : null;
        
@@ -249,13 +234,11 @@ class PosterController extends Controller
             'description'  => $request->description,
             'price'        => $request->price,
             'area'         => $request->area,
-            'address'      => $request->address,
             'province'     => $request->province_name,
             'district'     => $request->district_name,
             'ward'         => $request->ward_name,
             'street'       => $request->street,
             'house_number' => $request->house_number,
-            'features'     => $features,
             'video_url'     => $videoUrl,
             'updated_at'   => now(),
         ]);

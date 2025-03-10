@@ -1493,8 +1493,8 @@ section.recently.portfolio {
 
 .homepage-1 .portfolio.full-l .project-head {
   border-radius: 3px 0 0 3px;
-  max-height: 270px;
   max-width: -webkit-fill-available;
+  max-height: 320px;
   margin: 0;
   position: relative;
   width: 410px;

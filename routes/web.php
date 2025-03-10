@@ -4,13 +4,14 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Front\PosterController;
 use App\Http\Controllers\Front\UserController;
 use App\Http\Controllers\Front\ApiController;
+use App\Http\Controllers\Front\MainControler;
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\admin\CategoryController;
 use Illuminate\Support\Facades\Route;
 
 /// Route Accessable for All
 
-Route::get('/', [UserController::class, 'Index'])->name('index');
+Route::get('/', [MainControler::class, 'Index'])->name('index');
 Route::get('/logout', [UserController::class, 'UserLogout'])->name('user.logout');
 Route::post('/user/register', [UserController::class, 'UserRegister'])->name('user.register');
 Route::post('/login', [UserController::class, 'UserLogin'])->name('user.login');
@@ -18,6 +19,9 @@ Route::post('/login', [UserController::class, 'UserLogin'])->name('user.login');
 Route::get('/api/proxy/provinces', [ApiController::class, 'getProvinces']);
 Route::get('/api/proxy/districts/{provinceId}', [ApiController::class, 'getDistricts']);
 Route::get('/api/proxy/wards/{districtId}', [ApiController::class, 'getWards']);
+
+Route::get('/all/post/recommend', [MainControler::class, 'AllPostRecommend'])->name('all.post_recommend');
+Route::get('/post/details/{id}', [MainControler::class, 'PostDetail'])->name('post.detail');
 
 
 require __DIR__ . '/auth.php';

@@ -8,6 +8,9 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 use App\Models\User;
+use App\Models\Image;
+use App\Models\Post;
+use App\Models\Category;
 use Illuminate\Support\Facades\Validator;
 
 class UserController extends Controller
@@ -15,11 +18,6 @@ class UserController extends Controller
     public function UserDashboard()
     {
         return view('front.user.index');
-    }
-
-    public function Index()
-    {
-        return view('front.index');
     }
 
     public function UserLogout(Request $request)
@@ -37,9 +35,9 @@ class UserController extends Controller
     {
         $request->merge([
             'name' => preg_replace('/\s+/', ' ', trim($request->input('name'))),
-          ]);
-      
-          $messages = [
+        ]);
+
+        $messages = [
             'name.required' => 'Tên không được để trống.',
             'name.regex' => 'Tên không được chứa ký tự đặc biệt.',
             'name.max' => 'Tên không được dài quá 20 ký tự.',
@@ -51,13 +49,13 @@ class UserController extends Controller
             'password.regex' => 'Mật khẩu không được chỉ chứa số.',
             'account_type.required' => 'Vui lòng chọn loại tài khoản.',
             'account_type.in' => 'Loại tài khoản không hợp lệ.',
-          ];
+        ];
 
-          Validator::extend('email_or_phone', function ($attribute, $value, $parameters, $validator) {
+        Validator::extend('email_or_phone', function ($attribute, $value, $parameters, $validator) {
             return filter_var($value, FILTER_VALIDATE_EMAIL) || preg_match('/^(0[3|5|7|8|9])+([0-9]{8})$/', $value);
-          });
-      
-          $validator = Validator::make($request->all(), [
+        });
+
+        $validator = Validator::make($request->all(), [
             'name' => [
                 'required',
                 'regex:/^[\p{L}\s]+$/u', // Chỉ cho phép chữ cái và khoảng trắng
@@ -86,36 +84,36 @@ class UserController extends Controller
                 'min:8',
             ],
             'account_type' => ['required', 'in:user,poster'],
-          ], $messages);
-      
-          if ($validator->passes()) {
+        ], $messages);
+
+        if ($validator->passes()) {
             $user = new User();
             $user->name = $request->name;
 
             if (filter_var($request->contact, FILTER_VALIDATE_EMAIL)) {
-              $user->email = $request->contact;
-              $user->phone = null;
+                $user->email = $request->contact;
+                $user->phone = null;
             } else {
-              $user->phone = $request->contact;
-              $user->email = null;
+                $user->phone = $request->contact;
+                $user->email = null;
             }
             $user->password = Hash::make($request->password);
             $user->role = $request->input('account_type', 'user');
             $user->save();
-      
+
             session()->flash('message', 'Đăng ký thành công');
             session()->flash('alert-type', 'success');
-      
+
             return response()->json([
-              'status' => true,
-              'errors' => []
+                'status' => true,
+                'errors' => []
             ]);
-          } else {
+        } else {
             return response()->json([
-              'status' => false,
-              'errors' => $validator->errors()
+                'status' => false,
+                'errors' => $validator->errors()
             ]);
-          }
+        }
     }
 
     public function UserLogin(Request $request)
