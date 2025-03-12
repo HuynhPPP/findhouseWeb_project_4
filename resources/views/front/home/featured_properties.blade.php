@@ -17,7 +17,7 @@
                         <div class="project-inner project-head">
                             <div class="homes">
                                 <!-- homes img -->
-                                <a href="single-property-1.html" class="homes-img">
+                                <a href="#" class="homes-img">
                                     <div class="homes-tag button alt featured">Đề xuất</div>
                                     <div class="homes-tag button alt sale">For Sale</div>
                                     @if ($randomImage)
@@ -31,22 +31,23 @@
                             </div>
 
                             <div class="button-effect">
-                                <a href="single-property-1.html" class="btn"><i class="fa fa-link"></i></a>
+                                <a href="#" class="btn"><i class="fa fa-link"></i></a>
                                 <a href="{{ $video_url_fixed }}" class="btn popup-video popup-youtube"><i
                                         class="fas fa-video"></i></a>
-                                <a href="single-property-2.html" class="img-poppu btn"><i class="fa fa-photo"></i></a>
+                                <a href="{{ route('post.detail', $post->id) }}" class="img-poppu btn"><i
+                                        class="fa fa-photo"></i></a>
                             </div>
                         </div>
                         <!-- homes content -->
                         <div class="homes-content">
                             <!-- homes address -->
-                            <h3><a href="single-property-1.html">
-                                    {{ Str::words(strip_tags( $post->title), 14) }}
+                            <h3><a href="{{ route('post.detail', $post->id) }}">
+                                    {{ Str::words(strip_tags($post->title), 14) }}
                                 </a>
                             </h3>
 
                             <p class="homes-address mb-3">
-                                <a href="single-property-1.html">
+                                <a href="{{ route('post.detail', $post->id) }}">
                                     <i class="fa fa-map-marker"></i>
                                     <span>
                                         {{ $post->full_address }}
@@ -74,8 +75,15 @@
                             </ul>
                             <div class="price-properties footer pt-3 pb-0">
                                 <h3 class="title mt-3">
-                                    <a href="single-property-1.html">{{ $post->price }} triệu/tháng</a>
+                                    <a href="single-property-1.html">
+                                        @if ($post->price >= 1000000)
+                                            {{ number_format($post->price / 1000000, 1) }} triệu/tháng
+                                        @else
+                                            {{ number_format($post->price, 0, ',', '.') }} đồng/tháng
+                                        @endif
+                                    </a>
                                 </h3>
+                                
                                 <div class="compare">
                                     <a href="#" title="Compare">
                                         <i class="flaticon-compare"></i>

@@ -10,6 +10,7 @@ use Carbon\Carbon;
 use App\Models\User;
 use App\Models\Image;
 use App\Models\Post;
+use Illuminate\Support\Facades\DB;
 use App\Models\Category;
 use Illuminate\Support\Facades\Validator;
 
@@ -25,7 +26,11 @@ class MainControler extends Controller
                 $post->district,
                 $post->province
             ]);
+
             $post->full_address = implode(', ', $addressParts);
+
+            $post->formatted_price = $this->formatPrice($post->price);
+
             return $post;
         });
 
@@ -33,6 +38,16 @@ class MainControler extends Controller
             'front.main.index',
             compact('posts_featured')
         );
+    }
+
+    // Hàm định dạng giá tiền
+    private function formatPrice($price)
+    {
+        if ($price >= 1000000) {
+            return round($price / 1000000, 1) . ' triệu';
+        } else {
+            return number_format($price, 0, ',', '.') . ' đồng';
+        }
     }
 
     public function AllPostRecommend()
@@ -45,7 +60,11 @@ class MainControler extends Controller
                 $post->district,
                 $post->province
             ]);
+
             $post->full_address = implode(', ', $addressParts);
+
+            $post->formatted_price = $this->formatPrice($post->price);
+            
             return $post;
         });
 
@@ -60,6 +79,20 @@ class MainControler extends Controller
         // Lấy bài đăng theo ID
         $post = Post::findOrFail($id);
 
-        return view('front.main.post_detail', compact('post'));
-    }
+        $addressParts = array_filter([
+            $post->house_number,
+            $post->street,
+            $post->ward,
+            $post->district,
+            $post->province
+        ]);
+        
+        $post->full_address = implode(', ', $addressParts);
+
+        $post->formatted_price = $this->formatPrice($post->price);
+    
+        $images = $post->images;
+    
+        return view('front.main.post_detail', compact('post', 'images'));
+    }    
 }

@@ -1,5 +1,6 @@
 @extends('front.master_2')
 @section('home_2')
+<title>Các bài đăng đề xuất</title>
     <!-- START SECTION PROPERTIES LISTING -->
     <section class="properties-list featured portfolio blog">
         <div class="container">
@@ -23,11 +24,11 @@
                             <div class="rld-main-search">
                                 <div class="row">
                                     <div class="rld-single-input">
-                                        <input type="text" placeholder="Enter Keyword...">
+                                        <input type="text" placeholder="Nhập từ khoá...">
                                     </div>
                                     <div class="rld-single-select ml-22">
                                         <select class="select single-select">
-                                            <option value="1">Property Type</option>
+                                            <option value="1">Danh mục</option>
                                             <option value="2">Family House</option>
                                             <option value="3">Apartment</option>
                                             <option value="3">Condo</option>
@@ -35,7 +36,7 @@
                                     </div>
                                     <div class="rld-single-select">
                                         <select class="select single-select mr-0">
-                                            <option value="1">Location</option>
+                                            <option value="1">Tỉnh thành</option>
                                             <option value="2">Los Angeles</option>
                                             <option value="3">Chicago</option>
                                             <option value="3">Philadelphia</option>
@@ -44,7 +45,7 @@
                                             <option value="3">Houston</option>
                                         </select>
                                     </div>
-                                    <div class="dropdown-filter"><span>Advanced Search</span></div>
+                                    <div class="dropdown-filter"><span>Tìm kiếm nâng cao</span></div>
                                     <div class="col-xl-2 col-lg-2 col-md-4 pl-0">
                                         <a class="btn btn-yellow" href="#">Search Now</a>
                                     </div>
@@ -190,14 +191,12 @@
                         <div class="input-group border rounded input-group-lg w-auto mr-4">
                             <label
                                 class="input-group-text bg-transparent border-0 text-uppercase letter-spacing-093 pr-1 pl-3"
-                                for="inputGroupSelect01"><i class="fas fa-align-left fs-16 pr-2"></i>Sortby:</label>
+                                for="inputGroupSelect01"><i class="fas fa-align-left fs-16 pr-2"></i>Sắp xếp theo:</label>
                             <select class="form-control border-0 bg-transparent shadow-none p-0 selectpicker sortby"
                                 data-style="bg-transparent border-0 font-weight-600 btn-lg pl-0 pr-3"
                                 id="inputGroupSelect01" name="sortby">
-                                <option selected>Top Selling</option>
-                                <option value="1">Most Viewed</option>
-                                <option value="2">Price(low to high)</option>
-                                <option value="3">Price(high to low)</option>
+                                <option selected value="2">Giá(thấp đến cao)</option>
+                                <option value="3">Giá(cao đến thấp)</option>
                             </select>
                         </div>
                         <div class="sorting-options">
@@ -252,11 +251,17 @@
                             <!-- homes content -->
                             <div class="homes-content">
                                 <!-- homes address -->
-                                <h3><a href="single-property-1.html">Real House Luxury Villa</a></h3>
+                                <h3>
+                                    <a href="single-property-1.html">
+                                        {{ Str::words(strip_tags($post->title), 10) }}
+                                    </a>
+                                </h3>
                                 <p class="homes-address mb-3">
                                     <a href="single-property-1.html">
-                                        <i class="fa fa-map-marker"></i><span>Est St, 77 - Central Park South,
-                                            NYC</span>
+                                        <i class="fa fa-map-marker"></i>
+                                        <span>
+                                            {{ $post->full_address }}
+                                        </span>
                                     </a>
                                 </p>
                                 <!-- homes List -->
@@ -271,7 +276,7 @@
                                     </li>
                                     <li class="the-icons">
                                         <i class="flaticon-square mr-2" aria-hidden="true"></i>
-                                        <span>720 sq ft</span>
+                                        <span>{{ $post->area }} m&sup2;</span>
                                     </li>
                                     <li class="the-icons">
                                         <i class="flaticon-car mr-2" aria-hidden="true"></i>
@@ -281,7 +286,13 @@
                                 <!-- Price -->
                                 <div class="price-properties">
                                     <h3 class="title mt-3">
-                                        <a href="single-property-1.html">$ 230,000</a>
+                                        <a href="single-property-1.html">
+                                            @if ($post->price >= 1000000)
+                                                {{ number_format($post->price / 1000000, 1) }} triệu/tháng
+                                            @else
+                                                {{ number_format($post->price, 0, ',', '.') }} đồng/tháng
+                                            @endif
+                                        </a>
                                     </h3>
                                     <div class="compare">
                                         <a href="#" title="Compare">
@@ -302,7 +313,8 @@
                                             style="width: 35px; height: 35px; object-fit: cover; border-radius: 50%;">
                                         {{ $post->users->name }}
                                     </a>
-                                    <span>{{ \Carbon\Carbon::parse($post->created_at)->diffForHumans() }}</span>
+                                    <span
+                                        style="margin-top: 7px">{{ \Carbon\Carbon::parse($post->created_at)->locale('vi')->diffForHumans() }}</span>
                                 </div>
                             </div>
                         </div>

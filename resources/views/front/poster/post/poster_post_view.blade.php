@@ -10,6 +10,10 @@
             width: 100%;
         }
 
+        .custom-select-price {
+            width: 130px; 
+        }
+
         .selected-option {
             padding: 10px;
             border: 1px solid #ccc;
@@ -106,24 +110,50 @@
                     </div>
                     <div class="row">
                         <div class="col-lg-6 col-md-12">
-                            <p class="no-mb">
-                                <label for="price">Giá cho thuê</label>
-                                <input type="text" name="price" placeholder="VND" id="price"
-                                    value="{{ old('price') }}">
-                                @error('price')
+                            <div class="form-group">
+                                <label for="gia_thue">Giá cho thuê <span class="text-danger">(*)</span></label>
+                                <div class="input-group">
+                                    <input type="number" 
+                                           class="form-control" 
+                                           name="price" 
+                                           min="0" step="1"
+                                           id="rental_price" 
+                                           placeholder="Nhập giá"
+                                           style="height: 50px;"
+                                    >
+                                    <div class="input-group-append">
+                                        <select id="rental_unit" class="custom-select-price">
+                                            <option value="đồng/tháng">đồng/tháng</option>
+                                            <option value="đồng/m2/tháng">đồng/m&sup2/tháng</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <p>Nhập đầy đủ số, ví dụ 1 triệu thì nhập là 1000000</p>
+                                <p id="price_in_words" class="text-success"></p>
+                            </div>
+                            @error('price')
                                 <p style="color:red">{{ $message }}</p>
                             @enderror
-                            </p>
                         </div>
                         <div class="col-lg-6 col-md-12">
-                            <p class="no-mb last">
-                                <label for="area">Diện tích</label>
-                                <input type="text" name="area" placeholder="m&sup2;" id="area"
-                                    value="{{ old('area') }}">
-                                @error('area')
+                            <div class="form-group">
+                                <label for="area">Diện tích <span class="text-danger">(*)</span></label>
+                                <div class="input-group">
+                                    <input type="number" 
+                                           class="form-control" 
+                                           id="area" 
+                                           name="area"
+                                           placeholder="Nhập diện tích"
+                                           style="height: 50px;"
+                                    >
+                                    <div class="input-group-append">
+                                        <span class="input-group-text">m²</span>
+                                    </div>
+                                </div>
+                            </div>
+                            @error('area')
                                 <p style="color:red">{{ $message }}</p>
                             @enderror
-                            </p>
                         </div>
                     </div>
                 </div>
@@ -539,4 +569,81 @@
             }
         });
     </script>
+
+    <!-- Đổi thành tiền bằng chữ -->
+    <script>
+        document.getElementById("rental_price").addEventListener("input", updatePriceInWords);
+        document.getElementById("rental_unit").addEventListener("change", updatePriceInWords);
+
+        function updatePriceInWords() {
+            let amount = document.getElementById("rental_price").value.replace(/\./g, "").trim();
+            let unit = document.getElementById("rental_unit").value;
+            let words = numberToWords(parseInt(amount));
+            if (words) {
+                document.getElementById("price_in_words").innerText = words + " " + unit;
+            } else {
+                document.getElementById("price_in_words").innerText = "";
+            }
+        }
+
+        function numberToWords(number) {
+            if (isNaN(number) || number <= 0) return "";
+            
+            let ones = ["", "một", "hai", "ba", "bốn", "năm", "sáu", "bảy", "tám", "chín"];
+            let tens = ["", "mười", "hai mươi", "ba mươi", "bốn mươi", "năm mươi", "sáu mươi", "bảy mươi", "tám mươi", "chín mươi"];
+            let thousands = ["", "nghìn", "triệu", "tỷ"];
+
+            let numStr = number.toString().split("").reverse().join(""); 
+            let wordArray = [];
+            
+            for (let i = 0; i < numStr.length; i += 3) {
+                let numPart = numStr.substr(i, 3).split("").reverse().join("");
+                let partWord = threeDigitToWords(parseInt(numPart));
+                if (partWord) {
+                    wordArray.unshift(partWord + " " + thousands[i / 3]);
+                }
+            }
+
+            return wordArray.join(" ").trim();
+        }
+
+        function threeDigitToWords(num) {
+            if (num === 0) return "";
+            
+            let ones = ["", "một", "hai", "ba", "bốn", "năm", "sáu", "bảy", "tám", "chín"];
+            let tens = ["", "mười", "hai mươi", "ba mươi", "bốn mươi", "năm mươi", "sáu mươi", "bảy mươi", "tám mươi", "chín mươi"];
+
+            let str = "";
+            if (num >= 100) {
+                str += ones[Math.floor(num / 100)] + " trăm ";
+                num %= 100;
+            }
+            if (num >= 10) {
+                str += tens[Math.floor(num / 10)] + " ";
+                num %= 10;
+            }
+            if (num > 0) {
+                str += ones[num];
+            }
+            return str.trim();
+        }
+    </script>
+
+    <!-- Chỉ cho phép nhập số -->
+    <script>
+        document.getElementById("rental_price").addEventListener("keypress", function (event) {
+            if (event.key === "." || event.key === ",") {
+                event.preventDefault(); // Ngăn nhập dấu "." hoặc ","
+            }
+            if (!/^[0-9]+$/.test(event.key)) {
+                event.preventDefault(); // Chỉ cho phép nhập số
+            }
+        });
+
+        document.getElementById("rental_price").addEventListener("input", function () {
+            this.value = this.value.replace(/[^0-9]/g, ""); // Xóa toàn bộ ký tự không phải số
+        });
+    </script>
+
+
 @endsection
