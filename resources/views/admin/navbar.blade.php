@@ -34,9 +34,10 @@
           </ul>
         </li>
         <li
-          class="pcoded-hasmenu {{ in_array(Route::currentRouteName(), ['admin.all.post', 'admin.edit.post']) ? 'active pcoded-trigger' : '' }}">
+          class="pcoded-hasmenu {{ in_array(Route::currentRouteName(), ['admin.all.post', 'admin.edit.post', 'admin.approved.post', 'admin.pending.post', 'admin.hidden.post']) ? 'active pcoded-trigger' : '' }}">
           <a href="javascript:void(0)" class="waves-effect waves-dark">
-            <span class="pcoded-micon"><i class="feather icon-menu"></i></span>
+            <span class="pcoded-micon"><i
+                class="fa fa-location-arrow"></i></span>
             <span class="pcoded-mtext">Đăng tin</span>
           </a>
           <ul class="pcoded-submenu">
@@ -47,16 +48,25 @@
                 <span class="pcoded-mtext">Tất cả tin</span>
               </a>
             </li>
-            <li class="">
-              <a href="{{ route('admin.create.category') }}"
+            <li
+              class="{{ Route::currentRouteName() == 'admin.approved.post' ? 'active' : '' }}">
+              <a href="{{ route('admin.approved.post') }}"
                 class="waves-effect waves-dark">
                 <span class="pcoded-mtext">Tin phê duyệt</span>
               </a>
             </li>
-            <li class="">
-              <a href="{{ route('admin.create.category') }}"
+            <li
+              class="{{ Route::currentRouteName() == 'admin.pending.post' ? 'active' : '' }}">
+              <a href="{{ route('admin.pending.post') }}"
                 class="waves-effect waves-dark">
                 <span class="pcoded-mtext">Tin chờ phê duyệt</span>
+              </a>
+            </li>
+            <li
+              class="{{ Route::currentRouteName() == 'admin.hidden.post' ? 'active' : '' }}">
+              <a href="{{ route('admin.hidden.post') }}"
+                class="waves-effect waves-dark">
+                <span class="pcoded-mtext">Tin đã ẩn</span>
               </a>
             </li>
           </ul>

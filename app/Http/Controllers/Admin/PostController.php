@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\admin;
+namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Category;
@@ -19,13 +19,37 @@ class PostController extends Controller
     $posts = Post::all();
     return view('admin.post.all_post', compact('posts'), ['title' => 'Tất cả tin']);
   }
+  public function approvedPost()
+  {
+    $posts = Post::where('status', 'approved')->get();
+    return view('admin.post.approved_post', compact('posts'), ['title' => 'Tin đã duyệt']);
+  }
+  public function PendingPost()
+  {
+    $posts = Post::where('status', 'pending')->get();
+    return view('admin.post.pending_post', compact('posts'), ['title' => 'Tin chờ duyệt']);
+  }
+  public function HiddenPost()
+  {
+    $posts = Post::where('status', 'hidden')->get();
+    return view('admin.post.hidden_post', compact('posts'), ['title' => 'Tin đã ẩn']);
+  }
   public function EditPost($post_id)
   {
     $post = Post::with(['images'])->findOrFail($post_id);
     $categories = Category::orderBy('id', 'desc')->get();
     return view('admin.post.edit_post', compact('post', 'categories'), ['title' => 'Cập nhật tin']);
   }
-
+  public function UpdateStatusPost(Request $request, $id)
+  {
+    Post::find($id)->update([
+      'status' => $request->status,
+    ]);
+    return response()->json([
+      'status' => true,
+      'errors' => [],
+    ]);
+  }
   public function StoreUpdatePost(Request $request, $id)
   {
     $validator = Validator::make($request->all(), [
@@ -78,6 +102,7 @@ class PostController extends Controller
       'province' => $request->province_name,
       'district' => $request->district_name,
       'ward' => $request->ward_name,
+      'area' => str_replace(',', '.', $request->area),
       'street' => $request->street,
       'house_number' => $request->house_number,
       'is_featured' => $request->is_featured ? $request->is_featured : '0',
@@ -88,7 +113,7 @@ class PostController extends Controller
       'message' => 'Cập nhật thành công!',
       'alert-type' => 'success'
     );
-    return redirect()->back()->with($notification);
+    return redirect()->route('admin.all.post')->with($notification);
   }
   public function DeletePost($post_id)
   {

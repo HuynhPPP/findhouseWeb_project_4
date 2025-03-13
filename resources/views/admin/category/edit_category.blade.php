@@ -81,7 +81,7 @@
               <div class="card-block table-border-style">
                 <div class="table-responsive dt-responsive">
                   <table id="order-table"
-                    class="table border table-bordered nowrap">
+                    class="table mt-3 border table-bordered nowrap">
                     <thead>
                       <tr>
                         <th>#</th>

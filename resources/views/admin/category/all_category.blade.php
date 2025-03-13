@@ -18,7 +18,8 @@
         </div>
         <div class="card-block">
           <div class="table-responsive dt-responsive">
-            <table id="order-table" class="table border table-bordered nowrap">
+            <table id="order-table"
+              class="table mt-3 border table-bordered nowrap">
               <thead>
                 <tr>
                   <th>Tên danh mục</th>

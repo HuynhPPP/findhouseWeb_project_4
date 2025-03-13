@@ -54,9 +54,13 @@ Route::middleware(['auth', 'roles:admin'])->group(function () {
   });
   Route::controller(PostController::class)->group(function () {
     Route::get('all/post/', 'AllPost')->name('admin.all.post');
+    Route::get('approved/post', 'approvedPost')->name('admin.approved.post');
+    Route::get('pending/post', 'PendingPost')->name('admin.pending.post');
+    Route::get('hidden/post', 'HiddenPost')->name('admin.hidden.post');
     Route::get('edit/post/{post_id}/{slug}.html', 'EditPost')->name('admin.edit.post');
     Route::post('store/update/post/{post_id}', 'StoreUpdatePost')->name('admin.store.update.post');
     Route::delete('delete/post/{post_id}', 'DeletePost')->name('admin.delete.post');
+    Route::post('update/status-post/{id}', 'UpdateStatusPost');
     // route image post
     Route::get('edit/post-image/{post_id}/{slug}.html', 'EditPostImage')->name('admin.edit.post-image');
     Route::post('/upload-image', 'StoreUploadImagePost')->name('admin.update.image.post');
