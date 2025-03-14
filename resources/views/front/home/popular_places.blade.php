@@ -1,8 +1,8 @@
 <section class="feature-categories bg-white rec-pro">
     <div class="container-fluid">
         <div class="sec-title">
-            <h2><span>Chỗ ở </span>phổ biến</h2>
-            <p>Những địa điểm ở các thành phố lớn.</p>
+            <h2>Các thành phố lớn</h2>
+            <p>Bạn cần tìm kiếm chỗ ở những thành phố lớn.</p>
         </div>
         <div class="row">
             <!-- Single category -->

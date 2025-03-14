@@ -2713,8 +2713,8 @@ section.portfolio {
 }
 
 .portfolio .homes-tag.sale {
-  background: #e54242 !important;
-  width: 84px !important;
+  background-color: #e54242 !important;
+  width: 130px !important;
   height: 31px;
 }
 
@@ -2801,10 +2801,10 @@ section.portfolio {
 }
 
 .portfolio .homes-content h3.title a {
-  font-size: 1.1rem;
+  font-size: 1rem;
   font-weight: 600;
   color: #666;
-  text-transform: uppercase;
+  text-transform: lowercase;
   text-decoration: none;
 }
 
@@ -16220,7 +16220,7 @@ h4.widget_author__name {
 
 .listing-details-sliders .left {
   position: absolute;
-  top: 50%;
+  top: 45%;
   left: 35px;
   background: #FF385C;
   width: 36px;
@@ -16252,7 +16252,7 @@ h4.widget_author__name {
 
 .listing-details-sliders .right {
   position: absolute;
-  top: 50%;
+  top: 45%;
   right: 35px;
   background: #FF385C;
   width: 36px;

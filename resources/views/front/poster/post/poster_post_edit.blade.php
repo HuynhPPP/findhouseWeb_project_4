@@ -10,6 +10,10 @@
             width: 100%;
         }
 
+        .custom-select-price {
+            width: 120px; 
+        }
+
         .selected-option {
             padding: 10px;
             border: 1px solid #ccc;
@@ -61,7 +65,7 @@
                     <div class="row">
                         <div class="col-md-12">
                             <p>
-                                <label for="title">Tiêu đề</label>
+                                <label for="title">Tiêu đề <span class="text-danger">(*)</span></label>
                                 <input type="text" name="title" id="title" placeholder=""
                                     value="{{ old('title', $post->title) }}">
                                 @error('title')
@@ -73,7 +77,7 @@
                     <div class="row">
                         <div class="col-md-12">
                             <p>
-                                <label for="description">Nội dung mô tả</label>
+                                <label for="description">Nội dung mô tả <span class="text-danger">(*)</span></label>
                                 <textarea class="textarea" id="description" name="description" placeholder="">
                                     {{ old('description', $post->description) }}
                                 </textarea>
@@ -84,9 +88,9 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-lg-6 col-md-12 dropdown faq-drop">
+                        <div class="col-lg-4 col-md-12 dropdown faq-drop">
                             <div class="form-group mb-3">
-                                <label for="province">Loại chuyên mục</label>
+                                <label for="province">Loại chuyên mục <span class="text-danger">(*)</span></label>
                                 <select class="form-control" name="category_id">
                                     <option selected="" disabled>-- Chọn loại chuyên mục --</option>
                                     @foreach ($categories as $item)
@@ -101,9 +105,7 @@
                                 @enderror
                             </div>
                         </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-lg-6 col-md-12">
+                        <div class="col-lg-4 col-md-12">
                             <div class="form-group">
                                 <label for="gia_thue">Giá cho thuê <span class="text-danger">(*)</span></label>
                                 <div class="input-group">
@@ -130,7 +132,7 @@
                                 <p style="color:red">{{ $message }}</p>
                             @enderror
                         </div>
-                        <div class="col-lg-6 col-md-12">
+                        <div class="col-lg-4 col-md-12">
                             <div class="form-group">
                                 <label for="area">Diện tích <span class="text-danger">(*)</span></label>
                                 <div class="input-group">

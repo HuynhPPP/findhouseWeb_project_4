@@ -34,9 +34,32 @@ class MainControler extends Controller
             return $post;
         });
 
+        $posts_newest = Post::where('status', 'approved')
+            ->orderBy('created_at', 'desc') 
+            ->take(8)
+            ->get()
+            ->map(function ($post) {
+                $addressParts = array_filter([
+                    $post->house_number,
+                    $post->street,
+                    $post->ward,
+                    $post->district,
+                    $post->province
+                ]);
+
+                $post->full_address = implode(', ', $addressParts);
+                $post->formatted_price = $this->formatPrice($post->price);
+
+                return $post; // Trả về đối tượng đã được cập nhật trong map()
+            });
+
+
+        $categories = Category::where('status', 'show')->get();
+
+
         return view(
             'front.main.index',
-            compact('posts_featured')
+            compact('posts_featured', 'categories', 'posts_newest')
         );
     }
 
@@ -64,7 +87,7 @@ class MainControler extends Controller
             $post->full_address = implode(', ', $addressParts);
 
             $post->formatted_price = $this->formatPrice($post->price);
-            
+
             return $post;
         });
 
@@ -86,13 +109,36 @@ class MainControler extends Controller
             $post->district,
             $post->province
         ]);
-        
+
         $post->full_address = implode(', ', $addressParts);
 
         $post->formatted_price = $this->formatPrice($post->price);
-    
+
         $images = $post->images;
-    
+
         return view('front.main.post_detail', compact('post', 'images'));
-    }    
+    }
+
+    public function getPostsByCategory($id)
+    {
+        $posts_category = Post::where('category_id', $id)->take(9)->get()->map(function ($post) {
+            $addressParts = array_filter([
+                $post->house_number,
+                $post->street,
+                $post->ward,
+                $post->district,
+                $post->province
+            ]);
+
+            $post->full_address = implode(', ', $addressParts);
+            $post->formatted_price = $this->formatPrice($post->price);
+
+            return $post; // Trả về đối tượng đã được cập nhật trong map()
+        });
+
+        // Lấy thông tin danh mục một lần duy nhất
+        $category = Category::find($id);
+
+        return view('front.main.all_post_category', compact('posts_category', 'category'));
+    }
 }

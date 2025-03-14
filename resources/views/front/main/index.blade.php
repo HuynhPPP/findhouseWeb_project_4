@@ -12,7 +12,7 @@
 <!--=======================================
         START SECTION POPULAR PLACES 
 ========================================-->
-@include('front.home.popular_places')
+@include('front.home.categories')
 <!--=======================================        
         END SECTION POPULAR PLACES 
 ========================================-->
@@ -28,7 +28,7 @@
 <!--=============================================
         START SECTION WHY CHOOSE US 
 ==============================================-->
-@include('front.home.why_choose_us')
+@include('front.home.popular_places')
 <!--=============================================        
         END SECTION WHY CHOOSE US 
 ==============================================-->

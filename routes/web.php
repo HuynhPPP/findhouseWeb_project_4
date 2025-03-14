@@ -22,6 +22,7 @@ Route::get('/api/proxy/wards/{districtId}', [ApiController::class, 'getWards']);
 
 Route::get('/all/post/recommend', [MainControler::class, 'AllPostRecommend'])->name('all.post_recommend');
 Route::get('/post/details/{id}', [MainControler::class, 'PostDetail'])->name('post.detail');
+Route::get('/category/{id}', [MainControler::class, 'getPostsByCategory'])->name('category.posts');
 
 
 require __DIR__ . '/auth.php';

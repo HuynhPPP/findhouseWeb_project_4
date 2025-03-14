@@ -58,6 +58,8 @@
 
         <form action="{{ route('poster.post.store') }}" method="post" enctype="multipart/form-data">
             @csrf
+
+            <!-- Information common -->
             <div class="single-add-property">
                 <h3>Thông tin mô tả</h3>
                 <div class="property-form-group">
@@ -90,7 +92,7 @@
                         $categories = App\Models\Category::get();
                     @endphp
                     <div class="row">
-                        <div class="col-lg-6 col-md-12 dropdown faq-drop">
+                        <div class="col-lg-4 col-md-12 dropdown faq-drop">
                             <div class="form-group mb-3">
                                 <label for="province">Loại chuyên mục</label>
                                 <select class="form-control" name="category_id">
@@ -107,9 +109,8 @@
                                 @enderror
                             </div>
                         </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-lg-6 col-md-12">
+    
+                        <div class="col-lg-4 col-md-12">
                             <div class="form-group">
                                 <label for="gia_thue">Giá cho thuê <span class="text-danger">(*)</span></label>
                                 <div class="input-group">
@@ -135,7 +136,7 @@
                                 <p style="color:red">{{ $message }}</p>
                             @enderror
                         </div>
-                        <div class="col-lg-6 col-md-12">
+                        <div class="col-lg-4 col-md-12">
                             <div class="form-group">
                                 <label for="area">Diện tích <span class="text-danger">(*)</span></label>
                                 <div class="input-group">
@@ -159,6 +160,7 @@
                 </div>
             </div>
 
+            <!-- Images -->
             <div class="single-add-property">
                 <h3>Hình ảnh</h3>
                 <div class="property-form-group">
@@ -180,6 +182,7 @@
                 </div>
             </div>
 
+            <!-- Video -->
             <div class="single-add-property">
                 <h3>Video</h3>
                 <div class="property-form-group">
@@ -218,6 +221,7 @@
                 </div>
             </div>
 
+            <!-- Location -->
             <div class="single-add-property">
                 <h3>Khu vực</h3>
                 <div class="property-form-group">
@@ -298,6 +302,7 @@
                 </div>
             </div>
 
+            <!-- Map -->
             <div class="single-add-property">
                 <h3>Bản đồ</h3>
                 <div id="map"></div>
@@ -309,6 +314,7 @@
                 $profileData = App\Models\User::find($id);
             @endphp
 
+            <!-- Profile -->
             <div class="single-add-property">
                 <h3>thông tin liên hệ</h3>
                 <div class="property-form-group">

@@ -19,7 +19,7 @@
                                 <!-- homes img -->
                                 <a href="#" class="homes-img">
                                     <div class="homes-tag button alt featured">Đề xuất</div>
-                                    <div class="homes-tag button alt sale">For Sale</div>
+                                    <div class="homes-tag button alt sale">{{ $post->category->category_name }}</div>
                                     @if ($randomImage)
                                         <img src="{{ asset($randomImage->image_url) }}" alt="home-1"
                                             class="img-responsive" style="height: 320px;">
