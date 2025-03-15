@@ -6,7 +6,9 @@ use App\Http\Controllers\Front\UserController;
 use App\Http\Controllers\Front\ApiController;
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\admin\CategoryController;
+use App\Http\Controllers\admin\LeaseController;
 use App\Http\Controllers\admin\PostController;
+use App\Http\Controllers\admin\RenterController;
 use Illuminate\Support\Facades\Route;
 
 /// Route Accessable for All
@@ -53,21 +55,35 @@ Route::middleware(['auth', 'roles:admin'])->group(function () {
     Route::post('admin/change-password', 'ChangePassword')->name('admin.change.password');
   });
   Route::controller(PostController::class)->group(function () {
-    Route::get('all/post/', 'AllPost')->name('admin.all.post');
-    Route::get('approved/post', 'approvedPost')->name('admin.approved.post');
-    Route::get('pending/post', 'PendingPost')->name('admin.pending.post');
-    Route::get('hidden/post', 'HiddenPost')->name('admin.hidden.post');
-    Route::get('edit/post/{post_id}/{slug}.html', 'EditPost')->name('admin.edit.post');
-    Route::post('store/update/post/{post_id}', 'StoreUpdatePost')->name('admin.store.update.post');
-    Route::delete('delete/post/{post_id}', 'DeletePost')->name('admin.delete.post');
-    Route::post('update/status-post/{id}', 'UpdateStatusPost');
+    Route::get('admin/all/post/', 'AllPost')->name('admin.all.post');
+    Route::get('admin/approved/post', 'approvedPost')->name('admin.approved.post');
+    Route::get('admin/pending/post', 'PendingPost')->name('admin.pending.post');
+    Route::get('admin/hidden/post', 'HiddenPost')->name('admin.hidden.post');
+    Route::get('admin/edit/post/{post_id}/{slug}.html', 'EditPost')->name('admin.edit.post');
+    Route::post('admin/store/update/post/{post_id}', 'StoreUpdatePost')->name('admin.store.update.post');
+    Route::delete('admin/delete/post/{post_id}', 'DeletePost')->name('admin.delete.post');
+    Route::post('admin/update/status-post/{id}', 'UpdateStatusPost');
     // route image post
-    Route::get('edit/post-image/{post_id}/{slug}.html', 'EditPostImage')->name('admin.edit.post-image');
-    Route::post('/upload-image', 'StoreUploadImagePost')->name('admin.update.image.post');
-    Route::get('/get/post-images', 'GetPostImages')->name('admin.get.post.images');
-    Route::post('/delete/post-image', 'DeletePostImages')->name('admin.delete.post.image');
+    Route::get('admin/edit/post-image/{post_id}/{slug}.html', 'EditPostImage')->name('admin.edit.post-image');
+    Route::post('admin/upload-image', 'StoreUploadImagePost')->name('admin.update.image.post');
+    Route::get('admin/get/post-images', 'GetPostImages')->name('admin.get.post.images');
+    Route::post('admin/delete/post-image', 'DeletePostImages')->name('admin.delete.post.image');
     //route video post
-    Route::delete('/delete-video/{id}',  'deleteVideo');
+    Route::delete('admin/delete-video/{id}',  'deleteVideo');
+  });
+  Route::controller(RenterController::class)->group(function () {
+    Route::get('admin/all/renter', 'AllRenter')->name('admin.all.renter');
+    Route::get('admin/edit/renter/{id}', 'EditRenter')->name('admin.edit.renter');
+    Route::post('admin/store/renter/{id}', 'StoreRenter')->name('admin.store.renter');
+    Route::delete('admin/delete/renter/{id}', 'DeleteRenter')->name('admin.delete.renter');
+    Route::post('admin/update/status/renter/{id}', 'UpdateStatusRenter');
+  });
+  Route::controller(LeaseController::class)->group(function () {
+    Route::get('admin/all/lease', 'AllLease')->name('admin.all.lease');
+    Route::get('admin/edit/lease/{id}', 'EditLease')->name('admin.edit.lease');
+    Route::post('admin/store/lease/{id}', 'StoreLease')->name('admin.store.lease');
+    Route::delete('admin/delete/lease/{id}', 'DeleteLease')->name('admin.delete.lease');
+    Route::post('admin/update/status/lease/{id}', 'UpdateStatusLease');
   });
 }); // End Admin group middleware
 

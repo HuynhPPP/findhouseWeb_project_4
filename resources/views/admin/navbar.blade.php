@@ -71,7 +71,29 @@
             </li>
           </ul>
         </li>
-
+        <li
+          class="pcoded-hasmenu {{ in_array(Route::currentRouteName(), ['admin.all.renter', 'admin.edit.renter', 'admin.all.lease', 'admin.edit.lease']) ? 'active pcoded-trigger' : '' }}">
+          <a href="javascript:void(0)" class="waves-effect waves-dark">
+            <span class="pcoded-micon"><i class="fa fa-user"></i></span>
+            <span class="pcoded-mtext">Tài khoản</span>
+          </a>
+          <ul class="pcoded-submenu">
+            <li
+              class="{{ Route::currentRouteName() == 'admin.all.renter' ? 'active' : '' }}">
+              <a href="{{ route('admin.all.renter') }}"
+                class="waves-effect waves-dark">
+                <span class="pcoded-mtext">Người dùng</span>
+              </a>
+            </li>
+            <li
+              class="{{ Route::currentRouteName() == 'admin.all.lease' ? 'active' : '' }}">
+              <a href="{{ route('admin.all.lease') }}"
+                class="waves-effect waves-dark">
+                <span class="pcoded-mtext">Người cho thuê</span>
+              </a>
+            </li>
+          </ul>
+        </li>
       </ul>
       <div class="pcoded-navigation-label">UI Element</div>
       <ul class="pcoded-item pcoded-left-item">
