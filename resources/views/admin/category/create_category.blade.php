@@ -103,6 +103,8 @@
   <script
     src="{{ asset('admin/components/datatables.net-bs4/js/dataTables.bootstrap4.min.js') }}">
   </script>
+  <script src="{{ asset('admin/pages/data-table/js/data-table-custom.js') }}">
+  </script>
   <script>
     $(document).ready(function() {
       function getCategory() {

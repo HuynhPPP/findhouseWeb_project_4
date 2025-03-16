@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\admin\AdminChartController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Front\PosterController;
 use App\Http\Controllers\Front\UserController;
@@ -85,6 +86,8 @@ Route::middleware(['auth', 'roles:admin'])->group(function () {
     Route::delete('admin/delete/lease/{id}', 'DeleteLease')->name('admin.delete.lease');
     Route::post('admin/update/status/lease/{id}', 'UpdateStatusLease');
   });
+  Route::get('/admin/chart/posts', [AdminChartController::class, 'PostChart']);
+  Route::get('/admin/chart/user', [AdminChartController::class, 'userStatistics']);
 }); // End Admin group middleware
 
 

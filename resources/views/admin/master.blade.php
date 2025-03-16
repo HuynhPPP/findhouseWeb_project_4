@@ -359,21 +359,20 @@
         </div>
       </div>
     </div>
-
     <script type="text/javascript"
       src="{{ asset('admin/components/jquery/js/jquery.min.js') }}"></script>
     <script type="text/javascript"
       src="{{ asset('admin/components/jquery-ui/js/jquery-ui.min.js') }}"></script>
+    <!-- jquery slimscroll js -->
+    <script type="text/javascript"
+      src="{{ asset('admin/components/jquery-slimscroll/js/jquery.slimscroll.js') }}">
+    </script>
     <script type="text/javascript"
       src="{{ asset('admin/components/popper.js/js/popper.min.js') }}"></script>
     <script type="text/javascript"
       src="{{ asset('admin/components/bootstrap/js/bootstrap.min.js') }}"></script>
     <!-- waves js -->
     <script src="{{ asset('admin/pages/waves/js/waves.min.js') }}"></script>
-    <!-- jquery slimscroll js -->
-    <script type="text/javascript"
-      src="{{ asset('admin/components/jquery-slimscroll/js/jquery.slimscroll.js') }}">
-    </script>
     <!-- modernizr js -->
     <script type="text/javascript"
       src="{{ asset('admin/components/modernizr/js/modernizr.js') }}"></script>
@@ -383,8 +382,6 @@
     <!-- waves js -->
     <script src="{{ asset('admin/pages/waves/js/waves.min.js') }}"></script>
     <!-- Custom js -->
-    <script src="{{ asset('admin/pages/data-table/js/data-table-custom.js') }}">
-    </script>
     <script src="{{ asset('admin/js/pcoded.min.js') }}"></script>
     <script src="{{ asset('admin/js/vertical/vertical-layout.min.js') }}"></script>
     <script src="{{ asset('admin/js/jquery.mCustomScrollbar.concat.min.js') }}">

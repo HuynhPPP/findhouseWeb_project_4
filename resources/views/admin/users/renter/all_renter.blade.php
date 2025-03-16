@@ -12,7 +12,7 @@
       <!-- DOM/Jquery table start -->
       <div class="card">
         <div class="card-header">
-          <h5>Đăng tin</h5>
+          <h5>Tài khoản</h5>
         </div>
         <div class="card-block">
           <div class="table-responsive dt-responsive">
@@ -95,6 +95,8 @@
   <script src="{{ asset('admin/pages/data-table/js/vfs_fonts.js') }}"></script>
   <script
     src="{{ asset('admin/components/datatables.net-bs4/js/dataTables.bootstrap4.min.js') }}">
+  </script>
+  <script src="{{ asset('admin/pages/data-table/js/data-table-custom.js') }}">
   </script>
   <script>
     $.ajaxSetup({

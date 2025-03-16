@@ -17,4 +17,12 @@ class Post extends Model
   {
     return $this->hasMany(Image::class, 'post_id', 'id');
   }
+  public function firstImage()
+  {
+    return $this->hasOne(Image::class, 'post_id')->oldest();
+  }
+  public function user()
+  {
+    return $this->belongsTo(User::class, 'user_id');
+  }
 }
