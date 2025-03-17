@@ -31,6 +31,19 @@ class Post extends Model
         'video_url',
     ];
 
+    public function getFullAddressAttribute()
+    {
+        $addressParts = array_filter([
+            $this->house_number,
+            $this->street,
+            $this->ward,
+            $this->district,
+            $this->province
+        ]);
+
+        return implode(', ', $addressParts);
+    }
+
     public function users()
     {
         return $this->belongsTo(User::class, 'user_id', 'id');

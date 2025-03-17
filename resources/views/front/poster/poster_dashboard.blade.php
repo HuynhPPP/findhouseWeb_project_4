@@ -3,6 +3,7 @@
 
 
 <!-- Mirrored from code-theme.com/html/findhouses/dashboard.html by HTTrack Website Copier/3.x [XR&CO'2014], Mon, 30 Dec 2024 03:45:07 GMT -->
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -35,13 +36,19 @@
     <link rel="stylesheet" href="{{ asset('front/trumbowyg/trumbowyg.min.css') }}" />
 
     <!-- Toastr -->
-	<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.css">
-	<!-- End Toastr -->
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.css">
+    <!-- End Toastr -->
 </head>
 
 <body class="inner-pages maxw1600 m0a dashboard-bd">
     <!-- Wrapper -->
     <div id="wrapper" class="int_main_wraapper">
+        <!-- START PRELOADER -->
+        <div id="preloader-dashboard">
+            <div id="progress-bar-dashboard"></div>
+        </div>
+        <!-- END PRELOADER -->
+
         <!-- START SECTION HEADINGS -->
         <!-- Header Container
         ================================================== -->
@@ -55,7 +62,7 @@
                     <div class="col-lg-3 col-md-12 col-xs-12 pl-0 pr-0 user-dash">
                         @include('front.poster.body.sidebar')
                     </div>
-                        @yield('poster') 
+                    @yield('poster')
                 </div>
             </div>
         </section>
@@ -106,13 +113,12 @@
         <script src="{{ asset('front/trumbowyg/trumbowyg.min.js') }}"></script>
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
         <script src="{{ asset('front/js/code.js') }}"></script>
-       
+
         <script>
             $(".header-user-name").on("click", function() {
                 $(".header-user-menu ul").toggleClass("hu-menu-vis");
                 $(this).toggleClass("hu-menu-visdec");
             });
-
         </script>
 
         <!-- MAIN JS -->
@@ -121,45 +127,65 @@
         <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 
         <script>
-        @if(Session::has('message'))
-        var type = "{{ Session::get('alert-type','info') }}"
-        switch(type){
-            case 'info':
-            toastr.info(" {{ Session::get('message') }} ");
-            break;
-        
-            case 'success':
-            toastr.success(" {{ Session::get('message') }} ");
-            break;
-        
-            case 'warning':
-            toastr.warning(" {{ Session::get('message') }} ");
-            break;
-        
-            case 'error':
-            toastr.error(" {{ Session::get('message') }} ");
-            break; 
-        }
-        @endif 
-        </script>	
+            @if (Session::has('message'))
+                var type = "{{ Session::get('alert-type', 'info') }}"
+                switch (type) {
+                    case 'info':
+                        toastr.info(" {{ Session::get('message') }} ");
+                        break;
 
-    <script>
-        $(document).ready(function() {
-            $('.popup-youtube, .popup-vimeo, .popup-gmaps').magnificPopup({
-                disableOn: 700,
-                type: 'iframe',
-                mainClass: 'mfp-fade',
-                removalDelay: 160,
-                preloader: false,
-                fixedContentPos: false
+                    case 'success':
+                        toastr.success(" {{ Session::get('message') }} ");
+                        break;
+
+                    case 'warning':
+                        toastr.warning(" {{ Session::get('message') }} ");
+                        break;
+
+                    case 'error':
+                        toastr.error(" {{ Session::get('message') }} ");
+                        break;
+                }
+            @endif
+        </script>
+
+        <script>
+            $(document).ready(function() {
+                $('.popup-youtube, .popup-vimeo, .popup-gmaps').magnificPopup({
+                    disableOn: 700,
+                    type: 'iframe',
+                    mainClass: 'mfp-fade',
+                    removalDelay: 160,
+                    preloader: false,
+                    fixedContentPos: false
+                });
             });
-        });
+        </script>
 
-    </script>
-    <script>
-		$('.textarea').trumbowyg();
-	</script>
-    @yield('customJs')
+        <script>
+            $('.textarea').trumbowyg();
+        </script>
+
+        @yield('customJs')
+
+        <script>
+            document.addEventListener("DOMContentLoaded", function() {
+                let progress = document.getElementById("progress-bar-dashboard");
+                let width = 0;
+
+                let interval = setInterval(function() {
+                    width += 10; // Tăng tiến trình (có thể điều chỉnh)
+                    progress.style.width = width + "%";
+
+                    if (width >= 100) {
+                        clearInterval(interval);
+                        setTimeout(function() {
+                            document.getElementById("preloader-dashboard").style.display = "none";
+                        }, 300); // Chờ 300ms rồi ẩn thanh
+                    }
+                }, 100); // Cập nhật mỗi 100ms
+            });
+        </script>
 
     </div>
     <!-- Wrapper / End -->

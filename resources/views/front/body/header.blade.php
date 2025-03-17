@@ -6,7 +6,7 @@
             <div class="left-side">
                 <!-- Logo -->
                 <div id="logo">
-                    <a href="index.html"><img src="{{ asset('front/images/logo-white-1.svg') }}"
+                    <a href="{{ route('index') }}"><img src="{{ asset('front/images/logo-white-1.svg') }}"
                             data-sticky-logo="{{ asset('front/images/logo-red.svg') }}" alt=""></a>
                 </div>
                 <!-- Mobile Navigation -->

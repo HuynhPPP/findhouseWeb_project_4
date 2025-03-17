@@ -1,6 +1,10 @@
 @extends('front.master')
 @section('home')
 
+@section('title')
+Kênh thông tin phòng trọ | nhà ở
+@endsection
+
 <!--================================
         STAR HEADER SEARCH 
 =================================-->
@@ -44,7 +48,7 @@
 <!--=============================================
         START SECTION AGENTS 
 ==============================================-->
-@include('front.home.agents')
+{{-- @include('front.home.agents') --}}
 <!--=============================================        
         END SECTION AGENTS 
 ==============================================-->
@@ -52,7 +56,7 @@
 <!--=============================================
         START SECTION TESTIMONIALS 
 ==============================================-->
-@include('front.home.testimonials')
+{{-- @include('front.home.testimonials') --}}
 <!--=============================================        
         END SECTION TESTIMONIALS 
 ==============================================-->
@@ -60,7 +64,7 @@
 <!--=============================================
         STAR SECTION PARTNERS 
 ==============================================-->
-@include('front.home.partners')
+{{-- @include('front.home.partners') --}}
 <!--=============================================        
         END SECTION PARTNERS 
 ==============================================-->

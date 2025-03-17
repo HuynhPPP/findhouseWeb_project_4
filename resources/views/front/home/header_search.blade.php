@@ -1,3 +1,60 @@
+<style>
+    .filter-section {
+        margin-top: 20px;
+    }
+
+    .filter-group {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-top: 5px;
+    }
+
+    .filter-label {
+        margin-bottom: 15px;
+        display: block;
+        text-align: left;
+    }
+
+    .filter-btn {
+        padding: 8px 15px;
+        border: 1px solid #ddd;
+        background-color: #fff;
+        border-radius: 20px;
+        font-size: 14px;
+        cursor: pointer;
+        transition: 0.3s;
+        outline: none;
+    }
+
+    .filter-btn.active {
+        border: 2px solid #FF385C !important;
+        position: relative;
+    }
+
+    .filter-btn:focus,
+    .filter-btn:hover {
+        border: 2px solid #FF385C !important;
+        outline: none;
+    }
+
+    .filter-btn.active::after {
+        content: "✔";
+        position: absolute;
+        top: -5px;
+        right: -5px;
+        background-color: #FF385C;
+        color: white;
+        font-size: 12px;
+        width: 16px;
+        height: 16px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+</style>
+
 <section id="hero-area" class="parallax-searchs home15 overlay thome-6 thome-1" data-stellar-background-ratio="0.5">
     <div class="hero-main">
         <div class="container" data-aos="zoom-in">
@@ -7,10 +64,10 @@
                         <!-- Welcome Text -->
                         <div class="welcome-text">
                             <h1 class="h1">Find Your Dream
-                            <br class="d-md-none">
-                            <span class="typed border-bottom"></span>
-                        </h1>
-                            <p class="mt-4">Chúng tôi có hàng triệu lựa chọn dành cho bạn.</p>
+                                <br class="d-md-none">
+                                <span class="typed border-bottom"></span>
+                            </h1>
+                            <p class="mt-4">Chúng tôi có hàng nghìn lựa chọn dành cho bạn.</p>
                         </div>
                         <!--/ End Welcome Text -->
                         <!-- Search Form -->
@@ -18,308 +75,452 @@
                             <div class="banner-search-wrap">
                                 <ul class="nav nav-tabs rld-banner-tab">
                                     <li class="nav-item">
-                                        <a class="nav-link active" data-toggle="tab" href="#tabs_1">Cho Bán</a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a class="nav-link" data-toggle="tab" href="#tabs_2">Cho Thuê</a>
+                                        <a class="nav-link active" data-toggle="tab" href="#tabs_2">Tìm kiếm</a>
                                     </li>
                                 </ul>
                                 <div class="tab-content">
-                                    <div class="tab-pane fade show active" id="tabs_1">
+                                    <div class="tab-pane fade show active" id="tabs_2">
                                         <div class="rld-main-search">
-                                            <div class="row">
-                                                <div class="rld-single-input">
-                                                    <input type="text" placeholder="Từ khoá...">
-                                                </div>
-                                                <div class="rld-single-select ml-22">
-                                                    <select class="select single-select">
-                                                        <option selected="" disabled>-- Danh mục --</option>
-                                                        <option value="1">Nhà trọ</option>
-                                                        <option value="2">Family House</option>
-                                                        <option value="3">Apartment</option>
-                                                        <option value="3">Condo</option>
-                                                    </select>
-                                                </div>
-                                                <div class="rld-single-select">
-                                                    <select class="select single-select mr-0">
-                                                        <option selected="" disabled>-- Tỉnh thành --</option>
-                                                        <option value="1">Location</option>
-                                                        <option value="2">Los Angeles</option>
-                                                        <option value="3">Chicago</option>
-                                                        <option value="3">Philadelphia</option>
-                                                        <option value="3">San Francisco</option>
-                                                        <option value="3">Miami</option>
-                                                        <option value="3">Houston</option>
-                                                    </select>
-                                                </div>
-                                                <div class="dropdown-filter"><span>Bộ lọc</span></div>
-                                                <div class="col-xl-2 col-lg-2 col-md-4 pl-0">
-                                                    <a class="btn btn-yellow" href="#">Tìm kiếm</a>
-                                                </div>
-                                                <div class="explore__form-checkbox-list full-filter">
-                                                    <div class="row">
-                                                        <div class="col-lg-4 col-md-6 py-1 pr-30 pl-0">
-                                                            <!-- Form Property Status -->
-                                                            <div class="form-group categories">
-                                                                <div class="nice-select form-control wide" tabindex="0"><span class="current"><i class="fa fa-home"></i>Loại hình</span>
-                                                                    <ul class="list">
-                                                                        <li data-value="1" class="option selected ">Cho bán</li>
-                                                                        <li data-value="2" class="option">Cho thuê</li>
-                                                                    </ul>
-                                                                </div>
-                                                            </div>
-                                                            <!--/ End Form Property Status -->
-                                                        </div>
-                                                        <div class="col-lg-4 col-md-6 py-1 pr-30 pl-0 ">
-                                                            <!-- Form Bedrooms -->
-                                                            <div class="form-group beds">
-                                                                <div class="nice-select form-control wide" tabindex="0"><span class="current"><i class="fa fa-bed" aria-hidden="true"></i> Quận/Huyện</span>
-                                                                    <ul class="list">
-                                                                        <li data-value="1" class="option selected">1</li>
-                                                                        <li data-value="2" class="option">2</li>
-                                                                        <li data-value="3" class="option">3</li>
-                                                                        <li data-value="3" class="option">4</li>
-                                                                        <li data-value="3" class="option">5</li>
-                                                                        <li data-value="3" class="option">6</li>
-                                                                        <li data-value="3" class="option">7</li>
-                                                                        <li data-value="3" class="option">8</li>
-                                                                        <li data-value="3" class="option">9</li>
-                                                                        <li data-value="3" class="option">10</li>
-                                                                    </ul>
-                                                                </div>
-                                                            </div>
-                                                            <!--/ End Form Bedrooms -->
-                                                        </div>
-                                                        <div class="col-lg-4 col-md-6 py-1 pr-30 pl-0">
-                                                            <!-- Form Bathrooms -->
-                                                            <div class="form-group bath">
-                                                                <div class="nice-select form-control wide" tabindex="0"><span class="current"><i class="fa fa-bath" aria-hidden="true"></i> Phường/Xã</span>
-                                                                    <ul class="list">
-                                                                        <li data-value="1" class="option selected">1</li>
-                                                                        <li data-value="2" class="option">2</li>
-                                                                        <li data-value="3" class="option">3</li>
-                                                                        <li data-value="3" class="option">4</li>
-                                                                        <li data-value="3" class="option">5</li>
-                                                                        <li data-value="3" class="option">6</li>
-                                                                        <li data-value="3" class="option">7</li>
-                                                                        <li data-value="3" class="option">8</li>
-                                                                        <li data-value="3" class="option">9</li>
-                                                                        <li data-value="3" class="option">10</li>
-                                                                    </ul>
-                                                                </div>
-                                                            </div>
-                                                            <!--/ End Form Bathrooms -->
-                                                        </div>
-                                                        <div class="col-lg-5 col-md-12 col-sm-12 py-1 pr-30 mr-5 sld d-none d-lg-none d-xl-flex">
-                                                            <!-- Price Fields -->
-                                                            <div class="main-search-field-2">
-                                                                <!-- Area Range -->
-                                                                <div class="range-slider">
-                                                                    <label>Diện tích</label>
-                                                                    <div id="area-range" data-min="0" data-max="1300" data-unit="m&sup2"></div>
-                                                                    <div class="clearfix"></div>
-                                                                </div>
-                                                                <br>
-                                                                <!-- Price Range -->
-                                                                <div class="range-slider">
-                                                                    <label>Mức giá</label>
-                                                                    <div id="price-range" data-min="0" data-max="50000000" data-unit="VND"></div>
-                                                                    <div class="clearfix"></div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-lg-3 col-md-6 col-sm-12 py-1 pr-30 d-none d-lg-none d-xl-flex">
-                                                            <!-- Checkboxes -->
-                                                            <div class="checkboxes one-in-row margin-bottom-10 ch-1">
-                                                                <input id="check-2" type="checkbox" name="check">
-                                                                <label for="check-2">Đầy đủ nội thất</label>
-                                                                <input id="check-3" type="checkbox" name="check">
-                                                                <label for="check-3">Có máy lạnh</label>
-                                                                <input id="check-4" type="checkbox" name="check">
-                                                                <label for="check-4">Có thang máy</label>
-                                                                <input id="check-5" type="checkbox" name="check">
-                                                                <label for="check-5">Có kệ bếp</label>
-                                                                <input id="check-6" type="checkbox" name="check">
-                                                                <label for="check-6">Có hầm để xe</label>
-                                                                <input id="check-6" type="checkbox" name="check">
-                                                                <label for="check-6">Có WIFI</label>
-                                                            </div>
-                                                            <!-- Checkboxes / End -->
-                                                        </div>
-                                                        <div class="col-lg-3 col-md-6 col-sm-12 py-1 pr-30 d-none d-lg-none d-xl-flex">
-                                                            <!-- Checkboxes -->
-                                                            <div class="checkboxes one-in-row margin-bottom-10 ch-2">
-                                                                <input id="check-9" type="checkbox" name="check">
-                                                                <label for="check-9">Có gác</label>
-                                                                <input id="check-10" type="checkbox" name="check">
-                                                                <label for="check-10">Có bảo vệ 24/24</label>
-                                                                <input id="check-11" type="checkbox" name="check">
-                                                                <label for="check-11">Có hồ bơi</label>
-                                                                <input id="check-12" type="checkbox" name="check">
-                                                                <label for="check-12">Giờ giấc tự do</label>
-                                                                <input id="check-13" type="checkbox" name="check">
-                                                                <label for="check-13">Không chung chủ</label>
-                                                            </div>
-                                                            <!-- Checkboxes / End -->
-                                                        </div>
+                                            <form action="{{ route('search.post') }}" method="POST">
+                                                @csrf
+                                                <div class="row">
+                                                    <div class="rld-single-input pl-4">
+                                                        <input type="text" name="keyword"
+                                                            placeholder="Từ khoá cần tìm...">
                                                     </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="tab-pane fade" id="tabs_2">
-                                        <div class="rld-main-search">
-                                            <div class="row">
-                                                <div class="rld-single-input">
-                                                    <input type="text" placeholder="Enter Keyword...">
-                                                </div>
-                                                <div class="rld-single-select ml-22">
-                                                    <select class="select single-select">
-                                                        <option value="1">Property Type</option>
-                                                        <option value="2">Family House</option>
-                                                        <option value="3">Apartment</option>
-                                                        <option value="3">Condo</option>
-                                                    </select>
-                                                </div>
-                                                <div class="rld-single-select">
-                                                    <select class="select single-select mr-0">
-                                                        <option value="1">Location</option>
-                                                        <option value="2">Los Angeles</option>
-                                                        <option value="3">Chicago</option>
-                                                        <option value="3">Philadelphia</option>
-                                                        <option value="3">San Francisco</option>
-                                                        <option value="3">Miami</option>
-                                                        <option value="3">Houston</option>
-                                                    </select>
-                                                </div>
-                                                <div class="dropdown-filter"><span>Advanced Search</span></div>
-                                                <div class="col-xl-2 col-lg-2 col-md-4 pl-0">
-                                                    <a class="btn btn-yellow" href="#">Search Now</a>
-                                                </div>
-                                                <div class="explore__form-checkbox-list full-filter">
-                                                    <div class="row">
-                                                        <div class="col-lg-4 col-md-6 py-1 pr-30 pl-0">
-                                                            <!-- Form Property Status -->
-                                                            <div class="form-group categories">
-                                                                <div class="nice-select form-control wide" tabindex="0"><span class="current"><i class="fa fa-home"></i>Property Status</span>
-                                                                    <ul class="list">
-                                                                        <li data-value="1" class="option selected ">For Sale</li>
-                                                                        <li data-value="2" class="option">For Rent</li>
-                                                                    </ul>
-                                                                </div>
-                                                            </div>
-                                                            <!--/ End Form Property Status -->
-                                                        </div>
-                                                        <div class="col-lg-4 col-md-6 py-1 pr-30 pl-0 ">
-                                                            <!-- Form Bedrooms -->
-                                                            <div class="form-group beds">
-                                                                <div class="nice-select form-control wide" tabindex="0"><span class="current"><i class="fa fa-bed" aria-hidden="true"></i> Bedrooms</span>
-                                                                    <ul class="list">
-                                                                        <li data-value="1" class="option selected">1</li>
-                                                                        <li data-value="2" class="option">2</li>
-                                                                        <li data-value="3" class="option">3</li>
-                                                                        <li data-value="3" class="option">4</li>
-                                                                        <li data-value="3" class="option">5</li>
-                                                                        <li data-value="3" class="option">6</li>
-                                                                        <li data-value="3" class="option">7</li>
-                                                                        <li data-value="3" class="option">8</li>
-                                                                        <li data-value="3" class="option">9</li>
-                                                                        <li data-value="3" class="option">10</li>
-                                                                    </ul>
-                                                                </div>
-                                                            </div>
-                                                            <!--/ End Form Bedrooms -->
-                                                        </div>
-                                                        <div class="col-lg-4 col-md-6 py-1 pl-0 pr-0">
-                                                            <!-- Form Bathrooms -->
-                                                            <div class="form-group bath">
-                                                                <div class="nice-select form-control wide" tabindex="0"><span class="current"><i class="fa fa-bath" aria-hidden="true"></i> Bathrooms</span>
-                                                                    <ul class="list">
-                                                                        <li data-value="1" class="option selected">1</li>
-                                                                        <li data-value="2" class="option">2</li>
-                                                                        <li data-value="3" class="option">3</li>
-                                                                        <li data-value="3" class="option">4</li>
-                                                                        <li data-value="3" class="option">5</li>
-                                                                        <li data-value="3" class="option">6</li>
-                                                                        <li data-value="3" class="option">7</li>
-                                                                        <li data-value="3" class="option">8</li>
-                                                                        <li data-value="3" class="option">9</li>
-                                                                        <li data-value="3" class="option">10</li>
-                                                                    </ul>
-                                                                </div>
-                                                            </div>
-                                                            <!--/ End Form Bathrooms -->
-                                                        </div>
-                                                        <div class="col-lg-5 col-md-12 col-sm-12 py-1 pr-30 mr-5 sld">
-                                                            <!-- Price Fields -->
-                                                            <div class="main-search-field-2">
-                                                                <!-- Area Range -->
-                                                                <div class="range-slider">
-                                                                    <label>Area Size</label>
-                                                                    <div id="area-range-rent" data-min="0" data-max="1300" data-unit="sq ft"></div>
-                                                                    <div class="clearfix"></div>
-                                                                </div>
-                                                                <br>
-                                                                <!-- Price Range -->
-                                                                <div class="range-slider">
-                                                                    <label>Price Range</label>
-                                                                    <div id="price-range-rent" data-min="0" data-max="600000" data-unit="$"></div>
-                                                                    <div class="clearfix"></div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-lg-3 col-md-6 col-sm-12 py-1 pr-30">
-                                                            <!-- Checkboxes -->
-                                                            <div class="checkboxes one-in-row margin-bottom-10 ch-1">
-                                                                <input id="check-16" type="checkbox" name="check">
-                                                                <label for="check-16">Air Conditioning</label>
-                                                                <input id="check-17" type="checkbox" name="check">
-                                                                <label for="check-17">Swimming Pool</label>
-                                                                <input id="check-18" type="checkbox" name="check">
-                                                                <label for="check-18">Central Heating</label>
-                                                                <input id="check-19" type="checkbox" name="check">
-                                                                <label for="check-19">Laundry Room</label>
-                                                                <input id="check-20" type="checkbox" name="check">
-                                                                <label for="check-20">Gym</label>
-                                                                <input id="check-21" type="checkbox" name="check">
-                                                                <label for="check-21">Alarm</label>
-                                                                <input id="check-22" type="checkbox" name="check">
-                                                                <label for="check-22">Window Covering</label>
-                                                            </div>
-                                                            <!-- Checkboxes / End -->
-                                                        </div>
-                                                        <div class="col-lg-3 col-md-6 col-sm-12 py-1 pr-30">
-                                                            <!-- Checkboxes -->
-                                                            <div class="checkboxes one-in-row margin-bottom-10 ch-2">
-                                                                <input id="check-23" type="checkbox" name="check">
-                                                                <label for="check-23">WiFi</label>
-                                                                <input id="check-24" type="checkbox" name="check">
-                                                                <label for="check-24">TV Cable</label>
-                                                                <input id="check-25" type="checkbox" name="check">
-                                                                <label for="check-25">Dryer</label>
-                                                                <input id="check-26" type="checkbox" name="check">
-                                                                <label for="check-26">Microwave</label>
-                                                                <input id="check-27" type="checkbox" name="check">
-                                                                <label for="check-27">Washer</label>
-                                                                <input id="check-28" type="checkbox" name="check">
-                                                                <label for="check-28">Refrigerator</label>
-                                                                <input id="check-29" type="checkbox" name="check">
-                                                                <label for="check-29">Outdoor Shower</label>
-                                                            </div>
-                                                            <!-- Checkboxes / End -->
-                                                        </div>
+                                                    <div class="rld-single-select ml-22">
+                                                        <select class="select single-select" name="category">
+                                                            <option selected disabled>-- Danh mục --</option>
+                                                            @foreach ($categories as $category)
+                                                                <option value="{{ $category->id }}">
+                                                                    {{ $category->category_name }}</option>
+                                                            @endforeach
+                                                        </select>
                                                     </div>
-                                                </div>
-                                            </div>
+                                                    <div class="rld-single-select">
+                                                        <select class="select single-select mr-0" name="province"
+                                                            id="province">
+                                                            <option selected value="0">Toàn quốc</option>
+                                                        </select>
+                                                    </div>
+                                                    <div class="dropdown-filter" data-toggle="modal"
+                                                        data-target="#filterModal"><span>Bộ lọc</span></div>
+                                                    <div class="col-xl-2 col-lg-2 col-md-4 pl-0">
+                                                        <button type="submit" class="btn btn-yellow">Tìm kiếm</button>
+                                                    </div>
+                                            </form>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <!--/ End Search Form -->
                     </div>
                 </div>
             </div>
         </div>
     </div>
+    </div>
 </section>
+
+<!-- Modal -->
+<div class="modal fade" id="filterModal" tabindex="-1" aria-labelledby="filterModalLabel" aria-hidden="true">
+    <div class="modal-dialog" style="max-width: 700px;">
+        <div class="modal-content" style="margin-top: 120px;">
+            <div class="modal-header">
+                <h5 class="modal-title" id="filterModalLabel">Bộ lọc tìm
+                    kiếm</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form action="{{ route('filter.post') }}" method="POST">
+                <div class="modal-body">
+                    @csrf
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="provinceNew">Chọn Tỉnh/Thành</label>
+                                <select id="provinceNew" name="province" class="form-control">
+                                    <option selected disabled>-- Chọn Tỉnh/Thành --</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="districtNew">Chọn Quận/Huyện</label>
+                                <select id="districtNew" name="district" class="form-control">
+                                    <option selected disabled>-- Chọn Quận/Huyện --</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="wardsNew">Chọn Phường/Xã</label>
+                                <select id="wardsNew" name="ward" class="form-control">
+                                    <option selected disabled>-- Chọn Phường/Xã --</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <input type="hidden" id="province_name" name="province_name">
+                    <input type="hidden" id="district_name" name="district_name">
+                    <input type="hidden" id="ward_name" name="ward_name">
+
+                    <div class="form-group filter-section category-group">
+                        <label class="filter-label">Danh mục cho thuê</label>
+                        <div class="filter-group">
+                            <button type="button" class="filter-btn active" data-value="all">Tất cả</button>
+                            @foreach ($categories as $category)
+                                <button type="button" class="filter-btn"
+                                    data-value="{{ $category->id }}">{{ $category->category_name }}</button>
+                            @endforeach
+                        </div>
+                    </div>
+
+
+                    <!-- Khoảng giá -->
+                    <div class="form-group filter-section price-group">
+                        <label class="filter-label">Khoảng giá</label>
+                        <div class="filter-group">
+                            <button type="button" class="filter-btn active" data-value="all">Tất cả</button>
+                            <button type="button" class="filter-btn" data-value="under-1m">Dưới 1 triệu</button>
+                            <button type="button" class="filter-btn" data-value="1-2m">1 - 2 triệu</button>
+                            <button type="button" class="filter-btn" data-value="2-3m">2 - 3 triệu</button>
+                            <button type="button" class="filter-btn" data-value="3-5m">3 - 5 triệu</button>
+                            <button type="button" class="filter-btn" data-value="5-7m">5 - 7 triệu</button>
+                            <button type="button" class="filter-btn" data-value="7-10m">7 - 10 triệu</button>
+                            <button type="button" class="filter-btn" data-value="10-15m">10 - 15 triệu</button>
+                            <button type="button" class="filter-btn" data-value="over-15m">Trên 15 triệu</button>
+                        </div>
+                    </div>
+
+                    <!-- Khoảng diện tích -->
+                    <div class="form-group filter-section area-group">
+                        <label class="filter-label">Khoảng diện tích</label>
+                        <div class="filter-group">
+                            <button type="button" class="filter-btn active" data-value="all">Tất cả</button>
+                            <button type="button" class="filter-btn" data-value="under-20m2">Dưới 20m²</button>
+                            <button type="button" class="filter-btn" data-value="20-30m2">Từ 20m² - 30m²</button>
+                            <button type="button" class="filter-btn" data-value="30-50m2">Từ 30m² - 50m²</button>
+                            <button type="button" class="filter-btn" data-value="50-70m2">Từ 50m² - 70m²</button>
+                            <button type="button" class="filter-btn" data-value="70-90m2">Từ 70m² - 90m²</button>
+                            <button type="button" class="filter-btn" data-value="over-90m2">Trên 90m²</button>
+                        </div>
+                    </div>
+
+                    <!-- Input hidden để submit dữ liệu -->
+                    <input type="hidden" name="category_range" id="categoryRange" value="all">
+                    <input type="hidden" name="price_range" id="priceRange" value="all">
+                    <input type="hidden" name="area" id="areaRange" value="all">
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-yellow" data-dismiss="modal">Đóng</button>
+                    <button type="submit" class="btn btn-yellow">Áp
+                        dụng bộ
+                        lọc</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section('customJs')
+    <script>
+        $(document).ready(function() {
+            let oldProvince = "{{ old('province') }}";
+            let oldDistrict = "{{ old('district') }}";
+            let oldWard = "{{ old('ward') }}";
+
+            // Load danh sách tỉnh
+            $.getJSON('/api/proxy/provinces', function(data_tinh) {
+                if (data_tinh.error === 0) {
+                    $.each(data_tinh.data, function(key_tinh, val_tinh) {
+                        let selected = (val_tinh.id == oldProvince) ? "selected" : "";
+                        $("#province").append('<option value="' + val_tinh.id + '" ' + selected +
+                            '>' + val_tinh.full_name + '</option>');
+                    });
+
+                    $("#province").niceSelect('update');
+
+                    if (oldProvince) {
+                        $("#province_name").val("{{ old('province_name') }}");
+                        loadDistricts(oldProvince, oldDistrict, oldWard);
+                    }
+                }
+            });
+
+            // Khi chọn tỉnh
+            $("#province").change(function() {
+                let provinceId = $(this).val();
+                let provinceName = $("#province option:selected").text();
+                $("#province_name").val(provinceName);
+                $("#district").html('<option selected disabled>-- Chọn Quận / Huyện --</option>')
+                    .niceSelect(
+                        'update');
+                $("#wards").html('<option selected disabled>-- Chọn Phường / Xã --</option>').niceSelect(
+                    'update');
+
+                if (provinceId) {
+                    loadDistricts(provinceId, null, null);
+                }
+            });
+
+            // Load danh sách quận/huyện
+            function loadDistricts(provinceId, selectedDistrict, selectedWard) {
+                $.getJSON('/api/proxy/districts/' + provinceId, function(data_quan) {
+                    if (data_quan.error === 0) {
+                        $.each(data_quan.data, function(key_quan, val_quan) {
+                            let selected = (val_quan.id == selectedDistrict) ? "selected" : "";
+                            $("#district").append('<option value="' + val_quan.id + '" ' +
+                                selected + '>' + val_quan.full_name + '</option>');
+                        });
+
+                        $("#district").niceSelect('update');
+
+                        if (selectedDistrict) {
+                            $("#district_name").val("{{ old('district_name') }}");
+                            loadWards(selectedDistrict, selectedWard);
+                        }
+                    }
+                });
+            }
+
+            // Khi chọn quận/huyện
+            $("#district").change(function() {
+                let districtId = $(this).val();
+                let districtName = $("#district option:selected").text();
+                $("#district_name").val(districtName);
+                $("#wards").html('<option selected="" disabled>-- Chọn Phường / Xã --</option>').niceSelect(
+                    'update');
+
+                if (districtId) {
+                    loadWards(districtId, null);
+                }
+            });
+
+            // Load danh sách phường/xã
+            function loadWards(districtId, selectedWard) {
+                $.getJSON('/api/proxy/wards/' + districtId, function(data_phuong) {
+                    if (data_phuong.error === 0) {
+                        $.each(data_phuong.data, function(key_phuong, val_phuong) {
+                            let selected = (val_phuong.id == selectedWard) ? "selected" : "";
+                            $("#wards").append('<option value="' + val_phuong.id + '" ' + selected +
+                                '>' + val_phuong.full_name + '</option>');
+                        });
+
+                        $("#wards").niceSelect('update');
+
+                        if (selectedWard) {
+                            $("#ward_name").val("{{ old('ward_name') }}");
+                        }
+                    }
+                });
+            }
+
+            // Khi chọn xã
+            $("#wards").change(function() {
+                let wardName = $("#wards option:selected").text();
+                $("#ward_name").val(wardName);
+            });
+        });
+    </script>
+
+    <script>
+        $(document).ready(function() {
+            let oldProvince = "{{ old('province') }}";
+            let oldDistrict = "{{ old('district') }}";
+            let oldWard = "{{ old('ward') }}";
+
+            // Load danh sách tỉnh
+            $.getJSON('/api/proxy/provinces', function(data_tinh) {
+                if (data_tinh.error === 0) {
+                    $("#provinceNew").empty().append(
+                        '<option selected disabled>-- Chọn Tỉnh/Thành --</option>');
+                    $.each(data_tinh.data, function(key_tinh, val_tinh) {
+                        let selected = (val_tinh.id == oldProvince) ? "selected" : "";
+                        $("#provinceNew").append('<option value="' + val_tinh.id + '" ' + selected +
+                            '>' + val_tinh.full_name + '</option>');
+                    });
+
+                    $("#provinceNew").niceSelect('update');
+
+                    if (oldProvince) {
+                        $("#province_name").val("{{ old('province_name') }}");
+                        loadDistricts(oldProvince, oldDistrict, oldWard);
+                    }
+                }
+            });
+
+            // Khi chọn tỉnh
+            $("#provinceNew").change(function() {
+                let provinceId = $(this).val();
+                let provinceName = $("#provinceNew option:selected").text();
+                $("#province_name").val(provinceName);
+
+                $("#districtNew").empty().append(
+                    '<option selected disabled>-- Chọn Quận / Huyện --</option>').niceSelect('update');
+                $("#wardsNew").empty().append('<option selected disabled>-- Chọn Phường / Xã --</option>')
+                    .niceSelect('update');
+
+                if (provinceId) {
+                    loadDistricts(provinceId, null, null);
+                }
+            });
+
+            // Load danh sách quận/huyện
+            function loadDistricts(provinceId, selectedDistrict, selectedWard) {
+                $.getJSON('/api/proxy/districts/' + provinceId, function(data_quan) {
+                    if (data_quan.error === 0) {
+                        $("#districtNew").empty().append(
+                            '<option selected disabled>-- Chọn Quận / Huyện --</option>');
+                        $.each(data_quan.data, function(key_quan, val_quan) {
+                            let selected = (val_quan.id == selectedDistrict) ? "selected" : "";
+                            $("#districtNew").append('<option value="' + val_quan.id + '" ' +
+                                selected + '>' + val_quan.full_name + '</option>');
+                        });
+
+                        $("#districtNew").niceSelect('update');
+
+                        if (selectedDistrict) {
+                            $("#district_name").val("{{ old('district_name') }}");
+                            loadWards(selectedDistrict, selectedWard);
+                        }
+                    }
+                });
+            }
+
+            // Khi chọn quận/huyện
+            $("#districtNew").change(function() {
+                let districtId = $(this).val();
+                let districtName = $("#districtNew option:selected").text();
+                $("#district_name").val(districtName);
+
+                $("#wardsNew").empty().append('<option selected disabled>-- Chọn Phường / Xã --</option>')
+                    .niceSelect('update');
+
+                if (districtId) {
+                    loadWards(districtId, null);
+                }
+            });
+
+            // Load danh sách phường/xã
+            function loadWards(districtId, selectedWard) {
+                $.getJSON('/api/proxy/wards/' + districtId, function(data_phuong) {
+                    if (data_phuong.error === 0) {
+                        $("#wardsNew").empty().append(
+                            '<option selected disabled>-- Chọn Phường / Xã --</option>');
+                        $.each(data_phuong.data, function(key_phuong, val_phuong) {
+                            let selected = (val_phuong.id == selectedWard) ? "selected" : "";
+                            $("#wardsNew").append('<option value="' + val_phuong.id + '" ' +
+                                selected + '>' + val_phuong.full_name + '</option>');
+                        });
+
+                        $("#wardsNew").niceSelect('update');
+
+                        if (selectedWard) {
+                            $("#ward_name").val("{{ old('ward_name') }}");
+                        }
+                    }
+                });
+            }
+
+            // Khi chọn xã
+            $("#wardsNew").change(function() {
+                let wardName = $("#wardsNew option:selected").text();
+                $("#ward_name").val(wardName);
+            });
+        });
+    </script>
+
+    <script>
+        $(document).ready(function() {
+            $(".filter-group .filter-btn").click(function() {
+                let group = $(this).parent();
+                group.find(".filter-btn").removeClass("active");
+                $(this).addClass("active");
+
+                let value = $(this).attr("data-value");
+                if (group.parent().find("#priceRange").length) {
+                    $("#priceRange").val(value);
+                } else {
+                    $("#areaRange").val(value);
+                }
+            });
+        });
+    </script>
+
+    <script>
+        $(document).ready(function() {
+            $("#provinceNew").change(function() {
+                let provinceId = $(this).val();
+                let provinceName = $("#provinceNew option:selected").text();
+                $("#province_name").val(provinceName); // Gán giá trị tên tỉnh vào input hidden
+            });
+
+            $("#districtNew").change(function() {
+                let districtId = $(this).val();
+                let districtName = $("#districtNew option:selected").text();
+                $("#district_name").val(districtName); // Gán giá trị tên quận vào input hidden
+            });
+
+            $("#wardsNew").change(function() {
+                let wardId = $(this).val();
+                let wardName = $("#wardsNew option:selected").text();
+                $("#ward_name").val(wardName); // Gán giá trị tên xã vào input hidden
+            });
+        });
+    </script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Xử lý chọn khoảng giá (chỉ chọn 1)
+            const priceButtons = document.querySelectorAll('.price-group button[data-value]');
+            const priceRangeInput = document.getElementById('priceRange');
+
+            priceButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    // Hủy kích hoạt tất cả các nút khác trong nhóm
+                    priceButtons.forEach(btn => btn.classList.remove('active'));
+                    // Kích hoạt nút được chọn
+                    this.classList.add('active');
+                    // Cập nhật giá trị vào input ẩn
+                    priceRangeInput.value = this.getAttribute('data-value');
+                });
+            });
+
+            // Xử lý chọn khoảng diện tích (chỉ chọn 1)
+            const areaButtons = document.querySelectorAll('.area-group button[data-value]');
+            const areaRangeInput = document.getElementById('areaRange');
+
+            areaButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    // Hủy kích hoạt tất cả các nút khác trong nhóm
+                    areaButtons.forEach(btn => btn.classList.remove('active'));
+                    // Kích hoạt nút được chọn
+                    this.classList.add('active');
+                    // Cập nhật giá trị vào input ẩn
+                    areaRangeInput.value = this.getAttribute('data-value');
+                });
+            });
+
+            // Xử lý chọn danh mục (chỉ chọn 1)
+            const categoryButtons = document.querySelectorAll('.category-group button[data-value]');
+            const categoryRangeInput = document.getElementById('categoryRange');
+
+            categoryButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    // Hủy kích hoạt tất cả các nút khác trong nhóm
+                    categoryButtons.forEach(btn => btn.classList.remove('active'));
+                    // Kích hoạt nút được chọn
+                    this.classList.add('active');
+                    // Cập nhật giá trị vào input ẩn
+                    categoryRangeInput.value = this.getAttribute('data-value');
+                });
+            });
+        });
+    </script>
+@endsection

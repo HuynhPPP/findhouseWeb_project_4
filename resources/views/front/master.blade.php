@@ -1,8 +1,6 @@
 <!DOCTYPE html>
 <html lang="zxx">
 
-
-<!-- Mirrored from code-theme.com/html/findhouses/index.html by HTTrack Website Copier/3.x [XR&CO'2014], Mon, 30 Dec 2024 03:42:28 GMT -->
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -10,7 +8,7 @@
     <meta name="description" content="html 5 template">
     <meta name="author" content="">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>Find Houses</title>
+    <title> @yield('title')</title>
     <!-- FAVICON -->
     <link rel="shortcut icon" type="image/x-icon" href="{{ asset('front/favicon.ico') }}">
     <link rel="stylesheet" href="{{ asset('front/css/jquery-ui.css') }}">
@@ -37,13 +35,22 @@
     <link rel="stylesheet" id="color" href="{{ asset('front/css/colors/pink.css') }}">
 
     <!-- Toastr -->
-	<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.css">
-	<!-- End Toastr -->
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.css">
+    <!-- End Toastr -->
 </head>
 
 <body class="homepage-9 hp-6 homepage-1 mh">
+
     <!-- Wrapper -->
     <div id="wrapper">
+        <!-- START PRELOADER -->
+        <div id="preloader">
+            <div id="status">
+                <div class="status-mes"></div>
+            </div>
+        </div>
+        <!-- END PRELOADER -->
+        
         <!-- START SECTION HEADINGS -->
         <!-- Header Container
         ================================================== -->
@@ -52,7 +59,7 @@
         <!-- Header Container / End -->
 
         @yield('home')
-        
+
         <!-- START FOOTER -->
         @include('front.body.footer')
 
@@ -60,13 +67,7 @@
         <!-- END FOOTER -->
 
 
-        <!-- START PRELOADER -->
-        <div id="preloader">
-            <div id="status">
-                <div class="status-mes"></div>
-            </div>
-        </div>
-        <!-- END PRELOADER -->
+
 
         <!-- ARCHIVES JS -->
         <script src="{{ asset('front/js/jquery-3.5.1.min.js') }}"></script>
@@ -105,33 +106,33 @@
             $(window).on('scroll load', function() {
                 $("#header.cloned #logo img").attr("src", $('#header #logo img').attr('data-sticky-logo'));
             });
-
         </script>
 
         <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 
+        <!-- Toast -->
         <script>
-        @if(Session::has('message'))
-        var type = "{{ Session::get('alert-type','info') }}"
-        switch(type){
-            case 'info':
-            toastr.info(" {{ Session::get('message') }} ");
-            break;
+            @if (Session::has('message'))
+                var type = "{{ Session::get('alert-type', 'info') }}"
+                switch (type) {
+                    case 'info':
+                        toastr.info(" {{ Session::get('message') }} ");
+                        break;
 
-            case 'success':
-            toastr.success(" {{ Session::get('message') }} ");
-            break;
+                    case 'success':
+                        toastr.success(" {{ Session::get('message') }} ");
+                        break;
 
-            case 'warning':
-            toastr.warning(" {{ Session::get('message') }} ");
-            break;
+                    case 'warning':
+                        toastr.warning(" {{ Session::get('message') }} ");
+                        break;
 
-            case 'error':
-            toastr.error(" {{ Session::get('message') }} ");
-            break; 
-        }
-        @endif 
-        </script>	
+                    case 'error':
+                        toastr.error(" {{ Session::get('message') }} ");
+                        break;
+                }
+            @endif
+        </script>
 
         <!-- Slider Revolution scripts -->
         <script src="{{ asset('front/revolution/js/jquery.themepunch.tools.min.js') }}"></script>
@@ -148,7 +149,6 @@
                 backSpeed: 30,
                 startDelay: 800
             });
-
         </script>
 
         <script>
@@ -185,7 +185,6 @@
                     }
                 }]
             });
-
         </script>
 
         <script>
@@ -208,7 +207,6 @@
                     }
                 }
             });
-
         </script>
 
         <script>
@@ -246,7 +244,6 @@
                     }
                 }
             });
-
         </script>
 
         <script>
@@ -255,17 +252,21 @@
                 $(".explore__form-checkbox-list").toggleClass("filter-block");
 
             });
-
         </script>
 
         <!-- MAIN JS -->
-        <script src="{{ asset('front/js/script.js') }}"></script>
         @yield('customJs')
+
+        <script>
+            document.addEventListener("DOMContentLoaded", function() {
+                setTimeout(function() {
+                    document.getElementById("preloader").style.display = "none";
+                }, 1000); // Ẩn preloader sau 1 giây
+            });
+        </script>
 
     </div>
     <!-- Wrapper / End -->
 </body>
 
-
-<!-- Mirrored from code-theme.com/html/findhouses/index.html by HTTrack Website Copier/3.x [XR&CO'2014], Mon, 30 Dec 2024 03:43:31 GMT -->
 </html>

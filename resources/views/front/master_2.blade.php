@@ -32,6 +32,14 @@
 <body class="inner-pages st-1 agents hp-6 full hd-white">
     <!-- Wrapper -->
     <div id="wrapper">
+        <!-- START PRELOADER -->
+        <div id="preloader">
+            <div id="status">
+                <div class="status-mes"></div>
+            </div>
+        </div>
+        <!-- END PRELOADER -->
+
         <!-- START SECTION HEADINGS -->
         <!-- Header Container
         ================================================== -->
@@ -79,6 +87,13 @@
         </script>
         @yield('customJs')
 
+        <script>
+            document.addEventListener("DOMContentLoaded", function() {
+                setTimeout(function() {
+                    document.getElementById("preloader").style.display = "none";
+                }, 1000); // Ẩn preloader sau 1 giây
+            });
+        </script>
     </div>
     <!-- Wrapper / End -->
 </body>

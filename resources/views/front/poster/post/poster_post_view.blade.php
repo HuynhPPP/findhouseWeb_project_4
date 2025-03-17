@@ -391,9 +391,9 @@
                 let provinceId = $(this).val();
                 let provinceName = $("#province option:selected").text();
                 $("#province_name").val(provinceName);
-                $("#district").html('<option value="">-- Chọn Quận / Huyện --</option>').niceSelect(
+                $("#district").html('<option selected="" disabled>-- Chọn Quận / Huyện --</option>').niceSelect(
                     'update');
-                $("#wards").html('<option value="">-- Chọn Phường / Xã --</option>').niceSelect('update');
+                $("#wards").html('<option selected="" disabled>-- Chọn Phường / Xã --</option>').niceSelect('update');
 
                 if (provinceId) {
                     loadDistricts(provinceId, null, null);
@@ -425,7 +425,7 @@
                 let districtId = $(this).val();
                 let districtName = $("#district option:selected").text();
                 $("#district_name").val(districtName);
-                $("#wards").html('<option value="">-- Chọn Phường / Xã --</option>').niceSelect('update');
+                $("#wards").html('<option selected="" disabled>-- Chọn Phường / Xã --</option>').niceSelect('update');
 
                 if (districtId) {
                     loadWards(districtId, null);
