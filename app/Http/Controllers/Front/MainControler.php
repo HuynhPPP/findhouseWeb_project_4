@@ -146,111 +146,96 @@ class MainControler extends Controller
 
     public function FilterPost(Request $request)
     {
-
-        // Lấy dữ liệu từ request
-        $provinceName = $request->input('province_name'); // Tên tỉnh
-        $districtName = $request->input('district_name'); // Tên huyện
+        $provinceName = $request->input('province_name');
+        $districtName = $request->input('district_name');
         $wardName = $request->input('ward_name');
-        $categoryRange = $request->category_range; // Tên xã
-        $priceRange = $request->price_range;
-        $areaRange = $request->area;
+        $priceRange = $request->input('price_range', 'all'); 
+        $areaRange = $request->input('area_range', 'all');
+        $category = $request->input('category_id', 'all');
+        $search_keyword = null;
 
-        // dd([
+        // dump([
         //     'province_name' => $provinceName,
         //     'district_name' => $districtName,
         //     'ward_name' => $wardName,
-        //     'category_id' => $categoryRange,
+        //     'category_id' => $category,
         //     'price_range' => $priceRange,
         //     'area_range' => $areaRange,
         // ]);
 
-        // Bắt đầu query
+        // Bắt đầu truy vấn
         $query = Post::query();
 
-        $search_keyword = null;
-        if ($request->filled('keyword')) {
-            $search_keyword = trim($request->keyword);
-            $query->where(function ($q) use ($search_keyword) {
-                $q->where('title', 'LIKE', "%$search_keyword%")
-                    ->orWhere('price', 'LIKE', "%$search_keyword%")
-                    ->orWhere('area', 'LIKE', "%$search_keyword%")
-                    ->orWhere('province', 'LIKE', "%$search_keyword%")
-                    ->orWhere('district', 'LIKE', "%$search_keyword%")
-                    ->orWhere('ward', 'LIKE', "%$search_keyword%");
+        // Tìm kiếm theo từ khóa
+        if (!empty($search_keyword)) {
+            $columns = ['title', 'price', 'area', 'province', 'district', 'ward'];
+            $query->where(function ($q) use ($search_keyword, $columns) {
+                foreach ($columns as $column) {
+                    $q->orWhere($column, 'LIKE', "%$search_keyword%");
+                }
             });
         }
 
-        if ($provinceName) {
+        if (!empty($provinceName)) {
             $query->where('province', $provinceName);
         }
-        if ($districtName) {
+        if (!empty($districtName)) {
             $query->where('district', $districtName);
         }
-        if ($districtName) {
-            $query->where('ward', $districtName);
-        }
-        if ($categoryRange) {
-            $query->where('category_id', $categoryRange);
+        if (!empty($wardName)) {
+            $query->where('ward', $wardName);
         }
 
-        if ($request->has('category') && $request->category !== 'all') {
-            $query->where('category', $request->category);
+        if (!is_null($category) && $category !== '' && $category !== 'all') {
+            $query->where('category_id', $category);
         }
-    
 
-        // Xử lý khoảng giá
-        if ($priceRange !== 'all') {
-            switch ($priceRange) {
-                case 'under-1m':
-                    $query->where('price', '<', 1000000);
-                    break;
-                case '1-2m':
-                    $query->whereBetween('price', [1000000, 2000000]);
-                    break;
-                case '2-3m':
-                    $query->whereBetween('price', [2000000, 3000000]);
-                    break;
-                case '3-5m':
-                    $query->whereBetween('price', [3000000, 5000000]);
-                    break;
-                case '5-7m':
-                    $query->whereBetween('price', [5000000, 7000000]);
-                    break;
-                case '7-10m':
-                    $query->whereBetween('price', [7000000, 10000000]);
-                    break;
-                case '10-15m':
-                    $query->whereBetween('price', [10000000, 15000000]);
-                    break;
-                case 'over-15m':
-                    $query->where('price', '>', 15000000);
-                    break;
+
+        // Lọc theo khoảng giá
+        if (!empty($priceRange) && $priceRange !== 'all') {
+            $priceConditions = [
+                'under-1m' => ['price', '<', 1000000],
+                '1-2m' => ['price', '>=', 1000000, '<=', 2000000],
+                '2-3m' => ['price', '>=', 2000000, '<=', 3000000],
+                '3-5m' => ['price', '>=', 3000000, '<=', 5000000],
+                '5-7m' => ['price', '>=', 5000000, '<=', 7000000],
+                '7-10m' => ['price', '>=', 7000000, '<=', 10000000],
+                '10-15m' => ['price', '>=', 10000000, '<=', 15000000],
+                'over-15m' => ['price', '>', 15000000]
+            ];
+
+            if (isset($priceConditions[$priceRange])) {
+                $condition = $priceConditions[$priceRange];
+                if (count($condition) === 3) {
+                    $query->where($condition[0], $condition[1], $condition[2]);
+                } else {
+                    $query->whereBetween($condition[0], [$condition[2], $condition[3]]);
+                }
             }
         }
 
-        // Xử lý khoảng diện tích
-        if ($areaRange !== 'all') {
-            switch ($areaRange) {
-                case 'under-20m':
-                    $query->where('area', '<', 20);
-                    break;
-                case '20-30m':
-                    $query->whereBetween('area', [20, 30]);
-                    break;
-                case '30-50m':
-                    $query->whereBetween('area', [30, 50]);
-                    break;
-                case '50-70m':
-                    $query->whereBetween('area', [50, 70]);
-                    break;
-                case '70-90m':
-                    $query->whereBetween('area', [70, 90]);
-                    break;
-                case 'over-90m':
-                    $query->where('area', '>', 90);
-                    break;
+        // Lọc theo diện tích
+        if (!empty($areaRange) && $areaRange !== 'all') {
+            $areaConditions = [
+                'under-20m' => ['area', '<', 20],
+                '20-30m' => ['area', '>=', 20, '<=', 30],
+                '30-50m' => ['area', '>=', 30, '<=', 50],
+                '50-70m' => ['area', '>=', 50, '<=', 70],
+                '70-90m' => ['area', '>=', 70, '<=', 90],
+                'over-90m' => ['area', '>', 90]
+            ];
+
+            if (isset($areaConditions[$areaRange])) {
+                $condition = $areaConditions[$areaRange];
+                if (count($condition) === 3) {
+                    $query->where($condition[0], $condition[1], $condition[2]);
+                } else {
+                    $query->whereBetween($condition[0], [$condition[2], $condition[3]]);
+                }
             }
         }
+
+        // dump($query->toSql(), $query->getBindings());
 
         $posts = $query->paginate(9);
 

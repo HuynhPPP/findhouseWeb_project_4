@@ -133,7 +133,7 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <form action="{{ route('filter.post') }}" method="POST">
+            <form action="{{ route('filter.post') }}" method="POST" id="filterForm">
                 <div class="modal-body">
                     @csrf
                     <div class="row">
@@ -169,6 +169,7 @@
                     <input type="hidden" id="district_name" name="district_name">
                     <input type="hidden" id="ward_name" name="ward_name">
 
+
                     <div class="form-group filter-section category-group">
                         <label class="filter-label">Danh mục cho thuê</label>
                         <div class="filter-group">
@@ -179,7 +180,6 @@
                             @endforeach
                         </div>
                     </div>
-
 
                     <!-- Khoảng giá -->
                     <div class="form-group filter-section price-group">
@@ -211,10 +211,9 @@
                         </div>
                     </div>
 
-                    <!-- Input hidden để submit dữ liệu -->
-                    <input type="hidden" name="category_range" id="categoryRange" value="all">
-                    <input type="hidden" name="price_range" id="priceRange" value="all">
-                    <input type="hidden" name="area" id="areaRange" value="all">
+                    <input type="hidden" id="priceRange" name="price_range" value="all">
+                    <input type="hidden" id="areaRange" name="area_range" value="all">
+                    <input type="hidden" id="categoryRange" name="category_id" value="all">
 
                 </div>
                 <div class="modal-footer">
@@ -438,23 +437,6 @@
 
     <script>
         $(document).ready(function() {
-            $(".filter-group .filter-btn").click(function() {
-                let group = $(this).parent();
-                group.find(".filter-btn").removeClass("active");
-                $(this).addClass("active");
-
-                let value = $(this).attr("data-value");
-                if (group.parent().find("#priceRange").length) {
-                    $("#priceRange").val(value);
-                } else {
-                    $("#areaRange").val(value);
-                }
-            });
-        });
-    </script>
-
-    <script>
-        $(document).ready(function() {
             $("#provinceNew").change(function() {
                 let provinceId = $(this).val();
                 let provinceName = $("#provinceNew option:selected").text();
@@ -477,50 +459,40 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // Xử lý chọn khoảng giá (chỉ chọn 1)
-            const priceButtons = document.querySelectorAll('.price-group button[data-value]');
-            const priceRangeInput = document.getElementById('priceRange');
+            function handleFilterSelection(groupClass, inputId) {
+                const buttons = document.querySelectorAll(`.${groupClass} button[data-value]`);
+                const hiddenInput = document.getElementById(inputId);
 
-            priceButtons.forEach(button => {
-                button.addEventListener('click', function() {
-                    // Hủy kích hoạt tất cả các nút khác trong nhóm
-                    priceButtons.forEach(btn => btn.classList.remove('active'));
-                    // Kích hoạt nút được chọn
-                    this.classList.add('active');
-                    // Cập nhật giá trị vào input ẩn
-                    priceRangeInput.value = this.getAttribute('data-value');
+                buttons.forEach(button => {
+                    button.addEventListener('click', function() {
+                        // Hủy kích hoạt tất cả các nút khác trong nhóm
+                        buttons.forEach(btn => btn.classList.remove('active'));
+
+                        // Kích hoạt nút được chọn
+                        this.classList.add('active');
+
+                        // Cập nhật giá trị vào input ẩn
+                        hiddenInput.value = this.getAttribute('data-value');
+
+                        // In giá trị để kiểm tra
+                        console.log(`Updated ${inputId}:`, hiddenInput.value);
+                    });
                 });
-            });
+            }
 
-            // Xử lý chọn khoảng diện tích (chỉ chọn 1)
-            const areaButtons = document.querySelectorAll('.area-group button[data-value]');
-            const areaRangeInput = document.getElementById('areaRange');
+            // Áp dụng cho từng nhóm
+            handleFilterSelection('price-group', 'priceRange');
+            handleFilterSelection('area-group', 'areaRange');
+            handleFilterSelection('category-group', 'categoryRange');
 
-            areaButtons.forEach(button => {
-                button.addEventListener('click', function() {
-                    // Hủy kích hoạt tất cả các nút khác trong nhóm
-                    areaButtons.forEach(btn => btn.classList.remove('active'));
-                    // Kích hoạt nút được chọn
-                    this.classList.add('active');
-                    // Cập nhật giá trị vào input ẩn
-                    areaRangeInput.value = this.getAttribute('data-value');
-                });
-            });
-
-            // Xử lý chọn danh mục (chỉ chọn 1)
-            const categoryButtons = document.querySelectorAll('.category-group button[data-value]');
-            const categoryRangeInput = document.getElementById('categoryRange');
-
-            categoryButtons.forEach(button => {
-                button.addEventListener('click', function() {
-                    // Hủy kích hoạt tất cả các nút khác trong nhóm
-                    categoryButtons.forEach(btn => btn.classList.remove('active'));
-                    // Kích hoạt nút được chọn
-                    this.classList.add('active');
-                    // Cập nhật giá trị vào input ẩn
-                    categoryRangeInput.value = this.getAttribute('data-value');
-                });
+            // Kiểm tra giá trị trước khi submit form
+            document.querySelector('#filterForm').addEventListener('submit', function(event) {
+                console.log("Submitting form with:");
+                console.log("price_range:", document.getElementById('priceRange').value);
+                console.log("area_range:", document.getElementById('areaRange').value);
+                console.log("category_id:", document.getElementById('categoryRange').value);
             });
         });
     </script>
+
 @endsection
