@@ -14,7 +14,6 @@ class DatabaseSeeder extends Seeder
       CategoriesTableSeeder::class,
       PostsTableSeeder::class,
       ImagesTableSeeder::class,
-      VideosTableSeeder::class,
     ]);
   }
 }

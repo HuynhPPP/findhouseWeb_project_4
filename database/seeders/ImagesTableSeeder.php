@@ -19,7 +19,6 @@ class ImagesTableSeeder extends Seeder
     foreach (range(1, 200) as $index) {
       DB::table('images')->insert([
         'post_id' => $faker->numberBetween(1, 100), // Giả sử bảng posts có 100 bản ghi
-        'image_name' => $faker->word . '.jpg',
         'image_url' => $faker->imageUrl(800, 600, 'room', true, 'Phong Tro'),
         'created_at' => now(),
         'updated_at' => now(),
