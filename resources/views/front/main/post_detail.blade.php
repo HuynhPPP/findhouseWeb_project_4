@@ -1,13 +1,13 @@
 @extends('front.master_2')
 @section('home_2')
-<link rel="stylesheet" href="https://unpkg.com/leaflet@1.3.1/dist/leaflet.css" />
-<style>
-    #map{
-        width: 100%;
-        height: 400px;
-    }
-</style>
-<title>Chi tiết bài đăng</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.3.1/dist/leaflet.css" />
+    <style>
+        #map {
+            width: 100%;
+            height: 400px;
+        }
+    </style>
+    <title>Chi tiết bài đăng</title>
     <!-- START SECTION PROPERTIES LISTING -->
     <section class="single-proper blog details">
         <div class="container">
@@ -52,7 +52,8 @@
                                 <h4>{{ $post->title }}</h4>
                                 <div class="mt-0">
                                     <a href="#listing-location" class="listing-address" style="color: #666">
-                                        <i class="fa fa-map-marker pr-2 ti-location-pin mrg-r-5"></i>{{ $post->full_address }}
+                                        <i
+                                            class="fa fa-map-marker pr-2 ti-location-pin mrg-r-5"></i>{{ $post->full_address }}
                                     </a>
                                 </div>
                                 <div class="homes-content">
@@ -90,10 +91,11 @@
                             $video_url_fixed = str_replace('embed/', 'watch?v=', $video_url);
                         @endphp
                         <h5>Video</h5>
-                        <iframe width="680" height="400" src="{{ $video_url }}" frameborder="0" allowfullscreen></iframe>
+                        <iframe width="680" height="400" src="{{ $video_url }}" frameborder="0"
+                            allowfullscreen></iframe>
                     </div>
                     <div class="property-location map">
-                        <h5>Location</h5>
+                        <h5>Vị trí trên bản đồ</h5>
                         <div class="divider-fade"></div>
                         <div id="map" class="contact-map">
 
@@ -264,9 +266,6 @@
                 </div>
                 <aside class="col-lg-4 col-md-12 car">
                     <div class="single widget">
-                        <!-- Start: Schedule a Tour -->
-                        
-                        <!-- End: Schedule a Tour -->
                         <!-- end author-verified-badge -->
                         <div class="sidebar">
                             <div class="widget-boxed mt-33">
@@ -276,16 +275,19 @@
                                 <div class="widget-boxed-body">
                                     <div class="sidebar-widget author-widget2">
                                         <div class="author-box clearfix">
-                                            <img src="{{ !empty($post->users->photo) ? url('upload/poster_images/' . $post->users->photo) : url('upload/no_img.jpg') }}" alt="author-image"
-                                                class="author__img">
+                                            <img src="{{ !empty($post->users->photo) ? url('upload/poster_images/' . $post->users->photo) : url('upload/no_img.jpg') }}"
+                                                alt="author-image" class="author__img">
                                             <h4 class="author__title">{{ $post->users->name }}</h4>
-                                            <p class="author__meta">Tổng số bài đăng - {{ $post->users->posts->count() }}</p>
+                                            <p class="author__meta">Số tin đăng - {{ $post->users->posts->count() }}
+                                            </p>
                                         </div>
                                         <ul class="author__contact">
                                             <li><span class="la la-phone"><i class="fa fa-phone"
-                                                        aria-hidden="true"></i></span><a href="#">{{ $post->users->phone }}</a></li>
+                                                        aria-hidden="true"></i></span><a
+                                                    href="#">{{ $post->users->phone }}</a></li>
                                             <li><span class="la la-envelope-o"><i class="fa fa-envelope"
-                                                        aria-hidden="true"></i></span><a href="#">{{ $post->users->email }}</a>
+                                                        aria-hidden="true"></i></span><a
+                                                    href="#">{{ $post->users->email }}</a>
                                             </li>
                                         </ul>
                                         <div class="agent-contact-form-sidebar">
@@ -392,186 +394,92 @@
             </div>
             <!-- START SIMILAR PROPERTIES -->
             <section class="similar-property featured portfolio p-0 bg-white-inner">
-                <div class="container">
-                    <h5>Bài đăng có liên quan</h5>
-                    <div class="row portfolio-items">
-                        <div class="item col-lg-4 col-md-6 col-xs-12 landscapes">
-                            <div class="project-single">
-                                <div class="project-inner project-head">
-                                    <div class="homes">
-                                        <!-- homes img -->
-                                        <a href="single-property-1.html" class="homes-img">
-                                            <div class="homes-tag button alt featured">Featured</div>
-                                            <div class="homes-tag button alt sale">For Sale</div>
-                                            <div class="homes-price">$9,000/mo</div>
-                                            <img src="images/blog/b-11.jpg" alt="home-1" class="img-responsive">
-                                        </a>
-                                    </div>
-                                    <div class="button-effect">
-                                        <a href="single-property-1.html" class="btn"><i class="fa fa-link"></i></a>
-                                        <a href="https://www.youtube.com/watch?v=14semTlwyUY"
-                                            class="btn popup-video popup-youtube"><i class="fas fa-video"></i></a>
-                                        <a href="single-property-2.html" class="img-poppu btn"><i
-                                                class="fa fa-photo"></i></a>
-                                    </div>
-                                </div>
-                                <!-- homes content -->
-                                <div class="homes-content">
-                                    <!-- homes address -->
-                                    <h3><a href="single-property-1.html">Real House Luxury Villa</a></h3>
-                                    <p class="homes-address mb-3">
-                                        <a href="single-property-1.html">
-                                            <i class="fa fa-map-marker"></i><span>Est St, 77 - Central Park South,
-                                                NYC</span>
-                                        </a>
-                                    </p>
-                                    <!-- homes List -->
-                                    <ul class="homes-list clearfix pb-3">
-                                        <li class="the-icons">
-                                            <i class="flaticon-bed mr-2" aria-hidden="true"></i>
-                                            <span>6 Bedrooms</span>
-                                        </li>
-                                        <li class="the-icons">
-                                            <i class="flaticon-bathtub mr-2" aria-hidden="true"></i>
-                                            <span>3 Bathrooms</span>
-                                        </li>
-                                        <li class="the-icons">
-                                            <i class="flaticon-square mr-2" aria-hidden="true"></i>
-                                            <span>720 sq ft</span>
-                                        </li>
-                                        <li class="the-icons">
-                                            <i class="flaticon-car mr-2" aria-hidden="true"></i>
-                                            <span>2 Garages</span>
-                                        </li>
-                                    </ul>
-                                    <div class="footer">
-                                        <a href="agent-details.html">
-                                            <img src="images/testimonials/ts-1.jpg" alt="" class="mr-2"> Lisa
-                                            Jhonson
-                                        </a>
-                                        <span>2 months ago</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="item col-lg-4 col-md-6 col-xs-12 people">
-                            <div class="project-single">
-                                <div class="project-inner project-head">
-                                    <div class="homes">
-                                        <!-- homes img -->
-                                        <a href="single-property-1.html" class="homes-img">
-                                            <div class="homes-tag button sale rent">For Rent</div>
-                                            <div class="homes-price">$3,000/mo</div>
-                                            <img src="images/blog/b-12.jpg" alt="home-1" class="img-responsive">
-                                        </a>
-                                    </div>
-                                    <div class="button-effect">
-                                        <a href="single-property-1.html" class="btn"><i class="fa fa-link"></i></a>
-                                        <a href="https://www.youtube.com/watch?v=14semTlwyUY"
-                                            class="btn popup-video popup-youtube"><i class="fas fa-video"></i></a>
-                                        <a href="single-property-2.html" class="img-poppu btn"><i
-                                                class="fa fa-photo"></i></a>
-                                    </div>
-                                </div>
-                                <!-- homes content -->
-                                <div class="homes-content">
-                                    <!-- homes address -->
-                                    <h3><a href="single-property-1.html">Real House Luxury Villa</a></h3>
-                                    <p class="homes-address mb-3">
-                                        <a href="single-property-1.html">
-                                            <i class="fa fa-map-marker"></i><span>Est St, 77 - Central Park South,
-                                                NYC</span>
-                                        </a>
-                                    </p>
-                                    <!-- homes List -->
-                                    <ul class="homes-list clearfix pb-3">
-                                        <li class="the-icons">
-                                            <i class="flaticon-bed mr-2" aria-hidden="true"></i>
-                                            <span>6 Bedrooms</span>
-                                        </li>
-                                        <li class="the-icons">
-                                            <i class="flaticon-bathtub mr-2" aria-hidden="true"></i>
-                                            <span>3 Bathrooms</span>
-                                        </li>
-                                        <li class="the-icons">
-                                            <i class="flaticon-square mr-2" aria-hidden="true"></i>
-                                            <span>720 sq ft</span>
-                                        </li>
-                                        <li class="the-icons">
-                                            <i class="flaticon-car mr-2" aria-hidden="true"></i>
-                                            <span>2 Garages</span>
-                                        </li>
-                                    </ul>
-                                    <div class="footer">
-                                        <a href="agent-details.html">
-                                            <img src="images/testimonials/ts-2.jpg" alt="" class="mr-2"> Karl
-                                            Smith
-                                        </a>
-                                        <span>2 months ago</span>
+                @if ($relatedPosts->count() > 0)
+                    <div class="container mt-5">
+                        <h5>Bài đăng có liên quan</h5>
+                        <div class="row portfolio-items">
+                            @foreach ($relatedPosts as $related)
+                                @php
+                                    $video_url = $related->video_url;
+                                    $video_url_fixed = str_replace('embed/', 'watch?v=', $video_url);
+
+                                    $randomImage = $related->images()->inRandomOrder()->first();
+                                @endphp
+                                <div class="item col-lg-4 col-md-6 col-xs-12 landscapes">
+                                    <div class="project-single">
+                                        <div class="project-inner project-head">
+                                            <div class="homes">
+                                                <!-- homes img -->
+                                                <a href="{{ route('post.detail', $related->id) }}" class="homes-img">
+                                                    <div class="homes-tag button alt sale">
+                                                        {{ $related->category->category_name }}</div>
+                                                    <div class="homes-price">
+                                                        @if ($related->price >= 1000000)
+                                                            {{ number_format($related->price / 1000000, 1) }} triệu/tháng
+                                                        @else
+                                                            {{ number_format($related->price, 0, ',', '.') }} đồng/tháng
+                                                        @endif
+                                                    </div>
+                                                    <img src="{{ asset($randomImage->image_url) }}" alt="home-1"
+                                                        class="img-responsive" style="height: 270px;">
+                                                </a>
+                                            </div>
+                                            <div class="button-effect">
+                                                <a href="single-property-1.html" class="btn"><i
+                                                        class="fa fa-link"></i></a>
+                                                <a href="{{ $video_url_fixed }}" class="btn popup-video popup-youtube"><i
+                                                        class="fas fa-video"></i></a>
+                                                <a href="single-property-2.html" class="img-poppu btn"><i
+                                                        class="fa fa-photo"></i></a>
+                                            </div>
+                                        </div>
+                                        <!-- homes content -->
+                                        <div class="homes-content">
+                                            <!-- homes address -->
+                                            <h3><a href="single-property-1.html">{{ $related->title }}</a></h3>
+                                            <p class="homes-address mb-3">
+                                                <a href="single-property-1.html">
+                                                    <i
+                                                        class="fa fa-map-marker"></i><span>{{ $related->full_address }}</span>
+                                                </a>
+                                            </p>
+                                            <!-- homes List -->
+                                            <ul class="homes-list clearfix pb-3">
+                                                <li class="the-icons">
+                                                    <i class="flaticon-bed mr-2" aria-hidden="true"></i>
+                                                    <span>6 Bedrooms</span>
+                                                </li>
+                                                <li class="the-icons">
+                                                    <i class="flaticon-bathtub mr-2" aria-hidden="true"></i>
+                                                    <span>3 Bathrooms</span>
+                                                </li>
+                                                <li class="the-icons">
+                                                    <i class="flaticon-square mr-2" aria-hidden="true"></i>
+                                                    <span>720 sq ft</span>
+                                                </li>
+                                                <li class="the-icons">
+                                                    <i class="flaticon-car mr-2" aria-hidden="true"></i>
+                                                    <span>2 Garages</span>
+                                                </li>
+                                            </ul>
+                                            <div class="footer">
+                                                <a href="agent-details.html">
+                                                    <img src="{{ !empty($related->users->photo) ? url('upload/poster_images/' . $related->users->photo) : url('upload/no_img.jpg') }}"
+                                                        alt="" class="mr-2"
+                                                        style="width: 35px; height: 35px; object-fit: cover; border-radius: 50%;">
+                                                    {{ $related->users->name }}
+                                                </a>
+                                                <span
+                                                    style="margin-top: 7px">{{ \Carbon\Carbon::parse($related->created_at)->locale('vi')->diffForHumans() }}</span>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                        </div>
-                        <div class="item col-lg-4 col-md-6 col-xs-12 people landscapes no-pb pbp-3">
-                            <div class="project-single no-mb mbp-3">
-                                <div class="project-inner project-head">
-                                    <div class="homes">
-                                        <!-- homes img -->
-                                        <a href="single-property-1.html" class="homes-img">
-                                            <div class="homes-tag button alt sale">For Sale</div>
-                                            <div class="homes-price">$9,000/mo</div>
-                                            <img src="images/blog/b-1.jpg" alt="home-1" class="img-responsive">
-                                        </a>
-                                    </div>
-                                    <div class="button-effect">
-                                        <a href="single-property-1.html" class="btn"><i class="fa fa-link"></i></a>
-                                        <a href="https://www.youtube.com/watch?v=14semTlwyUY"
-                                            class="btn popup-video popup-youtube"><i class="fas fa-video"></i></a>
-                                        <a href="single-property-2.html" class="img-poppu btn"><i
-                                                class="fa fa-photo"></i></a>
-                                    </div>
-                                </div>
-                                <!-- homes content -->
-                                <div class="homes-content">
-                                    <!-- homes address -->
-                                    <h3><a href="single-property-1.html">Real House Luxury Villa</a></h3>
-                                    <p class="homes-address mb-3">
-                                        <a href="single-property-1.html">
-                                            <i class="fa fa-map-marker"></i><span>Est St, 77 - Central Park South,
-                                                NYC</span>
-                                        </a>
-                                    </p>
-                                    <!-- homes List -->
-                                    <ul class="homes-list clearfix pb-3">
-                                        <li class="the-icons">
-                                            <i class="flaticon-bed mr-2" aria-hidden="true"></i>
-                                            <span>6 Bedrooms</span>
-                                        </li>
-                                        <li class="the-icons">
-                                            <i class="flaticon-bathtub mr-2" aria-hidden="true"></i>
-                                            <span>3 Bathrooms</span>
-                                        </li>
-                                        <li class="the-icons">
-                                            <i class="flaticon-square mr-2" aria-hidden="true"></i>
-                                            <span>720 sq ft</span>
-                                        </li>
-                                        <li class="the-icons">
-                                            <i class="flaticon-car mr-2" aria-hidden="true"></i>
-                                            <span>2 Garages</span>
-                                        </li>
-                                    </ul>
-                                    <div class="footer">
-                                        <a href="agent-details.html">
-                                            <img src="images/testimonials/ts-3.jpg" alt="" class="mr-2"> katy
-                                            Teddy
-                                        </a>
-                                        <span>2 months ago</span>
-                                    </div>
-                                </div>
-                            </div>
+                            @endforeach
                         </div>
                     </div>
-                </div>
+                @endif
+
             </section>
             <!-- END SIMILAR PROPERTIES -->
         </div>
@@ -582,5 +490,4 @@
 @section('customJs')
     <script src="https://unpkg.com/leaflet@1.3.1/dist/leaflet.js"></script>
     <script src="{{ asset('front/js/map_post_view.js') }}"></script>
-
 @endsection

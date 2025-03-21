@@ -27,6 +27,10 @@
     <link rel="stylesheet" href="{{ asset('front/css/styles.css') }}">
     <link rel="stylesheet" id="color" href="{{ asset('front/css/default.css') }}">
 
+    <!-- Toastr -->
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.css">
+    <!-- End Toastr -->
+
     <style>
         .error-message {
             color: red;
@@ -68,43 +72,31 @@
                 <form name="registerform" id="loginForm2">
                     @csrf
                     <div class="access_social">
-                        <a href="#0" class="social_bt google">Login with Google</a>
+                        <a href="#0" class="social_bt google">Đăng nhập bằng Google</a>
                     </div>
                     <div class="divider"><span>Hoặc</span></div>
                     <div class="form-group">
                         <label>Email hoặc số điện thoại</label>
-                        <input class="form-control" 
-                               name="contact" 
-                               type="text" id="contact" 
-                               value="{{ old('contact') }}"
-                        >
+                        <input class="form-control" name="contact" type="text" id="contact"
+                            value="{{ old('contact') }}">
                         <span id="contact_error" class="error-message"></span>
 
                         <i class="icon_mail_alt"></i>
                     </div>
                     <div class="form-group">
                         <label>Mật khẩu</label>
-                        <input class="form-control" 
-                               name="password" 
-                               id="password" 
-                               type="password"
-                        >
+                        <input class="form-control" name="password" id="password" type="password">
                         <span id="password_error" class="error-message"></span>
 
                         <i class="icon_lock_alt"></i>
                     </div>
                     <div class="fl-wrap filter-tags clearfix add_bottom_30">
-                        <div class="checkboxes float-left">
-                            <div class="filter-tags-wrap">
-                                <input id="check-b" type="checkbox" name="check">
-                                <label for="check-b">Ghi nhớ tôi</label>
-                            </div>
-                        </div>
-                        <div class="float-right mt-1"><a id="forgot" href="javascript:void(0);">Quên
+                        <div class="float-right mt-1"><a id="forgot" href="{{ route('forget.password') }}">Quên
                                 mật khẩu?</a></div>
                     </div>
                     <button type="submit" href="#0" class="btn_1 rounded full-width">Đăng nhập</button>
-                    <div class="text-center add_top_10">Bạn chưa có tài khoản ? <strong><a href="{{ route('register') }}">Đăng
+                    <div class="text-center add_top_10">Bạn chưa có tài khoản ? <strong><a
+                                href="{{ route('register') }}">Đăng
                                 ký!</a></strong></div>
                 </form>
             </div>
@@ -256,6 +248,31 @@
         <script src="{{ asset('front/js/color-switcher.js') }}"></script>
         <script src="{{ asset('front/js/inner.js') }}"></script>
 
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+
+        <!-- Toast -->
+        <script>
+            @if (Session::has('message'))
+                var type = "{{ Session::get('alert-type', 'info') }}"
+                switch (type) {
+                    case 'info':
+                        toastr.info(" {{ Session::get('message') }} ");
+                        break;
+
+                    case 'success':
+                        toastr.success(" {{ Session::get('message') }} ");
+                        break;
+
+                    case 'warning':
+                        toastr.warning(" {{ Session::get('message') }} ");
+                        break;
+
+                    case 'error':
+                        toastr.error(" {{ Session::get('message') }} ");
+                        break;
+                }
+            @endif
+        </script>
 
         <!-- Login -->
         <script>

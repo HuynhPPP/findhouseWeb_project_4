@@ -266,6 +266,30 @@
         <script src="{{ asset('front/js/color-switcher.js') }}"></script>
         <script src="{{ asset('front/js/inner.js') }}"></script>
 
+        <!-- Toast -->
+        <script>
+            @if (Session::has('message'))
+                var type = "{{ Session::get('alert-type', 'info') }}"
+                switch (type) {
+                    case 'info':
+                        toastr.info(" {{ Session::get('message') }} ");
+                        break;
+
+                    case 'success':
+                        toastr.success(" {{ Session::get('message') }} ");
+                        break;
+
+                    case 'warning':
+                        toastr.warning(" {{ Session::get('message') }} ");
+                        break;
+
+                    case 'error':
+                        toastr.error(" {{ Session::get('message') }} ");
+                        break;
+                }
+            @endif
+        </script>
+
         <!-- Register -->
         <script>
             $("#registrationForm2").submit(function(e) {

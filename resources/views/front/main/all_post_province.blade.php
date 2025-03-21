@@ -9,10 +9,10 @@
                     <div class="detail-wrapper-body">
                         <div class="listing-title-bar">
                             <div class="text-heading text-left">
-                                <p><a href="index.html">Trang chủ </a> &nbsp;/&nbsp; <span>{{ $category->category_name }}</span></p>
+                                <p><a href="index.html">Trang chủ </a> &nbsp;/&nbsp; <span>{{ $province}}</span></p>
                             </div>
-                            <h3>Cho thuê {{ $category->category_name }}</h3>
-                            <p>Có {{ $posts_category->count() }} tin đăng cho thuê</p>
+                            <h3>Cho thuê ở khu vực {{ $province }}</h3>
+                            <p>Có {{ $posts->count() }} tin đăng cho thuê</p>
                         </div>
                     </div>
                 </div>
@@ -210,7 +210,7 @@
             </section>
             <!-- Block heading end -->
             <div class="row featured portfolio-items">
-                @foreach ($posts_category as $post)
+                @foreach ($posts as $post)
                     @php
                         $video_url = $post->video_url;
                         $video_url_fixed = str_replace('embed/', 'watch?v=', $video_url);

@@ -19,7 +19,7 @@
                             <h4 class="sc-jb-title">
                                 <a href="{{ route('category.posts', $category->id) }}">{{ $category->category_name }}</a>
                             </h4>
-                            <span>307 Properties</span>
+                            <span>{{ $category->posts_count }} bài đăng</span>
                         </div>
                     </div>
                 </div>

@@ -10,9 +10,13 @@ use Carbon\Carbon;
 use App\Models\User;
 use App\Models\Image;
 use App\Models\Post;
-use Illuminate\Support\Facades\DB;
 use App\Models\Category;
 use Illuminate\Support\Facades\Validator;
+use App\Mail\ResetPasswordMail;
+use App\Mail\EmailVerificationMail;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Mail;
 
 class MainControler extends Controller
 {
@@ -33,11 +37,20 @@ class MainControler extends Controller
                 $post->formatted_price = $this->formatPrice($post->price);
             });
 
-        $categories = Category::where('status', 'show')->get();
+        $categories = Category::where('status', 'show')
+            ->withCount('posts')
+            ->get();
 
-        return view('front.main.index', compact('posts_featured', 'categories', 'posts_newest'));
+        $provinceCounts = Post::selectRaw('province, COUNT(*) as total')
+            ->groupBy('province')
+            ->pluck('total', 'province');
+
+
+        return view(
+            'front.main.index',
+            compact('posts_featured', 'categories', 'posts_newest', 'provinceCounts')
+        );
     }
-
 
     // Hàm định dạng giá tiền
     private function formatPrice($price)
@@ -78,21 +91,17 @@ class MainControler extends Controller
         // Lấy bài đăng theo ID
         $post = Post::findOrFail($id);
 
-        $addressParts = array_filter([
-            $post->house_number,
-            $post->street,
-            $post->ward,
-            $post->district,
-            $post->province
-        ]);
-
-        $post->full_address = implode(', ', $addressParts);
+        // Lấy danh sách bài đăng liên quan (cùng giá và loại bài đăng)
+        $relatedPosts = Post::where('category_id', $post->category_id)
+            ->where('id', '!=', $id) // Loại trừ bài đăng hiện tại
+            ->limit(3) // Giới hạn số bài đăng liên quan
+            ->get();
 
         $post->formatted_price = $this->formatPrice($post->price);
 
         $images = $post->images;
 
-        return view('front.main.post_detail', compact('post', 'images'));
+        return view('front.main.post_detail', compact('post', 'images', 'relatedPosts'));
     }
 
     public function getPostsByCategory($id)
@@ -118,10 +127,20 @@ class MainControler extends Controller
         return view('front.main.all_post_category', compact('posts_category', 'category'));
     }
 
+    public function filterByProvince($province)
+    {
+        // Lọc danh sách bài đăng theo tỉnh/thành phố
+        $posts = Post::where('province', $province)->get();
+
+        // Trả về view hiển thị danh sách bài đăng
+        return view('front.main.all_post_province', compact('posts', 'province'));
+    }
+
     public function SearchPost(Request $request)
     {
         $query = Post::query();
         $search_keyword = null;
+        $provinceName = $request->input('provinceName');
 
         if ($request->filled('keyword')) {
             $search_keyword = trim($request->keyword);
@@ -139,6 +158,10 @@ class MainControler extends Controller
             $query->where('category_id', $request->category);
         }
 
+        if (!empty($provinceName)) {
+            $query->where('province', $provinceName);
+        }
+
         $posts = $query->paginate(9);
 
         return view('front.main.search_results', compact('posts', 'search_keyword'));
@@ -149,7 +172,7 @@ class MainControler extends Controller
         $provinceName = $request->input('province_name');
         $districtName = $request->input('district_name');
         $wardName = $request->input('ward_name');
-        $priceRange = $request->input('price_range', 'all'); 
+        $priceRange = $request->input('price_range', 'all');
         $areaRange = $request->input('area_range', 'all');
         $category = $request->input('category_id', 'all');
         $search_keyword = null;
@@ -240,5 +263,85 @@ class MainControler extends Controller
         $posts = $query->paginate(9);
 
         return view('front.main.search_results', compact('posts', 'search_keyword'));
+    }
+
+    public function ForgetPassword()
+    {
+        return view('front.main.forget_password_form');
+    }
+
+    public function CodePasswordConfirm(Request $request)
+    {
+        $request->validate([
+            'email' => 'required|email|exists:users,email',
+        ], [
+            'email.required' => 'Vui lòng nhập email.',
+            'email.email' => 'Email không hợp lệ.',
+            'email.exists' => 'Email này không tồn tại trong hệ thống.',
+        ]);
+
+        $user = User::where('email', $request->email)->first();
+
+        if (!$user->email_verified_at) {
+            $notification = [
+                'message' => 'Email chưa được xác minh!',
+                'alert-type' => 'error',
+            ];
+
+            return redirect()->back()->with($notification);
+        }
+
+        $user = User::where('email', $request->email)->first();
+        $token = Str::random(6);
+
+        // Lưu token vào bảng password_resets
+        DB::table('password_reset_tokens')->updateOrInsert(
+            ['email' => $user->email],
+            ['token' => $token, 'created_at' => now()]
+        );
+
+        session(['reset_email' => $request->email]);
+
+        $notification = [
+            'message' => 'Mã xác nhận đã được gửi tới email của bạn',
+            'alert-type' => 'success',
+        ];
+
+        Mail::to($user->email)->send(new ResetPasswordMail($token));
+
+        return redirect('/password/reset/form')->with($notification);
+    }
+
+    public function PasswordResetForm()
+    {
+        return view('front.main.reset_password_form');
+    }
+
+    public function resetPassword(Request $request)
+    {
+        $request->validate([
+            'password' => 'required|min:8',
+            'password_confirmation' => 'required|same:password',
+        ], [
+            'password.required' => 'Vui lòng nhập mật khẩu mới.',
+            'password.min' => 'Mật khẩu phải có ít nhất 8 ký tự.',
+            'password_confirmation.required' => 'Vui lòng xác nhận mật khẩu.',
+            'password_confirmation.same' => 'Mật khẩu xác nhận không khớp.',
+        ]);
+        $email = session('reset_email');
+        $user = User::where('email', $email)->first();
+        $user->password = Hash::make($request->password);
+        $user->save();
+
+        // Xóa token sau khi đặt lại mật khẩu thành công
+        DB::table('password_reset_tokens')->where('email', $email)->delete();
+        session()->forget('reset_email');
+
+        $notification = [
+            'message' => 'Mật khẩu đã được đặt lại thành công.',
+            'alert-type' => 'success',
+        ];
+
+        return redirect()->route('login')->with($notification);
     }
 }

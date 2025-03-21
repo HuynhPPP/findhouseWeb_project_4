@@ -23,8 +23,14 @@ Route::get('/api/proxy/wards/{districtId}', [ApiController::class, 'getWards']);
 Route::get('/all/post/recommend', [MainControler::class, 'AllPostRecommend'])->name('all.post_recommend');
 Route::get('/post/details/{id}', [MainControler::class, 'PostDetail'])->name('post.detail');
 Route::get('/category/{id}', [MainControler::class, 'getPostsByCategory'])->name('category.posts');
+Route::get('/properties/{province}', [MainControler::class, 'filterByProvince'])->name('properties.by.province');
 Route::post('/search/post', [MainControler::class, 'SearchPost'])->name('search.post');
 Route::post('/filter/post', [MainControler::class, 'FilterPost'])->name('filter.post');
+
+Route::get('/forget/password', [MainControler::class, 'ForgetPassword'])->name('forget.password');
+Route::post('/confirm/password/code', [MainControler::class, 'CodePasswordConfirm'])->name('confirm.password.code');
+Route::get('/password/reset/form', [MainControler::class, 'PasswordResetForm'])->name('password.reset.form');
+Route::post('/reset/password', [MainControler::class, 'ResetPassword'])->name('reset.password');
 
 require __DIR__ . '/auth.php';
 
@@ -54,16 +60,30 @@ Route::middleware(['auth', 'roles:poster'])->group(function () {
   Route::get('/poster/dashboard', [PosterController::class, 'PosterDashboard'])->name('poster.dashboard');
   Route::get('/poster/profile', [PosterController::class, 'PosterProfile'])->name('poster.profile');
   Route::post('/poster/store/profile', [PosterController::class, 'PosterStoreProfile'])->name('poster.store.profile');
-  Route::get('/poster/post', [PosterController::class, 'PosterPost'])->name('poster.post');
+  Route::get('/poster/post', [PosterController::class, 'PosterPost'])->name('poster.post')->middleware('email.verified');
   Route::get('/poster/edit/post/{id}', [PosterController::class, 'PosterEditPost'])->name('poster.edit.post');
   Route::get('/poster/delete/post/{id}', [PosterController::class, 'PosterDeletePost'])->name('poster.delete.post');
   Route::get('/poster/list-post', [PosterController::class, 'PosterListPost'])->name('poster.list-post');
-  Route::get('/poster/verification', [PosterController::class, 'PosterVerification'])->name('poster.verification');
   Route::get('/poster/change-password', [PosterController::class, 'PosterChangePassword'])->name('poster.change-password');
   Route::post('/poster/post/store', [PosterController::class, 'PosterPostStore'])->name('poster.post.store');
   Route::post('/poster/post/update', [PosterController::class, 'PosterPostUpdate'])->name('poster.post.update');
   Route::post('/poster/delete/video', [PosterController::class, 'PosterDeleteVideo'])->name('poster.delete.video');
   Route::post('/poster/delete/image', [PosterController::class, 'PosterDeleteImage'])->name('poster.delete.image');
+  Route::post('/poster/change-password', [PosterController::class, 'ChangePassword'])->name('poster.change.password');
+
+  // forget password
+  Route::get('/poster/forget-password', [PosterController::class, 'ForgetPassword'])->name('poster.forget.password');
+  Route::post('/password/password/code', [PosterController::class, 'sendResetCode'])->name('password.password.code');
+  Route::get('/poster/confirm/password/code', [PosterController::class, 'showConfirmCodeForm'])->name('poster.confirm.password.code');
+  Route::post('/poster/verify/password/code', [PosterController::class, 'verifyResetCode'])->name('poster.verify.password.code');
+  Route::post('/poster/reset/password', [PosterController::class, 'resetPassword'])->name('poster.reset.password');
+
+
+  // verification mail
+  Route::get('/poster/verification', [PosterController::class, 'PosterVerification'])->name('poster.verification');
+  Route::post('/email/verify', [PosterController::class, 'sendVerificationCode'])->name('email.verify');
+  Route::get('/poster/verification/email/code', [PosterController::class, 'VerificationWithEmailCode'])->name('password.verification.email.code');
+  Route::post('/email/verify-code', [PosterController::class, 'verifyEmailCode'])->name('email.verify.code');
 }); // End Poster group middleware
 
 /// User group middleware

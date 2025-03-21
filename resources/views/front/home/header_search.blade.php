@@ -102,6 +102,7 @@
                                                             id="province">
                                                             <option selected value="0">Toàn quốc</option>
                                                         </select>
+                                                        <input type="hidden" id="provinceName" name="provinceName">
                                                     </div>
                                                     <div class="dropdown-filter" data-toggle="modal"
                                                         data-target="#filterModal"><span>Bộ lọc</span></div>
@@ -437,6 +438,16 @@
 
     <script>
         $(document).ready(function() {
+            $("#province").change(function() {
+                let provinceId = $(this).val();
+                let provinceName = $("#province option:selected").text();
+                $("#provinceName").val(provinceName); // Gán giá trị tên tỉnh vào input hidden
+            });
+        });
+    </script>
+
+    <script>
+        $(document).ready(function() {
             $("#provinceNew").change(function() {
                 let provinceId = $(this).val();
                 let provinceName = $("#provinceNew option:selected").text();
@@ -494,5 +505,4 @@
             });
         });
     </script>
-
 @endsection

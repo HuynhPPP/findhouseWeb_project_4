@@ -10,10 +10,17 @@ use App\Models\Post;
 use App\Models\Image;
 use App\Models\Video;
 use App\Models\Category;
+use App\Mail\ResetPasswordMail;
+use App\Mail\EmailVerificationMail;
 use Cocur\Slugify\Slugify;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Mail;
+
 
 class PosterController extends Controller
 {
@@ -224,7 +231,7 @@ class PosterController extends Controller
         $slugify = new Slugify();
 
         $videoUrl = $request->video_url ? $this->convertVideoUrl($request->video_url) : null;
-       
+
 
         Post::find($post_id)->update([
             'user_id' => Auth::id(),
@@ -321,5 +328,233 @@ class PosterController extends Controller
             'message' => 'Bài đăng đã được xoá!',
             'alert-type' => 'success'
         ]);
+    }
+
+    public function ChangePassword(Request $request)
+    {
+        $messages = [
+            'oldPassword.required' => 'Vui lòng nhập mật khẩu cũ.',
+            'newPassword.required' => 'Vui lòng nhập mật khẩu mới.',
+            'newPassword.min' => 'Mật khẩu mới phải có ít nhất 8 ký tự.',
+            'newPassword.confirmed' => 'Xác nhận mật khẩu không khớp.',
+        ];
+
+        $validator = Validator::make($request->all(), [
+            'oldPassword' => 'required',
+            'newPassword' => 'required|min:8|confirmed',
+        ], $messages);
+
+        if (empty($request->oldPassword) && empty($request->newPassword) && empty($request->newPassword_confirmation)) {
+            return response()->json(['errors' => ['Vui lòng nhập đầy đủ thông tin.']], 422);
+        }
+
+        // Kiểm tra lỗi validate
+        if ($validator->fails()) {
+            return response()->json(['errors' => $validator->errors()], 422);
+        }
+
+        $id = Auth::user()->id;
+        $user = User::find($id);
+
+        // Kiểm tra mật khẩu cũ
+        if (!Hash::check($request->oldPassword, $user->password)) {
+            return response()->json(['errors' => ['oldPassword' => ['Mật khẩu cũ không đúng.']]], 422);
+        }
+
+        // Cập nhật mật khẩu mới
+        $user->password = Hash::make($request->newPassword);
+        $user->save();
+
+        return response()->json([
+            'success' => 'Mật khẩu đã được cập nhật thành công.',
+            'alert-type' => 'success'
+        ]);
+    }
+
+    public function ForgetPassword()
+    {
+        return view('front.poster.poster_forget_password');
+    }
+
+    public function sendResetCode(Request $request)
+    {
+        $request->validate([
+            'email' => 'required|email|exists:users,email'
+        ], [
+            'email.required' => 'Vui lòng nhập email.',
+            'email.email' => 'Email không hợp lệ.',
+            'email.exists' => 'Email này chưa được đăng ký trong hệ thống.'
+        ]);
+
+        $user = User::where('email', $request->email)->first();
+
+        if (!$user->email_verified_at) {
+            $notification = [
+                'message' => 'Email chưa được xác minh!',
+                'alert-type' => 'error',
+            ];
+
+            return redirect()->back()->with($notification);
+        }
+
+        // Tạo mã xác nhận ngẫu nhiên
+        $token = Str::random(6);
+
+        // Lưu token vào database với thời gian hết hạn
+        DB::table(' password_reset_tokens')->updateOrInsert(
+            ['email' => $user->email],
+            ['token' => $token, 'created_at' => Carbon::now()]
+        );
+
+        $notification = [
+            'message' => 'Mã xác nhận đã được gửi tới email của bạn',
+            'alert-type' => 'success',
+        ];
+
+        // Gửi email
+        Mail::to($user->email)->send(new ResetPasswordMail($token));
+
+        return redirect('/poster/confirm/password/code')->with($notification);
+    }
+
+    public function showConfirmCodeForm()
+    {
+        return view('front.poster.emails.form_confirm_password_code');
+    }
+
+    public function verifyResetCode(Request $request)
+    {
+        $request->validate([
+            'verification_code' => 'required|string',
+        ], [
+            'verification_code.required' => 'Vui lòng nhập mã xác minh.',
+        ]);
+
+        $resetEntry = DB::table('password_reset_tokens')
+            ->where('token', $request->verification_code)
+            ->first();
+
+        if (!$resetEntry) {
+            return redirect()->back()->withErrors([
+                'verification_code' => 'Mã xác minh không hợp lệ hoặc đã hết hạn!',
+            ]);
+        }
+
+        // Chuyển hướng đến form đặt lại mật khẩu, truyền email và token
+        return view('front.poster.emails.reset_password_form', [
+            'email' => $resetEntry->email,
+            'token' => $request->verification_code
+        ]);
+    }
+
+    public function resetPassword(Request $request)
+    {
+        $request->validate([
+            'email' => 'required|email|exists:users,email',
+            'token' => 'required|string',
+            'password' => 'required|min:6|confirmed',
+        ], [
+            'password.required' => 'Vui lòng nhập mật khẩu.',
+            'password.min' => 'Mật khẩu phải có ít nhất 6 ký tự.',
+            'password.confirmed' => 'Mật khẩu xác nhận không khớp.',
+        ]);
+
+        $resetEntry = DB::table('password_reset_tokens')
+            ->where('email', $request->email)
+            ->where('token', $request->token)
+            ->first();
+
+        if (!$resetEntry) {
+            return redirect()->back()->withErrors([
+                'token' => 'Mã xác nhận không hợp lệ hoặc đã hết hạn!',
+            ]);
+        }
+
+        // Cập nhật mật khẩu mới
+        User::where('email', $request->email)->update([
+            'password' => Hash::make($request->password),
+        ]);
+
+        // Xóa token sau khi đặt lại mật khẩu thành công
+        DB::table('password_reset_tokens')->where('email', $request->email)->delete();
+
+        return redirect('/login')->with([
+            'message' => 'Mật khẩu đã được đặt lại thành công!',
+            'alert-type' => 'success',
+        ]);
+    }
+
+
+    public function sendVerificationCode(Request $request)
+    {
+        $request->validate([
+            'email' => 'required|email|exists:users,email'
+        ]);
+
+        $user = User::where('email', $request->email)->first();
+
+        if ($user->email_verified_at) {
+            $notification = [
+                'message' => 'Email đã được xác minh trước đó',
+                'alert-type' => 'info',
+            ];
+
+            return redirect()->back()->with($notification);
+        }
+
+        // Tạo mã xác minh 6 chữ số
+        $verificationCode = rand(100000, 999999);
+        $user->verification_token = $verificationCode;
+        $user->save();
+
+        // Gửi email xác minh
+        Mail::to($user->email)->send(new EmailVerificationMail($user));
+
+        $notification = [
+            'message' => 'Mã xác minh đã được gửi đến email của bạn',
+            'alert-type' => 'success',
+        ];
+
+        return redirect('/poster/verification/email/code')->with($notification);
+    }
+
+    public function VerificationWithEmailCode()
+    {
+        return view('front.poster.emails.verify_email_code');
+    }
+
+    public function verifyEmailCode(Request $request)
+    {
+        $request->validate([
+            'verification_code' => 'required|digits:6'
+        ], [
+            'verification_code.required' => 'Vui lòng nhập mã xác minh.',
+            'verification_code.digits'   => 'Mã xác minh phải là 6 chữ số.'
+        ]);
+
+        // Tìm user theo mã xác minh
+        $user = User::where('verification_token', $request->verification_code)->first();
+
+        if (!$user) {
+            $notification = [
+                'message' => 'Mã xác minh không hợp lệ',
+                'alert-type' => 'error',
+            ];
+
+            return redirect()->back()->with($notification);
+        }
+
+        // Cập nhật trường email_verified_at và xóa mã xác minh
+        $user->email_verified_at = Carbon::now();
+        $user->verification_token = null;
+        $user->save();
+
+
+        $notification = [
+            'message' => 'Email đã được xác minh thành công',
+            'alert-type' => 'success',
+        ];
+
+        return redirect('/poster/verification')->with($notification);
     }
 }

@@ -46,7 +46,6 @@ class UserController extends Controller
             'contact.unique' => 'Email hoặc số điện thoại đã tồn tại trong hệ thống.',
             'password.required' => 'Mật khẩu không được để trống.',
             'password.min' => 'Mật khẩu phải có ít nhất 8 ký tự.',
-            'password.regex' => 'Mật khẩu không được chỉ chứa số.',
             'account_type.required' => 'Vui lòng chọn loại tài khoản.',
             'account_type.in' => 'Loại tài khoản không hợp lệ.',
         ];
