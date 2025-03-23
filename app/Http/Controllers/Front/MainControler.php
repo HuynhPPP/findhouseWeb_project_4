@@ -88,13 +88,11 @@ class MainControler extends Controller
 
     public function PostDetail($id)
     {
-        // Lấy bài đăng theo ID
         $post = Post::findOrFail($id);
 
-        // Lấy danh sách bài đăng liên quan (cùng giá và loại bài đăng)
         $relatedPosts = Post::where('category_id', $post->category_id)
-            ->where('id', '!=', $id) // Loại trừ bài đăng hiện tại
-            ->limit(3) // Giới hạn số bài đăng liên quan
+            ->where('id', '!=', $id) 
+            ->limit(3) 
             ->get();
 
         $post->formatted_price = $this->formatPrice($post->price);

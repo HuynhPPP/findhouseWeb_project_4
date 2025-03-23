@@ -34,7 +34,7 @@
     <link rel="stylesheet" href="{{ asset('front/css/styles.css') }}">
     <link rel="stylesheet" id="color" href="{{ asset('front/css/default.css') }}">
     <link rel="stylesheet" href="{{ asset('front/trumbowyg/trumbowyg.min.css') }}" />
-
+    <link rel="stylesheet" href="{{ asset('front\css\popup_chat.css') }}">
     <!-- Toastr -->
     <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.css">
     <!-- End Toastr -->
@@ -70,6 +70,86 @@
         {{-- @include('front.poster.body.footer') --}}
         <a data-scroll href="#wrapper" class="go-up"><i class="fa fa-angle-double-up" aria-hidden="true"></i></a>
         <!-- END FOOTER -->
+
+        <!-- Popup chat -->
+        <div class="chat-popup" id="chatPopup">
+            <!-- Tiêu đề popup -->
+            <div class="chat-popup-header">
+                <h5>Hộp thoại</h5>
+                <button class="close-btn" onclick="closeChatPopup()">&times;</button>
+            </div>
+            <!-- Nội dung 2 cột -->
+            <div class="chat-popup-body">
+                <!-- Cột trái: Danh sách chat -->
+                <div class="chat-list-col">
+                    <!-- Thanh tìm kiếm -->
+                    <div class="chat-search">
+                        <input type="text" placeholder="Nhập ít nhất 3 ký tự để tìm...">
+                    </div>
+                    <!-- Danh sách cuộc hội thoại -->
+                    <div class="chat-list">
+                        <a href="javascript:void(0)" class="chat-list-item active">
+                            <div class="user-info">
+                                <img src="{{ asset('front\images\avt\avt1.jpg') }}" alt="avatar">
+                                <div>
+                                    <h6>Trường Giang</h6>
+                                    <small>Hoạt động 2 ngày trước</small>
+                                </div>
+                            </div>
+                        </a>
+                        <a href="javascript:void(0)" class="chat-list-item">
+                            <div class="user-info">
+                                <img src="{{ asset('front\images\avt\avt2.jpg') }}" alt="avatar">
+                                <div>
+                                    <h6>Quang Phạm</h6>
+                                    <small>1 ngày trước</small>
+                                </div>
+                            </div>
+                        </a>
+                        <!-- Thêm các item khác nếu muốn -->
+                    </div>
+                </div>
+                <!-- Cột phải: Khung chat chính -->
+                <div class="chat-content-col">
+                    <!-- Header khung chat -->
+                    <div class="chat-content-header">
+                        <img src="{{ asset('front\images\avt\avt3.jpg') }}" alt="avatar">
+                        <div>
+                            <h6>Trường Giang</h6>
+                            <small>Hoạt động 2 ngày trước</small>
+                        </div>
+                    </div>
+                    <!-- Nội dung tin nhắn -->
+                    <div class="chat-messages">
+                        <div class="message-bubble">
+                            <p class="mb-1">
+                                Phòng Trọ FULL NỘI THẤT Cao Cấp 25M2, công viên Hùng Vương 2.5tr
+                            </p>
+                            <span class="price">3 triệu/tháng</span>
+                        </div>
+                        <div class="message-bubble">
+                            <p class="mb-1">Nội dung tin nhắn khác...</p>
+                            <small class="text-muted">1 giờ trước</small>
+                        </div>
+                    </div>
+                    <!-- Ô nhập tin nhắn -->
+                    <div class="chat-input">
+                        <div style="display: flex; align-items: center;">
+                            <input type="text" class="chat-input-box" id="chatMessage"
+                                placeholder="Nhập tin nhắn...">
+                            <button class="send-btn" onclick="sendChatMessage()">
+                                <i class="fa fa-paper-plane"></i> Gửi
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Nút kích hoạt popup (ví dụ: icon chat) -->
+        <button id="openPopupBtn" class="open-popup-btn" onclick="openChatPopup()">
+            <i class="fa fa-comment"></i>
+        </button>
 
         <!-- START PRELOADER -->
         <div id="preloader">
@@ -113,6 +193,7 @@
         <script src="{{ asset('front/trumbowyg/trumbowyg.min.js') }}"></script>
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
         <script src="{{ asset('front/js/code.js') }}"></script>
+
 
         <script>
             $(".header-user-name").on("click", function() {
@@ -185,6 +266,52 @@
                     }
                 }, 100); // Cập nhật mỗi 100ms
             });
+        </script>
+
+        <script>
+            // Mở popup
+            function openChatPopup() {
+                document.getElementById('chatPopup').classList.add('active');
+            }
+
+            // Đóng popup (khi nhấn nút X)
+            function closeChatPopup() {
+                document.getElementById('chatPopup').classList.remove('active');
+            }
+
+            // Đóng popup (khi click nền mờ, trừ khi click vào chính popup)
+            function closeChatPopupByOverlay(event) {
+                // Nếu bấm bên ngoài popup, đóng
+                const popup = document.getElementById('chatPopup');
+                if (!popup.contains(event.target)) {
+                    closeChatPopup();
+                }
+            }
+
+            // Gửi tin nhắn
+            function sendChatMessage() {
+                const input = document.getElementById('chatMessage');
+                const msg = input.value.trim();
+                if (!msg) {
+                    alert('Vui lòng nhập tin nhắn!');
+                    return;
+                }
+                // Xử lý gửi tin nhắn ở đây (AJAX, v.v.)
+                console.log('Tin nhắn:', msg);
+
+                // Demo: thêm tin nhắn vào khung chat
+                const chatMessages = document.querySelector('.chat-messages');
+                const bubble = document.createElement('div');
+                bubble.className = 'message-bubble';
+                bubble.innerHTML = `<p>${msg}</p>`;
+                chatMessages.appendChild(bubble);
+
+                // Cuộn xuống cuối
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+
+                // Reset input
+                input.value = '';
+            }
         </script>
 
     </div>

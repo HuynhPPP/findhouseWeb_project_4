@@ -20,7 +20,8 @@
             </div>
             <!-- Left Side Content / End -->
 
-            <!-- Right Side Content / End -->
+            <!-- Right Side Content -->
+
             @php
                 $profileData = Auth::check() ? App\Models\User::find(Auth::user()->id) : null;
             @endphp
@@ -35,7 +36,6 @@
                 </div>
                 <!-- Header Widget / End -->
             </div>
-            <!-- Right Side Content / End -->
             <!-- Right Side Content / End -->
             <div class="header-user-menu user-menu add">
 

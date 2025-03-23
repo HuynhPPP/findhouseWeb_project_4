@@ -145,19 +145,22 @@ class UserController extends Controller
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
 
-            // Điều hướng theo quyền
-            $url = '';
+            // Xác định đường dẫn chuyển hướng mặc định dựa trên quyền
+            $defaultUrl = '';
             if (Auth::user()->role === 'admin') {
-                $url = route('admin.dashboard');
+                $defaultUrl = route('admin.dashboard');
             } elseif (Auth::user()->role === 'poster') {
-                $url = route('poster.dashboard');
+                $defaultUrl = route('poster.dashboard');
             } elseif (Auth::user()->role === 'user') {
-                $url = route('user.dashboard');
+                $defaultUrl = route('index');
             }
 
+            // Kiểm tra tham số redirect từ request
+            $redirectUrl = $request->input('redirect') ? $request->input('redirect') : $defaultUrl;
+
             return response()->json([
-                'status' => true,
-                'redirect_url' => $url,
+                'status'       => true,
+                'redirect_url' => $redirectUrl,
             ]);
         } else {
             return response()->json([

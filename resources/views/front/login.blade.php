@@ -71,6 +71,9 @@
             <div class="login">
                 <form name="registerform" id="loginForm2">
                     @csrf
+
+                    <input type="hidden" name="redirect" value="{{ request()->query('redirect') }}">
+
                     <div class="access_social">
                         <a href="#0" class="social_bt google">Đăng nhập bằng Google</a>
                     </div>

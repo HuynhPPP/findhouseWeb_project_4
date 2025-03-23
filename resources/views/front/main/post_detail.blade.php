@@ -291,20 +291,78 @@
                                             </li>
                                         </ul>
                                         <div class="agent-contact-form-sidebar">
-                                            <h4>Request Inquiry</h4>
-                                            <form name="contact_form" method="post"
-                                                action="https://code-theme.com/html/findhouses/functions.php">
-                                                <input type="text" id="fname" name="full_name"
-                                                    placeholder="Full Name" required />
-                                                <input type="number" id="pnumber" name="phone_number"
-                                                    placeholder="Phone Number" required />
-                                                <input type="email" id="emailid" name="email_address"
-                                                    placeholder="Email Address" required />
-                                                <textarea placeholder="Message" name="message" required></textarea>
-                                                <input type="submit" name="sendmessage" class="multiple-send-message"
-                                                    value="Submit Request" />
-                                            </form>
+                                            <h4>Liên hệ để thuê</h4>
+
+                                            @auth
+                                                @php
+                                                    $booking = App\Models\Bookings::where('post_id', $post->id)
+                                                        ->where('user_id', Auth::user()->id)
+                                                        ->first();
+                                                @endphp
+
+                                                @php
+                                                    $profileData = Auth::user(); // Lấy user hiện tại
+                                                @endphp
+                                                <!-- Nếu đã đăng nhập, hiển thị form -->
+                                                @if ($booking && $booking->status == 'pending')
+                                                    <form method="POST"
+                                                        action="{{ route('bookings.cancel', $booking->id) }}">
+                                                        @csrf
+                                                        <input type="hidden" name="post_id" value="{{ $post->id }}">
+                                                        <input type="hidden" name="user_id" value="{{ $profileData->id }}">
+
+                                                        <input type="text" id="fname" name="full_name"
+                                                            value="{{ $profileData->name }}" readonly />
+
+                                                        <input type="number" id="pnumber" name="phone_number"
+                                                            value="{{ $profileData->phone ?? 'Chưa cập nhật' }}" readonly />
+
+                                                        <input type="email" id="emailid" name="email_address"
+                                                            value="{{ $profileData->email ?? 'Chưa cập nhật' }}" readonly />
+
+                                                        <input type="submit" id="cancel_booking"
+                                                            class="multiple-send-message" value="Huỷ yêu cầu" />
+                                                    </form>
+                                                @else
+                                                    <form name="contact_form" method="post"
+                                                        action="{{ route('bookings.store') }}">
+                                                        @csrf
+                                                        <input type="hidden" name="post_id" value="{{ $post->id }}">
+                                                        <input type="hidden" name="user_id" value="{{ $profileData->id }}">
+
+                                                        <label for="fname">Họ tên</label>
+                                                        <input type="text" id="fname" name="full_name"
+                                                            value="{{ $profileData->name }}" readonly />
+
+                                                        <label for="fname">Số điện thoại</label>
+                                                        <input type="text" id="pnumber" name="phone_number"
+                                                            value="{{ $profileData->phone ?? 'Chưa cập nhật' }}" readonly />
+
+                                                        <label for="fname">Email</label>
+                                                        <input type="email" id="emailid" name="email_address"
+                                                            value="{{ $profileData->email ?? 'Chưa cập nhật' }}" readonly />
+
+                                                        <input type="submit" id="submit_booking"
+                                                            class="multiple-send-message" value="Gửi yêu cầu" />
+
+                                                    </form>
+                                                    <input class="multiple-send-message-2"
+                                                onclick="openChatPopup()" value="Nhắn tin" />
+                                                @endif
+                                            @else
+                                                <!-- Nếu chưa đăng nhập, hiển thị thông báo -->
+                                                <div class="alert alert-warning">
+                                                    Bạn cần <a class="text-danger"
+                                                        href="{{ route('login', ['redirect' => request()->fullUrl()]) }}">
+                                                        đăng nhập
+                                                    </a>
+                                                    đăng nhập </a> trước khi gửi yêu cầu liên hệ.
+                                                </div>
+                                                
+                                            @endauth
+
                                         </div>
+
                                     </div>
                                 </div>
                             </div>
@@ -490,4 +548,50 @@
 @section('customJs')
     <script src="https://unpkg.com/leaflet@1.3.1/dist/leaflet.js"></script>
     <script src="{{ asset('front/js/map_post_view.js') }}"></script>
+
+    <script>
+        $(function() {
+            $(document).on('click', '#submit_booking', function(e) {
+                e.preventDefault(); // Ngăn form submit ngay
+                var form = $(this).closest('form'); // Lấy đối tượng form chứa nút này
+                Swal.fire({
+                    title: 'Bạn có chắc chắn?',
+                    text: "Bạn muốn yêu cầu thuê ",
+                    icon: 'info',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Đồng ý',
+                    cancelButtonText: 'Không'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        form.submit();
+                    }
+                });
+            });
+        });
+    </script>
+
+    <script>
+        $(function() {
+            $(document).on('click', '#cancel_booking', function(e) {
+                e.preventDefault(); // Ngăn form submit ngay
+                var form = $(this).closest('form'); // Lấy đối tượng form chứa nút này
+                Swal.fire({
+                    title: 'Bạn có chắc chắn?',
+                    text: "Bạn muốn huỷ yêu cầu thuê này?",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Huỷ yêu cầu',
+                    cancelButtonText: 'Không'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        form.submit();
+                    }
+                });
+            });
+        });
+    </script>
 @endsection

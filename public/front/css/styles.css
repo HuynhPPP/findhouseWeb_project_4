@@ -5115,6 +5115,78 @@ element.style {
   color: #fff;
 }
 
+/* Popup nhắn tin */
+.message-popup {
+  position: fixed;
+  bottom: 11rem; 
+  right: 1rem;
+  width: 300px;
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  z-index: 100000;
+  display: none;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: all 0.3s ease;
+}
+
+.message-popup.active {
+  display: block;
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.message-popup .popup-header {
+  background: #FF385C;
+  color: #fff;
+  padding: 0.5rem 1rem;
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.message-popup .popup-header .close-popup {
+  background: transparent;
+  border: none;
+  color: #fff;
+  font-size: 1.2rem;
+  cursor: pointer;
+}
+
+.message-popup .popup-body {
+  padding: 0.8rem 1rem;
+}
+
+.message-popup .popup-body textarea {
+  width: 100%;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  resize: vertical;
+  padding: 0.5rem;
+  font-size: 0.9rem;
+}
+
+.message-popup .popup-footer {
+  padding: 0.5rem 1rem 1rem;
+  text-align: right;
+}
+
+.message-popup .popup-footer .send-btn {
+  background: #FF385C;
+  border: none;
+  color: #fff;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.9rem;
+}
+
+
+
 /*---------------------------------------*/
 /*--------- 16. HOME 2 Image ----------*/
 /*---------------------------------------*/
@@ -16402,7 +16474,7 @@ div.datedropper.my-style.picker-lkd .pick-submit {
 }
 
 .sidebar-widget .author-box {
-  margin-bottom: 15px;
+  margin-bottom: 8px;
 }
 
 .sidebar-widget .author-box img {
@@ -16435,7 +16507,6 @@ div.datedropper.my-style.picker-lkd .pick-submit {
 
 .sidebar-widget .author__contact li {
   color: #666;
-  margin-bottom: 10px;
   font-weight: 400;
   font-size: 15px;
 }
@@ -16607,8 +16678,26 @@ div.datedropper.my-style.picker-lkd .pick-submit {
   transition: all .3s ease;
 }
 
+.agent-contact-form-sidebar .multiple-send-message-2 {
+  background-color: #f5f7fb;
+  color: #222;
+  font-family: "Montserrat", sans-serif;
+  cursor: pointer;
+  font-size: 14px;
+  text-transform: capitalize;
+  padding-top: 12px;
+  margin-top: 10px;
+  margin-bottom: 0px;
+  -webkit-transition: all .3s ease;
+  transition: all .3s ease;
+}
+
 .agent-contact-form-sidebar .multiple-send-message:hover {
   background-color: #121B22;
+}
+
+.agent-contact-form-sidebar .multiple-send-message-2:hover {
+  background-color: silver;
 }
 
 /* Arrows */

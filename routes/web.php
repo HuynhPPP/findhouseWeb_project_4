@@ -5,6 +5,7 @@ use App\Http\Controllers\Front\PosterController;
 use App\Http\Controllers\Front\UserController;
 use App\Http\Controllers\Front\ApiController;
 use App\Http\Controllers\Front\MainControler;
+use App\Http\Controllers\Front\ContactController;
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\admin\CategoryController;
 use Illuminate\Support\Facades\Route;
@@ -91,4 +92,7 @@ Route::middleware(['auth', 'roles:user'])->group(function () {
   Route::get('/user/dashboard', [UserController::class, 'UserDashboard'])->name('user.dashboard');
   Route::get('/user/profile', [UserController::class, 'UserProfile'])->name('user.profile');
   Route::post('/user/store/profile', [UserController::class, 'UserStoreProfile'])->name('user.store.profile');
+  Route::post('/bookings/store', [ContactController::class, 'BookingStore'])->name('bookings.store');
+  Route::post('/bookings/cancel/{id}', [ContactController::class, 'CancelBooking'])->name('bookings.cancel');
+
 }); // End User group middleware

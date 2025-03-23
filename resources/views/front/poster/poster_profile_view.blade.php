@@ -83,7 +83,7 @@
                 <input type="text" id="fname" name="name" placeholder="Tên liên hệ" value="{{ $profileData->name }}" />
                 <input type="number" id="pnumber" name="phone" placeholder="Số điện thoại" value="{{ $profileData->phone }}" />
                 <input type="email" id="emailid" name="email" placeholder="Email" value="{{ $profileData->email }}" />
-                <input type="submit" name="sendmessage" class="multiple-send-message" value="Xác nhận" />
+                <input type="submit" name="sendmessage" class="multiple-send-message" value="Cập nhật" />
             </div>
         </form>
     </div>
