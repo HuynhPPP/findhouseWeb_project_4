@@ -346,8 +346,9 @@
                                                             class="multiple-send-message" value="Gửi yêu cầu" />
 
                                                     </form>
-                                                    <input class="multiple-send-message-2"
-                                                onclick="openChatPopup()" value="Nhắn tin" />
+                                                    <!-- Nút mở chat -->
+                                                    <input class="multiple-send-message-2" onclick="openChatPopup()"
+                                                        value="Nhắn tin" />
                                                 @endif
                                             @else
                                                 <!-- Nếu chưa đăng nhập, hiển thị thông báo -->
@@ -358,7 +359,7 @@
                                                     </a>
                                                     đăng nhập </a> trước khi gửi yêu cầu liên hệ.
                                                 </div>
-                                                
+
                                             @endauth
 
                                         </div>
@@ -366,6 +367,7 @@
                                     </div>
                                 </div>
                             </div>
+                            
                             <div class="main-search-field-2">
                                 <div class="widget-boxed mt-5">
                                     <div class="widget-boxed-header">
@@ -540,6 +542,9 @@
 
             </section>
             <!-- END SIMILAR PROPERTIES -->
+        </div>
+        <div id="app-live-chat">
+            <send-message></send-message>
         </div>
     </section>
     <!-- END SECTION PROPERTIES LISTING -->

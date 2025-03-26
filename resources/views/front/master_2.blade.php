@@ -10,6 +10,8 @@
 
     <!-- FAVICON -->
     <link rel="shortcut icon" type="image/x-icon" href="{{ asset('front/favicon.ico') }}">
+
+    @vite(['resources/js/app.js'])
     <!-- GOOGLE FONTS -->
     <link href="https://fonts.googleapis.com/css?family=Lato:300,300i,400,400i%7CMontserrat:600,800" rel="stylesheet">
     <!-- FONT AWESOME -->
@@ -26,7 +28,6 @@
     <link rel="stylesheet" href="{{ asset('front/css/bootstrap.min.css') }}">
     <link rel="stylesheet" href="{{ asset('front/css/menu.css') }}">
     <link rel="stylesheet" href="{{ asset('front/css/styles.css') }}">
-    <link rel="stylesheet" href="{{ asset('front\css\popup_chat.css') }}">
     <link rel="stylesheet" id="color" href="{{ asset('front/css/default.css') }}">
 
     <!-- Toastr -->
@@ -57,7 +58,7 @@
         <!-- START FOOTER -->
         @include('front.body.footer_2')
 
-        <div class="chat-popup" id="chatPopup">
+        {{-- <div class="chat-popup" id="chatPopup">
             <!-- Tiêu đề popup -->
             <div class="chat-popup-header">
                 <h5>Hộp thoại</h5>
@@ -129,12 +130,12 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div> --}}
 
         <!-- Nút kích hoạt popup (ví dụ: icon chat) -->
-        <button id="openPopupBtn" class="open-popup-btn" onclick="openChatPopup()">
+        {{-- <button id="openPopupBtn" class="open-popup-btn" onclick="openChatPopup()">
             <i class="fa fa-comment"></i>
-        </button>
+        </button> --}}
 
         <a data-scroll href="#wrapper" class="go-up"><i class="fa fa-angle-double-up" aria-hidden="true"></i></a>
         <!-- END FOOTER -->
@@ -206,51 +207,7 @@
             });
         </script>
 
-        <script>
-            // Mở popup
-            function openChatPopup() {
-                document.getElementById('chatPopup').classList.add('active');
-            }
-
-            // Đóng popup (khi nhấn nút X)
-            function closeChatPopup() {
-                document.getElementById('chatPopup').classList.remove('active');
-            }
-
-            // Đóng popup (khi click nền mờ, trừ khi click vào chính popup)
-            function closeChatPopupByOverlay(event) {
-                // Nếu bấm bên ngoài popup, đóng
-                const popup = document.getElementById('chatPopup');
-                if (!popup.contains(event.target)) {
-                    closeChatPopup();
-                }
-            }
-
-            // Gửi tin nhắn
-            function sendChatMessage() {
-                const input = document.getElementById('chatMessage');
-                const msg = input.value.trim();
-                if (!msg) {
-                    alert('Vui lòng nhập tin nhắn!');
-                    return;
-                }
-                // Xử lý gửi tin nhắn ở đây (AJAX, v.v.)
-                console.log('Tin nhắn:', msg);
-
-                // Demo: thêm tin nhắn vào khung chat
-                const chatMessages = document.querySelector('.chat-messages');
-                const bubble = document.createElement('div');
-                bubble.className = 'message-bubble';
-                bubble.innerHTML = `<p>${msg}</p>`;
-                chatMessages.appendChild(bubble);
-
-                // Cuộn xuống cuối
-                chatMessages.scrollTop = chatMessages.scrollHeight;
-
-                // Reset input
-                input.value = '';
-            }
-        </script>
+        
     </div>
     <!-- Wrapper / End -->
 </body>

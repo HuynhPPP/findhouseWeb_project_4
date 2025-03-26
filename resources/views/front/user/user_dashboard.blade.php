@@ -10,9 +10,11 @@
     <meta name="description" content="html 5 template">
     <meta name="author" content="">
     <title>Find Houses - HTML5 Template</title>
+
+    @vite(['resources/js/app.js'])
     <!-- FAVICON -->
     <link rel="shortcut icon" type="image/x-icon" href="favicon.ico">
-    <link rel="stylesheet" href="{{ asset('front/') }}css/jquery-ui.css">
+    <link rel="stylesheet" href="{{ asset('front/css/jquery-ui.css') }}">
     <!-- GOOGLE FONTS -->
     <link href="https://fonts.googleapis.com/css?family=Lato:300,300i,400,400i%7CMontserrat:600,800" rel="stylesheet">
     <!-- FONT AWESOME -->
