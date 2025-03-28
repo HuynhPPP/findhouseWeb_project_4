@@ -275,19 +275,19 @@
                                 <div class="widget-boxed-body">
                                     <div class="sidebar-widget author-widget2">
                                         <div class="author-box clearfix">
-                                            <img src="{{ !empty($post->users->photo) ? url('upload/poster_images/' . $post->users->photo) : url('upload/no_img.jpg') }}"
+                                            <img src="{{ !empty($post->user->photo) ? url('upload/poster_images/' . $post->user->photo) : url('upload/no_img.jpg') }}"
                                                 alt="author-image" class="author__img">
-                                            <h4 class="author__title">{{ $post->users->name }}</h4>
-                                            <p class="author__meta">Số tin đăng - {{ $post->users->posts->count() }}
+                                            <h4 class="author__title">{{ $post->user->name }}</h4>
+                                            <p class="author__meta">Số tin đăng - {{ $post->user->posts->count() }}
                                             </p>
                                         </div>
                                         <ul class="author__contact">
                                             <li><span class="la la-phone"><i class="fa fa-phone"
                                                         aria-hidden="true"></i></span><a
-                                                    href="#">{{ $post->users->phone }}</a></li>
+                                                    href="#">{{ $post->user->phone }}</a></li>
                                             <li><span class="la la-envelope-o"><i class="fa fa-envelope"
                                                         aria-hidden="true"></i></span><a
-                                                    href="#">{{ $post->users->email }}</a>
+                                                    href="#">{{ $post->user->email }}</a>
                                             </li>
                                         </ul>
                                         <div class="agent-contact-form-sidebar">
@@ -346,9 +346,10 @@
                                                             class="multiple-send-message" value="Gửi yêu cầu" />
 
                                                     </form>
-                                                    <!-- Nút mở chat -->
-                                                    <input class="multiple-send-message-2" onclick="openChatPopup()"
-                                                        value="Nhắn tin" />
+                                                    <!-- Nút mở chat (sẽ được thay thế bởi Vue) -->
+                                                    <div id="chatButtonApp">
+                                                        <chat-button @open-chat="openChatPopup"></chat-button>
+                                                    </div>
                                                 @endif
                                             @else
                                                 <!-- Nếu chưa đăng nhập, hiển thị thông báo -->
@@ -367,7 +368,7 @@
                                     </div>
                                 </div>
                             </div>
-                            
+
                             <div class="main-search-field-2">
                                 <div class="widget-boxed mt-5">
                                     <div class="widget-boxed-header">
@@ -527,7 +528,7 @@
                                                     <img src="{{ !empty($related->users->photo) ? url('upload/poster_images/' . $related->users->photo) : url('upload/no_img.jpg') }}"
                                                         alt="" class="mr-2"
                                                         style="width: 35px; height: 35px; object-fit: cover; border-radius: 50%;">
-                                                    {{ $related->users->name }}
+                                                    {{ $related->user->name }}
                                                 </a>
                                                 <span
                                                     style="margin-top: 7px">{{ \Carbon\Carbon::parse($related->created_at)->locale('vi')->diffForHumans() }}</span>
@@ -544,7 +545,10 @@
             <!-- END SIMILAR PROPERTIES -->
         </div>
         <div id="app-live-chat">
-            <send-message></send-message>
+            <send-message :poster_id="{{ $post->user_id }}" :post_name="'{{ $post->title }}'" :post_id="{{ $post->id }}"
+                :poster_name="'{{ $post->user->name }}'" :price="{{ $post->price }}"
+                :poster_avatar="'{{ $post->user->photo ? url('upload/poster_images/' . $post->user->photo) : url('front/images/avt/no_img.jpg') }}'">
+            </send-message>
         </div>
     </section>
     <!-- END SECTION PROPERTIES LISTING -->

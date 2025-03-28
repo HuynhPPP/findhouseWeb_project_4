@@ -44,7 +44,7 @@ class Post extends Model
         return implode(', ', $addressParts);
     }
 
-    public function users()
+    public function user()
     {
         return $this->belongsTo(User::class, 'user_id', 'id');
     }
@@ -56,10 +56,5 @@ class Post extends Model
     public function images()
     {
         return $this->hasMany(Image::class, 'post_id', 'id');
-    }
-
-    public function videos()
-    {
-        return $this->hasOne(Video::class, 'post_id', 'id');
     }
 }

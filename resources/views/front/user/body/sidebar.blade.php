@@ -27,8 +27,8 @@
                 </a>
             </li>
             <li>
-                <a href="my-listings.html">
-                    <i class="fa fa-list" aria-hidden="true"></i>My Properties
+                <a href="{{ route('user.contacts') }}">
+                    <i class="fa fa-list" aria-hidden="true"></i>Danh sách liên hệ
                 </a>
             </li>
             <li>

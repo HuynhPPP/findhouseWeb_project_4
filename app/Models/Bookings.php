@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Bookings extends Model
 {
     use HasFactory;
+    protected $guarded = [];
 
     protected $fillable = [
         'post_id',

@@ -36,9 +36,9 @@
      position: fixed;
      top: 50%;
      left: 50%;
-     transform: translate(-50%, -50%);
+     transform: translate(135%, -30%);
      width: 90%;
-     max-width: 900px;
+     max-width: 400px;
      /* Giới hạn độ rộng */
      background: #fff;
      border-radius: 6px;
@@ -154,7 +154,7 @@
 
  /* Cột phải: khung chat */
  .chat-content-col {
-     width: 65%;
+     width: 100%;
      display: flex;
      flex-direction: column;
  }
@@ -193,6 +193,7 @@
      overflow-y: auto;
      padding: 10px 15px;
      background: #fff;
+     
  }
 
  .message-bubble {
@@ -202,9 +203,64 @@
      margin-bottom: 10px;
  }
 
+ .chat-container {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end; /* Đảm bảo tin nhắn nằm bên phải */
+}
+
+.message-bubble-2 {
+    background: #f8f8f8;
+    border-radius: 6px;
+    padding: 10px;
+    margin-bottom: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+}
+
+.message-text{
+    word-wrap: break-word; /* Đảm bảo xuống dòng khi từ quá dài */
+    white-space: normal;
+    font-size: 20px;
+}
+
+
+/* Hàng chứa "Đã gửi" và nút Xóa */
+.message-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    font-size: 14px;
+    color: #666;
+}
+
+/* Căn chỉnh nút Xoá */
+.delete-btn {
+    background: none;
+    border: none;
+    color: #ff4d4d;
+    font-size: 20px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 20px;
+    height: 20px;
+    margin-left: auto; /* Đẩy nút Xoá về bên phải */
+}
+
+.delete-btn:hover {
+    background: rgba(255, 77, 77, 0.2);
+    border-radius: 50%;
+}
+
+
  .message-bubble .price {
      color: red;
-     font-weight: 600;
+     font-weight: 400;
+     
  }
 
  /* Khu vực nhập tin nhắn */

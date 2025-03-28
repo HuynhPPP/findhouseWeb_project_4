@@ -60,9 +60,9 @@
                 <ul>
                     @auth
                         @if (Auth::user()->role === 'poster')
-                            <li><a href="{{ route('poster.profile') }}"> Quản lý tài khoản</a></li>
+                            <li><a href="{{ route('poster.profile') }}"> Tài khoản</a></li>
                         @else
-                            <li><a href="{{ route('user.dashboard') }}"> Quản lý tài khoản</a></li>
+                            <li><a href="{{ route('user.dashboard') }}"> Tài khoản</a></li>
                         @endif
 
                         <li><a href="{{ route('logout') }}">Đăng xuất</a></li>

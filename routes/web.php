@@ -6,6 +6,7 @@ use App\Http\Controllers\Front\UserController;
 use App\Http\Controllers\Front\ApiController;
 use App\Http\Controllers\Front\MainControler;
 use App\Http\Controllers\Front\ContactController;
+use App\Http\Controllers\Front\ChatController;
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\admin\CategoryController;
 use Illuminate\Support\Facades\Route;
@@ -32,6 +33,8 @@ Route::get('/forget/password', [MainControler::class, 'ForgetPassword'])->name('
 Route::post('/confirm/password/code', [MainControler::class, 'CodePasswordConfirm'])->name('confirm.password.code');
 Route::get('/password/reset/form', [MainControler::class, 'PasswordResetForm'])->name('password.reset.form');
 Route::post('/reset/password', [MainControler::class, 'ResetPassword'])->name('reset.password');
+
+Route::post('/send-message', [ChatController::class, 'SendMessage']);
 
 require __DIR__ . '/auth.php';
 
@@ -91,6 +94,7 @@ Route::middleware(['auth', 'roles:poster'])->group(function () {
 Route::middleware(['auth', 'roles:user'])->group(function () {
   Route::get('/user/dashboard', [UserController::class, 'UserDashboard'])->name('user.dashboard');
   Route::get('/user/profile', [UserController::class, 'UserProfile'])->name('user.profile');
+  Route::get('/user/contacts', [UserController::class, 'UserContacts'])->name('user.contacts');
   Route::post('/user/store/profile', [UserController::class, 'UserStoreProfile'])->name('user.store.profile');
   Route::post('/bookings/store', [ContactController::class, 'BookingStore'])->name('bookings.store');
   Route::post('/bookings/cancel/{id}', [ContactController::class, 'CancelBooking'])->name('bookings.cancel');

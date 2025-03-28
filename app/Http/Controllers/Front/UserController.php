@@ -204,4 +204,9 @@ class UserController extends Controller
 
         return redirect()->back()->with($notification);
     }
+
+    public function UserContacts()
+    {
+        return view('front.user.user_contacts');
+    }
 }
