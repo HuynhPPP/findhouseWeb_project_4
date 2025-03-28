@@ -308,10 +308,10 @@
                                 </div>
                                 <div class="footer">
                                     <a href="agent-details.html">
-                                        <img src="{{ !empty($post->users->photo) ? url('upload/poster_images/' . $post->users->photo) : url('upload/no_img.jpg') }}"
+                                        <img src="{{ !empty($post->user->photo) ? url('upload/poster_images/' . $post->user->photo) : url('upload/no_img.jpg') }}"
                                             alt="" class="mr-2"
                                             style="width: 35px; height: 35px; object-fit: cover; border-radius: 50%;">
-                                        {{ $post->users->name }}
+                                        {{ $post->user->name }}
                                     </a>
                                     <span
                                         style="margin-top: 7px">{{ \Carbon\Carbon::parse($post->created_at)->locale('vi')->diffForHumans() }}</span>

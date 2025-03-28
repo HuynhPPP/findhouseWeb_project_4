@@ -11,6 +11,10 @@
     <meta name="author" content="">
     <title>Find Houses - HTML5 Template</title>
 
+    <script>
+        window.authId = {{ auth()->user()->id }};
+    </script>
+    
     @vite(['resources/js/app.js'])
     <!-- FAVICON -->
     <link rel="shortcut icon" type="image/x-icon" href="favicon.ico">

@@ -567,4 +567,9 @@ class PosterController extends Controller
 
         return redirect('/poster/verification')->with($notification);
     }
+
+    public function PosterContacts()
+    {
+        return view('front.poster.poster_contacts');
+    }
 }

@@ -222,7 +222,7 @@
 .message-text{
     word-wrap: break-word; /* Đảm bảo xuống dòng khi từ quá dài */
     white-space: normal;
-    font-size: 20px;
+    font-size: 15px;
 }
 
 

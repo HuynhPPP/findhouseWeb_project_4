@@ -35,6 +35,9 @@ Route::get('/password/reset/form', [MainControler::class, 'PasswordResetForm'])-
 Route::post('/reset/password', [MainControler::class, 'ResetPassword'])->name('reset.password');
 
 Route::post('/send-message', [ChatController::class, 'SendMessage']);
+Route::get('/user-all', [ChatController::class, 'GetAllUsers']);
+Route::get('/user-message/{id}', [ChatController::class, 'UserMsgById']);
+Route::get('/messages-of-group/{postId}', [ChatController::class, 'getMessagesByPostId']);
 
 require __DIR__ . '/auth.php';
 
@@ -88,6 +91,9 @@ Route::middleware(['auth', 'roles:poster'])->group(function () {
   Route::post('/email/verify', [PosterController::class, 'sendVerificationCode'])->name('email.verify');
   Route::get('/poster/verification/email/code', [PosterController::class, 'VerificationWithEmailCode'])->name('password.verification.email.code');
   Route::post('/email/verify-code', [PosterController::class, 'verifyEmailCode'])->name('email.verify.code');
+
+  // Contacts
+  Route::get('/poster/contacts', [PosterController::class, 'PosterContacts'])->name('poster.contacts');
 }); // End Poster group middleware
 
 /// User group middleware
