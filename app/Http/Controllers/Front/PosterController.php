@@ -176,7 +176,7 @@ class PosterController extends Controller
                 Image::create([
                     'post_id'    => $post->id,
                     'image_name' => $image->getClientOriginalName(),
-                    'image_url'  => 'upload/post_images/' . $imageName,
+                    'image_url'  => $imageName,
                     'created_at' => Carbon::now(),
                 ]);
             }
@@ -269,7 +269,7 @@ class PosterController extends Controller
                 Image::create([
                     'post_id'    => $post_id,
                     'image_name' => $image->getClientOriginalName(),
-                    'image_url'  => 'upload/post_images/' . $imageName,
+                    'image_url'  => $imageName,
                     'created_at' => Carbon::now(),
                 ]);
             }
