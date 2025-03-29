@@ -23,10 +23,6 @@
                         <li><a href="{{ route('index') }}">Trang chủ</a>
                             
                         </li>
-                            
-                            <li class="d-none d-xl-none d-block d-lg-block"><a href="login.html">Login</a></li>
-                            <li class="d-none d-xl-none d-block d-lg-block"><a href="register.html">Register</a></li>
-                            <li class="d-none d-xl-none d-block d-lg-block mt-5 pb-4 ml-5 border-bottom-0"><a href="add-property.html" class="button border btn-lg btn-block text-center">Add Listing<i class="fas fa-laptop-house ml-2"></i></a></li>
                     </ul>
                     </nav>
                     <div class="clearfix"></div>

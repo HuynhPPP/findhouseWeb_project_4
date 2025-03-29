@@ -27,7 +27,7 @@
                 </a>
             </li>
             <li>
-                <a href="{{ route('user.contacts') }}">
+                <a href="{{ route('user.contacts') }}" class="{{ request()->routeIs('user.contacts') ? 'active' : '' }}">
                     <i class="fa fa-list" aria-hidden="true"></i>Danh sách liên hệ
                 </a>
             </li>
@@ -37,7 +37,7 @@
                 </a>
             </li>
             <li>
-                <a href="change-password.html">
+                <a href="{{ route('user.change-password') }}" class="{{ request()->routeIs('user.change-password') ? 'active' : '' }}">
                     <i class="fa fa-lock"></i>Đổi mật khẩu
                 </a>
             </li>

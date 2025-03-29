@@ -25,17 +25,19 @@
             @php
                 $profileData = Auth::check() ? App\Models\User::find(Auth::user()->id) : null;
             @endphp
-            <div class="right-side d-none d-none d-lg-none d-xl-flex">
-                <!-- Header Widget -->
-                <div class="header-widget">
-                    @if (Auth::guest())
-                    @elseif ($profileData->role === 'poster')
+            @if (Auth::guest())
+            @elseif ($profileData->role === 'poster')
+                <div class="right-side d-none d-none d-lg-none d-xl-flex">
+                    <!-- Header Widget -->
+                    <div class="header-widget">
+
                         <a href="{{ route('poster.post') }}" class="button border">Đăng tin<i
                                 class="fas fa-laptop-house ml-2"></i></a>
-                    @endif
+
+                    </div>
+                    <!-- Header Widget / End -->
                 </div>
-                <!-- Header Widget / End -->
-            </div>
+            @endif
             <!-- Right Side Content / End -->
             <div class="header-user-menu user-menu add">
 
@@ -80,11 +82,6 @@
             </div>
             <!-- Right Side Content / End -->
 
-            <div class="right-side d-none d-none d-lg-none d-xl-flex sign ml-0">
-                <!-- Header Widget -->
-
-                <!-- Header Widget / End -->
-            </div>
             <!-- Right Side Content / End -->
 
 

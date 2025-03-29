@@ -173,14 +173,14 @@ class PosterController extends Controller
         $imageName = time() . '_' . $image->getClientOriginalName();
         $image->move($imageDir, $imageName);
 
-        Image::create([
-          'post_id'    => $post->id,
-          'image_name' => $image->getClientOriginalName(),
-          'image_url'  => 'upload/post_images/' . $imageName,
-          'created_at' => Carbon::now(),
-        ]);
-      }
-    }
+                Image::create([
+                    'post_id'    => $post->id,
+                    'image_name' => $image->getClientOriginalName(),
+                    'image_url'  => $imageName,
+                    'created_at' => Carbon::now(),
+                ]);
+            }
+        }
 
     $notification = array(
       'message' => 'Đăng tin thành công !',
@@ -266,14 +266,14 @@ class PosterController extends Controller
         $imageName = time() . '_' . $image->getClientOriginalName();
         $image->move($imageDir, $imageName);
 
-        Image::create([
-          'post_id'    => $post_id,
-          'image_name' => $image->getClientOriginalName(),
-          'image_url'  => 'upload/post_images/' . $imageName,
-          'created_at' => Carbon::now(),
-        ]);
-      }
-    }
+                Image::create([
+                    'post_id'    => $post_id,
+                    'image_name' => $image->getClientOriginalName(),
+                    'image_url'  => $imageName,
+                    'created_at' => Carbon::now(),
+                ]);
+            }
+        }
 
 
     // Thông báo cập nhật thành công
@@ -314,23 +314,14 @@ class PosterController extends Controller
       ]);
     }
 
-    $images = Image::where('post_id', $post->id)->get();
-    foreach ($images as $image) {
-      $imagePath = public_path($image->image_url); // Đường dẫn ảnh
-      if (File::exists($imagePath)) {
-        File::delete($imagePath);
-      }
-      $image->delete();
-    }
-
-    $videos = Video::where('post_id', $post->id)->get();
-    foreach ($videos as $video) {
-      $videoPath = public_path($video->video_url); // Đường dẫn video
-      if (File::exists($videoPath)) {
-        File::delete($videoPath);
-      }
-      $video->delete();
-    }
+        $images = Image::where('post_id', $post->id)->get();
+        foreach ($images as $image) {
+            $imagePath = public_path($image->image_url); // Đường dẫn ảnh
+            if (File::exists($imagePath)) {
+                File::delete($imagePath);
+            }
+            $image->delete();
+        }
 
     $post->delete();
 
@@ -565,6 +556,11 @@ class PosterController extends Controller
       'alert-type' => 'success',
     ];
 
-    return redirect('/poster/verification')->with($notification);
-  }
+        return redirect('/poster/verification')->with($notification);
+    }
+
+    public function PosterContacts()
+    {
+        return view('front.poster.poster_contacts');
+    }
 }

@@ -11,8 +11,8 @@
     background: #fff;
     padding: 30px;
     -webkit-box-shadow: 0 0 20px rgba(38, 38, 38, 0.2);
-            box-shadow: 0 0 20px rgba(38, 38, 38, 0.2);
-  }
+    box-shadow: 0 0 20px rgba(38, 38, 38, 0.2);
+}
 
 img {
     max-width: 100%;
@@ -81,20 +81,35 @@ img {
 }
 
 .chat_ib h5 {
-    font-size: 15px;
+    font-size: 16px;
     color: #464646;
     margin: 0 0 8px 0;
 }
 
-.chat_ib h5 span {
-    font-size: 13px;
-    float: right;
+.message-row {
+    display: flex;
+    justify-content: space-between;
+    /* đẩy các phần tử sang 2 bên */
+    align-items: center;
+    /* căn giữa theo trục dọc nếu cần */
+    margin-top: 5px;
+    /* khoảng cách tùy ý */
 }
 
-.chat_ib p {
+.message-row .message {
+    /* Style cho phần text tin nhắn */
     font-size: 14px;
     color: #989898;
-    margin: auto
+    margin: 0;
+    /* bỏ margin mặc định của p */
+}
+
+.chat_date {
+    /* Style cho phần thời gian */
+    font-size: 14px;
+    color: #989898;
+    margin-left: 10px;
+    /* khoảng cách tùy ý so với tin nhắn */
 }
 
 .chat_img {
@@ -114,6 +129,7 @@ img {
 }
 
 .chat_list {
+    cursor: pointer;
     border-bottom: 1px solid #c4c4c4;
     margin: 0;
     padding: 18px 16px 10px;
@@ -126,6 +142,10 @@ img {
 
 .active_chat {
     background: #ebebeb;
+}
+
+.incoming_msg {
+    margin-bottom: 20px;
 }
 
 .incoming_msg_img {
@@ -144,13 +164,14 @@ img {
     background: #ebebeb none repeat scroll 0 0;
     border-radius: 3px;
     color: #646464;
-    font-size: 14px;
+    font-size: 17px;
     margin: 0;
     padding: 5px 10px 5px 12px;
     width: 100%;
 }
 
 .time_date {
+    float: right;
     color: #747474;
     display: block;
     font-size: 12px;
@@ -170,7 +191,7 @@ img {
 .sent_msg p {
     background: #05728f none repeat scroll 0 0;
     border-radius: 3px;
-    font-size: 14px;
+    font-size: 17px;
     margin: 0;
     color: #fff;
     padding: 5px 10px 5px 12px;
@@ -184,7 +205,7 @@ img {
 
 .sent_msg {
     float: right;
-    width: 46%;
+    width: auto;
 }
 
 .input_msg_write input {

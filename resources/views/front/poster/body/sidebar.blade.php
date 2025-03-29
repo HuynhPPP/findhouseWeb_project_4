@@ -39,6 +39,12 @@
                 </a>
             </li>
             <li>
+                <a href="{{ route('poster.contacts') }}"
+                    class="{{ request()->routeIs('poster.contacts') ? 'active' : '' }}">
+                    <i class="fa fa-list" aria-hidden="true"></i>Danh sách liên hệ
+                </a>
+            </li>
+            <li>
                 <a href="{{ route('poster.verification') }}"
                     class="{{ request()->routeIs('poster.verification') ? 'active' : '' }}">
                     <i class="fa fa-lock"></i>Xác minh tài khoản
