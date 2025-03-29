@@ -61,7 +61,7 @@
         <nav class="navbar header-navbar pcoded-header" header-theme="theme6">
           <div class="navbar-wrapper">
             <div class="navbar-logo" logo-theme="theme6">
-              <a href="index.html">
+              <a href="{{ route('admin.dashboard') }}">
                 <img class="img-fluid"
                   src="{{ asset('admin/images/logo.png') }}"
                   alt="Theme-Logo" />

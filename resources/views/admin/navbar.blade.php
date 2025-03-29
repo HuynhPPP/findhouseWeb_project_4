@@ -14,7 +14,7 @@
           class="pcoded-hasmenu {{ in_array(Route::currentRouteName(), ['admin.all.category', 'admin.create.category']) ? 'active pcoded-trigger' : '' }}">
           <a href="javascript:void(0)" class="waves-effect waves-dark">
             <span class="pcoded-micon"><i class="feather icon-menu"></i></span>
-            <span class="pcoded-mtext">Danh mục</span>
+            <span class="pcoded-mtext">Quản lý danh mục</span>
           </a>
           <ul class="pcoded-submenu">
             <li
@@ -38,7 +38,7 @@
           <a href="javascript:void(0)" class="waves-effect waves-dark">
             <span class="pcoded-micon"><i
                 class="fa fa-location-arrow"></i></span>
-            <span class="pcoded-mtext">Bài đăng</span>
+            <span class="pcoded-mtext">Quản lý bài đăng</span>
           </a>
           <ul class="pcoded-submenu">
             <li
@@ -75,7 +75,7 @@
           class="pcoded-hasmenu {{ in_array(Route::currentRouteName(), ['admin.all.renter', 'admin.edit.renter', 'admin.all.lease', 'admin.edit.lease']) ? 'active pcoded-trigger' : '' }}">
           <a href="javascript:void(0)" class="waves-effect waves-dark">
             <span class="pcoded-micon"><i class="fa fa-user"></i></span>
-            <span class="pcoded-mtext">Tài khoản</span>
+            <span class="pcoded-mtext">Quản lý tài khoản</span>
           </a>
           <ul class="pcoded-submenu">
             <li

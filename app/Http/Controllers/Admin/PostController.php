@@ -141,7 +141,7 @@ class PostController extends Controller
   public function StoreUploadImagePost(Request $request)
   {
     $post_id = $request->post_id;
-    $path = 'upload/post_image/';
+    $path = 'upload/post_images/';
     $files = $request->file('file');
     if ($files && is_array($files)) {
       foreach ($files as $file) {
@@ -158,7 +158,7 @@ class PostController extends Controller
   public function GetPostImages(Request $request)
   {
     $post = Post::with('images')->findOrFail($request->post_id);
-    $path = 'upload/post_image/';
+    $path = 'upload/post_images/';
     $html = '';
     if ($post->images->count() > 0) {
       foreach ($post->images as $item) {
@@ -179,7 +179,7 @@ class PostController extends Controller
   public function DeletePostImages(Request $request)
   {
     $post_image = Image::findOrFail($request->image_id);
-    $path = 'upload/post_image/';
+    $path = 'upload/post_images/';
     if ($post_image->image_url != null && File::exists(public_path($path . $post_image->image_url))) {
       File::delete(public_path($path . $post_image->image_url));
     }
