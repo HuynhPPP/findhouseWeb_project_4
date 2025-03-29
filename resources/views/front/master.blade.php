@@ -1,17 +1,18 @@
 <!DOCTYPE html>
 <html lang="zxx">
 
-
-<!-- Mirrored from code-theme.com/html/findhouses/index.html by HTTrack Website Copier/3.x [XR&CO'2014], Mon, 30 Dec 2024 03:42:28 GMT -->
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="description" content="html 5 template">
     <meta name="author" content="">
-    <title>Find Houses - HTML5 Template</title>
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <title> @yield('title')</title>
+
+    @vite(['resources/js/app.js'])
     <!-- FAVICON -->
-    <link rel="shortcut icon" type="image/x-icon" href="favicon.ico">
+    <link rel="shortcut icon" type="image/x-icon" href="{{ asset('front/favicon.ico') }}">
     <link rel="stylesheet" href="{{ asset('front/css/jquery-ui.css') }}">
     <!-- GOOGLE FONTS -->
     <link href="https://fonts.googleapis.com/css?family=Lato:300,300i,400,400i%7CMontserrat:600,800" rel="stylesheet">
@@ -33,12 +34,26 @@
     <link rel="stylesheet" href="{{ asset('front/css/slick.css') }}">
     <link rel="stylesheet" href="{{ asset('front/css/styles.css') }}">
     <link rel="stylesheet" href="{{ asset('front/css/maps.css') }}">
+    <link rel="stylesheet" href="{{ asset('front\css\popup_chat.css') }}">
     <link rel="stylesheet" id="color" href="{{ asset('front/css/colors/pink.css') }}">
+
+    <!-- Toastr -->
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.css">
+    <!-- End Toastr -->
 </head>
 
 <body class="homepage-9 hp-6 homepage-1 mh">
+
     <!-- Wrapper -->
     <div id="wrapper">
+        <!-- START PRELOADER -->
+        <div id="preloader">
+            <div id="status">
+                <div class="status-mes"></div>
+            </div>
+        </div>
+        <!-- END PRELOADER -->
+
         <!-- START SECTION HEADINGS -->
         <!-- Header Container
         ================================================== -->
@@ -47,24 +62,12 @@
         <!-- Header Container / End -->
 
         @yield('home')
-        
+
         <!-- START FOOTER -->
         @include('front.body.footer')
 
         <a data-scroll href="#wrapper" class="go-up"><i class="fa fa-angle-double-up" aria-hidden="true"></i></a>
         <!-- END FOOTER -->
-
-        <!--register form -->
-        @include('front.body.login_register')
-        <!--register form end -->
-
-        <!-- START PRELOADER -->
-        <div id="preloader">
-            <div id="status">
-                <div class="status-mes"></div>
-            </div>
-        </div>
-        <!-- END PRELOADER -->
 
         <!-- ARCHIVES JS -->
         <script src="{{ asset('front/js/jquery-3.5.1.min.js') }}"></script>
@@ -103,7 +106,32 @@
             $(window).on('scroll load', function() {
                 $("#header.cloned #logo img").attr("src", $('#header #logo img').attr('data-sticky-logo'));
             });
+        </script>
 
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+
+        <!-- Toast -->
+        <script>
+            @if (Session::has('message'))
+                var type = "{{ Session::get('alert-type', 'info') }}"
+                switch (type) {
+                    case 'info':
+                        toastr.info(" {{ Session::get('message') }} ");
+                        break;
+
+                    case 'success':
+                        toastr.success(" {{ Session::get('message') }} ");
+                        break;
+
+                    case 'warning':
+                        toastr.warning(" {{ Session::get('message') }} ");
+                        break;
+
+                    case 'error':
+                        toastr.error(" {{ Session::get('message') }} ");
+                        break;
+                }
+            @endif
         </script>
 
         <!-- Slider Revolution scripts -->
@@ -121,7 +149,6 @@
                 backSpeed: 30,
                 startDelay: 800
             });
-
         </script>
 
         <script>
@@ -158,7 +185,6 @@
                     }
                 }]
             });
-
         </script>
 
         <script>
@@ -181,7 +207,6 @@
                     }
                 }
             });
-
         </script>
 
         <script>
@@ -219,7 +244,6 @@
                     }
                 }
             });
-
         </script>
 
         <script>
@@ -228,16 +252,68 @@
                 $(".explore__form-checkbox-list").toggleClass("filter-block");
 
             });
-
         </script>
 
         <!-- MAIN JS -->
-        <script src="{{ asset('front/js/script.js') }}"></script>
+        @yield('customJs')
+
+        <script>
+            document.addEventListener("DOMContentLoaded", function() {
+                setTimeout(function() {
+                    document.getElementById("preloader").style.display = "none";
+                }, 1000); // Ẩn preloader sau 1 giây
+            });
+        </script>
+
+        <script>
+            // Mở popup
+            function openChatPopup() {
+                document.getElementById('chatPopup').classList.add('active');
+            }
+
+            // Đóng popup (khi nhấn nút X)
+            function closeChatPopup() {
+                document.getElementById('chatPopup').classList.remove('active');
+            }
+
+            // Đóng popup (khi click nền mờ, trừ khi click vào chính popup)
+            function closeChatPopupByOverlay(event) {
+                // Nếu bấm bên ngoài popup, đóng
+                const popup = document.getElementById('chatPopup');
+                if (!popup.contains(event.target)) {
+                    closeChatPopup();
+                }
+            }
+
+            // Gửi tin nhắn
+            function sendChatMessage() {
+                const input = document.getElementById('chatMessage');
+                const msg = input.value.trim();
+                if (!msg) {
+                    alert('Vui lòng nhập tin nhắn!');
+                    return;
+                }
+                // Xử lý gửi tin nhắn ở đây (AJAX, v.v.)
+                console.log('Tin nhắn:', msg);
+
+                // Demo: thêm tin nhắn vào khung chat
+                const chatMessages = document.querySelector('.chat-messages');
+                const bubble = document.createElement('div');
+                bubble.className = 'message-bubble';
+                bubble.innerHTML = `<p>${msg}</p>`;
+                chatMessages.appendChild(bubble);
+
+                // Cuộn xuống cuối
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+
+                // Reset input
+                input.value = '';
+            }
+        </script>
+
 
     </div>
     <!-- Wrapper / End -->
 </body>
 
-
-<!-- Mirrored from code-theme.com/html/findhouses/index.html by HTTrack Website Copier/3.x [XR&CO'2014], Mon, 30 Dec 2024 03:43:31 GMT -->
 </html>

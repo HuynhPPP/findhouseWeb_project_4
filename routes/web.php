@@ -5,6 +5,9 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Front\PosterController;
 use App\Http\Controllers\Front\UserController;
 use App\Http\Controllers\Front\ApiController;
+use App\Http\Controllers\Front\MainControler;
+use App\Http\Controllers\Front\ContactController;
+use App\Http\Controllers\Front\ChatController;
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\admin\CategoryController;
 use App\Http\Controllers\admin\LeaseController;
@@ -14,28 +17,30 @@ use Illuminate\Support\Facades\Route;
 
 /// Route Accessable for All
 
-Route::get('/', [UserController::class, 'Index'])->name('index');
+Route::get('/', [MainControler::class, 'Index'])->name('index');
 Route::get('/logout', [UserController::class, 'UserLogout'])->name('user.logout');
+Route::post('/user/register', [UserController::class, 'UserRegister'])->name('user.register');
+Route::post('/login', [UserController::class, 'UserLogin'])->name('user.login');
+
 Route::get('/api/proxy/provinces', [ApiController::class, 'getProvinces']);
 Route::get('/api/proxy/districts/{provinceId}', [ApiController::class, 'getDistricts']);
 Route::get('/api/proxy/wards/{districtId}', [ApiController::class, 'getWards']);
 
-// Route::get('/dashboard', function () {
-//   return view('dashboard');
-// })->middleware(['auth', 'verified'])->name('dashboard');
+Route::get('/all/post/recommend', [MainControler::class, 'AllPostRecommend'])->name('all.post_recommend');
+Route::get('/post/details/{id}', [MainControler::class, 'PostDetail'])->name('post.detail');
+Route::get('/category/{id}', [MainControler::class, 'getPostsByCategory'])->name('category.posts');
+Route::get('/properties/{province}', [MainControler::class, 'filterByProvince'])->name('properties.by.province');
+Route::post('/search/post', [MainControler::class, 'SearchPost'])->name('search.post');
+Route::post('/filter/post', [MainControler::class, 'FilterPost'])->name('filter.post');
 
-Route::middleware('auth')->group(function () {
-  Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-  Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-  Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-});
+Route::get('/forget/password', [MainControler::class, 'ForgetPassword'])->name('forget.password');
+Route::post('/confirm/password/code', [MainControler::class, 'CodePasswordConfirm'])->name('confirm.password.code');
+Route::get('/password/reset/form', [MainControler::class, 'PasswordResetForm'])->name('password.reset.form');
+Route::post('/reset/password', [MainControler::class, 'ResetPassword'])->name('reset.password');
+
+Route::post('/send-message', [ChatController::class, 'SendMessage']);
 
 require __DIR__ . '/auth.php';
-
-/// User group middleware
-Route::middleware(['auth', 'roles:user'])->group(function () {
-  Route::get('/user/dashboard', [UserController::class, 'UserDashboard'])->name('user.dashboard');
-}); // End User group middleware
 
 /// Admin group middleware
 Route::middleware(['auth', 'roles:admin'])->group(function () {
@@ -95,8 +100,39 @@ Route::middleware(['auth', 'roles:admin'])->group(function () {
 Route::middleware(['auth', 'roles:poster'])->group(function () {
   Route::get('/poster/dashboard', [PosterController::class, 'PosterDashboard'])->name('poster.dashboard');
   Route::get('/poster/profile', [PosterController::class, 'PosterProfile'])->name('poster.profile');
-  Route::get('/poster/post', [PosterController::class, 'PosterPost'])->name('poster.post');
+  Route::post('/poster/store/profile', [PosterController::class, 'PosterStoreProfile'])->name('poster.store.profile');
+  Route::get('/poster/post', [PosterController::class, 'PosterPost'])->name('poster.post')->middleware('email.verified');
+  Route::get('/poster/edit/post/{id}', [PosterController::class, 'PosterEditPost'])->name('poster.edit.post');
+  Route::get('/poster/delete/post/{id}', [PosterController::class, 'PosterDeletePost'])->name('poster.delete.post');
   Route::get('/poster/list-post', [PosterController::class, 'PosterListPost'])->name('poster.list-post');
   Route::get('/poster/change-password', [PosterController::class, 'PosterChangePassword'])->name('poster.change-password');
-  Route::post('/poster/store/profile', [PosterController::class, 'PosterStoreProfile'])->name('poster.store.profile');
+  Route::post('/poster/post/store', [PosterController::class, 'PosterPostStore'])->name('poster.post.store');
+  Route::post('/poster/post/update', [PosterController::class, 'PosterPostUpdate'])->name('poster.post.update');
+  Route::post('/poster/delete/video', [PosterController::class, 'PosterDeleteVideo'])->name('poster.delete.video');
+  Route::post('/poster/delete/image', [PosterController::class, 'PosterDeleteImage'])->name('poster.delete.image');
+  Route::post('/poster/change-password', [PosterController::class, 'ChangePassword'])->name('poster.change.password');
+
+  // forget password
+  Route::get('/poster/forget-password', [PosterController::class, 'ForgetPassword'])->name('poster.forget.password');
+  Route::post('/password/password/code', [PosterController::class, 'sendResetCode'])->name('password.password.code');
+  Route::get('/poster/confirm/password/code', [PosterController::class, 'showConfirmCodeForm'])->name('poster.confirm.password.code');
+  Route::post('/poster/verify/password/code', [PosterController::class, 'verifyResetCode'])->name('poster.verify.password.code');
+  Route::post('/poster/reset/password', [PosterController::class, 'resetPassword'])->name('poster.reset.password');
+
+
+  // verification mail
+  Route::get('/poster/verification', [PosterController::class, 'PosterVerification'])->name('poster.verification');
+  Route::post('/email/verify', [PosterController::class, 'sendVerificationCode'])->name('email.verify');
+  Route::get('/poster/verification/email/code', [PosterController::class, 'VerificationWithEmailCode'])->name('password.verification.email.code');
+  Route::post('/email/verify-code', [PosterController::class, 'verifyEmailCode'])->name('email.verify.code');
 }); // End Poster group middleware
+
+/// User group middleware
+Route::middleware(['auth', 'roles:user'])->group(function () {
+  Route::get('/user/dashboard', [UserController::class, 'UserDashboard'])->name('user.dashboard');
+  Route::get('/user/profile', [UserController::class, 'UserProfile'])->name('user.profile');
+  Route::get('/user/contacts', [UserController::class, 'UserContacts'])->name('user.contacts');
+  Route::post('/user/store/profile', [UserController::class, 'UserStoreProfile'])->name('user.store.profile');
+  Route::post('/bookings/store', [ContactController::class, 'BookingStore'])->name('bookings.store');
+  Route::post('/bookings/cancel/{id}', [ContactController::class, 'CancelBooking'])->name('bookings.cancel');
+}); // End User group middleware

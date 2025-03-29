@@ -74,6 +74,8 @@
     -webkit-transform: scale(1) translateY(0);
     -ms-transform: scale(1) translateY(0);
     transform: scale(1) translateY(0);
+    max-height: 400px;
+    overflow: overlay;
 }
 
 .nice-select.disabled {
@@ -93,6 +95,8 @@
 .nice-select.wide .list {
     left: 0 !important;
     right: 0 !important;
+    max-height: 450px; 
+    overflow-y: auto;
 }
 
 .nice-select.right {

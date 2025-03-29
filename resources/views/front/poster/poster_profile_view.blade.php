@@ -65,7 +65,7 @@
         <form name="contact_form" method="post" action="{{ route('poster.store.profile') }}" enctype="multipart/form-data">
             @csrf
             <div class="author-box clearfix">
-                <img src="{{ (!empty($profileData->photo)) ? url('front/upload/poster_images/'.$profileData->photo) : url('front/upload/no_img.jpg') }}" 
+                <img src="{{ (!empty($profileData->photo)) ? url('upload/poster_images/'.$profileData->photo) : url('upload/no_img.jpg') }}" 
                     alt="author-image" 
                     class="author__img"
                     id="showImage"
@@ -83,7 +83,7 @@
                 <input type="text" id="fname" name="name" placeholder="Tên liên hệ" value="{{ $profileData->name }}" />
                 <input type="number" id="pnumber" name="phone" placeholder="Số điện thoại" value="{{ $profileData->phone }}" />
                 <input type="email" id="emailid" name="email" placeholder="Email" value="{{ $profileData->email }}" />
-                <input type="submit" name="sendmessage" class="multiple-send-message" value="Xác nhận" />
+                <input type="submit" name="sendmessage" class="multiple-send-message" value="Cập nhật" />
             </div>
         </form>
     </div>

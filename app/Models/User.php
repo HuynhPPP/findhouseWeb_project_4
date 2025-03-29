@@ -21,7 +21,11 @@ class User extends Authenticatable
     'name',
     'email',
     'password',
-    'status'
+    'phone',
+    'role',
+    'status',
+    'email_verified_at',
+    'verification_token'
   ];
 
   /**
@@ -33,7 +37,6 @@ class User extends Authenticatable
     'password',
     'remember_token',
   ];
-
   /**
    * The attributes that should be cast.
    *
@@ -42,4 +45,9 @@ class User extends Authenticatable
   protected $casts = [
     'email_verified_at' => 'datetime',
   ];
+
+  public function posts()
+  {
+    return $this->hasMany(Post::class, 'user_id');
+  }
 }

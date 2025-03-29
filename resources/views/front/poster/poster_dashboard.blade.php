@@ -3,6 +3,7 @@
 
 
 <!-- Mirrored from code-theme.com/html/findhouses/dashboard.html by HTTrack Website Copier/3.x [XR&CO'2014], Mon, 30 Dec 2024 03:45:07 GMT -->
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -10,6 +11,8 @@
     <meta name="description" content="html 5 template">
     <meta name="author" content="">
     <title>Find Houses</title>
+
+    @vite(['resources/js/app.js'])
     <!-- FAVICON -->
     <link rel="shortcut icon" type="image/x-icon" href="{{ asset('front/favicon.ico') }}">
     <link rel="stylesheet" href="{{ asset('front/css/jquery-ui.css') }}">
@@ -18,11 +21,6 @@
     <!-- FONT AWESOME -->
     <link rel="stylesheet" href="{{ asset('front/css/fontawesome-all.min.css') }}">
     <link rel="stylesheet" href="{{ asset('front/css/font-awesome.min.css') }}">
-    <!-- LEAFLET MAP -->
-    <link rel="stylesheet" href="{{ asset('front/css/leaflet.css') }}">
-    <link rel="stylesheet" href="{{ asset('front/css/leaflet-gesture-handling.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('front/css/leaflet.markercluster.css') }}">
-    <link rel="stylesheet" href="{{ asset('front/css/leaflet.markercluster.default.css') }}">
     <!-- ARCHIVES CSS -->
     <link rel="stylesheet" href="{{ asset('front/css/search.css') }}">
     <link rel="stylesheet" href="{{ asset('front/css/dashbord-mobile-menu.css') }}">
@@ -38,17 +36,21 @@
     <link rel="stylesheet" href="{{ asset('front/css/styles.css') }}">
     <link rel="stylesheet" id="color" href="{{ asset('front/css/default.css') }}">
     <link rel="stylesheet" href="{{ asset('front/trumbowyg/trumbowyg.min.css') }}" />
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" />
-	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2-bootstrap-5-theme@1.3.0/dist/select2-bootstrap-5-theme.min.css" />
-
+    <link rel="stylesheet" href="{{ asset('front\css\popup_chat.css') }}">
     <!-- Toastr -->
-	<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.css">
-	<!-- End Toastr -->
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.css">
+    <!-- End Toastr -->
 </head>
 
 <body class="inner-pages maxw1600 m0a dashboard-bd">
     <!-- Wrapper -->
     <div id="wrapper" class="int_main_wraapper">
+        <!-- START PRELOADER -->
+        <div id="preloader-dashboard">
+            <div id="progress-bar-dashboard"></div>
+        </div>
+        <!-- END PRELOADER -->
+
         <!-- START SECTION HEADINGS -->
         <!-- Header Container
         ================================================== -->
@@ -62,7 +64,7 @@
                     <div class="col-lg-3 col-md-12 col-xs-12 pl-0 pr-0 user-dash">
                         @include('front.poster.body.sidebar')
                     </div>
-                        @yield('poster') 
+                    @yield('poster')
                 </div>
             </div>
         </section>
@@ -70,6 +72,86 @@
         {{-- @include('front.poster.body.footer') --}}
         <a data-scroll href="#wrapper" class="go-up"><i class="fa fa-angle-double-up" aria-hidden="true"></i></a>
         <!-- END FOOTER -->
+
+        <!-- Popup chat -->
+        <div class="chat-popup" id="chatPopup">
+            <!-- Tiêu đề popup -->
+            <div class="chat-popup-header">
+                <h5>Hộp thoại</h5>
+                <button class="close-btn" onclick="closeChatPopup()">&times;</button>
+            </div>
+            <!-- Nội dung 2 cột -->
+            <div class="chat-popup-body">
+                <!-- Cột trái: Danh sách chat -->
+                <div class="chat-list-col">
+                    <!-- Thanh tìm kiếm -->
+                    <div class="chat-search">
+                        <input type="text" placeholder="Nhập ít nhất 3 ký tự để tìm...">
+                    </div>
+                    <!-- Danh sách cuộc hội thoại -->
+                    <div class="chat-list">
+                        <a href="javascript:void(0)" class="chat-list-item active">
+                            <div class="user-info">
+                                <img src="{{ asset('front\images\avt\avt1.jpg') }}" alt="avatar">
+                                <div>
+                                    <h6>Trường Giang</h6>
+                                    <small>Hoạt động 2 ngày trước</small>
+                                </div>
+                            </div>
+                        </a>
+                        <a href="javascript:void(0)" class="chat-list-item">
+                            <div class="user-info">
+                                <img src="{{ asset('front\images\avt\avt2.jpg') }}" alt="avatar">
+                                <div>
+                                    <h6>Quang Phạm</h6>
+                                    <small>1 ngày trước</small>
+                                </div>
+                            </div>
+                        </a>
+                        <!-- Thêm các item khác nếu muốn -->
+                    </div>
+                </div>
+                <!-- Cột phải: Khung chat chính -->
+                <div class="chat-content-col">
+                    <!-- Header khung chat -->
+                    <div class="chat-content-header">
+                        <img src="{{ asset('front\images\avt\avt3.jpg') }}" alt="avatar">
+                        <div>
+                            <h6>Trường Giang</h6>
+                            <small>Hoạt động 2 ngày trước</small>
+                        </div>
+                    </div>
+                    <!-- Nội dung tin nhắn -->
+                    <div class="chat-messages">
+                        <div class="message-bubble">
+                            <p class="mb-1">
+                                Phòng Trọ FULL NỘI THẤT Cao Cấp 25M2, công viên Hùng Vương 2.5tr
+                            </p>
+                            <span class="price">3 triệu/tháng</span>
+                        </div>
+                        <div class="message-bubble">
+                            <p class="mb-1">Nội dung tin nhắn khác...</p>
+                            <small class="text-muted">1 giờ trước</small>
+                        </div>
+                    </div>
+                    <!-- Ô nhập tin nhắn -->
+                    <div class="chat-input">
+                        <div style="display: flex; align-items: center;">
+                            <input type="text" class="chat-input-box" id="chatMessage"
+                                placeholder="Nhập tin nhắn...">
+                            <button class="send-btn" onclick="sendChatMessage()">
+                                <i class="fa fa-paper-plane"></i> Gửi
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Nút kích hoạt popup (ví dụ: icon chat) -->
+        <button id="openPopupBtn" class="open-popup-btn" onclick="openChatPopup()">
+            <i class="fa fa-comment"></i>
+        </button>
 
         <!-- START PRELOADER -->
         <div id="preloader">
@@ -110,80 +192,132 @@
         <script src="{{ asset('front/js/dashbord-mobile-menu.js') }}"></script>
         <script src="{{ asset('front/js/forms-2.js') }}"></script>
         <script src="{{ asset('front/js/color-switcher.js') }}"></script>
-        <script src="{{ asset('front/js/js/leaflet.js') }}"></script>
-        <script src="{{ asset('front/js/js/leaflet-gesture-handling.min.js') }}"></script>
-        <script src="{{ asset('front/js/leaflet-providers.js') }}"></script>
-        <script src="{{ asset('front/js/leaflet.markercluster.js') }}"></script>
-        <script src="{{ asset('front/js/map-single.js') }}"></script>
-        <script src="{{ asset('front/js/dropzone.js') }}"></script>
-        <script src="{{ asset('front/select2/js/select2.min.js') }}"></script>
-        <script src="{{ asset('front/select2/js/select2-custom.js') }}"></script>
         <script src="{{ asset('front/trumbowyg/trumbowyg.min.js') }}"></script>
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+        <script src="{{ asset('front/js/code.js') }}"></script>
+
+
         <script>
             $(".header-user-name").on("click", function() {
                 $(".header-user-menu ul").toggleClass("hu-menu-vis");
                 $(this).toggleClass("hu-menu-visdec");
             });
-
         </script>
 
         <!-- MAIN JS -->
         <script src="{{ asset('front/js/script.js') }}"></script>
 
-        <script>
-            $(".dropzone").dropzone({
-                dictDefaultMessage: "<i class='fa fa-cloud-upload'></i> Tải file lên từ thiết bị",
-            });
-
-        </script>
-
         <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 
         <script>
-        @if(Session::has('message'))
-        var type = "{{ Session::get('alert-type','info') }}"
-        switch(type){
-            case 'info':
-            toastr.info(" {{ Session::get('message') }} ");
-            break;
-        
-            case 'success':
-            toastr.success(" {{ Session::get('message') }} ");
-            break;
-        
-            case 'warning':
-            toastr.warning(" {{ Session::get('message') }} ");
-            break;
-        
-            case 'error':
-            toastr.error(" {{ Session::get('message') }} ");
-            break; 
-        }
-        @endif 
-        </script>	
+            @if (Session::has('message'))
+                var type = "{{ Session::get('alert-type', 'info') }}"
+                switch (type) {
+                    case 'info':
+                        toastr.info(" {{ Session::get('message') }} ");
+                        break;
 
-    <script>
-        $(document).ready(function() {
-            $('.popup-youtube, .popup-vimeo, .popup-gmaps').magnificPopup({
-                disableOn: 700,
-                type: 'iframe',
-                mainClass: 'mfp-fade',
-                removalDelay: 160,
-                preloader: false,
-                fixedContentPos: false
+                    case 'success':
+                        toastr.success(" {{ Session::get('message') }} ");
+                        break;
+
+                    case 'warning':
+                        toastr.warning(" {{ Session::get('message') }} ");
+                        break;
+
+                    case 'error':
+                        toastr.error(" {{ Session::get('message') }} ");
+                        break;
+                }
+            @endif
+        </script>
+
+        <script>
+            $(document).ready(function() {
+                $('.popup-youtube, .popup-vimeo, .popup-gmaps').magnificPopup({
+                    disableOn: 700,
+                    type: 'iframe',
+                    mainClass: 'mfp-fade',
+                    removalDelay: 160,
+                    preloader: false,
+                    fixedContentPos: false
+                });
             });
-        });
+        </script>
 
-    </script>
-    <script>
-		$('.textarea').trumbowyg();
-	</script>
-    @yield('customJs')
+        <script>
+            $('.textarea').trumbowyg();
+        </script>
+
+        @yield('customJs')
+
+        <script>
+            document.addEventListener("DOMContentLoaded", function() {
+                let progress = document.getElementById("progress-bar-dashboard");
+                let width = 0;
+
+                let interval = setInterval(function() {
+                    width += 10; // Tăng tiến trình (có thể điều chỉnh)
+                    progress.style.width = width + "%";
+
+                    if (width >= 100) {
+                        clearInterval(interval);
+                        setTimeout(function() {
+                            document.getElementById("preloader-dashboard").style.display = "none";
+                        }, 300); // Chờ 300ms rồi ẩn thanh
+                    }
+                }, 100); // Cập nhật mỗi 100ms
+            });
+        </script>
+
+        <script>
+            // Mở popup
+            function openChatPopup() {
+                document.getElementById('chatPopup').classList.add('active');
+            }
+
+            // Đóng popup (khi nhấn nút X)
+            function closeChatPopup() {
+                document.getElementById('chatPopup').classList.remove('active');
+            }
+
+            // Đóng popup (khi click nền mờ, trừ khi click vào chính popup)
+            function closeChatPopupByOverlay(event) {
+                // Nếu bấm bên ngoài popup, đóng
+                const popup = document.getElementById('chatPopup');
+                if (!popup.contains(event.target)) {
+                    closeChatPopup();
+                }
+            }
+
+            // Gửi tin nhắn
+            function sendChatMessage() {
+                const input = document.getElementById('chatMessage');
+                const msg = input.value.trim();
+                if (!msg) {
+                    alert('Vui lòng nhập tin nhắn!');
+                    return;
+                }
+                // Xử lý gửi tin nhắn ở đây (AJAX, v.v.)
+                console.log('Tin nhắn:', msg);
+
+                // Demo: thêm tin nhắn vào khung chat
+                const chatMessages = document.querySelector('.chat-messages');
+                const bubble = document.createElement('div');
+                bubble.className = 'message-bubble';
+                bubble.innerHTML = `<p>${msg}</p>`;
+                chatMessages.appendChild(bubble);
+
+                // Cuộn xuống cuối
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+
+                // Reset input
+                input.value = '';
+            }
+        </script>
 
     </div>
     <!-- Wrapper / End -->
 </body>
 
-
-<!-- Mirrored from code-theme.com/html/findhouses/dashboard.html by HTTrack Website Copier/3.x [XR&CO'2014], Mon, 30 Dec 2024 03:45:08 GMT -->
 </html>
