@@ -28,7 +28,6 @@ class ChatController extends Controller
         ]);
     }
 
-
     public function GetAllUsers()
     {
         $chats = ChatMessage::with(['sender', 'receiver', 'post', 'post.images'])
