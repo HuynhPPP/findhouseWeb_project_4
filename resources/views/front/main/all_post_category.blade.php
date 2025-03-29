@@ -228,7 +228,7 @@
                                 </div>
                                 <div class="homes">
                                     <!-- homes img -->
-                                    <a href="single-property-1.html" class="homes-img">
+                                    <a href="{{ route('post.detail', $post->id) }}" class="homes-img">
                                         <div class="homes-tag button alt sale">{{ $post->category->category_name }}</div>
             
                                         @if ($randomImage)
@@ -241,7 +241,7 @@
                                     </a>
                                 </div>
                                 <div class="button-effect">
-                                    <a href="single-property-1.html" class="btn"><i class="fa fa-link"></i></a>
+                                    <a href="{{ route('post.detail', $post->id) }}" class="btn"><i class="fa fa-link"></i></a>
                                     <a href="{{ $video_url_fixed }}" class="btn popup-video popup-youtube"><i
                                             class="fas fa-video"></i></a>
                                     <a href="single-property-2.html" class="img-poppu btn"><i
@@ -252,12 +252,12 @@
                             <div class="homes-content">
                                 <!-- homes address -->
                                 <h3>
-                                    <a href="single-property-1.html">
+                                    <a href="{{ route('post.detail', $post->id) }}">
                                         {{ Str::words(strip_tags($post->title), 10) }}
                                     </a>
                                 </h3>
                                 <p class="homes-address mb-3">
-                                    <a href="single-property-1.html">
+                                    <a href="{{ route('post.detail', $post->id) }}">
                                         <i class="fa fa-map-marker"></i>
                                         <span>
                                             {{ $post->full_address }}
@@ -311,7 +311,7 @@
                                         <img src="{{ !empty($post->users->photo) ? url('upload/poster_images/' . $post->users->photo) : url('upload/no_img.jpg') }}"
                                             alt="" class="mr-2"
                                             style="width: 35px; height: 35px; object-fit: cover; border-radius: 50%;">
-                                        {{ $post->users->name }}
+                                        {{ $post->user->name }}
                                     </a>
                                     <span
                                         style="margin-top: 7px">{{ \Carbon\Carbon::parse($post->created_at)->locale('vi')->diffForHumans() }}</span>

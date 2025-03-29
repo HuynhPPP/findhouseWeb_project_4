@@ -105,4 +105,7 @@ Route::middleware(['auth', 'roles:user'])->group(function () {
   Route::post('/bookings/store', [ContactController::class, 'BookingStore'])->name('bookings.store');
   Route::post('/bookings/cancel/{id}', [ContactController::class, 'CancelBooking'])->name('bookings.cancel');
 
+  Route::get('/user/change-password', [UserController::class, 'UserChangePassword'])->name('user.change-password');
+  Route::post('/user/reset/password', [UserController::class, 'ChangePassword'])->name('user.reset.password');
+
 }); // End User group middleware

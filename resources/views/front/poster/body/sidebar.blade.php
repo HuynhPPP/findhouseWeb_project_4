@@ -39,7 +39,8 @@
                 </a>
             </li>
             <li>
-                <a href="{{ route('poster.contacts') }}" class="{{ request()->routeIs('poster.post') ? 'active' : '' }}">
+                <a href="{{ route('poster.contacts') }}"
+                    class="{{ request()->routeIs('poster.contacts') ? 'active' : '' }}">
                     <i class="fa fa-list" aria-hidden="true"></i>Danh sách liên hệ
                 </a>
             </li>

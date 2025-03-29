@@ -12,6 +12,7 @@ use App\Models\Image;
 use App\Models\Post;
 use App\Models\Category;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\DB;
 
 class UserController extends Controller
 {
@@ -203,6 +204,52 @@ class UserController extends Controller
         );
 
         return redirect()->back()->with($notification);
+    }
+
+    public function UserChangePassword()
+    {
+        return view('front.user.user_change_password');
+    }
+
+    public function ChangePassword(Request $request)
+    {
+        $messages = [
+            'oldPassword.required' => 'Vui lòng nhập mật khẩu cũ.',
+            'newPassword.required' => 'Vui lòng nhập mật khẩu mới.',
+            'newPassword.min' => 'Mật khẩu mới phải có ít nhất 8 ký tự.',
+            'newPassword.confirmed' => 'Xác nhận mật khẩu không khớp.',
+        ];
+
+        $validator = Validator::make($request->all(), [
+            'oldPassword' => 'required',
+            'newPassword' => 'required|min:8|confirmed',
+        ], $messages);
+
+        if (empty($request->oldPassword) && empty($request->newPassword) && empty($request->newPassword_confirmation)) {
+            return response()->json(['errors' => ['Vui lòng nhập đầy đủ thông tin.']], 422);
+        }
+
+        // Kiểm tra lỗi validate
+        if ($validator->fails()) {
+            return response()->json(['errors' => $validator->errors()], 422);
+        }
+
+        $id = Auth::user()->id;
+        $user = User::find($id);
+
+        // Kiểm tra mật khẩu cũ
+        if (!Hash::check($request->oldPassword, $user->password)) {
+            return response()->json(['errors' => ['oldPassword' => ['Mật khẩu cũ không đúng.']]], 422);
+        }
+
+        // Cập nhật mật khẩu mới
+        $user->password = Hash::make($request->newPassword);
+        $user->save();
+
+        return response()->json([
+            'success' => 'Mật khẩu đã được cập nhật thành công.',
+            'alert-type' => 'success'
+        ]);
     }
 
     public function UserContacts()

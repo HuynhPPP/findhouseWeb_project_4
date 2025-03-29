@@ -323,15 +323,6 @@ class PosterController extends Controller
             $image->delete();
         }
 
-        $videos = Video::where('post_id', $post->id)->get();
-        foreach ($videos as $video) {
-            $videoPath = public_path($video->video_url); // Đường dẫn video
-            if (File::exists($videoPath)) {
-                File::delete($videoPath);
-            }
-            $video->delete();
-        }
-
         $post->delete();
 
         return redirect()->route('poster.list-post')->with([

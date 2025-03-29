@@ -3,6 +3,7 @@
 
 
 <!-- Mirrored from code-theme.com/html/findhouses/dashboard.html by HTTrack Website Copier/3.x [XR&CO'2014], Mon, 30 Dec 2024 03:45:07 GMT -->
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -14,7 +15,7 @@
     <script>
         window.authId = {{ auth()->user()->id }};
     </script>
-    
+
     @vite(['resources/js/app.js'])
     <!-- FAVICON -->
     <link rel="shortcut icon" type="image/x-icon" href="favicon.ico">
@@ -40,12 +41,17 @@
     <link rel="stylesheet" id="color" href="{{ asset('front/css/default.css') }}">
 
     <!-- Toastr -->
-	<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.css">
-	<!-- End Toastr -->
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.css">
+    <!-- End Toastr -->
 </head>
 
 <body class="maxw1600 m0a dashboard-bd">
     <!-- Wrapper -->
+
+    <div id="preloader-dashboard">
+        <div id="progress-bar-dashboard"></div>
+    </div>
+
     <div id="wrapper" class="int_main_wraapper">
         <!-- START SECTION HEADINGS -->
         <!-- Header Container
@@ -60,7 +66,7 @@
                     <div class="col-lg-3 col-md-12 col-xs-12 pl-0 pr-0 user-dash">
                         @include('front.user.body.sidebar')
                     </div>
-                        @yield('user') 
+                    @yield('user')
                 </div>
             </div>
         </section>
@@ -107,6 +113,7 @@
         <script src="{{ asset('front/js/dashbord-mobile-menu.js') }}"></script>
         <script src="{{ asset('front/js/forms-2.js') }}"></script>
         <script src="{{ asset('front/js/color-switcher.js') }}"></script>
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 
         <script>
             $(".header-user-name").on("click", function() {
@@ -120,33 +127,52 @@
 
         <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 
+        @yield('customJs')
+
         <script>
-        @if(Session::has('message'))
-        var type = "{{ Session::get('alert-type','info') }}"
-        switch(type){
-            case 'info':
-            toastr.info(" {{ Session::get('message') }} ");
-            break;
-        
-            case 'success':
-            toastr.success(" {{ Session::get('message') }} ");
-            break;
-        
-            case 'warning':
-            toastr.warning(" {{ Session::get('message') }} ");
-            break;
-        
-            case 'error':
-            toastr.error(" {{ Session::get('message') }} ");
-            break; 
-        }
-        @endif 
-        </script>	
+            @if (Session::has('message'))
+                var type = "{{ Session::get('alert-type', 'info') }}"
+                switch (type) {
+                    case 'info':
+                        toastr.info(" {{ Session::get('message') }} ");
+                        break;
+
+                    case 'success':
+                        toastr.success(" {{ Session::get('message') }} ");
+                        break;
+
+                    case 'warning':
+                        toastr.warning(" {{ Session::get('message') }} ");
+                        break;
+
+                    case 'error':
+                        toastr.error(" {{ Session::get('message') }} ");
+                        break;
+                }
+            @endif
+        </script>
+
+        <script>
+            document.addEventListener("DOMContentLoaded", function() {
+                let progress = document.getElementById("progress-bar-dashboard");
+                let width = 0;
+
+                let interval = setInterval(function() {
+                    width += 10; // Tăng tiến trình (có thể điều chỉnh)
+                    progress.style.width = width + "%";
+
+                    if (width >= 100) {
+                        clearInterval(interval);
+                        setTimeout(function() {
+                            document.getElementById("preloader-dashboard").style.display = "none";
+                        }, 300); // Chờ 300ms rồi ẩn thanh
+                    }
+                }, 100); // Cập nhật mỗi 100ms
+            });
+        </script>
 
     </div>
     <!-- Wrapper / End -->
 </body>
 
-
-<!-- Mirrored from code-theme.com/html/findhouses/dashboard.html by HTTrack Website Copier/3.x [XR&CO'2014], Mon, 30 Dec 2024 03:45:08 GMT -->
 </html>
