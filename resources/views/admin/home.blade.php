@@ -67,6 +67,28 @@
             </div>
           </div>
         </div>
+        <div class="row">
+          <div class="col-md-12 col-xl-6">
+            <div class="card sale-card">
+              <div class="card-header">
+                <h5>Thống kê bài đăng</h5>
+              </div>
+              <div class="card-block">
+                <canvas class="w-100 h-75" id="postChart"></canvas>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-12 col-xl-6">
+            <div class="card sale-card">
+              <div class="card-header">
+                <h5>Thống kê người dùng</h5>
+              </div>
+              <div class="card-block">
+                <canvas class="w-100 h-75" id="userChart"></canvas>
+              </div>
+            </div>
+          </div>
+        </div>
         <div class="col-xl-6 col-md-12">
           <div class="card new-cust-card">
             <div class="card-header">
@@ -111,28 +133,6 @@
                   </div>
                 </div>
               @endforeach
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-md-12 col-xl-6">
-          <div class="card sale-card">
-            <div class="card-header">
-              <h5>Thống kê bài đăng</h5>
-            </div>
-            <div class="card-block">
-              <canvas class="w-100 h-75" id="postChart"></canvas>
-            </div>
-          </div>
-        </div>
-        <div class="col-md-12 col-xl-6">
-          <div class="card sale-card">
-            <div class="card-header">
-              <h5>Thống kê người dùng</h5>
-            </div>
-            <div class="card-block">
-              <canvas class="w-100 h-75" id="userChart"></canvas>
             </div>
           </div>
         </div>

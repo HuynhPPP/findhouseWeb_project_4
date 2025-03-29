@@ -120,7 +120,7 @@
       var status = $(this).val()
       var itemId = $(this).data('id')
       $.ajax({
-        url: '/update/status-post/' + itemId,
+        url: '/admin/update/status-post/' + itemId,
         type: 'POST',
         data: {
           status: status
