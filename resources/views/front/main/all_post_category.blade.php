@@ -1,6 +1,6 @@
 @extends('front.master_2')
 @section('home_2')
-<title>Các bài đăng đề xuất</title>
+    <title>Các bài đăng đề xuất</title>
     <!-- START SECTION PROPERTIES LISTING -->
     <section class="properties-list featured portfolio blog">
         <div class="container">
@@ -9,7 +9,9 @@
                     <div class="detail-wrapper-body">
                         <div class="listing-title-bar">
                             <div class="text-heading text-left">
-                                <p><a href="index.html">Trang chủ </a> &nbsp;/&nbsp; <span>{{ $category->category_name }}</span></p>
+                                <p><a href="index.html">Trang chủ </a> &nbsp;/&nbsp;
+                                    <span>{{ $category->category_name }}</span>
+                                </p>
                             </div>
                             <h3>Cho thuê {{ $category->category_name }}</h3>
                             <p>Có {{ $posts_category->count() }} tin đăng cho thuê</p>
@@ -215,7 +217,7 @@
                         $video_url = $post->video_url;
                         $video_url_fixed = str_replace('embed/', 'watch?v=', $video_url);
 
-                        $randomImage = $post->images()->inRandomOrder()->first();
+                        $fixedImage = $post->images()->first();
                     @endphp
                     <div class="item col-lg-4 col-md-6 col-xs-12 landscapes sale">
                         <div class="project-single" data-aos="fade-up">
@@ -230,10 +232,10 @@
                                     <!-- homes img -->
                                     <a href="{{ route('post.detail', $post->id) }}" class="homes-img">
                                         <div class="homes-tag button alt sale">{{ $post->category->category_name }}</div>
-            
-                                        @if ($randomImage)
-                                            <img src="{{ asset($randomImage->image_url) }}" alt="home-1"
-                                                class="img-responsive" style="height: 270px;">
+
+                                        @if ($fixedImage)
+                                            <img src="{{ asset('upload/post_images/' . $fixedImage->image_url) }}"
+                                                alt="home-1" class="img-responsive" style="height: 270px;">
                                         @else
                                             <img src="{{ asset('upload/no_image.jpg') }}" alt="No Image"
                                                 class="img-responsive">
@@ -241,7 +243,8 @@
                                     </a>
                                 </div>
                                 <div class="button-effect">
-                                    <a href="{{ route('post.detail', $post->id) }}" class="btn"><i class="fa fa-link"></i></a>
+                                    <a href="{{ route('post.detail', $post->id) }}" class="btn"><i
+                                            class="fa fa-link"></i></a>
                                     <a href="{{ $video_url_fixed }}" class="btn popup-video popup-youtube"><i
                                             class="fas fa-video"></i></a>
                                     <a href="single-property-2.html" class="img-poppu btn"><i
@@ -308,11 +311,23 @@
                                 </div>
                                 <div class="footer">
                                     <a href="agent-details.html">
-                                        <img src="{{ !empty($post->users->photo) ? url('upload/poster_images/' . $post->users->photo) : url('upload/no_img.jpg') }}"
-                                            alt="" class="mr-2"
+                                        @php
+                                            $imagePath = 'upload/user_images/';
+                                            $userPhoto = $post->user->photo ?? null;
+
+                                            if (!empty($userPhoto)) {
+                                                $imageUrl = url($imagePath . $userPhoto);
+                                            } else {
+                                                $imageUrl = url('upload/no_img.jpg');
+                                            }
+                                        @endphp
+
+                                        <img src="{{ $imageUrl }}" alt="User Image" class="mr-2"
                                             style="width: 35px; height: 35px; object-fit: cover; border-radius: 50%;">
                                         {{ $post->user->name }}
                                     </a>
+
+
                                     <span
                                         style="margin-top: 7px">{{ \Carbon\Carbon::parse($post->created_at)->locale('vi')->diffForHumans() }}</span>
                                 </div>

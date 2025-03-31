@@ -99,7 +99,7 @@
         <script src="{{ asset('front/js/searched.js') }}"></script>
         <script src="{{ asset('front/js/forms-2.js') }}"></script>
         <script src="{{ asset('front/js/map-style2.js') }}"></script>
-
+        <script src="{{ asset('front/js/popup.js') }}"></script>
         <script src="{{ asset('front/js/range.js') }}"></script>
         <script src="{{ asset('front/js/color-switcher.js') }}"></script>
         <script>
@@ -265,51 +265,7 @@
             });
         </script>
 
-        <script>
-            // Mở popup
-            function openChatPopup() {
-                document.getElementById('chatPopup').classList.add('active');
-            }
-
-            // Đóng popup (khi nhấn nút X)
-            function closeChatPopup() {
-                document.getElementById('chatPopup').classList.remove('active');
-            }
-
-            // Đóng popup (khi click nền mờ, trừ khi click vào chính popup)
-            function closeChatPopupByOverlay(event) {
-                // Nếu bấm bên ngoài popup, đóng
-                const popup = document.getElementById('chatPopup');
-                if (!popup.contains(event.target)) {
-                    closeChatPopup();
-                }
-            }
-
-            // Gửi tin nhắn
-            function sendChatMessage() {
-                const input = document.getElementById('chatMessage');
-                const msg = input.value.trim();
-                if (!msg) {
-                    alert('Vui lòng nhập tin nhắn!');
-                    return;
-                }
-                // Xử lý gửi tin nhắn ở đây (AJAX, v.v.)
-                console.log('Tin nhắn:', msg);
-
-                // Demo: thêm tin nhắn vào khung chat
-                const chatMessages = document.querySelector('.chat-messages');
-                const bubble = document.createElement('div');
-                bubble.className = 'message-bubble';
-                bubble.innerHTML = `<p>${msg}</p>`;
-                chatMessages.appendChild(bubble);
-
-                // Cuộn xuống cuối
-                chatMessages.scrollTop = chatMessages.scrollHeight;
-
-                // Reset input
-                input.value = '';
-            }
-        </script>
+       
 
 
     </div>

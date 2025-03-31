@@ -7,7 +7,9 @@
     <div class="sidebar-header"><a href="{{ route('index') }}"><img src="{{ asset('front/images/logo-blue.svg') }}"
                 alt="header-logo2.png"> </a></div>
     <div class="header clearfix">
-        <img src="{{ !empty($profileData->photo) ? url('upload/poster_images/' . $profileData->photo) : url('upload/no_img.jpg') }}"
+        <img src="{{ !empty($profileData->photo) && str_starts_with($profileData->photo, 'poster_')
+            ? url('upload/user_images/' . $profileData->photo)
+            : url('upload/no_img.jpg') }}"
             alt="avatar" class="img-fluid profile-img">
     </div>
     <div class="active-user">

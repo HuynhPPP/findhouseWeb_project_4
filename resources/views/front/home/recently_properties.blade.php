@@ -10,7 +10,7 @@
                         $video_url = $post->video_url;
                         $video_url_fixed = str_replace('embed/', 'watch?v=', $video_url);
 
-                        $randomImage = $post->images()->inRandomOrder()->first();
+                        $fixedImage = $post->images()->first();
                     @endphp
 
                     <div class="agents-grid" data-aos="fade-up" data-aos-delay="150">
@@ -23,9 +23,9 @@
                                             <div class="homes-tag button alt featured">Mới nhất</div>
                                             <div class="homes-tag button alt sale">{{ $post->category->category_name }}
                                             </div>
-                                            @if ($randomImage)
-                                                <img src="{{ asset($randomImage->image_url) }}" alt="home-1"
-                                                    class="img-responsive" style="height: 320px;">
+                                            @if ($fixedImage)
+                                                <img src="{{ asset('upload/post_images/' . $fixedImage->image_url) }}"
+                                                    alt="home-1" class="img-responsive" style="height: 320px;">
                                             @else
                                                 <img src="{{ asset('upload/no_image.jpg') }}" alt="No Image"
                                                     class="img-responsive">

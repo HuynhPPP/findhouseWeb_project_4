@@ -56,9 +56,9 @@ class PosterController extends Controller
 
         if ($request->file('photo')) {
             $file = $request->file('photo');
-            @unlink(public_path('upload/poster_images/' . $data->photo));
-            $filename = date('YmdHi') . $file->getClientOriginalName();
-            $file->move(public_path('upload/poster_images'), $filename);
+            @unlink(public_path('upload/user_images/' . $data->photo));
+            $filename = 'poster_' . $id . '_' . date('YmdHi') . '.' . $file->getClientOriginalExtension();
+            $file->move(public_path('upload/user_images'), $filename);
             $data['photo'] = $filename;
         }
 
@@ -175,7 +175,6 @@ class PosterController extends Controller
 
                 Image::create([
                     'post_id'    => $post->id,
-                    'image_name' => $image->getClientOriginalName(),
                     'image_url'  => $imageName,
                     'created_at' => Carbon::now(),
                 ]);
@@ -261,14 +260,26 @@ class PosterController extends Controller
         ]);
 
         $imageDir = public_path('upload/post_images');
+        $oldImages = Image::where('post_id', $post_id)->get();
+
         if ($request->hasFile('images')) {
+            // Xóa ảnh cũ trong thư mục
+            foreach ($oldImages as $oldImage) {
+                $oldImagePath = $imageDir . '/' . $oldImage->image_url;
+                if (File::exists($oldImagePath)) {
+                    File::delete($oldImagePath); // Xóa file ảnh cũ
+                }
+            }
+
+            // Xóa dữ liệu ảnh cũ trong database
+            Image::where('post_id', $post_id)->delete();
+            // Lưu ảnh mới
             foreach ($request->file('images') as $image) {
                 $imageName = time() . '_' . $image->getClientOriginalName();
                 $image->move($imageDir, $imageName);
 
                 Image::create([
                     'post_id'    => $post_id,
-                    'image_name' => $image->getClientOriginalName(),
                     'image_url'  => $imageName,
                     'created_at' => Carbon::now(),
                 ]);

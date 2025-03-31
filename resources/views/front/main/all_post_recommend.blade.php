@@ -1,6 +1,6 @@
 @extends('front.master_2')
 @section('home_2')
-<title>Các bài đăng đề xuất</title>
+    <title>Các bài đăng đề xuất</title>
     <!-- START SECTION PROPERTIES LISTING -->
     <section class="properties-list featured portfolio blog">
         <div class="container">
@@ -214,7 +214,7 @@
                         $video_url = $post->video_url;
                         $video_url_fixed = str_replace('embed/', 'watch?v=', $video_url);
 
-                        $randomImage = $post->images()->inRandomOrder()->first();
+                        $fixedImage = $post->images()->first();
                     @endphp
                     <div class="item col-lg-4 col-md-6 col-xs-12 landscapes sale">
                         <div class="project-single" data-aos="fade-up">
@@ -230,10 +230,10 @@
                                     <a href="single-property-1.html" class="homes-img">
                                         <div class="homes-tag button alt featured">Đề xuất</div>
                                         <div class="homes-tag button alt sale">{{ $post->category->category_name }}</div>
-            
-                                        @if ($randomImage)
-                                            <img src="{{ asset($randomImage->image_url) }}" alt="home-1"
-                                                class="img-responsive" style="height: 270px;">
+
+                                        @if ($fixedImage)
+                                            <img src="{{ asset('upload/post_images/' . $fixedImage->image_url) }}"
+                                                alt="home-1" class="img-responsive" style="height: 270px;">
                                         @else
                                             <img src="{{ asset('upload/no_image.jpg') }}" alt="No Image"
                                                 class="img-responsive">
@@ -308,8 +308,18 @@
                                 </div>
                                 <div class="footer">
                                     <a href="agent-details.html">
-                                        <img src="{{ !empty($post->user->photo) ? url('upload/poster_images/' . $post->user->photo) : url('upload/no_img.jpg') }}"
-                                            alt="" class="mr-2"
+                                        @php
+                                            $imagePath = 'upload/user_images/';
+                                            $userPhoto = $post->user->photo ?? null;
+
+                                            if (!empty($userPhoto)) {
+                                                $imageUrl = url($imagePath . $userPhoto);
+                                            } else {
+                                                $imageUrl = url('upload/no_img.jpg');
+                                            }
+                                        @endphp
+
+                                        <img src="{{ $imageUrl }}" alt="User Image" class="mr-2"
                                             style="width: 35px; height: 35px; object-fit: cover; border-radius: 50%;">
                                         {{ $post->user->name }}
                                     </a>
@@ -324,7 +334,7 @@
             <nav aria-label="..." class="pt-3">
                 <ul class="pagination grid-3">
                     <li class="page-item disabled">
-                        <a class="page-link" href="#" tabindex="-1">Previous</a>
+                        <a class="page-link" href="#" tabindex="-1"><<</a>
                     </li>
                     <li class="page-item active">
                         <a class="page-link" href="#">1 <span class="sr-only">(current)</span></a>
@@ -334,7 +344,7 @@
                     <li class="page-item"><a class="page-link" href="#">3</a></li>
                     <li class="page-item"><a class="page-link" href="#">5</a></li>
                     <li class="page-item">
-                        <a class="page-link" href="#">Next</a>
+                        <a class="page-link" href="#">>></a>
                     </li>
                 </ul>
             </nav>

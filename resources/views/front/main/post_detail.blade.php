@@ -22,8 +22,8 @@
                                     @foreach ($images as $key => $image)
                                         <div class="item carousel-item {{ $key == 0 ? 'active' : '' }}"
                                             data-slide-number="{{ $key }}">
-                                            <img src="{{ asset($image->image_url) }}" class="img-fluid"
-                                                alt="slider-listing">
+                                            <img src="{{ asset('upload/post_images/' . $image->image_url) }}"
+                                                class="img-fluid" alt="slider-listing">
                                         </div>
                                     @endforeach
                                 </div>
@@ -39,8 +39,8 @@
                                         <li class="list-inline-item {{ $key == 0 ? 'active' : '' }}">
                                             <a id="carousel-selector-{{ $key }}"
                                                 data-slide-to="{{ $key }}" data-target="#listingDetailsSlider">
-                                                <img src="{{ asset($image->image_url) }}" class="img-fluid-2"
-                                                    alt="listing-small">
+                                                <img src="{{ asset('upload/post_images/' . $image->image_url) }}"
+                                                    class="img-fluid-2" alt="listing-small">
                                             </a>
                                         </li>
                                     @endforeach
@@ -275,7 +275,17 @@
                                 <div class="widget-boxed-body">
                                     <div class="sidebar-widget author-widget2">
                                         <div class="author-box clearfix">
-                                            <img src="{{ !empty($post->user->photo) ? url('upload/poster_images/' . $post->user->photo) : url('upload/no_img.jpg') }}"
+                                            @php
+                                                $imagePath = 'upload/user_images/';
+                                                $userPhoto = $post->user->photo ?? null;
+
+                                                if (!empty($userPhoto)) {
+                                                    $imageUrl = url($imagePath . $userPhoto);
+                                                } else {
+                                                    $imageUrl = url('upload/no_img.jpg');
+                                                }
+                                            @endphp
+                                            <img src="{{ $imageUrl }}"
                                                 alt="author-image" class="author__img">
                                             <h4 class="author__title">{{ $post->user->name }}</h4>
                                             <p class="author__meta">Số tin đăng - {{ $post->user->posts->count() }}
@@ -525,13 +535,23 @@
                                             </ul>
                                             <div class="footer">
                                                 <a href="agent-details.html">
-                                                    <img src="{{ !empty($related->users->photo) ? url('upload/poster_images/' . $related->users->photo) : url('upload/no_img.jpg') }}"
-                                                        alt="" class="mr-2"
+                                                    @php
+                                                        $imagePath = 'upload/user_images/';
+                                                        $userPhoto = $post->user->photo ?? null;
+
+                                                        if (!empty($userPhoto)) {
+                                                            $imageUrl = url($imagePath . $userPhoto);
+                                                        } else {
+                                                            $imageUrl = url('upload/no_img.jpg');
+                                                        }
+                                                    @endphp
+
+                                                    <img src="{{ $imageUrl }}" alt="User Image" class="mr-2"
                                                         style="width: 35px; height: 35px; object-fit: cover; border-radius: 50%;">
-                                                    {{ $related->user->name }}
+                                                    {{ $post->user->name }}
                                                 </a>
                                                 <span
-                                                    style="margin-top: 7px">{{ \Carbon\Carbon::parse($related->created_at)->locale('vi')->diffForHumans() }}</span>
+                                                    style="margin-top: 7px">{{ \Carbon\Carbon::parse($post->created_at)->locale('vi')->diffForHumans() }}</span>
                                             </div>
                                         </div>
                                     </div>
@@ -545,8 +565,8 @@
             <!-- END SIMILAR PROPERTIES -->
         </div>
         <div id="app-live-chat">
-            <send-message :poster_id="{{ $post->user_id }}" :post_name="'{{ $post->title }}'" :post_id="{{ $post->id }}"
-                :poster_name="'{{ $post->user->name }}'" :price="{{ $post->price }}"
+            <send-message :poster_id="{{ $post->user_id }}" :post_name="'{{ $post->title }}'"
+                :post_id="{{ $post->id }}" :poster_name="'{{ $post->user->name }}'" :price="{{ $post->price }}"
                 :poster_avatar="'{{ $post->user->photo ? url('upload/poster_images/' . $post->user->photo) : url('front/images/avt/no_img.jpg') }}'">
             </send-message>
         </div>

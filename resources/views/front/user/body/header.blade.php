@@ -13,23 +13,23 @@
                     <div class="mmenu-trigger">
                         <button class="hamburger hamburger--collapse" type="button">
                             <span class="hamburger-box">
-                    <span class="hamburger-inner"></span>
+                                <span class="hamburger-inner"></span>
                             </span>
                         </button>
                     </div>
                     <!-- Main Navigation -->
                     <nav id="navigation" class="style-1">
                         <ul id="responsive">
-                        <li><a href="{{ route('index') }}">Trang chủ</a>
-                            
-                        </li>
-                    </ul>
+                            <li><a href="{{ route('index') }}">Trang chủ</a>
+
+                            </li>
+                        </ul>
                     </nav>
                     <div class="clearfix"></div>
                     <!-- Main Navigation / End -->
                 </div>
                 <!-- Left Side Content / End -->
-                <!-- Right Side Content / --> 
+                <!-- Right Side Content / -->
 
                 @php
                     $id = Auth::user()->id;
@@ -39,13 +39,16 @@
                 <div class="header-user-menu user-menu">
                     <div class="header-user-name">
                         <span>
-                            <img src="{{ (!empty($profileData->photo)) ? url('upload/user_images/'.$profileData->photo) : url('upload/no_img.jpg') }}" alt="">
+                            <img src="{{ !empty($profileData->photo) && str_starts_with($profileData->photo, 'user_')
+                                ? url('upload/user_images/' . $profileData->photo)
+                                : url('upload/no_img.jpg') }}"
+                                alt="">
                         </span>{{ $profileData->name }}
                     </div>
                     <ul>
                         <li><a href="user-profile.html"> Edit profile</a></li>
                         <li><a href="add-property.html"> Add Property</a></li>
-                        <li><a href="payment-method.html">  Payments</a></li>
+                        <li><a href="payment-method.html"> Payments</a></li>
                         <li><a href="change-password.html"> Change Password</a></li>
                         <li><a href="{{ route('user.logout') }}">Log Out</a></li>
                     </ul>

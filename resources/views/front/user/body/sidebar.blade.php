@@ -7,7 +7,9 @@
     <div class="sidebar-header"><a href="{{ route('index') }}"><img src="{{ asset('front/images/logo-blue.svg') }}"
                 alt="header-logo2.png"> </a></div>
     <div class="header clearfix">
-        <img src="{{ !empty($profileData->photo) ? url('upload/user_images/' . $profileData->photo) : url('upload/no_img.jpg') }}"
+        <img src="{{ !empty($profileData->photo) && str_starts_with($profileData->photo, 'user_')
+            ? url('upload/user_images/' . $profileData->photo)
+            : url('upload/no_img.jpg') }}"
             alt="avatar" class="img-fluid profile-img">
     </div>
     <div class="active-user">
@@ -27,7 +29,8 @@
                 </a>
             </li>
             <li>
-                <a href="{{ route('user.contacts') }}" class="{{ request()->routeIs('user.contacts') ? 'active' : '' }}">
+                <a href="{{ route('user.contacts') }}"
+                    class="{{ request()->routeIs('user.contacts') ? 'active' : '' }}">
                     <i class="fa fa-list" aria-hidden="true"></i>Danh sách liên hệ
                 </a>
             </li>
@@ -37,7 +40,8 @@
                 </a>
             </li>
             <li>
-                <a href="{{ route('user.change-password') }}" class="{{ request()->routeIs('user.change-password') ? 'active' : '' }}">
+                <a href="{{ route('user.change-password') }}"
+                    class="{{ request()->routeIs('user.change-password') ? 'active' : '' }}">
                     <i class="fa fa-lock"></i>Đổi mật khẩu
                 </a>
             </li>

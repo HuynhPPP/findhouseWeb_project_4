@@ -44,15 +44,20 @@
                 <div class="header-user-name">
                     @auth
                         <span>
-                            @if ($profileData->role === 'poster')
-                                <img src="{{ !empty($profileData->photo) ? url('upload/poster_images/' . $profileData->photo) : url('upload/no_img.jpg') }}"
-                                    alt="">
-                            @elseif ($profileData->role === 'user')
-                                <img src="{{ !empty($profileData->photo) ? url('upload/user_images/' . $profileData->photo) : url('upload/no_img.jpg') }}"
-                                    alt="">
-                            @else
-                                <img src="{{ url('upload/no_img.jpg') }}" alt="">
-                            @endif
+                            @php
+                                $defaultImage = url('upload/no_img.jpg');
+                                $imagePath = $defaultImage;
+
+                                if (!empty($profileData->photo)) {
+                                    if (str_contains($profileData->photo, 'poster_')) {
+                                        $imagePath = url('upload/user_images/' . $profileData->photo);
+                                    } elseif (str_contains($profileData->photo, 'user_')) {
+                                        $imagePath = url('upload/user_images/' . $profileData->photo);
+                                    }
+                                }
+                            @endphp
+
+                            <img src="{{ $imagePath }}" alt="">
                         </span>
                         {{ $profileData->name }}
                     @else
