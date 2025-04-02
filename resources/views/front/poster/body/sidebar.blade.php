@@ -46,18 +46,21 @@
                     <i class="fa fa-list" aria-hidden="true"></i>Danh sách liên hệ
                 </a>
             </li>
-            <li>
-                <a href="{{ route('poster.verification') }}"
-                    class="{{ request()->routeIs('poster.verification') ? 'active' : '' }}">
-                    <i class="fa fa-lock"></i>Xác minh tài khoản
-                </a>
-            </li>
-            <li>
-                <a href="{{ route('poster.change-password') }}"
-                    class="{{ request()->routeIs('poster.change-password') ? 'active' : '' }}">
-                    <i class="fa fa-lock"></i>Đổi mật khẩu
-                </a>
-            </li>
+            @if (empty(auth()->user()->google_id))
+                <li>
+                    <a href="{{ route('poster.verification') }}"
+                        class="{{ request()->routeIs('poster.verification') ? 'active' : '' }}">
+                        <i class="fa fa-lock"></i> Xác minh tài khoản
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ route('poster.change-password') }}"
+                        class="{{ request()->routeIs('poster.change-password') ? 'active' : '' }}">
+                        <i class="fa fa-lock"></i> Đổi mật khẩu
+                    </a>
+                </li>
+            @endif
+
             <li>
                 <a href="{{ route('logout') }}">
                     <i class="fas fa-sign-out-alt"></i>Đăng xuất

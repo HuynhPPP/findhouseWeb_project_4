@@ -84,7 +84,7 @@
         <script src="{{ asset('front/js/newsletter.js') }}"></script>
         <script src="{{ asset('front/js/inner.js') }}"></script>
         <script src="{{ asset('front/js/color-switcher.js') }}"></script>
-        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+        <script src="{{ asset('front/js/sweetalert2.js') }}"></script>
 
         <script type="text/javascript" src="{{ asset('front/toastr/toastr.min.js') }}"></script>
 

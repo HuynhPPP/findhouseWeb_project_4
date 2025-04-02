@@ -307,7 +307,7 @@
                                     </div>
                                 </div>
                                 <div class="footer">
-                                    <a href="agent-details.html">
+                                    <a href="{{ route('poster.detail', $post->user->id) }}">
                                         @php
                                             $imagePath = 'upload/user_images/';
                                             $userPhoto = $post->user->photo ?? null;

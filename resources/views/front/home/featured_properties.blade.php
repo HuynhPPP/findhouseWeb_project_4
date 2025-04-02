@@ -33,11 +33,8 @@
                             </div>
 
                             <div class="button-effect">
-                                <a href="#" class="btn"><i class="fa fa-link"></i></a>
                                 <a href="{{ $video_url_fixed }}" class="btn popup-video popup-youtube"><i
                                         class="fas fa-video"></i></a>
-                                <a href="{{ route('post.detail', $post->id) }}" class="img-poppu btn"><i
-                                        class="fa fa-photo"></i></a>
                             </div>
                         </div>
                         <!-- homes content -->
@@ -87,9 +84,6 @@
                                 </h3>
 
                                 <div class="compare">
-                                    <a href="#" title="Compare">
-                                        <i class="flaticon-compare"></i>
-                                    </a>
                                     <a href="#" title="Share">
                                         <i class="flaticon-share"></i>
                                     </a>

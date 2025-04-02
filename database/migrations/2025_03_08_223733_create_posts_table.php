@@ -28,7 +28,7 @@ return new class extends Migration
       $table->string('video_url')->nullable();
       $table->tinyInteger('is_favorite')->default(0);
       $table->tinyInteger('is_featured')->default(0);
-      $table->enum('status', ["pending", "approved", "rejected"])->default("pending");
+      $table->enum('status', ["pending", "approved", "hidden"])->default("pending");
       $table->timestamps();
     });
   }

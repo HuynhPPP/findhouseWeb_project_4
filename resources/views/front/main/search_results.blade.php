@@ -1,6 +1,6 @@
 @extends('front.master_2')
 @section('home_2')
-    <title>Các bài đăng đề xuất</title>
+    <title>Kết quả tìm kiếm</title>
     <!-- START SECTION PROPERTIES LISTING -->
     <section class="properties-list featured portfolio blog">
         <div class="container">
@@ -334,23 +334,9 @@
                     </div>
                 @endforeach
             </div>
-            <nav aria-label="..." class="pt-3">
-                <ul class="pagination grid-3">
-                    <li class="page-item disabled">
-                        <a class="page-link" href="#" tabindex="-1">Previous</a>
-                    </li>
-                    <li class="page-item active">
-                        <a class="page-link" href="#">1 <span class="sr-only">(current)</span></a>
-                    </li>
-                    <li class="page-item"><a class="page-link" href="#">2</a></li>
-                    <li class="page-item"><a class="page-link" href="#">3</a></li>
-                    <li class="page-item"><a class="page-link" href="#">3</a></li>
-                    <li class="page-item"><a class="page-link" href="#">5</a></li>
-                    <li class="page-item">
-                        <a class="page-link" href="#">Next</a>
-                    </li>
-                </ul>
-            </nav>
+            <div class="d-flex justify-content-end mt-3">
+                {{ $posts->links('pagination::bootstrap-4') }}
+            </div>
         </div>
     </section>
     <!-- END SECTION PROPERTIES LISTING -->

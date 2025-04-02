@@ -1,6 +1,6 @@
 @extends('front.master_2')
 @section('home_2')
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.3.1/dist/leaflet.css" />
+    <link rel="stylesheet" href="{{ asset('front/leaflet/leaflet.css') }}" />
     <style>
         #map {
             width: 100%;
@@ -285,8 +285,10 @@
                                                     $imageUrl = url('upload/no_img.jpg');
                                                 }
                                             @endphp
-                                            <img src="{{ $imageUrl }}" alt="author-image" class="author__img">
-                                            <h4 class="author__title">{{ $post->user->name }}</h4>
+                                            <a href="{{ route('poster.detail', $post->user->id) }}">
+                                                <img src="{{ $imageUrl }}" alt="author-image" class="author__img">
+                                                <h4 class="author__title">{{ $post->user->name }}</h4>
+                                            </a>
                                             <p class="author__meta">Số tin đăng - {{ $post->user->posts->count() }}
                                             </p>
                                         </div>
@@ -473,40 +475,47 @@
                                     $video_url = $related->video_url;
                                     $video_url_fixed = str_replace('embed/', 'watch?v=', $video_url);
 
-                                    $randomImage = $related->images()->inRandomOrder()->first();
+                                    $fixedImage = $post->images()->first();
                                 @endphp
                                 <div class="item col-lg-4 col-md-6 col-xs-12 landscapes">
                                     <div class="project-single">
                                         <div class="project-inner project-head">
+                                            <div class="project-bottom">
+                                                <h4><a href="{{ route('post.detail', $related->id) }}">
+                                                        Xem chi tiết
+                                                    </a>
+                                                </h4>
+                                            </div>
                                             <div class="homes">
                                                 <!-- homes img -->
-                                                <a href="{{ route('post.detail', $related->id) }}" class="homes-img">
-                                                    <div class="homes-tag button alt sale">
-                                                        {{ $related->category->category_name }}</div>
-                                                    <div class="homes-price">
-                                                        @if ($related->price >= 1000000)
-                                                            {{ number_format($related->price / 1000000, 1) }} triệu/tháng
-                                                        @else
-                                                            {{ number_format($related->price, 0, ',', '.') }} đồng/tháng
-                                                        @endif
-                                                    </div>
-                                                    <img src="{{ asset($randomImage->image_url) }}" alt="home-1"
-                                                        class="img-responsive" style="height: 270px;">
-                                                </a>
+                                                <div class="homes-tag button alt sale">
+                                                    {{ $related->category->category_name }}</div>
+                                                <div class="homes-price">
+                                                    @if ($related->price >= 1000000)
+                                                        {{ number_format($related->price / 1000000, 1) }} triệu/tháng
+                                                    @else
+                                                        {{ number_format($related->price, 0, ',', '.') }} đồng/tháng
+                                                    @endif
+                                                </div>
+                                                @if ($fixedImage)
+                                                    <img src="{{ asset('upload/post_images/' . $fixedImage->image_url) }}"
+                                                        alt="home-1" class="img-responsive" style="height: 270px;">
+                                                @else
+                                                    <img src="{{ asset('upload/no_image.jpg') }}" alt="No Image"
+                                                        class="img-responsive">
+                                                @endif
                                             </div>
                                             <div class="button-effect">
-                                                <a href="single-property-1.html" class="btn"><i
-                                                        class="fa fa-link"></i></a>
                                                 <a href="{{ $video_url_fixed }}" class="btn popup-video popup-youtube"><i
                                                         class="fas fa-video"></i></a>
-                                                <a href="single-property-2.html" class="img-poppu btn"><i
-                                                        class="fa fa-photo"></i></a>
                                             </div>
                                         </div>
                                         <!-- homes content -->
                                         <div class="homes-content">
                                             <!-- homes address -->
-                                            <h3><a href="single-property-1.html">{{ $related->title }}</a></h3>
+                                            <h3><a
+                                                    href="{{ route('post.detail', $related->id) }}">{{ $related->title }}</a>
+                                            </h3>
                                             <p class="homes-address mb-3">
                                                 <a href="single-property-1.html">
                                                     <i
@@ -533,10 +542,10 @@
                                                 </li>
                                             </ul>
                                             <div class="footer">
-                                                <a href="agent-details.html">
+                                                <a href="{{ route('poster.detail', $related->user->id) }}">
                                                     @php
                                                         $imagePath = 'upload/user_images/';
-                                                        $userPhoto = $post->user->photo ?? null;
+                                                        $userPhoto = $related->user->photo ?? null;
 
                                                         if (!empty($userPhoto)) {
                                                             $imageUrl = url($imagePath . $userPhoto);
@@ -547,10 +556,10 @@
 
                                                     <img src="{{ $imageUrl }}" alt="User Image" class="mr-2"
                                                         style="width: 35px; height: 35px; object-fit: cover; border-radius: 50%;">
-                                                    {{ $post->user->name }}
+                                                    {{ $related->user->name }}
                                                 </a>
                                                 <span
-                                                    style="margin-top: 7px">{{ \Carbon\Carbon::parse($post->created_at)->locale('vi')->diffForHumans() }}</span>
+                                                    style="margin-top: 7px">{{ \Carbon\Carbon::parse($related->created_at)->locale('vi')->diffForHumans() }}</span>
                                             </div>
                                         </div>
                                     </div>
@@ -586,7 +595,7 @@
 @endsection
 
 @section('customJs')
-    <script src="https://unpkg.com/leaflet@1.3.1/dist/leaflet.js"></script>
+    <script src="{{ asset('front/leaflet/leaflet.js') }}"></script>
     <script src="{{ asset('front/js/map_post_view.js') }}"></script>
 
     <script>

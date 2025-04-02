@@ -160,7 +160,7 @@ class MainControler extends Controller
             $query->where('province', $provinceName);
         }
 
-        $posts = $query->paginate(9);
+        $posts = $query->paginate(9)->appends($request->all());
 
         return view('front.main.search_results', compact('posts', 'search_keyword'));
     }
@@ -341,5 +341,14 @@ class MainControler extends Controller
         ];
 
         return redirect()->route('login')->with($notification);
+    }
+
+    public function PosterDetail($id)
+    {
+        $poster = User::find($id);
+        $posts = Post::where('user_id',$id)->paginate(4);
+
+        return view('front.main.poster_details',
+        compact('poster','posts'));
     }
 }

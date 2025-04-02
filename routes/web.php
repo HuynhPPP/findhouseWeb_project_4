@@ -7,6 +7,7 @@ use App\Http\Controllers\Front\ApiController;
 use App\Http\Controllers\Front\MainControler;
 use App\Http\Controllers\Front\ContactController;
 use App\Http\Controllers\Front\ChatController;
+use App\Http\Controllers\Front\SocialliteController;
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\admin\CategoryController;
 use Illuminate\Support\Facades\Route;
@@ -26,18 +27,25 @@ Route::get('/all/post/recommend', [MainControler::class, 'AllPostRecommend'])->n
 Route::get('/post/details/{id}', [MainControler::class, 'PostDetail'])->name('post.detail');
 Route::get('/category/{id}', [MainControler::class, 'getPostsByCategory'])->name('category.posts');
 Route::get('/properties/{province}', [MainControler::class, 'filterByProvince'])->name('properties.by.province');
-Route::post('/search/post', [MainControler::class, 'SearchPost'])->name('search.post');
+Route::match(['get', 'post'], '/search/post', [MainControler::class, 'SearchPost'])->name('search.post');
 Route::post('/filter/post', [MainControler::class, 'FilterPost'])->name('filter.post');
 
 Route::get('/forget/password', [MainControler::class, 'ForgetPassword'])->name('forget.password');
 Route::post('/confirm/password/code', [MainControler::class, 'CodePasswordConfirm'])->name('confirm.password.code');
 Route::get('/password/reset/form', [MainControler::class, 'PasswordResetForm'])->name('password.reset.form');
 Route::post('/reset/password', [MainControler::class, 'ResetPassword'])->name('reset.password');
+Route::get('/poster-detail/{id}', [MainControler::class, 'PosterDetail'])->name('poster.detail');
 
 Route::post('/send-message', [ChatController::class, 'SendMessage']);
 Route::get('/user-all', [ChatController::class, 'GetAllUsers']);
 Route::get('/user-message/{id}', [ChatController::class, 'UserMsgById']);
 Route::get('/messages-of-group/{postId}', [ChatController::class, 'getMessagesByPostId']);
+
+Route::controller(SocialliteController::class)->group(function () {
+  Route::get('/login-with-goole', 'AuthGoogle')->name('auth.google');
+  Route::get('/auth/google/call-back', 'GoogleAuthentication')->name('auth.google.callback');
+});
+
 
 require __DIR__ . '/auth.php';
 
@@ -106,5 +114,4 @@ Route::middleware(['auth', 'roles:user'])->group(function () {
 
   Route::get('/user/change-password', [UserController::class, 'UserChangePassword'])->name('user.change-password');
   Route::post('/user/reset/password', [UserController::class, 'ChangePassword'])->name('user.reset.password');
-
 }); // End User group middleware

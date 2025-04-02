@@ -21,7 +21,7 @@ return new class extends Migration
       $table->enum('status', ['active', 'unactive'])->default('unactive');
       $table->timestamp('email_verified_at')->nullable();
       $table->string('verification_token')->nullable();
-      $table->rememberToken();
+      $table->string('google_id')->nullable();
       $table->timestamps();
     });
   }

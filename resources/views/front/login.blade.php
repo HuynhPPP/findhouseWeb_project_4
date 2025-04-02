@@ -75,7 +75,7 @@
                     <input type="hidden" name="redirect" value="{{ request()->query('redirect') }}">
 
                     <div class="access_social">
-                        <a href="#0" class="social_bt google">Đăng nhập bằng Google</a>
+                        <a href="{{ route('auth.google') }}" class="social_bt google">Đăng nhập bằng Google</a>
                     </div>
                     <div class="divider"><span>Hoặc</span></div>
                     <div class="form-group">

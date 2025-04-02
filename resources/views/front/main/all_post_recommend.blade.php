@@ -295,9 +295,6 @@
                                         </a>
                                     </h3>
                                     <div class="compare">
-                                        <a href="#" title="Compare">
-                                            <i class="fas fa-exchange-alt"></i>
-                                        </a>
                                         <a href="#" title="Share">
                                             <i class="fas fa-share-alt"></i>
                                         </a>
@@ -307,7 +304,7 @@
                                     </div>
                                 </div>
                                 <div class="footer">
-                                    <a href="agent-details.html">
+                                    <a href="{{ route('poster.detail', $post->user->id) }}">
                                         @php
                                             $imagePath = 'upload/user_images/';
                                             $userPhoto = $post->user->photo ?? null;
