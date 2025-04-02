@@ -24,17 +24,19 @@
             @php
                 $profileData = Auth::check() ? App\Models\User::find(Auth::user()->id) : null;
             @endphp
-            <div class="right-side d-none d-none d-lg-none d-xl-flex">
-                <!-- Header Widget -->
-                <div class="header-widget">
-                    @if (Auth::guest())
-                    @elseif ($profileData->role === 'poster')
+            @if (Auth::guest())
+            @elseif ($profileData->role === 'poster')
+                <div class="right-side d-none d-none d-lg-none d-xl-flex">
+                    <!-- Header Widget -->
+                    <div class="header-widget">
+
                         <a href="{{ route('poster.post') }}" class="button border">Đăng tin<i
                                 class="fas fa-laptop-house ml-2"></i></a>
-                    @endif
+
+                    </div>
+                    <!-- Header Widget / End -->
                 </div>
-                <!-- Header Widget / End -->
-            </div>
+            @endif
             <!-- Right Side Content / End -->
             <!-- Right Side Content / End -->
             <div class="header-user-menu user-menu add">
@@ -42,15 +44,20 @@
                 <div class="header-user-name">
                     @auth
                         <span>
-                            @if ($profileData->role === 'poster')
-                                <img src="{{ !empty($profileData->photo) ? url('upload/poster_images/' . $profileData->photo) : url('upload/no_img.jpg') }}"
-                                    alt="">
-                            @elseif ($profileData->role === 'user')
-                                <img src="{{ !empty($profileData->photo) ? url('upload/user_images/' . $profileData->photo) : url('upload/no_img.jpg') }}"
-                                    alt="">
-                            @else
-                                <img src="{{ url('upload/no_img.jpg') }}" alt="">
-                            @endif
+                            @php
+                                $defaultImage = url('upload/no_img.jpg');
+                                $imagePath = $defaultImage;
+
+                                if (!empty($profileData->photo)) {
+                                    if (str_contains($profileData->photo, 'poster_')) {
+                                        $imagePath = url('upload/user_images/' . $profileData->photo);
+                                    } elseif (str_contains($profileData->photo, 'user_')) {
+                                        $imagePath = url('upload/user_images/' . $profileData->photo);
+                                    }
+                                }
+                            @endphp
+
+                            <img src="{{ $imagePath }}" alt="">
                         </span>
                         {{ $profileData->name }}
                     @else
@@ -80,11 +87,6 @@
             </div>
             <!-- Right Side Content / End -->
 
-            <div class="right-side d-none d-none d-lg-none d-xl-flex sign ml-0">
-                <!-- Header Widget -->
-
-                <!-- Header Widget / End -->
-            </div>
             <!-- Right Side Content / End -->
 
 

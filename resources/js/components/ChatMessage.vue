@@ -27,13 +27,11 @@
                             @click="selectGroup(group)">
                             <div class="chat_people">
                                 <div class="chat_img">
-                                    <!-- Hiển thị ảnh bài đăng nếu có, hoặc dùng ảnh của user đầu tiên -->
                                     <img :src="getFirstImage(group.post)" alt="profile"
                                         style="height: 60px; width: 60px;" />
                                 </div>
                                 <div class="chat_ib">
                                     <h5>{{ group.post.title }}</h5>
-                                    <!-- Gộp tin nhắn và thời gian vào một hàng -->
                                     <div class="message-row">
                                         <p class="message">{{ group.messages[0].message }}</p>
                                         <span class="chat_date">{{ formatDate(group.messages[0].created_at) }}</span>
@@ -189,7 +187,7 @@ export default {
                 let imagePath = post.images[0].image_url;
                 // Nếu đường link không bắt đầu bằng '/', thêm vào phía trước
                 if (imagePath.charAt(0) !== '/') {
-                    imagePath = '/' + imagePath;
+                    imagePath = '/upload/post_images/' + imagePath;
                 }
                 return imagePath;
             }

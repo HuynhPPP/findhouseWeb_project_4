@@ -40,9 +40,9 @@
     <link rel="stylesheet" href="{{ asset('front/css/styles.css') }}">
     <link rel="stylesheet" id="color" href="{{ asset('front/css/default.css') }}">
 
-    <!-- Toastr -->
-    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.css">
-    <!-- End Toastr -->
+     <!-- Toastr -->
+     <link rel="stylesheet" type="text/css" href="{{ asset('front/toastr/toastr.css') }}">
+     <!-- End Toastr -->
 </head>
 
 <body class="maxw1600 m0a dashboard-bd">
@@ -113,7 +113,7 @@
         <script src="{{ asset('front/js/dashbord-mobile-menu.js') }}"></script>
         <script src="{{ asset('front/js/forms-2.js') }}"></script>
         <script src="{{ asset('front/js/color-switcher.js') }}"></script>
-        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+        <script src="{{ asset('front/js/sweetalert2.js') }}"></script>
 
         <script>
             $(".header-user-name").on("click", function() {
@@ -125,7 +125,7 @@
         <!-- MAIN JS -->
         <script src="{{ asset('front/js/script.js') }}"></script>
 
-        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+        <script type="text/javascript" src="{{ asset('front/toastr/toastr.min.js') }}"></script>
 
         @yield('customJs')
 

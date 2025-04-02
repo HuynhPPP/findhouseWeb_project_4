@@ -54,13 +54,13 @@ class PosterController extends Controller
     $data->email = $request->email;
     $data->phone = $request->phone;
 
-    if ($request->file('photo')) {
-      $file = $request->file('photo');
-      @unlink(public_path('upload/poster_images/' . $data->photo));
-      $filename = date('YmdHi') . $file->getClientOriginalName();
-      $file->move(public_path('upload/poster_images'), $filename);
-      $data['photo'] = $filename;
-    }
+        if ($request->file('photo')) {
+            $file = $request->file('photo');
+            @unlink(public_path('upload/user_images/' . $data->photo));
+            $filename = 'poster_' . $id . '_' . date('YmdHi') . '.' . $file->getClientOriginalExtension();
+            $file->move(public_path('upload/user_images'), $filename);
+            $data['photo'] = $filename;
+        }
 
     $data->save();
 
@@ -175,7 +175,6 @@ class PosterController extends Controller
 
                 Image::create([
                     'post_id'    => $post->id,
-                    'image_name' => $image->getClientOriginalName(),
                     'image_url'  => $imageName,
                     'created_at' => Carbon::now(),
                 ]);
@@ -260,15 +259,14 @@ class PosterController extends Controller
       'updated_at'   => now(),
     ]);
 
-    $imageDir = public_path('upload/post_images');
-    if ($request->hasFile('images')) {
-      foreach ($request->file('images') as $image) {
-        $imageName = time() . '_' . $image->getClientOriginalName();
-        $image->move($imageDir, $imageName);
+        $imageDir = public_path('upload/post_images');
+        if ($request->hasFile('images')) {
+            foreach ($request->file('images') as $image) {
+                $imageName = time() . '_' . $image->getClientOriginalName();
+                $image->move($imageDir, $imageName);
 
                 Image::create([
                     'post_id'    => $post_id,
-                    'image_name' => $image->getClientOriginalName(),
                     'image_url'  => $imageName,
                     'created_at' => Carbon::now(),
                 ]);

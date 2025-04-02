@@ -57,32 +57,31 @@
   <div
     class="col-lg-9 col-md-12 col-xs-12 royal-add-property-area section_100 pl-0 user-dash2">
 
-    <form action="{{ route('poster.post.update') }}" method="post"
-      enctype="multipart/form-data">
-      @csrf
-      <input type="hidden" name="id" value="{{ $post->id }}">
-      <div class="single-add-property">
-        <h3>Thông tin mô tả</h3>
-        <div class="property-form-group">
-          <div class="row">
-            <div class="col-md-12">
-              <p>
-                <label for="title">Tiêu đề <span
-                    class="text-danger">(*)</span></label>
-                <input type="text" name="title" id="title" placeholder=""
-                  value="{{ old('title', $post->title) }}">
-                @error('title')
-                <p style="color:red">{{ $message }}</p>
-              @enderror
-              </p>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-md-12">
-              <p>
-                <label for="description">Nội dung mô tả <span
-                    class="text-danger">(*)</span></label>
-                <textarea class="textarea" id="description" name="description" placeholder="">
+        <form action="{{ route('poster.post.update') }}" method="post" enctype="multipart/form-data">
+            @csrf
+            <input type="hidden" name="id" value="{{ $post->id }}">
+
+            <!-- Information common -->
+            <div class="single-add-property">
+                <h3>Thông tin mô tả</h3>
+                <div class="property-form-group">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <p>
+                                <label for="title">Tiêu đề <span class="text-danger">(*)</span></label>
+                                <input type="text" name="title" id="title" placeholder=""
+                                    value="{{ old('title', $post->title) }}">
+                                @error('title')
+                                <p style="color:red">{{ $message }}</p>
+                            @enderror
+                            </p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <p>
+                                <label for="description">Nội dung mô tả <span class="text-danger">(*)</span></label>
+                                <textarea class="textarea" id="description" name="description" placeholder="">
                                     {{ old('description', $post->description) }}
                                 </textarea>
                 @error('description')
@@ -156,45 +155,43 @@
         </div>
       </div>
 
-      <div class="single-add-property">
-        <h3>Hình ảnh</h3>
-        <div class="property-form-group">
-          <div class="row">
-            <div class="col-md-12">
-              <!-- Khu vực kéo thả hoặc nhấn để tải ảnh -->
-              <div class="drop-zone" id="dropZone">
-                <p> Kéo thả ảnh vào đây hoặc <b>Nhấn để chọn ảnh</b></p>
-                <input type="file" id="image" name="images[]" multiple
-                  style="display: none;" />
-              </div>
+            <!-- Images -->
+            <div class="single-add-property">
+                <h3>Hình ảnh</h3>
+                <div class="property-form-group">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <!-- Khu vực kéo thả hoặc nhấn để tải ảnh -->
+                            <div class="drop-zone" id="dropZone">
+                                <p> Kéo thả ảnh vào đây hoặc <b>Nhấn để chọn ảnh</b></p>
+                                <input type="file" id="image" name="images[]" multiple style="display: none;" />
+                            </div>
 
-              <!-- Hiển thị ảnh xem trước -->
-              <div class="image-preview" id="imagePreview">
-                @foreach ($images as $image)
-                  <div id="image-{{ $image->id }}"
-                    style="position: relative; display: inline-block;">
-                    <img
-                      src="{{ asset('upload/post_images/' . $image->image_url) }}"
-                      class="preview-img">
-                    <button class="remove-img delete-image"
-                      data-id="{{ $image->id }}">&times;</button>
-                  </div>
-                @endforeach
-              </div>
-              @error('images')
-                <p style="color:red">{{ $message }}</p>
-              @enderror
+                            <!-- Hiển thị ảnh xem trước -->
+                            <div class="image-preview" id="imagePreview">
+                                @foreach ($images as $image)
+                                    <div id="image-{{ $image->id }}" style="position: relative; display: inline-block;">
+                                        <img src="{{ asset('upload/post_images/' . $image->image_url) }}" class="preview-img">
+                                        <button class="remove-img delete-image"
+                                            data-id="{{ $image->id }}">&times;</button>
+                                    </div>
+                                @endforeach
+                            </div>
+                            @error('images')
+                                <p style="color:red">{{ $message }}</p>
+                            @enderror
+                        </div>
+                    </div>
+                </div>
             </div>
-          </div>
-        </div>
-      </div>
 
-      <div class="single-add-property">
-        <h3>Video</h3>
-        <div class="property-form-group">
-          <div class="row">
-            <div class="col-md-12">
-              <!-- Nhập link từ YouTube hoặc TikTok -->
+            <!-- Video -->
+            <div class="single-add-property">
+                <h3>Video</h3>
+                <div class="property-form-group">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <!-- Nhập link từ YouTube hoặc TikTok -->
 
               @php
                 $video_url = $post->video_url ?? ''; // Lấy giá trị từ database, tránh lỗi nếu null
@@ -248,107 +245,105 @@
         </div>
       </div>
 
-      <div class="single-add-property">
-        <h3>Khu vực</h3>
-        <div class="property-form-group">
-          <div class="row">
-            <div class="col-lg-6 col-md-12">
-              <div class="form-group mb-3">
-                <label for="province">Tỉnh/Thành phố</label>
-                <select id="province" class="form-control" name="province">
-                  @if (!empty($post->province))
-                    <option selected>{{ $post->province }}</option>
-                  @else
-                    <option selected="" disabled>-- Chọn Tỉnh/Thành phố --
-                    </option>
-                  @endif
-                </select>
-                <input type="hidden" id="province_name" name="province_name"
-                  value="{{ old('province_name', $post->province) }}">
-                @error('province')
-                  <p style="color:red">{{ $message }}</p>
-                @enderror
-              </div>
+            <!-- Location -->
+            <div class="single-add-property">
+                <h3>Khu vực</h3>
+                <div class="property-form-group">
+                    <div class="row">
+                        <div class="col-lg-6 col-md-12">
+                            <div class="form-group mb-3">
+                                <label for="province">Tỉnh/Thành phố</label>
+                                <select id="province" class="form-control" name="province">
+                                    @if (!empty($post->province))
+                                        <option selected>{{ $post->province }}</option>
+                                    @else
+                                        <option selected="" disabled>-- Chọn Tỉnh/Thành phố --</option>
+                                    @endif
+                                </select>
+                                <input type="hidden" id="province_name" name="province_name"
+                                    value="{{ old('province_name', $post->province) }}">
+                                @error('province')
+                                    <p style="color:red">{{ $message }}</p>
+                                @enderror
+                            </div>
+                        </div>
+                        <div class="col-lg-6 col-md-12 mb-3">
+                            <div class="form-group">
+                                <label for="district">Quận/Huyện</label>
+                                <select id="district" class="form-control" name="district">
+                                    @if (!empty($post->district))
+                                        <option selected>{{ $post->district }}</option>
+                                    @else
+                                        <option selected="" disabled>-- Chọn Quận/Huyện --</option>
+                                    @endif
+                                </select>
+                                <input type="hidden" id="district_name" name="district_name"
+                                    value="{{ old('district_name', $post->district) }}">
+                                @error('district')
+                                    <p style="color:red">{{ $message }}</p>
+                                @enderror
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-6 col-md-12">
+                            <div class="form-group">
+                                <label for="wards">Phường/Xã</label>
+                                <select id="wards" class="form-control" name="ward">
+                                    @if (!empty($post->ward))
+                                        <option selected>{{ $post->ward }}</option>
+                                    @else
+                                        <option selected="" disabled>-- Chọn Phường/Xã --</option>
+                                    @endif
+                                </select>
+                                <input type="hidden" id="ward_name" name="ward_name"
+                                    value="{{ old('ward_name', $post->ward) }}">
+                                @error('ward')
+                                    <p style="color:red">{{ $message }}</p>
+                                @enderror
+                            </div>
+                        </div>
+                        <div class="col-lg-6 col-md-12">
+                            <p>
+                                <label for="country">Đường/Phố</label>
+                                <input type="text" name="street" placeholder="Nhập tên đường/phố" id="country"
+                                    value="{{ old('street', $post->street) }}">
+                                @error('street')
+                                <p style="color:red">{{ $message }}</p>
+                            @enderror
+                            </p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-6 col-md-12">
+                            <p class="no-mb first">
+                                <label for="latitude">Số nhà</label>
+                                <input type="text" name="house_number" placeholder="Nhập số nhà" id="latitude"
+                                    value="{{ old('house_number', $post->house_number) }}">
+                                @error('house_number')
+                                <p style="color:red">{{ $message }}</p>
+                            @enderror
+                            </p>
+                        </div>
+                        <div class="col-lg-6 col-md-12">
+                            <p class="no-mb last">
+                                <label for="longitude">Địa chỉ</label>
+                                <input type="text" name="address" placeholder="Địa chỉ" id="longitude"
+                                    value="{{ old('address', $post->address) }}">
+                                @error('address')
+                                <p style="color:red">{{ $message }}</p>
+                            @enderror
+                            </p>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="col-lg-6 col-md-12 mb-3">
-              <div class="form-group">
-                <label for="district">Quận/Huyện</label>
-                <select id="district" class="form-control" name="district">
-                  @if (!empty($post->district))
-                    <option selected>{{ $post->district }}</option>
-                  @else
-                    <option selected="" disabled>-- Chọn Quận/Huyện --
-                    </option>
-                  @endif
-                </select>
-                <input type="hidden" id="district_name" name="district_name"
-                  value="{{ old('district_name', $post->district) }}">
-                @error('district')
-                  <p style="color:red">{{ $message }}</p>
-                @enderror
-              </div>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-lg-6 col-md-12">
-              <div class="form-group">
-                <label for="wards">Phường/Xã</label>
-                <select id="wards" class="form-control" name="ward">
-                  @if (!empty($post->ward))
-                    <option selected>{{ $post->ward }}</option>
-                  @else
-                    <option selected="" disabled>-- Chọn Phường/Xã --</option>
-                  @endif
-                </select>
-                <input type="hidden" id="ward_name" name="ward_name"
-                  value="{{ old('ward_name', $post->ward) }}">
-                @error('ward')
-                  <p style="color:red">{{ $message }}</p>
-                @enderror
-              </div>
-            </div>
-            <div class="col-lg-6 col-md-12">
-              <p>
-                <label for="country">Đường/Phố</label>
-                <input type="text" name="street"
-                  placeholder="Nhập tên đường/phố" id="country"
-                  value="{{ old('street', $post->street) }}">
-                @error('street')
-                <p style="color:red">{{ $message }}</p>
-              @enderror
-              </p>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-lg-6 col-md-12">
-              <p class="no-mb first">
-                <label for="latitude">Số nhà</label>
-                <input type="text" name="house_number"
-                  placeholder="Nhập số nhà" id="latitude"
-                  value="{{ old('house_number', $post->house_number) }}">
-                @error('house_number')
-                <p style="color:red">{{ $message }}</p>
-              @enderror
-              </p>
-            </div>
-            <div class="col-lg-6 col-md-12">
-              <p class="no-mb last">
-                <label for="longitude">Địa chỉ</label>
-                <input type="text" name="address" placeholder="Địa chỉ"
-                  id="longitude" value="{{ old('address', $post->address) }}">
-                @error('address')
-                <p style="color:red">{{ $message }}</p>
-              @enderror
-              </p>
-            </div>
-          </div>
-        </div>
-      </div>
 
-      <div class="single-add-property">
-        <h3>Bản đồ</h3>
-        <div id="map"></div>
-      </div>
+            <!-- Map -->
+            <div class="single-add-property">
+                <h3>Bản đồ</h3>
+                <div id="map"></div>
+            </div>
 
 
       @php

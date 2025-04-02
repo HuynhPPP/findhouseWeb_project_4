@@ -28,7 +28,7 @@
     <link rel="stylesheet" id="color" href="{{ asset('front/css/default.css') }}">
 
     <!-- Toastr -->
-    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.css">
+    <link rel="stylesheet" type="text/css" href="{{ asset('front/toastr/toastr.css') }}">
     <!-- End Toastr -->
 
     <style>
@@ -75,7 +75,7 @@
                     <input type="hidden" name="redirect" value="{{ request()->query('redirect') }}">
 
                     <div class="access_social">
-                        <a href="#0" class="social_bt google">Đăng nhập bằng Google</a>
+                        <a href="{{ route('auth.google') }}" class="social_bt google">Đăng nhập bằng Google</a>
                     </div>
                     <div class="divider"><span>Hoặc</span></div>
                     <div class="form-group">
@@ -251,7 +251,7 @@
         <script src="{{ asset('front/js/color-switcher.js') }}"></script>
         <script src="{{ asset('front/js/inner.js') }}"></script>
 
-        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+        <script type="text/javascript" src="{{ asset('front/toastr/toastr.min.js') }}"></script>
 
         <!-- Toast -->
         <script>

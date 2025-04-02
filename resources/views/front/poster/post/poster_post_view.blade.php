@@ -362,6 +362,7 @@
     <script src="https://unpkg.com/leaflet@1.3.1/dist/leaflet.js"></script>
     <script src="{{ asset('front/js/map_post_view.js') }}"></script>
 
+    <!-- Lấy API tỉnh thành -->
     <script>
         $(document).ready(function() {
             let oldProvince = "{{ old('province') }}";
@@ -459,6 +460,7 @@
         });
     </script>
 
+    <!-- Xử lý video -->
     <script>
         document.getElementById('videoLink').addEventListener('input', function() {
             const url = this.value.trim();
@@ -504,7 +506,7 @@
         });
     </script>
     
-
+    <!-- Xử lý ảnh -->
     <script>
         $(document).ready(function() {
             let dropZone = $("#dropZone");
@@ -559,6 +561,7 @@
                         });
 
                         let img = $("<img>").attr("src", e.target.result).addClass("preview-img");
+
 
                         let removeBtn = $("<button>")
                             .addClass("remove-img")

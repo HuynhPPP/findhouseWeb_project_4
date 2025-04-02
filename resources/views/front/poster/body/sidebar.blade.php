@@ -7,7 +7,9 @@
     <div class="sidebar-header"><a href="{{ route('index') }}"><img src="{{ asset('front/images/logo-blue.svg') }}"
                 alt="header-logo2.png"> </a></div>
     <div class="header clearfix">
-        <img src="{{ !empty($profileData->photo) ? url('upload/poster_images/' . $profileData->photo) : url('upload/no_img.jpg') }}"
+        <img src="{{ !empty($profileData->photo) && str_starts_with($profileData->photo, 'poster_')
+            ? url('upload/user_images/' . $profileData->photo)
+            : url('upload/no_img.jpg') }}"
             alt="avatar" class="img-fluid profile-img">
     </div>
     <div class="active-user">
@@ -44,18 +46,21 @@
                     <i class="fa fa-list" aria-hidden="true"></i>Danh sách liên hệ
                 </a>
             </li>
-            <li>
-                <a href="{{ route('poster.verification') }}"
-                    class="{{ request()->routeIs('poster.verification') ? 'active' : '' }}">
-                    <i class="fa fa-lock"></i>Xác minh tài khoản
-                </a>
-            </li>
-            <li>
-                <a href="{{ route('poster.change-password') }}"
-                    class="{{ request()->routeIs('poster.change-password') ? 'active' : '' }}">
-                    <i class="fa fa-lock"></i>Đổi mật khẩu
-                </a>
-            </li>
+            @if (empty(auth()->user()->google_id))
+                <li>
+                    <a href="{{ route('poster.verification') }}"
+                        class="{{ request()->routeIs('poster.verification') ? 'active' : '' }}">
+                        <i class="fa fa-lock"></i> Xác minh tài khoản
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ route('poster.change-password') }}"
+                        class="{{ request()->routeIs('poster.change-password') ? 'active' : '' }}">
+                        <i class="fa fa-lock"></i> Đổi mật khẩu
+                    </a>
+                </li>
+            @endif
+
             <li>
                 <a href="{{ route('logout') }}">
                     <i class="fas fa-sign-out-alt"></i>Đăng xuất

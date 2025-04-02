@@ -31,7 +31,7 @@
     <link rel="stylesheet" id="color" href="{{ asset('front/css/default.css') }}">
 
     <!-- Toastr -->
-    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.css">
+    <link rel="stylesheet" type="text/css" href="{{ asset('front/toastr/toastr.css') }}">
     <!-- End Toastr -->
 </head>
 
@@ -84,9 +84,9 @@
         <script src="{{ asset('front/js/newsletter.js') }}"></script>
         <script src="{{ asset('front/js/inner.js') }}"></script>
         <script src="{{ asset('front/js/color-switcher.js') }}"></script>
-        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+        <script src="{{ asset('front/js/sweetalert2.js') }}"></script>
 
-        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+        <script type="text/javascript" src="{{ asset('front/toastr/toastr.min.js') }}"></script>
 
         <!-- Toast -->
         <script>

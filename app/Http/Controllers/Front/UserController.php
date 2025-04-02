@@ -191,7 +191,7 @@ class UserController extends Controller
         if ($request->file('photo')) {
             $file = $request->file('photo');
             @unlink(public_path('upload/user_images/' . $data->photo));
-            $filename = date('YmdHi') . $file->getClientOriginalName();
+            $filename = 'user_' . $id . '_' . date('YmdHi') . '.' . $file->getClientOriginalExtension();
             $file->move(public_path('upload/user_images'), $filename);
             $data['photo'] = $filename;
         }

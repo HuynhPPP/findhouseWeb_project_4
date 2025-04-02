@@ -2785,8 +2785,8 @@ section.portfolio {
 
 .portfolio .homes-price {
   color: #fff;
-  font-size: 14px !important;
-  font-weight: 400;
+  font-size: 16px !important;
+  font-weight: 560;
   padding: 6px 14px;
   border-radius: 2px;
   background: #18ba60;
@@ -21036,6 +21036,7 @@ a.btn_1 {
 }
 
 .inner-pages .blog-section .news-item-img .resp-img {
+  height: 200px;
   background-size: cover;
 }
 
@@ -21144,6 +21145,7 @@ a.btn_1 {
 }
 
 .inner-pages .blog-section .news-item-sm:last-child {
+  height: 200px;
   margin-bottom: 0px;
 }
 
