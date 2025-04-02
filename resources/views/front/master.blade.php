@@ -34,11 +34,10 @@
     <link rel="stylesheet" href="{{ asset('front/css/slick.css') }}">
     <link rel="stylesheet" href="{{ asset('front/css/styles.css') }}">
     <link rel="stylesheet" href="{{ asset('front/css/maps.css') }}">
-    <link rel="stylesheet" href="{{ asset('front\css\popup_chat.css') }}">
     <link rel="stylesheet" id="color" href="{{ asset('front/css/colors/pink.css') }}">
 
     <!-- Toastr -->
-    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.css">
+    <link rel="stylesheet" type="text/css" href="{{ asset('front/toastr/toastr.css') }}">
     <!-- End Toastr -->
 </head>
 
@@ -108,7 +107,7 @@
             });
         </script>
 
-        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+        <script type="text/javascript" src="{{ asset('front/toastr/toastr.min.js') }}"></script>
 
         <!-- Toast -->
         <script>

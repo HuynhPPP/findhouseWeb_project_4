@@ -285,8 +285,7 @@
                                                     $imageUrl = url('upload/no_img.jpg');
                                                 }
                                             @endphp
-                                            <img src="{{ $imageUrl }}"
-                                                alt="author-image" class="author__img">
+                                            <img src="{{ $imageUrl }}" alt="author-image" class="author__img">
                                             <h4 class="author__title">{{ $post->user->name }}</h4>
                                             <p class="author__meta">Số tin đăng - {{ $post->user->posts->count() }}
                                             </p>
@@ -565,9 +564,21 @@
             <!-- END SIMILAR PROPERTIES -->
         </div>
         <div id="app-live-chat">
+            @php
+                $defaultImage = url('upload/no_img.jpg');
+                $imagePath = $defaultImage;
+
+                if (!empty($post->user->photo)) {
+                    if (str_contains($post->user->photo, 'poster_')) {
+                        $imagePath = url('upload/user_images/' . $post->user->photo);
+                    } elseif (str_contains($post->user->photo, 'user_')) {
+                        $imagePath = url('upload/user_images/' . $post->user->photo);
+                    }
+                }
+            @endphp
             <send-message :poster_id="{{ $post->user_id }}" :post_name="'{{ $post->title }}'"
                 :post_id="{{ $post->id }}" :poster_name="'{{ $post->user->name }}'" :price="{{ $post->price }}"
-                :poster_avatar="'{{ $post->user->photo ? url('upload/poster_images/' . $post->user->photo) : url('front/images/avt/no_img.jpg') }}'">
+                :poster_avatar="'{{ $imagePath }}'">
             </send-message>
         </div>
     </section>

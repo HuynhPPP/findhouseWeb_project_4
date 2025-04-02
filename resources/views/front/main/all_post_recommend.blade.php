@@ -331,7 +331,7 @@
                     </div>
                 @endforeach
             </div>
-            <nav aria-label="..." class="pt-3">
+            {{-- <nav aria-label="..." class="pt-3">
                 <ul class="pagination grid-3">
                     <li class="page-item disabled">
                         <a class="page-link" href="#" tabindex="-1"><<</a>
@@ -347,7 +347,11 @@
                         <a class="page-link" href="#">>></a>
                     </li>
                 </ul>
-            </nav>
+            </nav> --}}
+            <!-- Phân trang -->
+            <div class="d-flex justify-content-end mt-3">
+                {{ $posts_all_featured->links('pagination::bootstrap-4') }}
+            </div>
         </div>
     </section>
     <!-- END SECTION PROPERTIES LISTING -->

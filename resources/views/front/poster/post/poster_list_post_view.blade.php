@@ -21,9 +21,10 @@
                                     <a href="{{ route('poster.edit.post', $post->id) }}">
                                         @if ($post->images->count() > 0)
                                             @php
-                                                $randomImage = $post->images->random();
+                                                $fixedImage = $post->images()->first();
                                             @endphp
-                                            <img alt="Hình ảnh bài viết" src="{{ asset($randomImage->image_url) }}"
+                                            <img alt="Hình ảnh bài viết"
+                                                src="{{ asset('upload/post_images/' . $fixedImage->image_url) }}"
                                                 class="img-fluid" style="height: 120px; width: 120px">
                                         @else
                                             <img alt="Không có ảnh" src="{{ asset('front/upload/no_image.jpg') }}"

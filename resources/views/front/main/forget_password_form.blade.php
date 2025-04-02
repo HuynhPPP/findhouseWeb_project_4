@@ -27,9 +27,9 @@
     <link rel="stylesheet" href="{{ asset('front/css/styles.css') }}">
     <link rel="stylesheet" id="color" href="{{ asset('front/css/default.css') }}">
 
-     <!-- Toastr -->
-     <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.css">
-     <!-- End Toastr -->
+    <!-- Toastr -->
+    <link rel="stylesheet" type="text/css" href="{{ asset('front/toastr/toastr.css') }}">
+    <!-- End Toastr -->
 
     <style>
         body {
@@ -126,9 +126,6 @@
         </div>
         <!-- END SECTION LOGIN -->
 
-
-
-
         <!-- ARCHIVES JS -->
         <script src="{{ asset('front/js/jquery-3.5.1.min.js') }}"></script>
         <script src="{{ asset('front/js/tether.min.js') }}"></script>
@@ -142,10 +139,8 @@
         <script src="{{ asset('front/js/color-switcher.js') }}"></script>
         <script src="{{ asset('front/js/inner.js') }}"></script>
 
-        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+        <script type="text/javascript" src="{{ asset('front/toastr/toastr.min.js') }}"></script>
         
-
-
         <!-- Toast -->
         <script>
             @if (Session::has('message'))

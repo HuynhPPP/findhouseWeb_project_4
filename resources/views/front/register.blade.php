@@ -27,6 +27,8 @@
     <link rel="stylesheet" href="{{ asset('front/css/styles.css') }}">
     <link rel="stylesheet" id="color" href="{{ asset('front/css/default.css') }}">
 
+    <link rel="stylesheet" type="text/css" href="{{ asset('front/toastr/toastr.css') }}">
+
     <style>
         .error-message {
             color: red;
@@ -265,6 +267,8 @@
         <script src="{{ asset('front/js/newsletter.js') }}"></script>
         <script src="{{ asset('front/js/color-switcher.js') }}"></script>
         <script src="{{ asset('front/js/inner.js') }}"></script>
+
+        <script type="text/javascript" src="{{ asset('front/toastr/toastr.min.js') }}"></script>
 
         <!-- Toast -->
         <script>

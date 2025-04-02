@@ -64,7 +64,7 @@ class MainControler extends Controller
 
     public function AllPostRecommend()
     {
-        $posts_all_featured = Post::where('is_featured', '1')->take(9)->get()->map(function ($post) {
+        $posts_all_featured = Post::where('is_featured', '1')->paginate(9)->through(function ($post) {
             $addressParts = array_filter([
                 $post->house_number,
                 $post->street,
@@ -91,8 +91,8 @@ class MainControler extends Controller
         $post = Post::findOrFail($id);
 
         $relatedPosts = Post::where('category_id', $post->category_id)
-            ->where('id', '!=', $id) 
-            ->limit(3) 
+            ->where('id', '!=', $id)
+            ->limit(3)
             ->get();
 
         $post->formatted_price = $this->formatPrice($post->price);
@@ -104,7 +104,7 @@ class MainControler extends Controller
 
     public function getPostsByCategory($id)
     {
-        $posts_category = Post::where('category_id', $id)->take(9)->get()->map(function ($post) {
+        $posts_category = Post::where('category_id', $id)->paginate(9)->through(function ($post) {
             $addressParts = array_filter([
                 $post->house_number,
                 $post->street,
@@ -128,7 +128,7 @@ class MainControler extends Controller
     public function filterByProvince($province)
     {
         // Lọc danh sách bài đăng theo tỉnh/thành phố
-        $posts = Post::where('province', $province)->get();
+        $posts = Post::where('province', $province)->paginate(9);
 
         // Trả về view hiển thị danh sách bài đăng
         return view('front.main.all_post_province', compact('posts', 'province'));

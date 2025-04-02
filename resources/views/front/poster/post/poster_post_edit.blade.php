@@ -59,6 +59,8 @@
         <form action="{{ route('poster.post.update') }}" method="post" enctype="multipart/form-data">
             @csrf
             <input type="hidden" name="id" value="{{ $post->id }}">
+
+            <!-- Information common -->
             <div class="single-add-property">
                 <h3>Thông tin mô tả</h3>
                 <div class="property-form-group">
@@ -157,6 +159,7 @@
                 </div>
             </div>
 
+            <!-- Images -->
             <div class="single-add-property">
                 <h3>Hình ảnh</h3>
                 <div class="property-form-group">
@@ -172,7 +175,7 @@
                             <div class="image-preview" id="imagePreview">
                                 @foreach ($images as $image)
                                     <div id="image-{{ $image->id }}" style="position: relative; display: inline-block;">
-                                        <img src="{{ asset($image->image_url) }}" class="preview-img">
+                                        <img src="{{ asset('upload/post_images/' . $image->image_url) }}" class="preview-img">
                                         <button class="remove-img delete-image"
                                             data-id="{{ $image->id }}">&times;</button>
                                     </div>
@@ -186,6 +189,7 @@
                 </div>
             </div>
 
+            <!-- Video -->
             <div class="single-add-property">
                 <h3>Video</h3>
                 <div class="property-form-group">
@@ -234,6 +238,7 @@
                 </div>
             </div>
 
+            <!-- Location -->
             <div class="single-add-property">
                 <h3>Khu vực</h3>
                 <div class="property-form-group">
@@ -327,6 +332,7 @@
                 </div>
             </div>
 
+            <!-- Map -->
             <div class="single-add-property">
                 <h3>Bản đồ</h3>
                 <div id="map"></div>

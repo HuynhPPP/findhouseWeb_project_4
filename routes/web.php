@@ -61,7 +61,6 @@ Route::middleware(['auth', 'roles:admin'])->group(function () {
   });
 }); // End Admin group middleware
 
-
 //// Poster group middleware
 Route::middleware(['auth', 'roles:poster'])->group(function () {
   Route::get('/poster/dashboard', [PosterController::class, 'PosterDashboard'])->name('poster.dashboard');
