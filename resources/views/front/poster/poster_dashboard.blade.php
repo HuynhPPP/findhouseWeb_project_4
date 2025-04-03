@@ -11,7 +11,7 @@
     <meta name="description" content="html 5 template">
     <meta name="author" content="">
     <title>Find Houses</title>
-
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <script>
         window.authId = {{ auth()->user()->id }};
     </script>
@@ -192,6 +192,8 @@
                 }, 100); // Cập nhật mỗi 100ms
             });
         </script>
+
+        @include('front.body.script')
 
 
     </div>

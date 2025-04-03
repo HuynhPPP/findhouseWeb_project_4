@@ -7,7 +7,7 @@
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="description" content="html 5 template">
     <meta name="author" content="">
-
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <!-- FAVICON -->
     <link rel="shortcut icon" type="image/x-icon" href="{{ asset('front/favicon.ico') }}">
 
@@ -128,6 +128,8 @@
                 }, 1000); // Ẩn preloader sau 1 giây
             });
         </script>
+
+        @include('front.body.script')
 
         
     </div>

@@ -7,7 +7,7 @@
             height: 400px;
         }
     </style>
-    <title>Chi tiết bài đăng</title>
+    <title>{{ $post->title }}</title>
     <!-- START SECTION PROPERTIES LISTING -->
     <section class="single-proper blog details">
         <div class="container">

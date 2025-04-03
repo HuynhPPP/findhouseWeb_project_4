@@ -8,7 +8,6 @@ use Illuminate\Support\Facades\Hash;
 use App\Models\User;
 use App\Models\Post;
 use App\Models\Image;
-use App\Models\Video;
 use App\Models\Category;
 use App\Mail\ResetPasswordMail;
 use App\Mail\EmailVerificationMail;

@@ -33,8 +33,8 @@
                             </div>
 
                             <div class="button-effect">
-                                <a href="{{ $video_url_fixed }}" class="btn popup-video popup-youtube"><i
-                                        class="fas fa-video"></i></a>
+                                <a href="{{ $video_url_fixed }}" class="btn popup-video popup-youtube"
+                                    title="Bấm để xem video"><i class="fas fa-video"></i></a>
                             </div>
                         </div>
                         <!-- homes content -->
@@ -84,11 +84,13 @@
                                 </h3>
 
                                 <div class="compare">
-                                    <a href="#" title="Share">
+                                    <a href="#" title="Bấm để lấy liên kết">
                                         <i class="flaticon-share"></i>
                                     </a>
-                                    <a href="#" title="Favorites">
-                                        <i class="flaticon-heart"></i>
+                                    <a href="javascript:void(0)" title="Bấm để lưu tin" id="{{ $post->id }}"
+                                        onclick="addToWishList(this.id, event)" class="save-post">
+                                        <i class="{{ $post->isSavedByUser(auth()->user()) ? 'fas fa-heart' : 'far fa-heart' }}"
+                                            id="heart-icon-{{ $post->id }}"></i>
                                     </a>
                                 </div>
                             </div>
@@ -111,4 +113,6 @@
             });
         });
     </script>
+
+    
 @endsection

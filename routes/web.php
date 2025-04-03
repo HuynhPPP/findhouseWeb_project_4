@@ -8,6 +8,7 @@ use App\Http\Controllers\Front\MainControler;
 use App\Http\Controllers\Front\ContactController;
 use App\Http\Controllers\Front\ChatController;
 use App\Http\Controllers\Front\SocialliteController;
+use App\Http\Controllers\Front\SavedPostController;
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\admin\CategoryController;
 use Illuminate\Support\Facades\Route;
@@ -45,6 +46,10 @@ Route::controller(SocialliteController::class)->group(function () {
   Route::get('/login-with-goole', 'AuthGoogle')->name('auth.google');
   Route::get('/auth/google/call-back', 'GoogleAuthentication')->name('auth.google.callback');
 });
+Route::controller(SavedPostController::class)->group(function () {
+  Route::post('/add-to-wishlist/{post_id}', 'AddToWishlist');
+});
+
 
 
 require __DIR__ . '/auth.php';
@@ -101,6 +106,10 @@ Route::middleware(['auth', 'roles:poster'])->group(function () {
 
   // Contacts
   Route::get('/poster/contacts', [PosterController::class, 'PosterContacts'])->name('poster.contacts');
+
+  // Saved Post
+  Route::get('/poster/list-SavedPost', [SavedPostController::class, 'PosterListSavedPost'])->name('poster.list.SavedPost');
+  Route::delete('/poster/remove-saved-post/{id}', [SavedPostController::class, 'removeSavedPostPoster'])->name('poster.removeSavedPost');
 }); // End Poster group middleware
 
 /// User group middleware
@@ -114,4 +123,8 @@ Route::middleware(['auth', 'roles:user'])->group(function () {
 
   Route::get('/user/change-password', [UserController::class, 'UserChangePassword'])->name('user.change-password');
   Route::post('/user/reset/password', [UserController::class, 'ChangePassword'])->name('user.reset.password');
+
+  Route::get('/user/list-SavedPost', [SavedPostController::class, 'UserListSavedPost'])->name('user.list.SavedPost');
+  Route::delete('/user/remove-saved-post/{id}', [SavedPostController::class, 'removeSavedPost'])->name('user.removeSavedPost');
+
 }); // End User group middleware

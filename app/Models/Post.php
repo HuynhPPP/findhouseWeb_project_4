@@ -13,23 +13,7 @@ class Post extends Model
         'features' => 'array',
     ];
 
-    protected $fillable = [
-        'user_id',     
-        'category_id',
-        'title',
-        'post_slug',
-        'description',
-        'price',
-        'area',
-        'address',
-        'province',
-        'district',
-        'ward',
-        'street',
-        'house_number',
-        'features',
-        'video_url',
-    ];
+    protected $guarded = [];
 
     public function getFullAddressAttribute()
     {
@@ -56,5 +40,19 @@ class Post extends Model
     public function images()
     {
         return $this->hasMany(Image::class, 'post_id', 'id');
+    }
+
+    public function savedPost()
+    {
+        return $this->hasMany(SavedPost::class, 'post_id');
+    }
+
+    public function isSavedByUser($user)
+    {
+        if (!$user) {
+            return false; // Nếu không có user (chưa đăng nhập), trả về false
+        }
+
+        return $this->savedPost()->where('user_id', $user->id)->exists();
     }
 }
