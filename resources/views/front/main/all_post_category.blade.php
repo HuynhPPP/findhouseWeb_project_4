@@ -304,8 +304,10 @@
                                         <a href="#" title="Share">
                                             <i class="fas fa-share-alt"></i>
                                         </a>
-                                        <a href="#" title="Favorites">
-                                            <i class="fa fa-heart-o"></i>
+                                        <a href="javascript:void(0)" title="Bấm để lưu tin" id="{{ $post->id }}"
+                                            onclick="addToWishList(this.id, event)" class="save-post">
+                                            <i class="{{ $post->isSavedByUser(auth()->user()) ? 'fas fa-heart' : 'far fa-heart' }}"
+                                                id="heart-icon-{{ $post->id }}"></i>
                                         </a>
                                     </div>
                                 </div>

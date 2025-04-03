@@ -67,12 +67,24 @@
                 <ul>
                     @auth
                         @if (Auth::user()->role === 'poster')
-                            <li><a href="{{ route('poster.dashboard') }}"> Tài khoản</a></li>
+                            <li>
+                                <img src="{{ asset('front\images\setting.svg') }}" alt="">
+                                <a href="{{ route('poster.dashboard') }}">Cài đặt tài khoản</a>
+                            </li>
                         @else
-                            <li><a href="{{ route('user.dashboard') }}"> Tài khoản</a></li>
+                            <li>
+                                <img src="{{ asset('front\images\setting.svg') }}" alt="">
+                                <a href="{{ route('user.dashboard') }}">Cài đặt tài khoản</a>
+                            </li>
                         @endif
-
-                        <li><a href="{{ route('logout') }}">Đăng xuất</a></li>
+                        <li>
+                            <img src="{{ asset('front\images\menu-saved-ad.svg') }}" alt="">
+                            <a href="{{ route('user.list.SavedPost') }}">Tin đăng đã lưu</a>
+                        </li>
+                        <li>
+                            <img src="{{ asset('front\images\logout.svg') }}" alt="">
+                            <a href="{{ route('logout') }}">Đăng xuất</a>
+                        </li>
                     @else
                         <li class="">
                             <a href="{{ route('login') }}"> Đăng nhập</a>

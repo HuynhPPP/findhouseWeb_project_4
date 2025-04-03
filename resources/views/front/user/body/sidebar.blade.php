@@ -35,8 +35,9 @@
                 </a>
             </li>
             <li>
-                <a href="favorited-listings.html">
-                    <i class="fa fa-heart" aria-hidden="true"></i>Bài đăng yêu thích
+                <a href="{{ route('user.list.SavedPost') }}"
+                    class="{{ request()->routeIs('user.list.SavedPost') ? 'active' : '' }}">
+                    <i class="fa fa-heart" aria-hidden="true"></i>Tin đăng đã lưu
                 </a>
             </li>
             <li>

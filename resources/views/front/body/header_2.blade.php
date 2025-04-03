@@ -71,8 +71,8 @@
                         @else
                             <li><a href="{{ route('user.dashboard') }}"> Tài khoản</a></li>
                         @endif
-
-                        <li><a href="{{ route('logout') }}">Đăng xuất</a></li>
+                        
+                        <li class="fas fa-sign-out-alt"><a href="{{ route('logout') }}">Đăng xuất</a></li>
                     @else
                         <li class="">
                             <a href="{{ route('login') }}"> Đăng nhập</a>
@@ -85,12 +85,6 @@
 
                 </ul>
             </div>
-            <!-- Right Side Content / End -->
-
-            <!-- Right Side Content / End -->
-
-
-
         </div>
     </div>
     <!-- Header / End -->

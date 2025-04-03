@@ -46,6 +46,12 @@
                     <i class="fa fa-list" aria-hidden="true"></i>Danh sách liên hệ
                 </a>
             </li>
+            <li>
+                <a href="{{ route('poster.list.SavedPost') }}"
+                    class="{{ request()->routeIs('poster.list.SavedPost') ? 'active' : '' }}">
+                    <i class="fa fa-heart" aria-hidden="true"></i>Tin đăng đã lưu
+                </a>
+            </li>
             @if (empty(auth()->user()->google_id))
                 <li>
                     <a href="{{ route('poster.verification') }}"

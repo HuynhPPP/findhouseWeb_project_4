@@ -18,6 +18,14 @@ i[class^="flaticon-"]:before, i[class*=" flaticon-"]:before {
     -moz-osx-font-smoothing: grayscale;
 }
 
+.fas.fa-heart {
+    color: red !important; /* Đảm bảo màu đỏ khi đã lưu */
+}
+
+.far.fa-heart {
+    color: red; /* Màu mặc định khi chưa lưu */
+}
+
 .flaticon-heart:before {
     content: "\f101";
 }

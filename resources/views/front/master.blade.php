@@ -101,6 +101,10 @@
         <script src="{{ asset('front/js/popup.js') }}"></script>
         <script src="{{ asset('front/js/range.js') }}"></script>
         <script src="{{ asset('front/js/color-switcher.js') }}"></script>
+        <script src="{{ asset('front/js/sweetalert2.js') }}"></script>
+
+        <!-- MAIN JS -->
+        @yield('customJs')
         <script>
             $(window).on('scroll load', function() {
                 $("#header.cloned #logo img").attr("src", $('#header #logo img').attr('data-sticky-logo'));
@@ -253,9 +257,6 @@
             });
         </script>
 
-        <!-- MAIN JS -->
-        @yield('customJs')
-
         <script>
             document.addEventListener("DOMContentLoaded", function() {
                 setTimeout(function() {
@@ -264,7 +265,7 @@
             });
         </script>
 
-       
+       @include('front.body.script')
 
 
     </div>
