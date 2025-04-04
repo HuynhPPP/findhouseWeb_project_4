@@ -34,13 +34,15 @@
                 @foreach ($posts as $item)
                   <tr>
                     <td title="{{ $item->title }}">
-                      {{ Str::words(strip_tags($item->title), 5, '...') }}
+                      <span class="ellipsis-text">{{ $item->title }}</span>
                     </td>
                     <td>{{ $item->category->category_name }}</td>
                     <td> {{ formatCurrency($item->price) }}</td>
                     <td>
-                      {{ fmod($item->area, 1) == 0 ? number_format($item->area, 0, ',', '.') : number_format($item->area, 1, '.') }}
-                      m&sup2
+                      {{ fmod((float) $item->area, 1) == 0
+                          ? number_format((float) $item->area, 0, '.', ',')
+                          : number_format((float) $item->area, 1, '.', ',') }}
+                      m&sup2;
                     </td>
                     <td>
                       <form method="POST" class="">

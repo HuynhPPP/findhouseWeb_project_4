@@ -45,6 +45,7 @@
     <link rel="stylesheet" href="{{ asset('toastr/toastr.min.css') }}">
     <link href="{{ asset('admin/sweetalert2/sweetalert2.min.css') }}"
       rel="stylesheet" type="text/css" id="app-style" />
+    <link rel="stylesheet" href="{{ asset('admin/css/post.css') }}">
     @yield('customCss')
   </head>
 

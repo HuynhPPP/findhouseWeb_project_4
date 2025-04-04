@@ -34,7 +34,10 @@
                 @foreach ($categories as $item)
                   <tr>
                     <td>{{ $item->category_name }}</td>
-                    <td>{{ $item->category_slug }}</td>
+                    <td>
+                      <span
+                        class="ellipsis-text">{{ $item->category_slug }}</span>
+                    </td>
                     <td>
                       @if ($item->status == 'show')
                         <label class="form-label label label-success">Hiện</label>
