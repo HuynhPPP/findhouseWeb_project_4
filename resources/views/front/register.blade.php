@@ -10,6 +10,7 @@
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="description" content="html 5 template">
     <meta name="author" content="">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>Đăng nhập</title>
     <!-- FAVICON -->
     <link rel="shortcut icon" type="image/x-icon" href="{{ asset('front/favicon.ico') }}">
@@ -72,34 +73,22 @@
                     @csrf
                     <div class="form-group">
                         <label>Họ tên</label>
-                        <input class="form-control" 
-                               value="{{ old('name') }}"
-                               type="text"
-                               id="name"
-                               name="name"
-                        >
+                        <input class="form-control" value="{{ old('name') }}" type="text" id="name"
+                            name="name">
                         <span id="name_error_register" class="error-message"></span>
                         <i class="ti-user"></i>
                     </div>
                     <div class="form-group">
                         <label>Email hoặc số điện thoại</label>
-                        <input class="form-control" 
-                               type="email"
-                               id="contact_register" 
-                               name="contact"
-                               value="{{ old('contact') }}"
-                        >
+                        <input class="form-control" type="email" id="contact_register" name="contact"
+                            value="{{ old('contact') }}">
                         <span id="contact_error_register" class="error-message"></span>
                         <i class="icon_mail_alt"></i>
                     </div>
                     <div class="form-group">
                         <label>Mật khẩu</label>
-                        <input class="form-control" 
-                               type="password" 
-                               id="password1"
-                               id="password_register" 
-                               name="password"
-                        >
+                        <input class="form-control" type="password" id="password1" id="password_register"
+                            name="password">
                         <span id="password_error_register" class="error-message"></span>
                         <i class="icon_lock_alt"></i>
                     </div>
@@ -117,7 +106,8 @@
                     <span id="account_type_error_register" class="error-message"></span>
 
                     <button type="submit" class="btn_1 rounded full-width add_top_30">Đăng ký ngay!</button>
-                    <div class="text-center add_top_10">Bạn đã có tài khoản ? <strong><a href="{{ route('login') }}">Đăng
+                    <div class="text-center add_top_10">Bạn đã có tài khoản ? <strong><a
+                                href="{{ route('login') }}">Đăng
                                 nhập</a></strong></div>
                 </form>
             </div>
@@ -306,14 +296,14 @@
                     success: function(response) {
                         $(".error-message").html(""); // Xóa lỗi cũ
                         $("#registrationForm2 input").removeClass(
-                        "input-error"); // Chỉ ảnh hưởng đến đăng ký
-    
+                            "input-error"); // Chỉ ảnh hưởng đến đăng ký
+
                         if (response.status === false) {
                             $.each(response.errors, function(field, messages) {
                                 let errorField = $("#" + field +
-                                "_error_register"); // Chọn lỗi đúng form
+                                    "_error_register"); // Chọn lỗi đúng form
                                 let inputField = $("#registrationForm2 [name='" + field + "']");
-    
+
                                 if (errorField.length) {
                                     errorField.html(messages[0]); // Hiển thị lỗi
                                 }

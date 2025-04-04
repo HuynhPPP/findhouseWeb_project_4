@@ -1,33 +1,3 @@
-{{-- <script>
-    function addToWishList(postId, event) {
-        event.preventDefault();
-
-        // Gửi yêu cầu AJAX để thêm/xóa bài đăng khỏi danh sách yêu thích
-        $.ajax({
-            url: '/save-post/' + postId, // Đường dẫn để lưu hoặc xóa bài đăng
-            type: 'POST',
-            data: {
-                _token: '{{ csrf_token() }}', // Token bảo mật
-                post_id: postId
-            },
-            success: function(response) {
-                // Kiểm tra xem bài đăng đã được lưu hay chưa
-                if (response.saved) {
-                    // Thay đổi biểu tượng thành trái tim đỏ
-                    $('#' + postId + ' i').removeClass('fa-heart-o').addClass('fa-heart').css('color',
-                        'red');
-                } else {
-                    // Thay đổi biểu tượng thành trái tim rỗng
-                    $('#' + postId + ' i').removeClass('fa-heart').addClass('fa-heart-o').css('color', '');
-                }
-            },
-            error: function() {
-                alert('Có lỗi xảy ra!');
-            }
-        });
-    }
-</script> --}}
-
 
 <script type="text/javascript">
     $.ajaxSetup({
