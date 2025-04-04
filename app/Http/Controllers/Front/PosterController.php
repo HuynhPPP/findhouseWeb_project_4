@@ -301,17 +301,22 @@ class PosterController extends Controller
         $image = Image::find($request->id);
 
         if (!$image) {
-            return response()->json(['error' => false, 'message' => 'Ảnh không tồn tại!']);
+            return response()->json(['error' => true, 'message' => 'Ảnh không tồn tại!']);
         }
 
-        if (file_exists(public_path($image->image_url))) {
-            unlink(public_path($image->image_url));
+        $imagePath = public_path('upload/post_images/' . $image->image_url);
+
+        if (file_exists($imagePath)) {
+            if (!unlink($imagePath)) {
+                return response()->json(['error' => true, 'message' => 'Không thể xóa ảnh!']);
+            }
         }
 
         $image->delete();
 
         return response()->json(['success' => true]);
     }
+
 
     public function PosterDeletePost($id)
     {

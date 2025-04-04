@@ -18,7 +18,8 @@
                         @foreach ($list_post as $key => $post)
                             <tr>
                                 <td class="image myelist">
-                                    <a href="{{ route('poster.edit.post', $post->id) }}">
+                                    <a
+                                        href="{{ route('poster.edit.post', ['id' => $post->id, 'post_slug' => $post->post_slug]) }}">
                                         @if ($post->images->count() > 0)
                                             @php
                                                 $fixedImage = $post->images()->first();
@@ -33,7 +34,8 @@
                                     </a>
                                 <td>
                                     <div class="inner">
-                                        <a href="{{ route('poster.edit.post', $post->id) }}">
+                                        <a
+                                            href="{{ route('poster.edit.post', ['id' => $post->id, 'post_slug' => $post->post_slug]) }}">
                                             <h2>{{ $post->title }}</h2>
                                         </a>
                                         <figure><i class="lni-map-marker"></i> {{ $post->address }}</figure>
@@ -54,8 +56,11 @@
                                 </td>
                                 <td>{{ $post->created_at->format('d/m/Y') }}</td>
                                 <td class="actions">
-                                    <a href="{{ route('poster.edit.post', $post->id) }}" class="edit">
-                                        <i class="lni-pencil"></i>Chỉnh sửa</a>
+                                    <a href="{{ route('poster.edit.post', ['id' => $post->id, 'post_slug' => $post->post_slug]) }}"
+                                        class="edit">
+                                        <i class="lni-pencil"></i> Chỉnh sửa
+                                    </a>
+
                                     <a href="{{ route('poster.delete.post', $post->id) }}" id="delete_post">
                                         <i class="far fa-trash-alt"></i>
                                     </a>

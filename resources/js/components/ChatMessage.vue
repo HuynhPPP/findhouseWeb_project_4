@@ -32,10 +32,6 @@
                                 </div>
                                 <div class="chat_ib">
                                     <h5>{{ group.post.title }}</h5>
-                                    <div class="message-row">
-                                        <p class="message">{{ group.messages[0].message }}</p>
-                                        <span class="chat_date">{{ formatDate(group.messages[0].created_at) }}</span>
-                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -68,7 +64,7 @@
                     </div>
                     <div class="type_msg">
                         <div class="input_msg_write">
-                            <input type="text" v-model="newMessage" class="write_msg" placeholder="Type a message" />
+                            <input type="text" v-model="newMessage" class="write_msg" placeholder="Tin nhắn" />
                             <button class="msg_send_btn" type="button" @click="sendMessage">
                                 <i class="fa fa-paper-plane-o" aria-hidden="true"></i>
                             </button>

@@ -9,8 +9,6 @@ use App\Http\Controllers\Front\ContactController;
 use App\Http\Controllers\Front\ChatController;
 use App\Http\Controllers\Front\SocialliteController;
 use App\Http\Controllers\Front\SavedPostController;
-use App\Http\Controllers\Admin\AdminController;
-use App\Http\Controllers\admin\CategoryController;
 use Illuminate\Support\Facades\Route;
 
 /// Route Accessable for All
@@ -55,24 +53,24 @@ Route::controller(SavedPostController::class)->group(function () {
 require __DIR__ . '/auth.php';
 
 /// Admin group middleware
-Route::middleware(['auth', 'roles:admin'])->group(function () {
-  Route::get('/admin/dashboard', [AdminController::class, 'AdminDashboard'])->name('admin.dashboard');
-  Route::controller(CategoryController::class)->group(function () {
-    Route::get('all/category', "AllCategory")->name('admin.all.category');
-    Route::delete('delete/category/{category_id}', 'DeleteCategory')->name('admin.delete.category');
-    Route::get('create/category', 'CreateCategory')->name('admin.create.category');
-    Route::post('store/create/category', 'StoreCreateCategory')->name('admin.storeCreate.category');
-    Route::get('edit/category/{category_id}/{slug}.html', 'EditCategory')->name('admin.edit.category');
-    Route::post('store/update/category', 'StoreUpdateCategory')->name('admin.storeUpdate.category');
-    Route::get('get/category/create', 'FetchCategoryCreate')->name('admin.get.categoryCreate');
-    Route::get('get/category/update', 'FetchCategoryUpdate')->name('admin.get.categoryUpdate');
-  });
-  Route::controller(AdminController::class)->group(function () {
-    Route::get('admin/profile', 'AdminProfile')->name('admin.profile');
-    Route::post('admin/store/profile', 'AdminStoreUpdateProfile')->name('admin.storeUpdate.profile');
-    Route::post('admin/change-password', 'ChangePassword')->name('admin.change.password');
-  });
-}); // End Admin group middleware
+// Route::middleware(['auth', 'roles:admin'])->group(function () {
+//   Route::get('/admin/dashboard', [AdminController::class, 'AdminDashboard'])->name('admin.dashboard');
+//   Route::controller(CategoryController::class)->group(function () {
+//     Route::get('all/category', "AllCategory")->name('admin.all.category');
+//     Route::delete('delete/category/{category_id}', 'DeleteCategory')->name('admin.delete.category');
+//     Route::get('create/category', 'CreateCategory')->name('admin.create.category');
+//     Route::post('store/create/category', 'StoreCreateCategory')->name('admin.storeCreate.category');
+//     Route::get('edit/category/{category_id}/{slug}.html', 'EditCategory')->name('admin.edit.category');
+//     Route::post('store/update/category', 'StoreUpdateCategory')->name('admin.storeUpdate.category');
+//     Route::get('get/category/create', 'FetchCategoryCreate')->name('admin.get.categoryCreate');
+//     Route::get('get/category/update', 'FetchCategoryUpdate')->name('admin.get.categoryUpdate');
+//   });
+//   Route::controller(AdminController::class)->group(function () {
+//     Route::get('admin/profile', 'AdminProfile')->name('admin.profile');
+//     Route::post('admin/store/profile', 'AdminStoreUpdateProfile')->name('admin.storeUpdate.profile');
+//     Route::post('admin/change-password', 'ChangePassword')->name('admin.change.password');
+//   });
+// }); // End Admin group middleware
 
 //// Poster group middleware
 Route::middleware(['auth', 'roles:poster'])->group(function () {
@@ -80,7 +78,7 @@ Route::middleware(['auth', 'roles:poster'])->group(function () {
   Route::get('/poster/profile', [PosterController::class, 'PosterProfile'])->name('poster.profile');
   Route::post('/poster/store/profile', [PosterController::class, 'PosterStoreProfile'])->name('poster.store.profile');
   Route::get('/poster/post', [PosterController::class, 'PosterPost'])->name('poster.post')->middleware('email.verified');
-  Route::get('/poster/edit/post/{id}', [PosterController::class, 'PosterEditPost'])->name('poster.edit.post');
+  Route::get('/poster/edit/post/{id}/{post_slug}', [PosterController::class, 'PosterEditPost'])->name('poster.edit.post');
   Route::get('/poster/delete/post/{id}', [PosterController::class, 'PosterDeletePost'])->name('poster.delete.post');
   Route::get('/poster/list-post', [PosterController::class, 'PosterListPost'])->name('poster.list-post');
   Route::get('/poster/change-password', [PosterController::class, 'PosterChangePassword'])->name('poster.change-password');
@@ -126,5 +124,4 @@ Route::middleware(['auth', 'roles:user'])->group(function () {
 
   Route::get('/user/list-SavedPost', [SavedPostController::class, 'UserListSavedPost'])->name('user.list.SavedPost');
   Route::delete('/user/remove-saved-post/{id}', [SavedPostController::class, 'removeSavedPost'])->name('user.removeSavedPost');
-
 }); // End User group middleware
