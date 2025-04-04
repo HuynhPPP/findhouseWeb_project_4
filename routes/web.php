@@ -117,7 +117,7 @@ Route::middleware(['auth', 'roles:poster'])->group(function () {
   Route::get('/poster/profile', [PosterController::class, 'PosterProfile'])->name('poster.profile');
   Route::post('/poster/store/profile', [PosterController::class, 'PosterStoreProfile'])->name('poster.store.profile');
   Route::get('/poster/post', [PosterController::class, 'PosterPost'])->name('poster.post')->middleware('email.verified');
-  Route::get('/poster/edit/post/{id}', [PosterController::class, 'PosterEditPost'])->name('poster.edit.post');
+  Route::get('/poster/edit/post/{id}/{post_slug}', [PosterController::class, 'PosterEditPost'])->name('poster.edit.post');
   Route::get('/poster/delete/post/{id}', [PosterController::class, 'PosterDeletePost'])->name('poster.delete.post');
   Route::get('/poster/list-post', [PosterController::class, 'PosterListPost'])->name('poster.list-post');
   Route::get('/poster/change-password', [PosterController::class, 'PosterChangePassword'])->name('poster.change-password');
@@ -163,5 +163,4 @@ Route::middleware(['auth', 'roles:user'])->group(function () {
 
   Route::get('/user/list-SavedPost', [SavedPostController::class, 'UserListSavedPost'])->name('user.list.SavedPost');
   Route::delete('/user/remove-saved-post/{id}', [SavedPostController::class, 'removeSavedPost'])->name('user.removeSavedPost');
-
 }); // End User group middleware

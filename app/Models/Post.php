@@ -47,6 +47,11 @@ class Post extends Model
         return $this->hasMany(SavedPost::class, 'post_id');
     }
 
+    public function firstImage()
+    {
+      return $this->hasOne(Image::class, 'post_id')->oldest();
+    }
+
     public function isSavedByUser($user)
     {
         if (!$user) {
