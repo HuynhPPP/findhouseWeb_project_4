@@ -39,11 +39,18 @@
                         class="ellipsis-text">{{ $item->category_slug }}</span>
                     </td>
                     <td>
-                      @if ($item->status == 'show')
-                        <label class="form-label label label-success">Hiện</label>
-                      @else
-                        <label class="form-label label label-warning">Ẩn</label>
-                      @endif
+                      <form method="POST">
+                        @csrf
+                        <select data-id="{{ $item->id }}"
+                          class="border form-select form-control fill status_category"
+                          style="width: fit-content;;" name="status">
+                          <option
+                            {{ $item->status == 'hidden' ? 'selected' : '' }}
+                            value="hidden">Ẩn</option>
+                          <option {{ $item->status == 'show' ? 'selected' : '' }}
+                            value="show">Hiện</option>
+                        </select>
+                      </form>
                     </td>
                     <td>
                       {{ Carbon\Carbon::parse($item->created_at)->format('d/m/Y') }}
@@ -89,5 +96,30 @@
     src="{{ asset('admin/components/datatables.net-bs4/js/dataTables.bootstrap4.min.js') }}">
   </script>
   <script src="{{ asset('admin/pages/data-table/js/data-table-custom.js') }}">
+  </script>
+  <script>
+    $.ajaxSetup({
+      headers: {
+        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+      }
+    });
+    $('.status_category').change(function(e) {
+      var status = $(this).val()
+      var itemId = $(this).data('id')
+      $.ajax({
+        url: '/update/category/status/' + itemId,
+        type: 'POST',
+        data: {
+          status: status,
+        },
+        success: function(response) {
+          if (response.status == true) {
+            toastr.success("Cập nhật thành công!")
+          } else {
+            toastr.error("Xảy ra lỗi!")
+          }
+        }
+      })
+    });
   </script>
 @endsection

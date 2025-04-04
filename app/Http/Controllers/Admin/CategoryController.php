@@ -116,4 +116,14 @@ class CategoryController extends Controller
     $categories = Category::orderBy('updated_at', 'DESC')->get();
     return response()->json($categories);
   }
+  public function UpdateCategoryStatus(Request $request, $id)
+  {
+    Category::find($id)->update([
+      'status' => $request->status,
+    ]);
+    return response()->json([
+      'status' => true,
+      'errors' => [],
+    ]);
+  }
 }

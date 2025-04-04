@@ -49,6 +49,7 @@ Route::middleware(['auth', 'roles:admin'])->group(function () {
     Route::post('store/update/category', 'StoreUpdateCategory')->name('admin.storeUpdate.category');
     Route::get('get/category/create', 'FetchCategoryCreate')->name('admin.get.categoryCreate');
     Route::get('get/category/update', 'FetchCategoryUpdate')->name('admin.get.categoryUpdate');
+    Route::post('/update/category/status/{id}', 'UpdateCategoryStatus');
   });
   Route::controller(AdminController::class)->group(function () {
     Route::get('admin/profile', 'AdminProfile')->name('admin.profile');
