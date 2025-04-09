@@ -2,7 +2,7 @@
     <div class="container-fluid">
         <div class="sec-title">
             <h2><span>Đề </span>xuất</h2>
-            <p>Những bài đăng nổi bật chúng tôi đề xuất cho bạn</p>
+            <p>Những tin đăng nổi bật chúng tôi đề xuất cho bạn</p>
         </div>
         <div class="row portfolio-items">
             @foreach ($posts_featured as $post)

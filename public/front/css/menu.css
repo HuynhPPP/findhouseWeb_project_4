@@ -494,7 +494,7 @@ a.button.border, a.button {
     color: #707070;
 }
 #header.cloned.sticky ul li:hover a {
-    color: #fff;
+    color: #FF385C;
 }
 #navigation.style-1 .current:after {
     opacity: 1;
@@ -675,7 +675,7 @@ a.button.border, a.button {
     transition: 0.2s;
 }
 .user-menu ul li a:hover {
-    color: #66676b;
+    color: #FF385C;
 }
 .user-menu ul li a i {
     width: 20px;

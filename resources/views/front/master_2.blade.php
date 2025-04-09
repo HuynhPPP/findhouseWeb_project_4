@@ -62,6 +62,9 @@
         <a data-scroll href="#wrapper" class="go-up"><i class="fa fa-angle-double-up" aria-hidden="true"></i></a>
         <!-- END FOOTER -->
 
+        <!-- Modal Login - Register -->
+        @include('front.body.login_register')
+
 
         <!-- ARCHIVES JS -->
         <script src="{{ asset('front/js/jquery-3.5.1.min.js') }}"></script>
@@ -85,6 +88,7 @@
         <script src="{{ asset('front/js/inner.js') }}"></script>
         <script src="{{ asset('front/js/color-switcher.js') }}"></script>
         <script src="{{ asset('front/js/sweetalert2.js') }}"></script>
+        <script src="{{ asset('front/js/script.js') }}"></script>
 
         <script type="text/javascript" src="{{ asset('front/toastr/toastr.min.js') }}"></script>
 

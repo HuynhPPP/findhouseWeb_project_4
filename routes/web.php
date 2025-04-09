@@ -9,6 +9,7 @@ use App\Http\Controllers\Front\ContactController;
 use App\Http\Controllers\Front\ChatController;
 use App\Http\Controllers\Front\SocialliteController;
 use App\Http\Controllers\Front\SavedPostController;
+use App\Http\Controllers\Admin\AdminController;
 use Illuminate\Support\Facades\Route;
 
 /// Route Accessable for All
@@ -52,25 +53,10 @@ Route::controller(SavedPostController::class)->group(function () {
 
 require __DIR__ . '/auth.php';
 
-/// Admin group middleware
-// Route::middleware(['auth', 'roles:admin'])->group(function () {
-//   Route::get('/admin/dashboard', [AdminController::class, 'AdminDashboard'])->name('admin.dashboard');
-//   Route::controller(CategoryController::class)->group(function () {
-//     Route::get('all/category', "AllCategory")->name('admin.all.category');
-//     Route::delete('delete/category/{category_id}', 'DeleteCategory')->name('admin.delete.category');
-//     Route::get('create/category', 'CreateCategory')->name('admin.create.category');
-//     Route::post('store/create/category', 'StoreCreateCategory')->name('admin.storeCreate.category');
-//     Route::get('edit/category/{category_id}/{slug}.html', 'EditCategory')->name('admin.edit.category');
-//     Route::post('store/update/category', 'StoreUpdateCategory')->name('admin.storeUpdate.category');
-//     Route::get('get/category/create', 'FetchCategoryCreate')->name('admin.get.categoryCreate');
-//     Route::get('get/category/update', 'FetchCategoryUpdate')->name('admin.get.categoryUpdate');
-//   });
-//   Route::controller(AdminController::class)->group(function () {
-//     Route::get('admin/profile', 'AdminProfile')->name('admin.profile');
-//     Route::post('admin/store/profile', 'AdminStoreUpdateProfile')->name('admin.storeUpdate.profile');
-//     Route::post('admin/change-password', 'ChangePassword')->name('admin.change.password');
-//   });
-// }); // End Admin group middleware
+
+Route::middleware(['auth', 'roles:admin'])->group(function () {
+  Route::get('/admin/dashboard', [AdminController::class, 'AdminDashboard'])->name('admin.dashboard');
+});
 
 //// Poster group middleware
 Route::middleware(['auth', 'roles:poster'])->group(function () {
