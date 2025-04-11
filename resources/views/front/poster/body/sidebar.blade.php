@@ -46,6 +46,14 @@
                     <i class="fa fa-list" aria-hidden="true"></i>Danh sách liên hệ
                 </a>
             </li>
+
+            <li>
+                <a href="{{ route('poster.review') }}"
+                    class="{{ request()->routeIs('poster.review') ? 'active' : '' }}">
+                    <i class="fas fa-comments" aria-hidden="true"></i>Danh sách đánh giá
+                </a>
+            </li>
+            
             <li>
                 <a href="{{ route('poster.list.SavedPost') }}"
                     class="{{ request()->routeIs('poster.list.SavedPost') ? 'active' : '' }}">

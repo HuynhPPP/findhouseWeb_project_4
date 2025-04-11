@@ -29,7 +29,7 @@ class UserController extends Controller
 
         $request->session()->regenerateToken();
 
-        return redirect('/user/login');
+        return redirect('/');
     }
 
     public function UserRegister(Request $request)

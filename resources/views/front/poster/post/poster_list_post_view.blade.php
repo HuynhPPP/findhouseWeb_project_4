@@ -39,18 +39,88 @@
                                             <h2>{{ $post->title }}</h2>
                                         </a>
                                         <figure><i class="lni-map-marker"></i> {{ $post->address }}</figure>
+
+                                        @php
+                                            $reviewCount = App\Models\Review::where('post_id', $post->id)
+                                                ->where('status', 1)
+                                                ->latest()
+                                                ->get();
+
+                                            $avarage = App\Models\Review::where('post_id', $post->id)
+                                                ->where('status', 1)
+                                                ->avg('rating');
+                                        @endphp
+
                                         <ul class="starts text-left mb-0">
-                                            <li class="mb-0"><i class="fa fa-star"></i>
-                                            </li>
-                                            <li class="mb-0"><i class="fa fa-star"></i>
-                                            </li>
-                                            <li class="mb-0"><i class="fa fa-star"></i>
-                                            </li>
-                                            <li class="mb-0"><i class="fa fa-star"></i>
-                                            </li>
-                                            <li class="mb-0"><i class="fa fa-star"></i>
-                                            </li>
-                                            <li class="ml-3">(6 Reviews)</li>
+                                            @if ($avarage == 0)
+                                                <li class="mb-0"><i class="fa fa-star-o"></i>
+                                                </li>
+                                                <li class="mb-0"><i class="fa fa-star-o"></i>
+                                                </li>
+                                                <li class="mb-0"><i class="fa fa-star-o"></i>
+                                                </li>
+                                                <li class="mb-0"><i class="fa fa-star-o"></i>
+                                                </li>
+                                                <li class="mb-0"><i class="fa fa-star-o"></i>
+                                                </li>
+                                            @elseif ($avarage == 1 || $avarage < 2)
+                                                <li class="mb-0"><i class="fa fa-star"></i>
+                                                </li>
+                                                <li class="mb-0"><i class="fa fa-star-o"></i>
+                                                </li>
+                                                <li class="mb-0"><i class="fa fa-star-o"></i>
+                                                </li>
+                                                <li class="mb-0"><i class="fa fa-star-o"></i>
+                                                </li>
+                                                <li class="mb-0"><i class="fa fa-star-o"></i>
+                                                </li>
+                                            @elseif ($avarage == 2 || $avarage < 3)
+                                                <li class="mb-0"><i class="fa fa-star"></i>
+                                                </li>
+                                                <li class="mb-0"><i class="fa fa-star"></i>
+                                                </li>
+                                                <li class="mb-0"><i class="fa fa-star-o"></i>
+                                                </li>
+                                                <li class="mb-0"><i class="fa fa-star-o"></i>
+                                                </li>
+                                                <li class="mb-0"><i class="fa fa-star-o"></i>
+                                                </li>
+                                            @elseif ($avarage == 3 || $avarage < 4)
+                                                <li class="mb-0"><i class="fa fa-star"></i>
+                                                </li>
+                                                <li class="mb-0"><i class="fa fa-star"></i>
+                                                </li>
+                                                <li class="mb-0"><i class="fa fa-star"></i>
+                                                </li>
+                                                <li class="mb-0"><i class="fa fa-star-o"></i>
+                                                </li>
+                                                <li class="mb-0"><i class="fa fa-star-o"></i>
+                                                </li>
+                                            @elseif ($avarage == 4 || $avarage < 5)
+                                                <li class="mb-0"><i class="fa fa-star"></i>
+                                                </li>
+                                                <li class="mb-0"><i class="fa fa-star"></i>
+                                                </li>
+                                                <li class="mb-0"><i class="fa fa-star"></i>
+                                                </li>
+                                                <li class="mb-0"><i class="fa fa-star"></i>
+                                                </li>
+                                                <li class="mb-0"><i class="fa fa-star-o"></i>
+                                                </li>
+                                            @elseif ($avarage == 5 || $avarage < 5)
+                                                <li class="mb-0"><i class="fa fa-star"></i>
+                                                </li>
+                                                <li class="mb-0"><i class="fa fa-star"></i>
+                                                </li>
+                                                <li class="mb-0"><i class="fa fa-star"></i>
+                                                </li>
+                                                <li class="mb-0"><i class="fa fa-star"></i>
+                                                </li>
+                                                <li class="mb-0"><i class="fa fa-star"></i>
+                                                </li>
+                                            @endif
+
+                                            <li class="ml-3">({{ count($reviewCount) }} đánh giá)</li>
                                         </ul>
                                     </div>
                                 </td>
