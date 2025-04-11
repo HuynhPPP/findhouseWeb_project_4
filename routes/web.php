@@ -10,6 +10,7 @@ use App\Http\Controllers\Front\ContactController;
 use App\Http\Controllers\Front\ChatController;
 use App\Http\Controllers\Front\SocialliteController;
 use App\Http\Controllers\Front\SavedPostController;
+use App\Http\Controllers\Front\ReviewController;
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\admin\CategoryController;
 use App\Http\Controllers\admin\LeaseController;
@@ -51,9 +52,12 @@ Route::controller(SocialliteController::class)->group(function () {
   Route::get('/login-with-goole', 'AuthGoogle')->name('auth.google');
   Route::get('/auth/google/call-back', 'GoogleAuthentication')->name('auth.google.callback');
 });
+
 Route::controller(SavedPostController::class)->group(function () {
   Route::post('/add-to-wishlist/{post_id}', 'AddToWishlist');
 });
+
+Route::post('/store/review', [ReviewController::class, 'StoreReview'])->name('store.review');
 
 
 
@@ -153,6 +157,9 @@ Route::middleware(['auth', 'roles:poster'])->group(function () {
   // Saved Post
   Route::get('/poster/list-SavedPost', [SavedPostController::class, 'PosterListSavedPost'])->name('poster.list.SavedPost');
   Route::delete('/poster/remove-saved-post/{id}', [SavedPostController::class, 'removeSavedPostPoster'])->name('poster.removeSavedPost');
+
+  // Review Post
+  Route::get('/poster/review', [ReviewController::class, 'PosterReview'])->name('poster.review');
 }); // End Poster group middleware
 
 /// User group middleware
@@ -169,4 +176,10 @@ Route::middleware(['auth', 'roles:user'])->group(function () {
 
   Route::get('/user/list-SavedPost', [SavedPostController::class, 'UserListSavedPost'])->name('user.list.SavedPost');
   Route::delete('/user/remove-saved-post/{id}', [SavedPostController::class, 'removeSavedPost'])->name('user.removeSavedPost');
+
+  // verification mail
+  Route::get('/user/verification', [UserController::class, 'UserVerification'])->name('user.verification');
+  Route::post('/user/email/verify', [UserController::class, 'sendVerificationCode'])->name('user.email.verify');
+  Route::get('/user/verification/email/code', [UserController::class, 'VerificationWithEmailCode'])->name('user.password.verification.email.code');
+  Route::post('/user/email/verify-code', [UserController::class, 'verifyEmailCode'])->name('user.email.verify.code');
 }); // End User group middleware

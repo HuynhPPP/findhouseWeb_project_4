@@ -16,7 +16,7 @@
                     <div class="form-group">
                         <input type="password" class="form-control" id="oldPassword" name="oldPassword"
                             placeholder="Nhập mật khẩu cũ">
-                        <small><a href="{{ route('poster.forget.password') }}" class="text-primary">Bạn quên mật
+                        <small><a href="{{ route('forget.password') }}" class="text-primary">Bạn quên mật
                                 khẩu?</a></small>
                     </div>
                     <div class="form-group">

@@ -12,97 +12,86 @@ use Illuminate\Http\Request;
 
 class ChatController extends Controller
 {
-    public function SendMessage(Request $request)
+    public function sendMessage(Request $request)
     {
+        // Validation
+        $request->validate([
+            'newMessage' => 'required|string|max:1000',
+            'receiver_id' => 'required|exists:users,id',
+            'post_id' => 'required|exists:posts,id',
+        ]);
+
+        // Kiểm tra xem người gửi có quyền nhắn tin cho bài đăng không
+        $post = Post::findOrFail($request->post_id);
+        if ($post->user_id != $request->receiver_id && $post->user_id != Auth::id()) {
+            return response()->json(['success' => false, 'message' => 'Bạn không có quyền nhắn tin cho bài đăng này'], 403);
+        }
+
+        // Lưu tin nhắn
         $message = ChatMessage::create([
-            'sender_id'   => Auth::id(),
+            'sender_id' => Auth::id(),
             'receiver_id' => $request->receiver_id,
-            'post_id'     => $request->post_id,
-            'message'     => $request->newMessage,
+            'post_id' => $request->post_id,
+            'message' => $request->newMessage,
             'created_at' => Carbon::now(),
         ]);
 
+        // Eager load quan hệ
+        $message->load(['sender', 'receiver']);
+
         return response()->json([
             'success' => true,
-            'message' => $message
+            'message' => $message,
         ]);
     }
 
-    public function GetAllUsers()
+    public function getAllUsers()
     {
+        $userId = Auth::id();
         $chats = ChatMessage::with(['sender', 'receiver', 'post', 'post.images'])
-            ->where(function ($query) {
-                $query->where('sender_id', auth()->id())
-                    ->orWhere('receiver_id', auth()->id());
+            ->where(function ($query) use ($userId) {
+                $query->where('sender_id', $userId)
+                    ->orWhere('receiver_id', $userId);
             })
-            ->orderBy('id', 'DESC')
+            ->orderBy('created_at', 'DESC')
             ->get();
 
-        $groupedChats = $chats->groupBy('post_id');
-
-        // Với mỗi nhóm (mỗi bài đăng), gom lại danh sách user (người mà user hiện tại đã trò chuyện)
-        $result = $groupedChats->map(function ($chatGroup, $postId) {
-            // Lấy danh sách các user đã trò chuyện (ngoại trừ user hiện tại)
-            $users = $chatGroup->flatMap(function ($chat) {
-                // Nếu tin nhắn được gửi bởi người đăng nhập (sender_id)
-                if ($chat->sender_id === auth()->id()) {
-                    return [$chat->receiver];
-                }
-                // Ngược lại, nếu tin nhắn được gửi bởi đối phương
-                return [$chat->sender];
+        $groupedChats = $chats->groupBy('post_id')->map(function ($chatGroup, $postId) use ($userId) {
+            // Lấy danh sách người gửi/receiver (ngoại trừ user hiện tại)
+            $users = $chatGroup->map(function ($chat) use ($userId) {
+                return $chat->sender_id === $userId ? $chat->receiver : $chat->sender;
             })->unique('id')->values();
 
-            // Lấy thông tin bài đăng từ tin nhắn đầu tiên của nhóm
+            // Lấy bài đăng
             $post = $chatGroup->first()->post;
 
+            // Lấy tin nhắn mới nhất
+            $latestMessage = $chatGroup->sortByDesc('created_at')->first();
+
             return [
-                'post'     => $post,
-                'users'    => $users,
-                'messages' => $chatGroup,  // Tất cả các tin nhắn liên quan đến bài đăng này
+                'post' => $post,
+                'users' => $users,
+                'latest_message' => $latestMessage,
             ];
         });
 
-        return response()->json($result->values());
-    }
-
-    public function UserMsgById($userId)
-    {
-        $user = User::find($userId);
-
-        if ($user) {
-            $messages = ChatMessage::where(function ($q) use ($userId) {
-                $q->where('sender_id', auth()->id())
-                    ->where('receiver_id', $userId);
-            })->orWhere(function ($q) use ($userId) {
-                $q->where('sender_id', $userId)
-                    ->where('receiver_id', auth()->id());
-            })->with('user')->get();
-
-            return response()->json([
-                'user' => $user,
-                'messages' => $messages
-            ]);
-        } else {
-            abort(404);
-        }
+        return response()->json($groupedChats->values());
     }
 
     public function getMessagesByPostId($postId)
     {
-        // Lấy tất cả tin nhắn thuộc về post_id
-        // và có tham gia của user hiện tại (auth()->id())
         $messages = ChatMessage::where('post_id', $postId)
             ->where(function ($query) {
-                $query->where('sender_id', auth()->id())
-                    ->orWhere('receiver_id', auth()->id());
+                $query->where('sender_id', Auth::id())
+                    ->orWhere('receiver_id', Auth::id());
             })
-            ->with(['sender', 'receiver']) // eager load quan hệ cần thiết
-            ->orderBy('id', 'ASC')
+            ->with(['sender', 'receiver'])
+            ->orderBy('created_at', 'ASC')
             ->get();
 
         return response()->json([
             'success' => true,
-            'messages' => $messages
+            'messages' => $messages,
         ]);
     }
 }

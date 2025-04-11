@@ -1,5 +1,4 @@
 <header id="header-container" class="header head-tr">
-    <!-- Header -->
     <div id="header" class="head-tr bottom">
         <div class="container container-header">
             <!-- Left Side Content -->
@@ -21,7 +20,6 @@
             <!-- Left Side Content / End -->
 
             <!-- Right Side Content -->
-
             @php
                 $profileData = Auth::check() ? App\Models\User::find(Auth::user()->id) : null;
             @endphp
@@ -33,6 +31,18 @@
 
                         <a href="{{ route('poster.post') }}" class="button border">Đăng tin<i
                                 class="fas fa-laptop-house ml-2"></i></a>
+
+                    </div>
+                    <!-- Header Widget / End -->
+                </div>
+            @elseif ($profileData->role === 'user')
+                <div class="right-side d-none d-none d-lg-none d-xl-flex">
+                    <!-- Header Widget -->
+                    <div class="header-widget">
+
+                        <a href="{{ route('user.verification') }}" class="button border" style="width: 210px">
+                            Bạn muốn đăng tin<i class="fas fa-laptop-house ml-2"></i>
+                        </a>
 
                     </div>
                     <!-- Header Widget / End -->
@@ -86,25 +96,18 @@
                             <a href="{{ route('logout') }}">Đăng xuất</a>
                         </li>
                     @else
-                        <li class="">
-                            <a href="{{ route('login') }}"> Đăng nhập</a>
+                        <li class="show-reg-form modal-open">
+                            <a href="javascript:void(0)"> Đăng nhập</a>
                         </li>
 
-                        <li class="">
+                        {{-- <li class="show-reg-form modal-open">
                             <a href="{{ route('register') }}"> Tạo tài khoản mới</a>
-                        </li>
+                        </li> --}}
                     @endauth
 
                 </ul>
             </div>
             <!-- Right Side Content / End -->
-
-            <!-- Right Side Content / End -->
-
-
-
         </div>
     </div>
-    <!-- Header / End -->
-
 </header>

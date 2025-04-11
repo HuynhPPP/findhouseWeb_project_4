@@ -481,12 +481,11 @@ class PosterController extends Controller
     // Xóa token sau khi đặt lại mật khẩu thành công
     DB::table('password_reset_tokens')->where('email', $request->email)->delete();
 
-    return redirect('/login')->with([
-      'message' => 'Mật khẩu đã được đặt lại thành công!',
-      'alert-type' => 'success',
-    ]);
-  }
-
+        return redirect('/login')->with([
+            'message' => 'Mật khẩu đã được đặt lại thành công!',
+            'alert-type' => 'success',
+        ]);
+    }
 
   public function sendVerificationCode(Request $request)
   {

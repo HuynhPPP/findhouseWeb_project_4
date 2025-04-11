@@ -2,8 +2,8 @@
     <div class="container-2">
         <h3 class="text-center">Danh sách liên hệ</h3>
         <div class="messaging">
-            <!-- Cột danh sách liên hệ -->
             <div class="inbox_msg">
+                <!-- Cột danh sách liên hệ -->
                 <div class="inbox_people">
                     <div class="headind_srch">
                         <div class="recent_heading">
@@ -21,11 +21,9 @@
                         </div>
                     </div>
                     <div class="inbox_chat">
-                        <!-- Lặp qua từng nhóm chat (mỗi nhóm ứng với 1 bài đăng) -->
                         <div v-for="group in chatsGrouped" :key="group.post.id" class="chat_list"
-                            :class="{ active_chat: selectedGroup && selectedGroup.post.id === group.post.id }"
-                            @click="selectGroup(group)">
-                            <div class="chat_people">
+                            :class="{ active_chat: selectedGroup && selectedGroup.post.id === group.post.id }">
+                            <div class="chat_people" @click="selectGroup(group)">
                                 <div class="chat_img">
                                     <img :src="getFirstImage(group.post)" alt="profile"
                                         style="height: 60px; width: 60px;" />
@@ -34,29 +32,33 @@
                                     <h5>{{ group.post.title }}</h5>
                                 </div>
                             </div>
+                            <!-- Danh sách người gửi tin nhắn -->
+                            <div v-if="selectedGroup && selectedGroup.post.id === group.post.id" class="sender_list">
+                                <div v-for="user in group.users" :key="user.id" class="sender_item"
+                                    :class="{ active_sender: selectedReceiverId === user.id }"
+                                    @click="selectReceiver(user.id)">
+                                    <p>{{ user.name }}</p>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
 
-                <!-- Cột tin nhắn của nhóm được chọn -->
-                <div class="mesgs" v-if="selectedGroup">
-                    <div class="msg_history">
-                        <div class="msg_history" ref="msgHistory">
-                            <div v-for="msg in sortedMessages" :key="msg.id">
-                                <!-- Nếu tin nhắn do người dùng gửi -->
-                                <div v-if="msg.sender_id === authId" class="outgoing_msg">
-                                    <div class="sent_msg">
+                <!-- Cột tin nhắn -->
+                <div class="mesgs" v-if="selectedGroup && selectedReceiverId">
+                    <div class="msg_history" ref="msgHistory">
+                        <div v-for="msg in sortedMessages" :key="msg.id">
+                            <div v-if="msg.sender_id === authId" class="outgoing_msg">
+                                <div class="sent_msg">
+                                    <p>{{ msg.message }}</p>
+                                    <span class="time_date">{{ formatDate(msg.created_at) }}</span>
+                                </div>
+                            </div>
+                            <div v-else class="incoming_msg">
+                                <div class="received_msg">
+                                    <div class="received_withd_msg">
                                         <p>{{ msg.message }}</p>
                                         <span class="time_date">{{ formatDate(msg.created_at) }}</span>
-                                    </div>
-                                </div>
-                                <!-- Nếu tin nhắn nhận -->
-                                <div v-else class="incoming_msg">
-                                    <div class="received_msg">
-                                        <div class="received_withd_msg">
-                                            <p>{{ msg.message }}</p>
-                                            <span class="time_date">{{ formatDate(msg.created_at) }}</span>
-                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -64,7 +66,8 @@
                     </div>
                     <div class="type_msg">
                         <div class="input_msg_write">
-                            <input type="text" v-model="newMessage" class="write_msg" placeholder="Tin nhắn" />
+                            <input type="text" v-model="newMessage" class="write_msg" placeholder="Tin nhắn"
+                                @keyup.enter="sendMessage" />
                             <button class="msg_send_btn" type="button" @click="sendMessage">
                                 <i class="fa fa-paper-plane-o" aria-hidden="true"></i>
                             </button>
@@ -72,167 +75,142 @@
                         <span class="text-danger" v-if="errors.newMessage">{{ errors.newMessage[0] }}</span>
                     </div>
                 </div>
-                <!-- Nếu chưa chọn nhóm nào -->
                 <div class="mesgs" v-else>
-                    <p>Chọn một liên hệ để xem tin nhắn</p>
+                    <p>Chọn một bài đăng và người gửi để xem tin nhắn</p>
                 </div>
             </div>
         </div>
     </div>
 </template>
 
-
 <script>
+import axios from 'axios';
+
 export default {
     data() {
         return {
-            chatsGrouped: [], // Mảng chứa nhóm chat theo bài đăng
-            selectedGroup: null, // Nhóm chat hiện đang chọn
-            newMessage: "",
-            authId: null, // Lưu id user hiện tại
+            chatsGrouped: [],
+            selectedGroup: null,
+            selectedReceiverId: null,
+            newMessage: '',
+            authId: null,
             errors: {},
-            allMessages: {}, // Dữ liệu tin nhắn trả về từ endpoint /user-message
-            selectedUser: null,
         };
     },
     created() {
-        // Giả sử authId được truyền từ global (hoặc từ API)
-        this.authId = window.authId; // Ví dụ authId = 1
-        this.getAllUser();
+        this.authId = window.authId; // Giả sử authId được truyền từ global
+        this.fetchChats();
 
+        // Cập nhật tin nhắn định kỳ
         setInterval(() => {
-            if (this.selectedGroup) {
-                this.refreshSelectedGroupMessages();
+            if (this.selectedGroup && this.selectedReceiverId) {
+                this.refreshMessages();
             }
-        }, 1000);
-
+        }, 3000); // Giảm tần suất để tối ưu
     },
     methods: {
-        getAllUser() {
-            axios
-                .get("/user-all")
+        fetchChats() {
+            axios.get('/user-all')
                 .then((res) => {
                     this.chatsGrouped = res.data;
-                    // Nếu có dữ liệu, mặc định chọn nhóm đầu tiên
-                    if (!this.selectedGroup && this.chatsGrouped.length > 0) {
-                        this.selectedGroup = this.chatsGrouped[0];
-                    } else {
-                        // Giả sử trong selectedGroup có trường users chứa danh sách đối tác chat
-                        const oldPostId = this.selectedGroup?.post?.id;
-                        if (oldPostId) {
-                            const newSelectedGroup = this.chatsGrouped.find(
-                                (g) => g.post.id === oldPostId
-                            );
-                            if (newSelectedGroup) {
-                                this.selectedGroup = newSelectedGroup;
-                            }
-                        }
-                    }
+                    // Không tự động chọn group đầu tiên để tránh lỗi khi không có dữ liệu
                 })
                 .catch((err) => {
-                    console.error(err);
-                });
-        },
-        userMessage(userId) {
-            axios.get('/user-message/' + userId)
-                .then((res) => {
-                    // Cập nhật dữ liệu tin nhắn từ endpoint
-                    // Giả sử res.data có cấu trúc { user: {...}, messages: [...] }
-                    this.allMessages = res.data;
-                    // Nếu bạn muốn cập nhật lại selectedGroup.messages dựa trên tin nhắn mới,
-                    // có thể thực hiện tùy vào logic của bạn. Ví dụ:
-                    if (this.selectedGroup) {
-                        this.selectedGroup.messages = res.data.messages;
-                    }
-                    this.selectedUser = userId;
-                })
-                .catch((err) => {
-                    console.error(err);
+                    console.error('Lỗi khi lấy danh sách chat:', err);
                 });
         },
         selectGroup(group) {
             this.selectedGroup = group;
-            // Tìm user còn lại trong group.users
-            const otherUser = group.users.find((u) => u.id !== this.authId);
-            if (otherUser) {
-                this.selectedUser = otherUser.id;
-            } else {
-                this.selectedUser = null;
-            }
+            this.selectedReceiverId = null; // Reset người nhận
+            this.refreshMessages();
         },
-        refreshSelectedGroupMessages() {
+        selectReceiver(userId) {
+            this.selectedReceiverId = userId;
+            this.refreshMessages();
+        },
+        refreshMessages() {
             if (!this.selectedGroup) return;
 
             axios.get(`/messages-of-group/${this.selectedGroup.post.id}`)
                 .then((res) => {
-                    // Cập nhật lại mảng messages cho group hiện tại
                     this.selectedGroup.messages = res.data.messages;
+                    // Cuộn xuống tin nhắn mới nhất
+                    this.$nextTick(() => {
+                        const msgHistory = this.$refs.msgHistory;
+                        if (msgHistory) {
+                            msgHistory.scrollTop = msgHistory.scrollHeight;
+                        }
+                    });
                 })
                 .catch((err) => {
-                    console.error(err);
+                    console.error('Lỗi khi làm mới tin nhắn:', err);
                 });
         },
         formatDate(date) {
-            // Định dạng ngày đơn giản; có thể thay bằng moment.js hoặc dayjs
-            return new Date(date).toLocaleString();
+            return new Date(date).toLocaleString('vi-VN', {
+                hour: '2-digit',
+                minute: '2-digit',
+                day: '2-digit',
+                month: '2-digit',
+                year: 'numeric',
+            });
         },
-
         getFirstImage(post) {
-            // Nếu post có mảng images và có phần tử nào đó, chọn ngẫu nhiên 1 ảnh
             if (post.images && post.images.length > 0) {
                 let imagePath = post.images[0].image_url;
-                // Nếu đường link không bắt đầu bằng '/', thêm vào phía trước
                 if (imagePath.charAt(0) !== '/') {
                     imagePath = '/upload/post_images/' + imagePath;
                 }
                 return imagePath;
             }
-            return "/upload/no_image.jpg";
+            return '/upload/no_image.jpg';
         },
-
         async sendMessage() {
             if (!this.newMessage.trim()) {
-                this.errors.newMessage = ["Vui lòng nhập tin nhắn"];
+                this.errors.newMessage = ['Vui lòng nhập tin nhắn'];
                 return;
             }
-
-            // Giả sử otherUser là đối tác chat (có ID khác authId)
-            const otherUser = this.selectedGroup.users.find(u => u.id !== this.authId);
-            if (!otherUser) {
-                console.error("Không tìm thấy user nào khác trong nhóm chat!");
+            if (!this.selectedReceiverId) {
+                this.errors.newMessage = ['Vui lòng chọn người nhận'];
                 return;
             }
 
             try {
-                let response = await axios.post("/send-message", {
+                const response = await axios.post('/send-message', {
                     newMessage: this.newMessage,
-                    receiver_id: otherUser.id,   // ID của người kia
+                    receiver_id: this.selectedReceiverId,
                     post_id: this.selectedGroup.post.id,
                 });
 
                 if (response.data.success) {
                     this.selectedGroup.messages.push(response.data.message);
-                    this.newMessage = "";
+                    this.newMessage = '';
                     this.errors = {};
+                    // Cuộn xuống tin nhắn mới nhất
+                    this.$nextTick(() => {
+                        const msgHistory = this.$refs.msgHistory;
+                        if (msgHistory) {
+                            msgHistory.scrollTop = msgHistory.scrollHeight;
+                        }
+                    });
                 }
             } catch (error) {
-                console.error("Lỗi khi gửi tin nhắn:", error);
-                if (error.response && error.response.data.errors) {
-                    this.errors = error.response.data.errors;
-                }
+                console.error('Lỗi khi gửi tin nhắn:', error);
+                this.errors.newMessage = [error.response?.data?.message || 'Lỗi khi gửi tin nhắn'];
             }
-        }
-
+        },
     },
-
     computed: {
         sortedMessages() {
-            return [...(this.selectedGroup?.messages || [])].sort((a, b) => {
-                return new Date(a.created_at) - new Date(b.created_at);
-            });
-        }
-    }
-
+            if (!this.selectedGroup || !this.selectedReceiverId) return [];
+            return [...(this.selectedGroup.messages || [])]
+                .filter((msg) =>
+                    (msg.sender_id === this.authId && msg.receiver_id === this.selectedReceiverId) ||
+                    (msg.sender_id === this.selectedReceiverId && msg.receiver_id === this.authId)
+                )
+                .sort((a, b) => new Date(a.created_at) - new Date(b.created_at));
+        },
+    },
 };
 </script>
 

@@ -1,6 +1,6 @@
 @extends('front.master_2')
 @section('home_2')
-    <title>Các bài đăng đề xuất</title>
+    <title>Danh sách tin đăng theo danh mục "{{ $category->category_name }}"</title>
     <!-- START SECTION PROPERTIES LISTING -->
     <section class="properties-list featured portfolio blog">
         <div class="container">
@@ -13,7 +13,7 @@
                                     <span>{{ $category->category_name }}</span>
                                 </p>
                             </div>
-                            <h3>Cho thuê {{ $category->category_name }}</h3>
+                            <h3>Danh sách tin đăng theo danh mục "{{ $category->category_name }}"</h3>
                             <p>Có {{ $posts_category->count() }} tin đăng cho thuê</p>
                         </div>
                     </div>

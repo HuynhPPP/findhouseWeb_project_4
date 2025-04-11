@@ -1,3 +1,134 @@
+<style>
+    .swal2-popup.swal2-toast {
+        margin-top: 95px !important;
+    }
+
+    .swal2-container {
+        z-index: 99999 !important;
+    }
+</style>
+
+{{-- Login --}}
+<script>
+    $(document).ready(function() {
+        $("#loginForm").submit(function(e) {
+            e.preventDefault();
+
+            let submitButton = $(".log-submit-btn");
+            submitButton.prop("disabled", true).html('<span>Đang xử lý...</span>');
+            $(".error-message").html("");
+            $("input").removeClass("input-error");
+
+            $.ajax({
+                url: '{{ route('user.login') }}',
+                type: 'post',
+                data: $('#loginForm').serialize(),
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                dataType: 'json',
+                success: function(response) {
+                    submitButton.prop("disabled", false);
+
+                    const Toast = Swal.mixin({
+                        toast: true,
+                        position: 'top-end',
+                        showConfirmButton: false,
+                        timer: 3000
+                    });
+
+                    if (response.status === false) {
+                        $.each(response.errors, function(field, messages) {
+                            $("#" + field + "_error").html(messages[0]);
+                            $("#" + field).addClass("input-error");
+                        });
+                        submitButton.prop("disabled", false).html('<span>Đăng nhập</span>');
+                    } else {
+                        Toast.fire({
+                            icon: 'success',
+                            title: 'Đăng nhập thành công! Đang chuyển hướng...'
+                        });
+
+                        setTimeout(() => {
+                            window.location.href = response.redirect_url;
+                        }, 1500);
+                    }
+                },
+                error: function(xhr) {
+                    submitButton.prop("disabled", false).html('<span>Đăng nhập</span>');
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Có lỗi xảy ra!',
+                        text: 'Vui lòng thử lại sau.',
+                    });
+
+                }
+            });
+        });
+    });
+</script>
+
+{{-- Register --}}
+<script>
+    $(function() {
+        const $form = $("#registrationForm");
+        const $submitBtn = $form.find('.log-submit-btn');
+        let isSubmitting = false;
+
+        // Cấu hình Toast
+        const Toast = Swal.mixin({
+            toast: true,
+            position: 'top-end',
+            showConfirmButton: false,
+            timer: 3000
+        });
+
+        $form.on('submit', function(e) {
+            e.preventDefault();
+
+            if (isSubmitting) {
+                return;
+            }
+            isSubmitting = true;
+
+            $submitBtn.prop('disabled', true).html('<span>Đang xử lý...</span>');
+
+            $.ajax({
+                url: '{{ route('user.register') }}',
+                type: 'POST',
+                data: $form.serialize(),
+                dataType: 'json',
+                success: function(response) {
+                    // Reset trạng thái lỗi
+                    $(".error-message").empty();
+                    $form.find('input').removeClass('input-error');
+
+                    if (response.status === false) {
+                        $.each(response.errors, function(field, messages) {
+                            $("#" + field + "_error").html(messages[0]);
+                            $("#" + field).addClass("input-error");
+                        });
+                    } else {
+                        Toast.fire({
+                            icon: 'success',
+                            title: 'Đăng ký thành công !'
+                        });
+                    }
+                },
+                error: function(xhr) {
+                    Toast.fire({
+                        icon: 'error',
+                        title: 'Đã xảy ra lỗi hệ thống. Vui lòng thử lại.'
+                    });
+                },
+                complete: function() {
+                    isSubmitting = false;
+                    $submitBtn.prop('disabled', false).html('<span>Đăng ký</span>');
+                }
+            });
+        });
+    });
+</script>
 
 <script type="text/javascript">
     $.ajaxSetup({
@@ -124,9 +255,3 @@
         });
     }
 </script>
-
-<style>
-    .swal2-popup.swal2-toast {
-        margin-top: 95px !important;
-    }
-</style>

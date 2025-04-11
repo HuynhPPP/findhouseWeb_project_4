@@ -99,178 +99,178 @@
                         <div class="divider-fade"></div>
                         <div id="map" class="contact-map">
 
-            </div>
-          </div>
-          <!-- Star Reviews -->
-          <section class="reviews comments">
-            <h3 class="mb-5">3 Reviews</h3>
-            <div class="row mb-5">
-              <ul class="col-12 commented pl-0">
-                <li class="comm-inf">
-                  <div class="col-md-2">
-                    <img src="images/testimonials/ts-5.jpg" class="img-fluid"
-                      alt="">
-                  </div>
-                  <div class="col-md-10 comments-info">
-                    <div class="conra">
-                      <h5 class="mb-2">Mary Smith</h5>
-                      <div class="rating-box">
-                        <div class="detail-list-rating mr-0">
-                          <i class="fa fa-star"></i>
-                          <i class="fa fa-star"></i>
-                          <i class="fa fa-star"></i>
-                          <i class="fa fa-star"></i>
-                          <i class="fa fa-star-o"></i>
                         </div>
-                      </div>
                     </div>
-                    <p class="mb-4">May 30 2020</p>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                      Cras aliquam, quam
-                      congue dictum luctus, lacus magna congue ante, in finibus
-                      dui sapien eu dolor.
-                      Integer tincidunt suscipit erat, nec laoreet ipsum
-                      vestibulum sed.</p>
-                    <div class="rest"><img src="images/single-property/s-1.jpg"
-                        class="img-fluid" alt=""></div>
-                  </div>
-                </li>
 
-              </ul>
-            </div>
-            <div class="row">
-              <ul class="col-12 commented pl-0">
-                <li class="comm-inf">
-                  <div class="col-md-2">
-                    <img src="images/testimonials/ts-4.jpg" class="img-fluid"
-                      alt="">
-                  </div>
-                  <div class="col-md-10 comments-info">
-                    <div class="conra">
-                      <h5 class="mb-2">Abraham Tyron</h5>
-                      <div class="rating-box">
-                        <div class="detail-list-rating mr-0">
-                          <i class="fa fa-star"></i>
-                          <i class="fa fa-star"></i>
-                          <i class="fa fa-star"></i>
-                          <i class="fa fa-star"></i>
-                          <i class="fa fa-star"></i>
-                        </div>
-                      </div>
-                    </div>
-                    <p class="mb-4">june 1 2020</p>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                      Cras aliquam, quam
-                      congue dictum luctus, lacus magna congue ante, in finibus
-                      dui sapien eu dolor.
-                      Integer tincidunt suscipit erat, nec laoreet ipsum
-                      vestibulum sed.</p>
-                  </div>
-                </li>
+                    @php
+                        $reviewCount = App\Models\Review::where('post_id', $post->id)
+                            ->where('status', 1)
+                            ->latest()
+                            ->get();
+                        $avarage = $reviewCount->avg('rating');
+                    @endphp
 
-                            </ul>
-                        </div>
-                        <div class="row mt-5">
-                            <ul class="col-12 commented mb-0 pl-0">
-                                <li class="comm-inf">
-                                    <div class="col-md-2">
-                                        <img src="images/testimonials/ts-3.jpg" class="img-fluid" alt="">
-                                    </div>
-                                    <div class="col-md-10 comments-info">
-                                        <div class="conra">
-                                            <h5 class="mb-2">Lisa Williams</h5>
-                                            <div class="rating-box">
-                                                <div class="detail-list-rating mr-0">
-                                                    <i class="fa fa-star"></i>
-                                                    <i class="fa fa-star"></i>
-                                                    <i class="fa fa-star"></i>
-                                                    <i class="fa fa-star"></i>
-                                                    <i class="fa fa-star-o"></i>
+                    <!-- Star Reviews -->
+                    <section class="reviews comments">
+                        <h3 class="mb-5">{{ $reviewCount->count() }} Đánh giá</h3>
+
+                        @foreach ($reviewCount as $item)
+                            @php
+                                $imagePath = 'upload/user_images/';
+                                $userPhoto = $item->user->photo ?? null;
+
+                                if (!empty($userPhoto)) {
+                                    $imageUrl = url($imagePath . $userPhoto);
+                                } else {
+                                    $imageUrl = url('upload/no_img.jpg');
+                                }
+                            @endphp
+
+                            <div class="row mb-5">
+                                <ul class="col-12 commented pl-0">
+                                    <li class="comm-inf">
+                                        <div class="col-md-2">
+                                            <img src="{{ $imageUrl }}" class="img-fluid" alt="">
+                                        </div>
+                                        <div class="col-md-10 comments-info">
+                                            <div class="conra">
+                                                <h5 class="mb-2">{{ $item->user->name }}</h5>
+                                                <div class="rating-box">
+                                                    <div class="detail-list-rating mr-0">
+                                                        @if ($item->rating == null)
+                                                            <i class="fa fa-star-o"></i>
+                                                            <i class="fa fa-star-o"></i>
+                                                            <i class="fa fa-star-o"></i>
+                                                            <i class="fa fa-star-o"></i>
+                                                            <i class="fa fa-star-o"></i>
+                                                        @elseif ($item->rating == 1)
+                                                            <i class="fa fa-star"></i>
+                                                            <i class="fa fa-star-o"></i>
+                                                            <i class="fa fa-star-o"></i>
+                                                            <i class="fa fa-star-o"></i>
+                                                            <i class="fa fa-star-o"></i>
+                                                        @elseif ($item->rating == 2)
+                                                            <i class="fa fa-star"></i>
+                                                            <i class="fa fa-star"></i>
+                                                            <i class="fa fa-star-o"></i>
+                                                            <i class="fa fa-star-o"></i>
+                                                            <i class="fa fa-star-o"></i>
+                                                        @elseif ($item->rating == 3)
+                                                            <i class="fa fa-star"></i>
+                                                            <i class="fa fa-star"></i>
+                                                            <i class="fa fa-star"></i>
+                                                            <i class="fa fa-star-o"></i>
+                                                            <i class="fa fa-star-o"></i>
+                                                        @elseif ($item->rating == 4)
+                                                            <i class="fa fa-star"></i>
+                                                            <i class="fa fa-star"></i>
+                                                            <i class="fa fa-star"></i>
+                                                            <i class="fa fa-star"></i>
+                                                            <i class="fa fa-star-o"></i>
+                                                        @elseif ($item->rating == 5)
+                                                            <i class="fa fa-star"></i>
+                                                            <i class="fa fa-star"></i>
+                                                            <i class="fa fa-star"></i>
+                                                            <i class="fa fa-star"></i>
+                                                            <i class="fa fa-star"></i>
+                                                        @endif
+                                                    </div>
                                                 </div>
                                             </div>
+                                            <p class="mb-4">
+                                                {{ Carbon\Carbon::parse($item->created_at)->diffForHumans() }}</p>
+                                            <p>{{ $item->comment }}</p>
+                                            {{-- <div class="rest"><img
+                                                    src="{{ asset('front/images/single-property/s-1.jpg') }}"
+                                                    class="img-fluid" alt=""></div> --}}
                                         </div>
-                                        <p class="mb-4">jul 12 2020</p>
-                                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras aliquam, quam
-                                            congue dictum luctus, lacus magna congue ante, in finibus dui sapien eu dolor.
-                                            Integer tincidunt suscipit erat, nec laoreet ipsum vestibulum sed.</p>
-                                        <div class="resti">
-                                            <div class="rest"><img src="images/single-property/s-2.jpg"
-                                                    class="img-fluid" alt=""></div>
-                                            <div class="rest"><img src="images/single-property/s-3.jpg"
-                                                    class="img-fluid" alt=""></div>
-                                        </div>
-                                    </div>
-                                </li>
-                            </ul>
-                        </div>
+                                    </li>
+
+                                </ul>
+                            </div>
+                        @endforeach
+
                     </section>
                     <!-- End Reviews -->
-                    <!-- Star Add Review -->
-                    <section class="single reviews leve-comments details">
-                        <div id="add-review" class="add-review-box">
-                            <!-- Add Review -->
-                            <h3 class="listing-desc-headline margin-bottom-20 mb-4">Add Review</h3>
-                            <span class="leave-rating-title">Your rating for this listing</span>
-                            <!-- Rating / Upload Button -->
-                            <div class="row mb-4">
-                                <div class="col-md-6">
-                                    <!-- Leave Rating -->
-                                    <div class="clearfix"></div>
-                                    <div class="leave-rating margin-bottom-30">
-                                        <input type="radio" name="rating" id="rating-1" value="1" />
-                                        <label for="rating-1" class="fa fa-star"></label>
-                                        <input type="radio" name="rating" id="rating-2" value="2" />
-                                        <label for="rating-2" class="fa fa-star"></label>
-                                        <input type="radio" name="rating" id="rating-3" value="3" />
-                                        <label for="rating-3" class="fa fa-star"></label>
-                                        <input type="radio" name="rating" id="rating-4" value="4" />
-                                        <label for="rating-4" class="fa fa-star"></label>
-                                        <input type="radio" name="rating" id="rating-5" value="5" />
-                                        <label for="rating-5" class="fa fa-star"></label>
-                                    </div>
-                                    <div class="clearfix"></div>
-                                </div>
-                                <div class="col-md-6">
-                                    <!-- Uplaod Photos -->
-                                    <div class="add-review-photos margin-bottom-30">
-                                        <div class="photoUpload">
-                                            <span><i class="sl sl-icon-arrow-up-circle"></i> Upload Photos</span>
-                                            <input type="file" class="upload" />
-                                        </div>
-                                    </div>
+
+                    @guest
+                        <section class="single reviews leve-comments details">
+                            <div id="add-review" class="add-review-box">
+                                <!-- Add Review -->
+                                <h3 class="listing-desc-headline margin-bottom-20 mb-4">Thêm đánh giá</h3>
+                                <div class="alert alert-warning">
+                                    Bạn cần <a class="text-danger"
+                                        href="http://127.0.0.1:8000/user/login?redirect=http%3A%2F%2F127.0.0.1%3A8000%2Fpost%2Fdetails%2F102">
+                                        đăng nhập
+                                    </a>
+                                    trước khi gửi đánh giá.
                                 </div>
                             </div>
-                            <div class="row">
-                                <div class="col-md-12 data">
-                                    <form action="#">
-                                        <div class="col-md-12">
-                                            <div class="form-group">
-                                                <input type="text" name="name" class="form-control"
-                                                    placeholder="First Name" required>
+                        </section>
+                    @else
+                        @auth
+                            @if (auth()->id() != $post->user_id)
+                                <!-- Star Add Review -->
+                                <section class="single reviews leve-comments details">
+                                    <div id="add-review" class="add-review-box">
+                                        <!-- Add Review -->
+                                        <h3 class="listing-desc-headline margin-bottom-20 mb-4">Thêm đánh giá</h3>
+
+                                        <form action="{{ route('store.review') }}" method="POST">
+                                            @csrf
+                                            <span class="leave-rating-title">Độ yêu thích của bạn dành cho bài đăng này</span>
+                                            <!-- Rating / Upload Button -->
+                                            <input type="hidden" name="post_id" value="{{ $post->id }}">
+                                            <input type="hidden" name="poster_id" value="{{ $post->user_id }}">
+
+                                            <div class="row mb-4">
+                                                <div class="col-md-6">
+                                                    <!-- Leave Rating -->
+                                                    <div class="clearfix"></div>
+                                                    <div class="leave-rating margin-bottom-30">
+                                                        <input type="radio" name="rating" id="rating-1" value="5" />
+                                                        <label for="rating-1" class="fa fa-star"></label>
+                                                        <input type="radio" name="rating" id="rating-2" value="4" />
+                                                        <label for="rating-2" class="fa fa-star"></label>
+                                                        <input type="radio" name="rating" id="rating-3" value="3" />
+                                                        <label for="rating-3" class="fa fa-star"></label>
+                                                        <input type="radio" name="rating" id="rating-4" value="2" />
+                                                        <label for="rating-4" class="fa fa-star"></label>
+                                                        <input type="radio" name="rating" id="rating-5" value="1" />
+                                                        <label for="rating-5" class="fa fa-star"></label>
+                                                    </div>
+                                                    <div class="clearfix"></div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <!-- Uplaod Photos -->
+                                                    <div class="add-review-photos margin-bottom-30">
+                                                        <div class="photoUpload">
+                                                            <span><i class="sl sl-icon-arrow-up-circle"></i> Tải ảnh lên</span>
+                                                            <input type="file" class="upload" />
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             </div>
-                                        </div>
-                                        <div class="col-md-12">
-                                            <div class="form-group">
-                                                <input type="text" name="name" class="form-control"
-                                                    placeholder="Last Name" required>
+                                            <div class="row">
+                                                <div class="col-md-12 data">
+                                                    <div class="col-md-12 form-group">
+                                                        <textarea name="comment" class="form-control" id="exampleTextarea" rows="8" placeholder="Viết đánh giá"
+                                                            required></textarea>
+                                                    </div>
+                                                    <button type="submit" class="btn btn-primary btn-lg mt-2">Gửi đánh
+                                                        giá</button>
+                                                </div>
                                             </div>
-                                        </div>
-                                        <div class="col-md-12">
-                                            <div class="form-group">
-                                                <input type="email" name="email" class="form-control"
-                                                    placeholder="Email" required>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-12 form-group">
-                                            <textarea class="form-control" id="exampleTextarea" rows="8" placeholder="Review" required></textarea>
-                                        </div>
-                                        <button type="submit" class="btn btn-primary btn-lg mt-2">Submit Review</button>
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
-                    </section>
-                    <!-- End Add Review -->
+                                        </form>
+
+                                    </div>
+                                </section>
+                                <!-- End Add Review -->
+                            @endif
+                        @endauth
+                    @endguest
+
+
                 </div>
                 <aside class="col-lg-4 col-md-12 car">
                     <div class="single widget">
@@ -309,6 +309,7 @@
                                                     href="#">{{ $post->user->email }}</a>
                                             </li>
                                         </ul>
+                                        @if (auth()->id() != $post->user_id)
                                         <div class="agent-contact-form-sidebar">
                                             <h4>Liên hệ để thuê</h4>
 
@@ -379,25 +380,27 @@
                             <input type="submit" id="submit_booking"
                               class="multiple-send-message" value="Gửi yêu cầu" />
 
-                          </form>
-                          <!-- Nút mở chat (sẽ được thay thế bởi Vue) -->
-                          <div id="chatButtonApp">
-                            <chat-button @open-chat="openChatPopup"></chat-button>
-                          </div>
-                        @endif
-                      @else
-                        <!-- Nếu chưa đăng nhập, hiển thị thông báo -->
-                        <div class="alert alert-warning">
-                          Bạn cần <a class="text-danger"
-                            href="{{ route('login', ['redirect' => request()->fullUrl()]) }}">
-                            đăng nhập
-                          </a>
-                          đăng nhập </a> trước khi gửi yêu cầu liên hệ.
-                        </div>
+                                                    </form>
+                                                    <!-- Nút mở chat (sẽ được thay thế bởi Vue) -->
+
+                                                    <div id="chatButtonApp">
+                                                        <chat-button @open-chat="openChatPopup"></chat-button>
+                                                    </div>
+                                                @endif
+                                            @else
+                                                <!-- Nếu chưa đăng nhập, hiển thị thông báo -->
+                                                <div class="alert alert-warning">
+                                                    Bạn cần <a class="text-danger"
+                                                        href="{{ route('login', ['redirect' => request()->fullUrl()]) }}">
+                                                        đăng nhập
+                                                    </a>
+                                                    </a> trước khi gửi yêu cầu liên hệ.
+                                                </div>
 
                       @endauth
 
-                    </div>
+                                        </div>
+                                        @endif
 
                   </div>
                 </div>

@@ -68,6 +68,9 @@
         <a data-scroll href="#wrapper" class="go-up"><i class="fa fa-angle-double-up" aria-hidden="true"></i></a>
         <!-- END FOOTER -->
 
+        <!-- Modal Login - Register -->
+        @include('front.body.login_register')
+
         <!-- ARCHIVES JS -->
         <script src="{{ asset('front/js/jquery-3.5.1.min.js') }}"></script>
         <script src="{{ asset('front/js/rangeSlider.js') }}"></script>
@@ -105,11 +108,13 @@
 
         <!-- MAIN JS -->
         @yield('customJs')
+
         <script>
             $(window).on('scroll load', function() {
                 $("#header.cloned #logo img").attr("src", $('#header #logo img').attr('data-sticky-logo'));
             });
         </script>
+
 
         <script type="text/javascript" src="{{ asset('front/toastr/toastr.min.js') }}"></script>
 
@@ -265,7 +270,11 @@
             });
         </script>
 
-       @include('front.body.script')
+        
+
+        <script src="{{ asset('front/js/script.js') }}"></script>
+
+        @include('front.body.script')
 
 
     </div>

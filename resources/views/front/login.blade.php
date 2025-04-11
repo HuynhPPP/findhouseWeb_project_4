@@ -81,9 +81,9 @@
                     <div class="divider"><span>Hoặc</span></div>
                     <div class="form-group">
                         <label>Email hoặc số điện thoại</label>
-                        <input class="form-control" name="contact" type="text" id="contact"
-                            value="{{ old('contact') }}">
-                        <span id="contact_error" class="error-message"></span>
+                        <input class="form-control" name="email" type="email" id="email"
+                            value="{{ old('email') }}">
+                        <span id="email_error" class="error-message"></span>
 
                         <i class="icon_mail_alt"></i>
                     </div>
