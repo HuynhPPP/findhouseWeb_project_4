@@ -8,6 +8,9 @@
   {{-- <link rel="stylesheet" type="text/css"
     href="{{ asset('admin/components/datatables.net-responsive-bs4/css/responsive.bootstrap4.min.css') }}"> --}}
 @endsection
+@section('title')
+  Tất cả danh mục
+@endsection
 @section('content')
   <div class="pcoded-content">
     <div class="pcoded-inner-content">

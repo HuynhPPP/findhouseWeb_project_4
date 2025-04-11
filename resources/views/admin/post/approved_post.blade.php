@@ -6,6 +6,9 @@
   <link rel="stylesheet" type="text/css"
     href="{{ asset('admin/pages/data-table/css/buttons.dataTables.min.css') }}">
 @endsection
+@section('title')
+  Tin đăng đã duyệt
+@endsection
 @section('content')
   <div class="pcoded-content">
     <div class="pcoded-inner-content">

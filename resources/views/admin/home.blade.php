@@ -3,6 +3,9 @@
   <link rel="stylesheet" href="{{ asset('admin/css/widget.css') }}">
   <link rel="stylesheet" href="{{ asset('admin/css/font-awesome-n.min.css') }}">
 @endsection
+@section('title')
+  Tổng quan
+@endsection
 @section('content')
   <div class="pcoded-content">
     <div class="pcoded-inner-content">

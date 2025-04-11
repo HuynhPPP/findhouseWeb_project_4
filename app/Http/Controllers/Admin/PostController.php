@@ -69,6 +69,8 @@ class PostController extends Controller
       'images'       => 'nullable|array|max:20',
       'images.*'     => 'image|mimes:jpeg,png,jpg,gif|max:2048',
       'video_url'    => 'required|url',
+      'house_number' => 'required',
+      'street' => 'required',
     ], [
       'title.required'       => 'Vui lòng nhập tiêu đề.',
       'description.required' => 'Vui lòng nhập mô tả.',
@@ -77,6 +79,8 @@ class PostController extends Controller
       'province.required'    => 'Vui lòng chọn tỉnh/thành phố.',
       'district.required'    => 'Vui lòng chọn quận/huyện.',
       'ward.required'        => 'Vui lòng chọn phường/xã.',
+      'street.required'        => 'Vui lòng điền tên đường.',
+      'house_number.required'        => 'Vui lòng điền số nhà.',
       'ward.area'        => 'Vui lòng nhập diện tích.',
       'images.max'           => 'Bạn chỉ có thể tải lên tối đa 20 ảnh.',
       'video_url.required'       => 'Vui lòng nhập link video.',
@@ -133,9 +137,13 @@ class PostController extends Controller
       return redirect()->back()->with($notification);
     }
   }
-  public function EditPostImage()
+  public function EditPostImage($post_id)
   {
-    return view('admin.post.edit_post_image');
+    // dd($post_id);
+    $post = Post::findOrFail($post_id);
+    if ($post) {
+      return view('admin.post.edit_post_image', compact('post'));
+    }
   }
 
   public function StoreUploadImagePost(Request $request)

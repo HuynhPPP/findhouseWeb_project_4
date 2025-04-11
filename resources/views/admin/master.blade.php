@@ -2,7 +2,7 @@
 <html lang="en">
 
   <head>
-    <title>{{ $title ?? 'Trang quản trị' }}</title>
+    <title>Admin | @yield('title')</title>
     <!-- Meta -->
     <meta charset="utf-8">
     <meta name="csrf-token" content="{{ csrf_token() }}">

@@ -38,35 +38,35 @@
           <a href="javascript:void(0)" class="waves-effect waves-dark">
             <span class="pcoded-micon"><i
                 class="fa fa-location-arrow"></i></span>
-            <span class="pcoded-mtext">Quản lý bài đăng</span>
+            <span class="pcoded-mtext">Quản lý tin đăng</span>
           </a>
           <ul class="pcoded-submenu">
             <li
               class="{{ Route::currentRouteName() == 'admin.all.post' ? 'active' : '' }}">
               <a href="{{ route('admin.all.post') }}"
                 class="waves-effect waves-dark">
-                <span class="pcoded-mtext">Tất bài đăng</span>
+                <span class="pcoded-mtext">Tất cả tin đăng</span>
               </a>
             </li>
             <li
               class="{{ Route::currentRouteName() == 'admin.approved.post' ? 'active' : '' }}">
               <a href="{{ route('admin.approved.post') }}"
                 class="waves-effect waves-dark">
-                <span class="pcoded-mtext">Bài đăng phê duyệt</span>
+                <span class="pcoded-mtext">Tin đăng đã duyệt</span>
               </a>
             </li>
             <li
               class="{{ Route::currentRouteName() == 'admin.pending.post' ? 'active' : '' }}">
               <a href="{{ route('admin.pending.post') }}"
                 class="waves-effect waves-dark">
-                <span class="pcoded-mtext">Bài đăng chờ phê duyệt</span>
+                <span class="pcoded-mtext">Tin đăng chờ duyệt</span>
               </a>
             </li>
             <li
               class="{{ Route::currentRouteName() == 'admin.hidden.post' ? 'active' : '' }}">
               <a href="{{ route('admin.hidden.post') }}"
                 class="waves-effect waves-dark">
-                <span class="pcoded-mtext">Bài đăng đã ẩn</span>
+                <span class="pcoded-mtext">Tin đăng đã ẩn</span>
               </a>
             </li>
           </ul>
@@ -82,7 +82,7 @@
               class="{{ Route::currentRouteName() == 'admin.all.renter' ? 'active' : '' }}">
               <a href="{{ route('admin.all.renter') }}"
                 class="waves-effect waves-dark">
-                <span class="pcoded-mtext">Người dùng</span>
+                <span class="pcoded-mtext">Người thuê</span>
               </a>
             </li>
             <li
