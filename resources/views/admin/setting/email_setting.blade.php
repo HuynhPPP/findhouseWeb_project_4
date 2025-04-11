@@ -37,8 +37,11 @@
                           <input type="text"
                             class="form-control @error('mailer') is-invalid @enderror"
                             id="mailer" name="mailer"
-                            value="{{ $smtp->mailer }}">
-                          <p></p>
+                            value="{{ old('mailer', $smtp->mailer) }}">
+                          @error('mailer')
+                            <span
+                              class="invalid-feedback">{{ $message }}</span>
+                          @enderror
                         </div>
                       </div>
                       <div class="mb-3">
@@ -48,8 +51,11 @@
                           <input type="text"
                             class="form-control @error('port') is-invalid @enderror"
                             id="port" name="port"
-                            value="{{ $smtp->port }}">
-                          <p></p>
+                            value="{{ old('port', $smtp->port) }}">
+                          @error('port')
+                            <span
+                              class="invalid-feedback">{{ $message }}</span>
+                          @enderror
                         </div>
                       </div>
                       <div class="mb-3">
@@ -59,8 +65,11 @@
                           <input type="text"
                             class="form-control @error('encryption') is-invalid @enderror"
                             id="encryption" name="encryption"
-                            value="{{ $smtp->encryption }}">
-                          <p></p>
+                            value="{{ old('encryption', $smtp->encryption) }}">
+                          @error('encryption')
+                            <span
+                              class="invalid-feedback">{{ $message }}</span>
+                          @enderror
                         </div>
                       </div>
                       <div class="mb-3">
@@ -70,8 +79,11 @@
                           <input type="text"
                             class="form-control @error('from_address') is-invalid @enderror"
                             id="from_address" name="from_address"
-                            value="{{ $smtp->from_address }}">
-                          <p></p>
+                            value="{{ old('from_address', $smtp->from_address) }}">
+                          @error('from_address')
+                            <span
+                              class="invalid-feedback">{{ $message }}</span>
+                          @enderror
                         </div>
                       </div>
                     </div>
@@ -83,8 +95,11 @@
                           <input type="text"
                             class="form-control @error('host') is-invalid @enderror"
                             id="host" name="host"
-                            value="{{ $smtp->host }}">
-                          <p></p>
+                            value="{{ old('host', $smtp->host) }}">
+                          @error('host')
+                            <span
+                              class="invalid-feedback">{{ $message }}</span>
+                          @enderror
                         </div>
                       </div>
                       <div class="mb-3">
@@ -94,8 +109,11 @@
                           <input type="text"
                             class="form-control @error('username') is-invalid @enderror"
                             id="username" name="username"
-                            value="{{ $smtp->username }}">
-                          <p></p>
+                            value="{{ old('username', $smtp->username) }}">
+                          @error('username')
+                            <span
+                              class="invalid-feedback">{{ $message }}</span>
+                          @enderror
                         </div>
                       </div>
                       <div class="mb-3">
@@ -104,8 +122,11 @@
                           <input type="text"
                             class="form-control @error('password') is-invalid @enderror"
                             id="password" name="password"
-                            value="{{ $smtp->password }}">
-                          <p></p>
+                            value="{{ old('password', $smtp->password) }}">
+                          @error('password')
+                            <span
+                              class="invalid-feedback">{{ $message }}</span>
+                          @enderror
                         </div>
                       </div>
                     </div>
@@ -132,104 +153,6 @@
     src="{{ asset('admin/components/datatables.net-bs4/js/dataTables.bootstrap4.min.js') }}">
   </script>
   <script src="{{ asset('admin/pages/data-table/js/data-table-custom.js') }}">
-  </script>
-  <script>
-    $(document).ready(function() {
-      function getCategory() {
-        $.ajax({
-          method: "GET",
-          url: "{{ route('admin.get.categoryCreate') }}",
-          success: function(response) {
-            let html = '';
-            response.forEach(function(item, index) {
-              const itemId = item.id;
-              const deleteUrl =
-                `{{ route('admin.delete.category', ':id') }}`
-                .replace(':id', itemId);
-              html +=
-                `
-               <tr>
-                  <th scope="row">${index+1}</th>
-                  <td>${item.category_name}</td>
-                  <td>
-                  ${item.status==='show' ?'<label class="form-label label label-success">Hiện</label>' :' <label class="form-label label label-warning">Ẩn</label>'}
-                  </td>
-                  <td>
-                    ${new Date(item.created_at).toLocaleDateString('vi-VN')}
-                  </td>
-                   <td>
-                      <a href="/edit/category/${item.id}/${item.category_slug}.html"
-                        class="btn waves-effect waves-light btn-primary btn-square">
-                        <i class="fa fa-pencil"></i>
-                      </a>
-                      <form
-                       action="${deleteUrl}"
-                        class="d-inline deleteForm" method="post">
-                        @method('DELETE')
-                        @csrf
-                        <button type="button"
-                          class="delete btn waves-effect waves-light btn-danger btn-square">
-                          <i class="fa fa-trash"></i>
-                        </button>
-                      </form>
-                    </td>
-                </tr>
-              `;
-            });
-            $('#data-category').html(html);
-            const deleteButton = document.querySelectorAll(
-              ".delete");
-            deleteButton.forEach((item) =>
-              item.addEventListener("click", function(t) {
-                Swal.fire({
-                  title: "Bạn có muốn xóa không?",
-                  text: "Bạn sẽ không thể khôi phục lại!",
-                  icon: "warning",
-                  showCancelButton: true,
-                  confirmButtonColor: "#3085d6",
-                  cancelButtonColor: "#d33",
-                  cancelButtonText: "Hủy bỏ",
-                  confirmButtonText: "Ok",
-                }).then((result) => {
-                  if (result.isConfirmed) {
-                    this.closest("form").submit();
-                  }
-                });
-              })
-            );
-          }
-        });
-      }
-      getCategory()
-      $("#createCategoryForm").submit(function(e) {
-        e.preventDefault();
-        $.ajax({
-          url: "{{ route('admin.storeCreate.category') }}",
-          type: 'POST',
-          dataType: 'json',
-          data: $("#createCategoryForm").serializeArray(),
-          success: function(response) {
-            if (response.status == true) {
-              $("#category_name").removeClass('is-invalid')
-                .siblings('p')
-                .removeClass('invalid-feedback')
-                .html('');
-              $("#category_name").val('');
-              toastr.success('Thêm danh mục thành công!');
-              getCategory()
-            } else {
-              var errors = response.errors;
-              if (errors.category_name) {
-                $("#category_name").addClass('is-invalid')
-                  .siblings('p')
-                  .addClass('invalid-feedback')
-                  .html(errors.category_name);
-              }
-            }
-          }
-        })
-      })
-    });
   </script>
   <script src="{{ asset('admin/sweetalert2/sweetalert2.min.js') }}"></script>
   <script src="{{ asset('admin/sweetalert2/extended-sweetalerts.js') }}">

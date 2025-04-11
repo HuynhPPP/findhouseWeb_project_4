@@ -33,7 +33,7 @@ class AppServiceProvider extends ServiceProvider
           'encryption' => $smtpsetting->encryption,
           'from' => [
             'address' => $smtpsetting->from_address,
-            'name' => 'Website cho thuê phòng trọ, nhà ở'
+            'name' => 'FindHouse'
           ]
         ];
         Config::set('mail', $data);
