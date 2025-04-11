@@ -9,7 +9,7 @@
 
     <div class="col-lg-9 col-md-12 col-xs-12 pl-0 user-dash2">
         <div class="dashborad-box">
-            <h4 class="title">Danh sách đánh giá</h4>
+            <h4 class="title">Danh sách đánh giá ({{ $reviews->count() }})</h4>
             <div class="section-body">
                 <div class="messages">
 

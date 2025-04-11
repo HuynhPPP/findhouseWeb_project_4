@@ -103,22 +103,18 @@
                     </div>
 
                     @php
-                        $reviewCount = App\Models\Review::where('course_id', $course->id)
+                        $reviewCount = App\Models\Review::where('post_id', $post->id)
                             ->where('status', 1)
                             ->latest()
                             ->get();
-
-                        $avarage = App\Models\Review::where('course_id', $course->id)
-                            ->where('status', 1)
-                            ->avg('rating');
-
+                        $avarage = $reviewCount->avg('rating');
                     @endphp
 
                     <!-- Star Reviews -->
                     <section class="reviews comments">
-                        <h3 class="mb-5">{{ count($reviews) }} Đánh giá</h3>
+                        <h3 class="mb-5">{{ $reviewCount->count() }} Đánh giá</h3>
 
-                        @foreach ($reviews as $item)
+                        @foreach ($reviewCount as $item)
                             @php
                                 $imagePath = 'upload/user_images/';
                                 $userPhoto = $item->user->photo ?? null;
@@ -212,62 +208,66 @@
                             </div>
                         </section>
                     @else
-                        <!-- Star Add Review -->
-                        <section class="single reviews leve-comments details">
-                            <div id="add-review" class="add-review-box">
-                                <!-- Add Review -->
-                                <h3 class="listing-desc-headline margin-bottom-20 mb-4">Thêm đánh giá</h3>
+                        @auth
+                            @if (auth()->id() != $post->user_id)
+                                <!-- Star Add Review -->
+                                <section class="single reviews leve-comments details">
+                                    <div id="add-review" class="add-review-box">
+                                        <!-- Add Review -->
+                                        <h3 class="listing-desc-headline margin-bottom-20 mb-4">Thêm đánh giá</h3>
 
-                                <form action="{{ route('store.review') }}" method="POST">
-                                    @csrf
-                                    <span class="leave-rating-title">Độ yêu thích của bạn dành cho bài đăng này</span>
-                                    <!-- Rating / Upload Button -->
-                                    <input type="hidden" name="post_id" value="{{ $post->id }}">
-                                    <input type="hidden" name="poster_id" value="{{ $post->user_id }}">
+                                        <form action="{{ route('store.review') }}" method="POST">
+                                            @csrf
+                                            <span class="leave-rating-title">Độ yêu thích của bạn dành cho bài đăng này</span>
+                                            <!-- Rating / Upload Button -->
+                                            <input type="hidden" name="post_id" value="{{ $post->id }}">
+                                            <input type="hidden" name="poster_id" value="{{ $post->user_id }}">
 
-                                    <div class="row mb-4">
-                                        <div class="col-md-6">
-                                            <!-- Leave Rating -->
-                                            <div class="clearfix"></div>
-                                            <div class="leave-rating margin-bottom-30">
-                                                <input type="radio" name="rating" id="rating-1" value="5" />
-                                                <label for="rating-1" class="fa fa-star"></label>
-                                                <input type="radio" name="rating" id="rating-2" value="4" />
-                                                <label for="rating-2" class="fa fa-star"></label>
-                                                <input type="radio" name="rating" id="rating-3" value="3" />
-                                                <label for="rating-3" class="fa fa-star"></label>
-                                                <input type="radio" name="rating" id="rating-4" value="2" />
-                                                <label for="rating-4" class="fa fa-star"></label>
-                                                <input type="radio" name="rating" id="rating-5" value="1" />
-                                                <label for="rating-5" class="fa fa-star"></label>
-                                            </div>
-                                            <div class="clearfix"></div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <!-- Uplaod Photos -->
-                                            <div class="add-review-photos margin-bottom-30">
-                                                <div class="photoUpload">
-                                                    <span><i class="sl sl-icon-arrow-up-circle"></i> Tải ảnh lên</span>
-                                                    <input type="file" class="upload" />
+                                            <div class="row mb-4">
+                                                <div class="col-md-6">
+                                                    <!-- Leave Rating -->
+                                                    <div class="clearfix"></div>
+                                                    <div class="leave-rating margin-bottom-30">
+                                                        <input type="radio" name="rating" id="rating-1" value="5" />
+                                                        <label for="rating-1" class="fa fa-star"></label>
+                                                        <input type="radio" name="rating" id="rating-2" value="4" />
+                                                        <label for="rating-2" class="fa fa-star"></label>
+                                                        <input type="radio" name="rating" id="rating-3" value="3" />
+                                                        <label for="rating-3" class="fa fa-star"></label>
+                                                        <input type="radio" name="rating" id="rating-4" value="2" />
+                                                        <label for="rating-4" class="fa fa-star"></label>
+                                                        <input type="radio" name="rating" id="rating-5" value="1" />
+                                                        <label for="rating-5" class="fa fa-star"></label>
+                                                    </div>
+                                                    <div class="clearfix"></div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <!-- Uplaod Photos -->
+                                                    <div class="add-review-photos margin-bottom-30">
+                                                        <div class="photoUpload">
+                                                            <span><i class="sl sl-icon-arrow-up-circle"></i> Tải ảnh lên</span>
+                                                            <input type="file" class="upload" />
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-md-12 data">
-                                            <div class="col-md-12 form-group">
-                                                <textarea name="comment" class="form-control" id="exampleTextarea" rows="8" placeholder="Viết đánh giá"
-                                                    required></textarea>
+                                            <div class="row">
+                                                <div class="col-md-12 data">
+                                                    <div class="col-md-12 form-group">
+                                                        <textarea name="comment" class="form-control" id="exampleTextarea" rows="8" placeholder="Viết đánh giá"
+                                                            required></textarea>
+                                                    </div>
+                                                    <button type="submit" class="btn btn-primary btn-lg mt-2">Gửi đánh
+                                                        giá</button>
+                                                </div>
                                             </div>
-                                            <button type="submit" class="btn btn-primary btn-lg mt-2">Gửi đánh
-                                                giá</button>
-                                        </div>
-                                    </div>
-                                </form>
+                                        </form>
 
-                            </div>
-                        </section>
-                        <!-- End Add Review -->
+                                    </div>
+                                </section>
+                                <!-- End Add Review -->
+                            @endif
+                        @endauth
                     @endguest
 
 
@@ -309,6 +309,7 @@
                                                     href="#">{{ $post->user->email }}</a>
                                             </li>
                                         </ul>
+                                        @if (auth()->id() != $post->user_id)
                                         <div class="agent-contact-form-sidebar">
                                             <h4>Liên hệ để thuê</h4>
 
@@ -366,6 +367,7 @@
 
                                                     </form>
                                                     <!-- Nút mở chat (sẽ được thay thế bởi Vue) -->
+
                                                     <div id="chatButtonApp">
                                                         <chat-button @open-chat="openChatPopup"></chat-button>
                                                     </div>
@@ -383,6 +385,7 @@
                                             @endauth
 
                                         </div>
+                                        @endif
 
                                     </div>
                                 </div>

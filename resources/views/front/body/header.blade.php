@@ -35,6 +35,18 @@
                     </div>
                     <!-- Header Widget / End -->
                 </div>
+            @elseif ($profileData->role === 'user')
+                <div class="right-side d-none d-none d-lg-none d-xl-flex">
+                    <!-- Header Widget -->
+                    <div class="header-widget">
+
+                        <a href="{{ route('user.verification') }}" class="button border" style="width: 210px">
+                            Bạn muốn đăng tin<i class="fas fa-laptop-house ml-2"></i>
+                        </a>
+
+                    </div>
+                    <!-- Header Widget / End -->
+                </div>
             @endif
             <!-- Right Side Content / End -->
             <div class="header-user-menu user-menu add">

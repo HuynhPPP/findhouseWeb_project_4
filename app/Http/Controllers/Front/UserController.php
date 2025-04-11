@@ -13,6 +13,9 @@ use App\Models\Post;
 use App\Models\Category;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\ResetPasswordMail;
+use App\Mail\EmailVerificationMail;
 
 class UserController extends Controller
 {
@@ -228,4 +231,85 @@ class UserController extends Controller
     {
         return view('front.user.user_contacts');
     }
+
+    public function UserVerification()
+    {
+        return view('front.user.user_verification');
+    }
+
+    public function sendVerificationCode(Request $request)
+    {
+        $request->validate([
+            'email' => 'required|email|exists:users,email'
+        ]);
+
+        $user = User::where('email', $request->email)->first();
+
+        if ($user->email_verified_at) {
+            $notification = [
+                'message' => 'Email đã được xác minh trước đó',
+                'alert-type' => 'info',
+            ];
+
+            return redirect()->back()->with($notification);
+        }
+
+        // Tạo mã xác minh 6 chữ số
+        $verificationCode = rand(100000, 999999);
+        $user->verification_token = $verificationCode;
+        $user->save();
+
+        // Gửi email xác minh
+        Mail::to($user->email)->send(new EmailVerificationMail($user));
+
+        $notification = [
+            'message' => 'Mã xác minh đã được gửi đến email của bạn',
+            'alert-type' => 'success',
+        ];
+
+        return redirect('/user/verification/email/code')->with($notification);
+    }
+
+    public function VerificationWithEmailCode()
+    {
+        return view('front.user.emails.verify_email_code');
+    }
+
+    public function verifyEmailCode(Request $request)
+    {
+        $request->validate([
+            'verification_code' => 'required|digits:6'
+        ], [
+            'verification_code.required' => 'Vui lòng nhập mã xác minh.',
+            'verification_code.digits'   => 'Mã xác minh phải là 6 chữ số.'
+        ]);
+
+        // Tìm user theo mã xác minh
+        $user = User::where('verification_token', $request->verification_code)->first();
+
+        if (!$user) {
+            $notification = [
+                'message' => 'Mã xác minh không hợp lệ',
+                'alert-type' => 'error',
+            ];
+
+            return redirect()->back()->with($notification);
+        }
+
+        // Cập nhật trường email_verified_at và xóa mã xác minh
+        $user->email_verified_at = Carbon::now();
+        $user->verification_token = null;
+        $user->role = 'poster';
+        $user->save();
+
+
+        $notification = [
+            'message' => 'Email đã được xác minh thành công',
+            'alert-type' => 'success',
+        ];
+
+        return redirect('/poster/verification')->with($notification);
+    }
+
+   
 }

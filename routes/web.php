@@ -117,4 +117,10 @@ Route::middleware(['auth', 'roles:user'])->group(function () {
 
   Route::get('/user/list-SavedPost', [SavedPostController::class, 'UserListSavedPost'])->name('user.list.SavedPost');
   Route::delete('/user/remove-saved-post/{id}', [SavedPostController::class, 'removeSavedPost'])->name('user.removeSavedPost');
+
+  // verification mail
+  Route::get('/user/verification', [UserController::class, 'UserVerification'])->name('user.verification');
+  Route::post('/user/email/verify', [UserController::class, 'sendVerificationCode'])->name('user.email.verify');
+  Route::get('/user/verification/email/code', [UserController::class, 'VerificationWithEmailCode'])->name('user.password.verification.email.code');
+  Route::post('/user/email/verify-code', [UserController::class, 'verifyEmailCode'])->name('user.email.verify.code');
 }); // End User group middleware

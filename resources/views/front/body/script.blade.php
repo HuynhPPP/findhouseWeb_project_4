@@ -15,7 +15,7 @@
             e.preventDefault();
 
             let submitButton = $(".log-submit-btn");
-            submitButton.prop("disabled", true);
+            submitButton.prop("disabled", true).html('<span>Đang xử lý...</span>');
             $(".error-message").html("");
             $("input").removeClass("input-error");
 
@@ -42,6 +42,7 @@
                             $("#" + field + "_error").html(messages[0]);
                             $("#" + field).addClass("input-error");
                         });
+                        submitButton.prop("disabled", false).html('<span>Đăng nhập</span>');
                     } else {
                         Toast.fire({
                             icon: 'success',
@@ -54,12 +55,13 @@
                     }
                 },
                 error: function(xhr) {
-                    submitButton.prop("disabled", false);
+                    submitButton.prop("disabled", false).html('<span>Đăng nhập</span>');
                     Swal.fire({
                         icon: 'error',
                         title: 'Có lỗi xảy ra!',
                         text: 'Vui lòng thử lại sau.',
                     });
+
                 }
             });
         });

@@ -244,3 +244,18 @@ img {
     height: 516px;
     overflow-y: auto;
 }
+
+.sender_list {
+    padding: 10px 0;
+}
+.sender_item {
+    padding: 5px 10px;
+    cursor: pointer;
+}
+.sender_item:hover {
+    color: #05728f;
+}
+.active_sender {
+    background-color: #e0e0e0;
+    font-weight: bold;
+}

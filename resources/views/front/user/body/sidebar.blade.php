@@ -40,12 +40,21 @@
                     <i class="fa fa-heart" aria-hidden="true"></i>Tin đăng đã lưu
                 </a>
             </li>
-            <li>
-                <a href="{{ route('user.change-password') }}"
-                    class="{{ request()->routeIs('user.change-password') ? 'active' : '' }}">
-                    <i class="fa fa-lock"></i>Đổi mật khẩu
-                </a>
-            </li>
+            @if (empty(auth()->user()->google_id))
+                <li>
+                    <a href="{{ route('user.verification') }}"
+                        class="{{ request()->routeIs('user.verification') ? 'active' : '' }}">
+                        <i class="fa fa-lock"></i> Xác minh tài khoản
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ route('user.change-password') }}"
+                        class="{{ request()->routeIs('user.change-password') ? 'active' : '' }}">
+                        <i class="fa fa-lock"></i>Đổi mật khẩu
+                    </a>
+                </li>
+            @endif
+            
             <li>
                 <a href="index.html">
                     <i class="fas fa-sign-out-alt"></i>Đăng xuất

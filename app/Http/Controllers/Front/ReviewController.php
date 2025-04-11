@@ -33,12 +33,16 @@ class ReviewController extends Controller
             'alert-type' => 'success',
         );
         return redirect()->back()->with($notification);
-
     }
 
     public function PosterReview()
     {
-        $reviews = Review::orderBy('id','DESC')->get();
+        $userId = auth()->id();
+
+        $reviews = \App\Models\Review::where('poster_id', $userId)
+            ->with(['posts', 'user'])
+            ->orderBy('id', 'DESC')
+            ->get();
 
         return view('front.poster.review_list', compact('reviews'));
     }
