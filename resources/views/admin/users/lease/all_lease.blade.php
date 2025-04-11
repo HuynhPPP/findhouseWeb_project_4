@@ -6,6 +6,9 @@
   <link rel="stylesheet" type="text/css"
     href="{{ asset('admin/pages/data-table/css/buttons.dataTables.min.css') }}">
 @endsection
+@section('title')
+  Người cho thuê
+@endsection
 @section('content')
   <div class="pcoded-content">
     <div class="pcoded-inner-content">
@@ -59,12 +62,12 @@
                       {{ Carbon\Carbon::parse($item->updated_at)->format('d/m/Y') }}
                     </td>
                     <td>
-                      <a href="{{ route('admin.edit.renter', ['id' => $item->id]) }}"
+                      <a href="{{ route('admin.edit.lease', ['id' => $item->id]) }}"
                         class="btn btn-primary waves-effect waves-light">
                         <i class="fa fa-pencil"></i>
                       </a>
                       <form
-                        action="{{ route('admin.delete.renter', ['id' => $item->id]) }}"
+                        action="{{ route('admin.delete.lease', ['id' => $item->id]) }}"
                         class="d-inline deleteForm" method="post">
                         @method('DELETE')
                         @csrf

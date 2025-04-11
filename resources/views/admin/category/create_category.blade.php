@@ -9,6 +9,9 @@
     type="text/css" id="app-style" />
   <link rel="stylesheet" href="{{ asset('vendor/flasher/flasher.min.css') }}">
 @endsection
+@section('title')
+  Thêm danh mục
+@endsection
 @section('content')
   <div class="pcoded-content">
     <div class="pcoded-inner-content">

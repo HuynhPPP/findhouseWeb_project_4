@@ -2,7 +2,7 @@
 <html lang="en">
 
   <head>
-    <title>{{ $title ?? 'Trang quản trị' }}</title>
+    <title>Admin | @yield('title')</title>
     <!-- Meta -->
     <meta charset="utf-8">
     <meta name="csrf-token" content="{{ csrf_token() }}">
@@ -45,6 +45,7 @@
     <link rel="stylesheet" href="{{ asset('toastr/toastr.min.css') }}">
     <link href="{{ asset('admin/sweetalert2/sweetalert2.min.css') }}"
       rel="stylesheet" type="text/css" id="app-style" />
+    <link rel="stylesheet" href="{{ asset('admin/css/post.css') }}">
     @yield('customCss')
   </head>
 

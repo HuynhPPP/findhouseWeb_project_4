@@ -5,6 +5,9 @@
   <link rel="stylesheet" href="{{ asset('admin/dropzone/min/dropzone.min.css') }}">
   <link rel="stylesheet" href="{{ asset('admin/dropzone/custom.css') }}">
 @endsection
+@section('title')
+  {{ $post->title }}
+@endsection
 @section('content')
   <div class="pcoded-content">
     <div class="pcoded-inner-content">

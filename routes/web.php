@@ -15,6 +15,7 @@ use App\Http\Controllers\admin\CategoryController;
 use App\Http\Controllers\admin\LeaseController;
 use App\Http\Controllers\admin\PostController;
 use App\Http\Controllers\admin\RenterController;
+use App\Http\Controllers\admin\SettingController;
 use Illuminate\Support\Facades\Route;
 
 /// Route Accessable for All
@@ -70,6 +71,7 @@ Route::middleware(['auth', 'roles:admin'])->group(function () {
     Route::post('store/update/category', 'StoreUpdateCategory')->name('admin.storeUpdate.category');
     Route::get('get/category/create', 'FetchCategoryCreate')->name('admin.get.categoryCreate');
     Route::get('get/category/update', 'FetchCategoryUpdate')->name('admin.get.categoryUpdate');
+    Route::post('/update/category/status/{id}', 'UpdateCategoryStatus');
   });
   Route::controller(AdminController::class)->group(function () {
     Route::get('admin/profile', 'AdminProfile')->name('admin.profile');
@@ -109,6 +111,10 @@ Route::middleware(['auth', 'roles:admin'])->group(function () {
   });
   Route::get('/admin/chart/posts', [AdminChartController::class, 'PostChart']);
   Route::get('/admin/chart/user', [AdminChartController::class, 'userStatistics']);
+  Route::controller(SettingController::class)->group(function () {
+    Route::get('admin/smtp/setting', 'SmtpSetting')->name('smtp.setting');
+    Route::post('update/smtp', 'UpdateSmtp')->name('update.smtp');
+  });
 }); // End Admin group middleware
 
 //// Poster group middleware

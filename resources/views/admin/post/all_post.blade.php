@@ -6,6 +6,9 @@
   <link rel="stylesheet" type="text/css"
     href="{{ asset('admin/pages/data-table/css/buttons.dataTables.min.css') }}">
 @endsection
+@section('title')
+  Tất cả tin
+@endsection
 @section('content')
   <div class="pcoded-content">
     <div class="pcoded-inner-content">
@@ -34,7 +37,7 @@
                 @foreach ($posts as $item)
                   <tr>
                     <td title="{{ $item->title }}">
-                      {{ Str::words(strip_tags($item->title), 5, '...') }}
+                      <span class="ellipsis-text">{{ $item->title }}</span>
                     </td>
                     <td>{{ $item->category->category_name }}</td>
                     <td> {{ formatCurrency($item->price) }}</td>

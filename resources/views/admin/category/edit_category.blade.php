@@ -7,9 +7,14 @@
     href="{{ asset('admin/pages/data-table/css/buttons.dataTables.min.css') }}">
   <link rel="stylesheet" type="text/css"
     href="{{ asset('admin/components/datatables.net-responsive-bs4/css/responsive.bootstrap4.min.css') }}">
+  <link rel="stylesheet" type="text/css"
+    href="{{ asset('admin/components/datatables.net-bs4/css/dataTables.bootstrap4.min.css') }}">
   <link href="{{ asset('admin/sweetalert2/sweetalert2.min.css') }}"
     rel="stylesheet" type="text/css" id="app-style" />
   <link rel="stylesheet" href="{{ asset('vendor/flasher/flasher.min.css') }}">
+@endsection
+@section('title')
+  {{ $category->category_name }}
 @endsection
 @section('content')
   <div class="pcoded-content">
@@ -35,10 +40,6 @@
                         class="form-control @error('category_name') is-invalid @enderror"
                         id="category_name" name="category_name">
                       <p></p>
-                      {{-- @if ($errors->has('category_name'))
-                        <span
-                          class="invalid-feedback">{{ $errors->first('category_name') }}</span>
-                      @endif --}}
                     </div>
                   </div>
                   <div class="mb-3 ">
@@ -113,9 +114,9 @@
   <script src="{{ asset('admin/pages/data-table/js/jszip.min.js') }}"></script>
   <script src="{{ asset('admin/pages/data-table/js/pdfmake.min.js') }}"></script>
   <script src="{{ asset('admin/pages/data-table/js/vfs_fonts.js') }}"></script>
-  <script
+  {{-- <script
     src="{{ asset('admin/components/datatables.net-buttons/js/buttons.print.min.js') }}">
-  </script>
+  </script> --}}
   <script
     src="{{ asset('admin/components/datatables.net-buttons/js/buttons.html5.min.js') }}">
   </script>

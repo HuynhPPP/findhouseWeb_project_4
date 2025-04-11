@@ -4,6 +4,9 @@
     type="text/css" id="app-style" />
   <link rel="stylesheet" href="{{ asset('admin/css/post_video.css') }}">
 @endsection
+@section('title')
+  {{ $post->title }}
+@endsection
 @section('content')
   <div class="pcoded-content">
     <div class="pcoded-inner-content">
@@ -59,7 +62,8 @@
                   name="category_id">
                   <option disabled selected>Chọn danh mục</option>
                   @foreach ($categories as $cat)
-                    <option {{ $post->category_id == $cat->id ? 'selected' : '' }}
+                    <option
+                      {{ $post->category_id == $cat->id ? 'selected' : '' }}
                       value="{{ $cat->id }}">{{ $cat->category_name }}
                     </option>
                   @endforeach

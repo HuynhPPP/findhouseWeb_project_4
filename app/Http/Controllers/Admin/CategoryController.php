@@ -31,7 +31,7 @@ class CategoryController extends Controller
         'message' => 'Xóa danh mục thành công!',
         'alert-type' => 'success'
       );
-      return redirect()->back()->with($notification);
+      return redirect()->route('admin.all.category')->with($notification);
     }
   }
   public function CreateCategory()
@@ -72,7 +72,7 @@ class CategoryController extends Controller
   public function EditCategory($category_id)
   {
     $categories = Category::orderBy('updated_at', 'DESC')->limit(6)->get();
-    $category = Category::where('id', $category_id)->first();
+    $category = Category::findOrFail($category_id);
     return view('admin.category.edit_category', compact('category', 'categories'), ['title' => 'Cập nhật danh mục']);
   }
   public function StoreUpdateCategory(Request $request)
@@ -115,5 +115,15 @@ class CategoryController extends Controller
   {
     $categories = Category::orderBy('updated_at', 'DESC')->get();
     return response()->json($categories);
+  }
+  public function UpdateCategoryStatus(Request $request, $id)
+  {
+    Category::find($id)->update([
+      'status' => $request->status,
+    ]);
+    return response()->json([
+      'status' => true,
+      'errors' => [],
+    ]);
   }
 }
