@@ -500,7 +500,6 @@ class PosterController extends Controller
         ]);
     }
 
-
     public function sendVerificationCode(Request $request)
     {
         $request->validate([
