@@ -94,6 +94,22 @@
             </li>
           </ul>
         </li>
+        <li
+          class="pcoded-hasmenu {{ in_array(Route::currentRouteName(), ['smtp.setting']) ? 'active pcoded-trigger' : '' }}">
+          <a href="javascript:void(0)" class="waves-effect waves-dark">
+            <span class="pcoded-micon"><i class="fa fa-cog"></i></span>
+            <span class="pcoded-mtext">Quản lý hệ thống</span>
+          </a>
+          <ul class="pcoded-submenu">
+            <li
+              class="{{ Route::currentRouteName() == 'smtp.setting' ? 'active' : '' }}">
+              <a href="{{ route('smtp.setting') }}"
+                class="waves-effect waves-dark">
+                <span class="pcoded-mtext">Cài đặt email</span>
+              </a>
+            </li>
+          </ul>
+        </li>
       </ul>
     </div>
   </div>
