@@ -11,7 +11,7 @@
         }
 
         .custom-select-price {
-            width: 130px; 
+            width: 130px;
         }
 
         .selected-option {
@@ -52,6 +52,12 @@
             font-size: 14px;
             outline: none;
         }
+
+        .error-message {
+            color: red;
+            font-size: 15px;
+            margin-top: 3px;
+        }
     </style>
 
     <div class="col-lg-9 col-md-12 col-xs-12 royal-add-property-area section_100 pl-0 user-dash2">
@@ -70,7 +76,7 @@
                                 <input type="text" name="title" id="title" placeholder=""
                                     value="{{ old('title') }}">
                                 @error('title')
-                                <p style="color:red">{{ $message }}</p>
+                                <p class="error-message">{{ $message }}</p>
                             @enderror
                             </p>
                         </div>
@@ -83,7 +89,7 @@
                                     {{ old('description') }}
                                 </textarea>
                                 @error('description')
-                                <p style="color:red">{{ $message }}</p>
+                                <p class="error-message">{{ $message }}</p>
                             @enderror
                             </p>
                         </div>
@@ -105,23 +111,17 @@
                                     @endforeach
                                 </select>
                                 @error('category_id')
-                                    <p style="color:red">{{ $message }}</p>
+                                    <p class="error-message">{{ $message }}</p>
                                 @enderror
                             </div>
                         </div>
-    
+
                         <div class="col-lg-4 col-md-12">
                             <div class="form-group">
                                 <label for="gia_thue">Giá cho thuê <span class="text-danger">(*)</span></label>
                                 <div class="input-group">
-                                    <input type="number" 
-                                           class="form-control" 
-                                           name="price" 
-                                           min="0" step="1"
-                                           id="rental_price" 
-                                           placeholder="Nhập giá"
-                                           style="height: 50px;"
-                                    >
+                                    <input type="number" class="form-control" name="price" min="0" step="1"
+                                        id="rental_price" placeholder="Nhập giá" style="height: 50px;">
                                     <div class="input-group-append">
                                         <select id="rental_unit" class="custom-select-price">
                                             <option value="đồng/tháng">đồng/tháng</option>
@@ -133,27 +133,22 @@
                                 <p id="price_in_words" class="text-success"></p>
                             </div>
                             @error('price')
-                                <p style="color:red">{{ $message }}</p>
+                                <p class="error-message">{{ $message }}</p>
                             @enderror
                         </div>
                         <div class="col-lg-4 col-md-12">
                             <div class="form-group">
                                 <label for="area">Diện tích <span class="text-danger">(*)</span></label>
                                 <div class="input-group">
-                                    <input type="number" 
-                                           class="form-control" 
-                                           id="area" 
-                                           name="area"
-                                           placeholder="Nhập diện tích"
-                                           style="height: 50px;"
-                                    >
+                                    <input type="number" class="form-control" id="area" name="area"
+                                        placeholder="Nhập diện tích" style="height: 50px;">
                                     <div class="input-group-append">
                                         <span class="input-group-text">m²</span>
                                     </div>
                                 </div>
                             </div>
                             @error('area')
-                                <p style="color:red">{{ $message }}</p>
+                                <p class="error-message">{{ $message }}</p>
                             @enderror
                         </div>
                     </div>
@@ -175,8 +170,33 @@
                             <!-- Hiển thị ảnh xem trước -->
                             <div class="image-preview" id="imagePreview"></div>
                             @error('images')
-                                <p style="color:red">{{ $message }}</p>
+                                <p class="error-message">{{ $message }}</p>
                             @enderror
+
+                            <!-- Hiển thị lỗi cho images -->
+                            @if ($errors->has('images') || $errors->has('images.*'))
+                                <div class="error-message">
+                                    <!-- Hiển thị lỗi tổng thể (images.max) -->
+                                    @if ($errors->has('images'))
+                                        <p class="error-message">{{ $errors->first('images') }}</p>
+                                    @endif
+
+                                    <!-- Hiển thị lỗi từng file (images.*) nhưng không lặp lại -->
+                                    @php
+                                        $uniqueImageErrors = [];
+                                        foreach ($errors->get('images.*') as $imageErrors) {
+                                            foreach ($imageErrors as $error) {
+                                                if (!in_array($error, $uniqueImageErrors)) {
+                                                    $uniqueImageErrors[] = $error;
+                                                }
+                                            }
+                                        }
+                                    @endphp
+                                    @foreach ($uniqueImageErrors as $error)
+                                        <p class="error-message">{{ $error }}</p>
+                                    @endforeach
+                                </div>
+                            @endif
                         </div>
                     </div>
                 </div>
@@ -191,18 +211,19 @@
 
                             <!-- Nhập link từ YouTube hoặc TikTok -->
                             <div class="video-link-container">
-                                <label for="videoLink">Video Link (Youtube/Tiktok)</label>
+                                <label for="videoLink">Video Link (Youtube)</label>
                                 <input type="text" id="videoLink" name="video_url" class="form-control"
                                     placeholder="Dán link video vào đây...">
                                 <p class="text-muted">
-                                    📌 <strong>Lưu ý:</strong> Chỉ hỗ trợ YouTube & TikTok. Vui lòng nhập đúng định dạng sau:<br>
+                                    📌 <strong>Lưu ý:</strong> Chỉ hỗ trợ YouTube & TikTok. Vui lòng nhập đúng định dạng
+                                    sau:<br>
                                     <br>
                                     🔹 <strong>Đối với YouTube:</strong><br>
                                     - <code>https://www.youtube.com/watch?v=<b>xxxxxxxxxxx</b></code> ✅<br>
                                     - <code>https://youtu.be/<b>xxxxxxxxxxx</b></code> ✅<br>
-                                    <br>
-                                    🔹 <strong>Đối với TikTok:</strong><br>
-                                    - <code>https://www.tiktok.com/@<b>username</b>/video/<b>xxxxxxxxxxx</b></code> ✅<br>
+
+                                    {{-- 🔹 <strong>Đối với TikTok:</strong><br>
+                                    - <code>https://www.tiktok.com/@<b>username</b>/video/<b>xxxxxxxxxxx</b></code> ✅<br> --}}
                                     <br>
                                     🚫 <strong>Không hỗ trợ</strong>:<br>
                                     - Các link rút gọn hoặc link nhúng không đúng định dạng.<br>
@@ -213,8 +234,8 @@
                             <div id="embeddedVideoContainer" style="display: none; margin-top: 15px;">
                                 <div id="embeddedVideo"></div> <!-- Khu vực hiển thị video -->
                             </div>
-                            @error('video')
-                                <p style="color:red">{{ $message }}</p>
+                            @error('video_url')
+                                <p class="error-message">{{ $message }}</p>
                             @enderror
                         </div>
                     </div>
@@ -235,7 +256,7 @@
                                 <input type="hidden" id="province_name" name="province_name"
                                     value="{{ old('province_name') }}">
                                 @error('province')
-                                    <p style="color:red">{{ $message }}</p>
+                                    <p class="error-message">{{ $message }}</p>
                                 @enderror
                             </div>
                         </div>
@@ -248,7 +269,7 @@
                                 <input type="hidden" id="district_name" name="district_name"
                                     value="{{ old('district_name') }}">
                                 @error('district')
-                                    <p style="color:red">{{ $message }}</p>
+                                    <p class="error-message">{{ $message }}</p>
                                 @enderror
                             </div>
                         </div>
@@ -262,7 +283,7 @@
                                 </select>
                                 <input type="hidden" id="ward_name" name="ward_name" value="{{ old('ward_name') }}">
                                 @error('ward')
-                                    <p style="color:red">{{ $message }}</p>
+                                    <p class="error-message">{{ $message }}</p>
                                 @enderror
                             </div>
                         </div>
@@ -272,7 +293,7 @@
                                 <input type="text" name="street" placeholder="Nhập tên đường/phố" id="country"
                                     value="{{ old('street') }}">
                                 @error('street')
-                                <p style="color:red">{{ $message }}</p>
+                                <p class="error-message">{{ $message }}</p>
                             @enderror
                             </p>
                         </div>
@@ -284,7 +305,7 @@
                                 <input type="text" name="house_number" placeholder="Nhập số nhà" id="latitude"
                                     value="{{ old('house_number') }}">
                                 @error('house_number')
-                                <p style="color:red">{{ $message }}</p>
+                                <p class="error-message">{{ $message }}</p>
                             @enderror
                             </p>
                         </div>
@@ -294,7 +315,7 @@
                                 <input type="text" name="address" placeholder="Địa chỉ" id="longitude"
                                     value="{{ old('address') }}">
                                 @error('address')
-                                <p style="color:red">{{ $message }}</p>
+                                <p class="error-message">{{ $message }}</p>
                             @enderror
                             </p>
                         </div>
@@ -308,7 +329,7 @@
                 <div id="map"></div>
             </div>
 
-            
+
             @php
                 $id = Auth::user()->id;
                 $profileData = App\Models\User::find($id);
@@ -322,23 +343,20 @@
                         <div class="col-lg-4 col-md-12">
                             <p>
                                 <label for="con-name">Họ tên</label>
-                                <input type="text" id="con-name"
-                                    value="{{ ($profileData->name) }}" readonly>
+                                <input type="text" id="con-name" value="{{ $profileData->name }}" readonly>
                             </p>
                         </div>
 
                         <div class="col-lg-4 col-md-12">
                             <p class="no-mb first">
                                 <label for="con-email">Email</label>
-                                <input type="email" id="con-email"
-                                    value="{{ $profileData->email }}" readonly>
+                                <input type="email" id="con-email" value="{{ $profileData->email }}" readonly>
                             </p>
                         </div>
                         <div class="col-lg-4 col-md-12">
                             <p class="no-mb last">
                                 <label for="con-phn">Số điện thoại</label>
-                                <input type="text" id="con-phn"
-                                        value="{{ $profileData->phone }}" readonly>
+                                <input type="text" id="con-phn" value="{{ $profileData->phone }}" readonly>
                             </p>
                         </div>
                     </div>
@@ -392,9 +410,11 @@
                 let provinceId = $(this).val();
                 let provinceName = $("#province option:selected").text();
                 $("#province_name").val(provinceName);
-                $("#district").html('<option selected="" disabled>-- Chọn Quận / Huyện --</option>').niceSelect(
+                $("#district").html('<option selected="" disabled>-- Chọn Quận / Huyện --</option>')
+                    .niceSelect(
+                        'update');
+                $("#wards").html('<option selected="" disabled>-- Chọn Phường / Xã --</option>').niceSelect(
                     'update');
-                $("#wards").html('<option selected="" disabled>-- Chọn Phường / Xã --</option>').niceSelect('update');
 
                 if (provinceId) {
                     loadDistricts(provinceId, null, null);
@@ -426,7 +446,8 @@
                 let districtId = $(this).val();
                 let districtName = $("#district option:selected").text();
                 $("#district_name").val(districtName);
-                $("#wards").html('<option selected="" disabled>-- Chọn Phường / Xã --</option>').niceSelect('update');
+                $("#wards").html('<option selected="" disabled>-- Chọn Phường / Xã --</option>').niceSelect(
+                    'update');
 
                 if (districtId) {
                     loadWards(districtId, null);
@@ -466,22 +487,22 @@
             const url = this.value.trim();
             const embeddedContainer = document.getElementById('embeddedVideoContainer');
             const embeddedVideo = document.getElementById('embeddedVideo');
-        
+
             // Xóa nội dung cũ trước khi cập nhật
             embeddedVideo.innerHTML = "";
             embeddedContainer.style.display = "none";
-        
+
             if (url.includes("youtube.com/watch?v=") || url.includes("youtu.be/")) {
                 // Xử lý link YouTube
                 let videoId = url.split("v=")[1]?.split("&")[0] || url.split("youtu.be/")[1];
-                embeddedVideo.innerHTML = `<iframe width="100%" height="600" src="https://www.youtube.com/embed/${videoId}" frameborder="0" allowfullscreen></iframe>`;
+                embeddedVideo.innerHTML =
+                    `<iframe width="100%" height="600" src="https://www.youtube.com/embed/${videoId}" frameborder="0" allowfullscreen></iframe>`;
                 embeddedContainer.style.display = "block";
-            } 
-            else if (url.includes("tiktok.com/")) {
+            } else if (url.includes("tiktok.com/")) {
                 // Lấy video_id từ URL TikTok
                 const match = url.match(/video\/(\d+)/);
                 const videoId = match ? match[1] : null;
-        
+
                 if (videoId) {
                     // Nhúng TikTok video với đúng `data-video-id`
                     embeddedVideo.innerHTML = `
@@ -490,13 +511,15 @@
                         </blockquote>
                     `;
                     embeddedContainer.style.display = "block";
-        
+
                     // Kiểm tra xem script TikTok đã có chưa, nếu chưa thì tải
                     if (!window.tiktokEmbedLoaded) {
                         var script = document.createElement('script');
                         script.src = "https://www.tiktok.com/embed.js";
                         script.async = true;
-                        script.onload = () => { window.tiktokEmbedLoaded = true; };
+                        script.onload = () => {
+                            window.tiktokEmbedLoaded = true;
+                        };
                         document.body.appendChild(script);
                     } else if (window.tiktokEmbedLoad) {
                         window.tiktokEmbedLoad(); // Tải lại video nếu script đã được nạp trước đó
@@ -505,7 +528,7 @@
             }
         });
     </script>
-    
+
     <!-- Xử lý ảnh -->
     <script>
         $(document).ready(function() {
@@ -597,14 +620,16 @@
 
         function numberToWords(number) {
             if (isNaN(number) || number <= 0) return "";
-            
+
             let ones = ["", "một", "hai", "ba", "bốn", "năm", "sáu", "bảy", "tám", "chín"];
-            let tens = ["", "mười", "hai mươi", "ba mươi", "bốn mươi", "năm mươi", "sáu mươi", "bảy mươi", "tám mươi", "chín mươi"];
+            let tens = ["", "mười", "hai mươi", "ba mươi", "bốn mươi", "năm mươi", "sáu mươi", "bảy mươi", "tám mươi",
+                "chín mươi"
+            ];
             let thousands = ["", "nghìn", "triệu", "tỷ"];
 
-            let numStr = number.toString().split("").reverse().join(""); 
+            let numStr = number.toString().split("").reverse().join("");
             let wordArray = [];
-            
+
             for (let i = 0; i < numStr.length; i += 3) {
                 let numPart = numStr.substr(i, 3).split("").reverse().join("");
                 let partWord = threeDigitToWords(parseInt(numPart));
@@ -618,9 +643,11 @@
 
         function threeDigitToWords(num) {
             if (num === 0) return "";
-            
+
             let ones = ["", "một", "hai", "ba", "bốn", "năm", "sáu", "bảy", "tám", "chín"];
-            let tens = ["", "mười", "hai mươi", "ba mươi", "bốn mươi", "năm mươi", "sáu mươi", "bảy mươi", "tám mươi", "chín mươi"];
+            let tens = ["", "mười", "hai mươi", "ba mươi", "bốn mươi", "năm mươi", "sáu mươi", "bảy mươi", "tám mươi",
+                "chín mươi"
+            ];
 
             let str = "";
             if (num >= 100) {
@@ -640,7 +667,7 @@
 
     <!-- Chỉ cho phép nhập số -->
     <script>
-        document.getElementById("rental_price").addEventListener("keypress", function (event) {
+        document.getElementById("rental_price").addEventListener("keypress", function(event) {
             if (event.key === "." || event.key === ",") {
                 event.preventDefault(); // Ngăn nhập dấu "." hoặc ","
             }
@@ -649,10 +676,8 @@
             }
         });
 
-        document.getElementById("rental_price").addEventListener("input", function () {
+        document.getElementById("rental_price").addEventListener("input", function() {
             this.value = this.value.replace(/[^0-9]/g, ""); // Xóa toàn bộ ký tự không phải số
         });
     </script>
-
-
 @endsection

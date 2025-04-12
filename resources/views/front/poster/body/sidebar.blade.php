@@ -60,7 +60,7 @@
                     <i class="fa fa-heart" aria-hidden="true"></i>Tin đăng đã lưu
                 </a>
             </li>
-            @if (empty(auth()->user()->google_id))
+            @if (empty(auth()->user()->google_id) && (empty(auth()->user()->email_verified_at)))
                 <li>
                     <a href="{{ route('poster.verification') }}"
                         class="{{ request()->routeIs('poster.verification') ? 'active' : '' }}">

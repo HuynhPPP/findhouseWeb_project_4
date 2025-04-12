@@ -25,6 +25,7 @@ class ReviewController extends Controller
             'comment' => $request->comment,
             'rating' => $request->rating,
             'poster_id' => $poster_id,
+            'status' => '1',
             'created_at' => Carbon::now(),
         ]);
 
@@ -43,6 +44,63 @@ class ReviewController extends Controller
             ->with(['posts', 'user'])
             ->orderBy('id', 'DESC')
             ->get();
+
+        return view('front.poster.review_list', compact('reviews'));
+    }
+
+    public function PosterDeleteReview($id)
+    {
+        $review = Review::find($id);
+
+        if (!$review) {
+            return redirect()->back()->with([
+                'message' => 'Đánh giá không tồn tại!',
+                'alert-type' => 'error'
+            ]);
+        }
+
+        $review->delete();
+
+        return redirect()->route('poster.review')->with([
+            'message' => 'Đánh giá đã được xoá!',
+            'alert-type' => 'success'
+        ]);
+    }
+
+    public function PosterToggleReview($id)
+    {
+        $review = Review::findOrFail($id);
+
+        // Chuyển đổi trạng thái
+        $review->status = $review->status == '1' ? '0' : '1';
+        $review->save();
+
+        $message = $review->status == '1' ? 'Đã hiển thị đánh giá này' : 'Đã ẩn đánh giá';
+
+        return response()->json([
+            'success' => true,
+            'status' => $review->status,
+            'message' => $message
+        ]);
+    }
+
+    public function PosterReviewSort(Request $request)
+    {
+        $sort = $request->query('sort', 'latest');
+
+        $reviews = Review::with(['user', 'posts'])
+            ->when($sort == 'latest', function ($query) {
+                return $query->orderBy('created_at', 'desc');
+            })
+            ->when($sort == 'oldest', function ($query) {
+                return $query->orderBy('created_at', 'asc');
+            })
+            ->get();
+
+        if ($request->ajax()) {
+            $reviews_html = view('front.poster.review_sort', compact('reviews'))->render();
+            return response()->json(['reviews_html' => $reviews_html]);
+        }
 
         return view('front.poster.review_list', compact('reviews'));
     }

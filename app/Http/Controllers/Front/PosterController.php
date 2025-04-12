@@ -112,35 +112,53 @@ class PosterController extends Controller
     return $url;
   }
 
-  public function PosterPostStore(Request $request)
-  {
-    $request->validate([
-      'title'       => 'required|string|max:255',
-      'description' => 'required|string',
-      'category_id' => 'required',
-      'price'       => 'required',
-      'province' => 'required',
-      'province_name' => 'required',
-      'district' => 'required',
-      'district_name' => 'required',
-      'ward' => 'required',
-      'ward_name' => 'required',
-      'images'      => 'nullable|array|max:20',
-      'images.*'    => 'image|mimes:jpeg,png,jpg,gif|max:2048',
-      'video_url'   => 'nullable|string',
-    ], [
-      'title.required'       => 'Vui lòng nhập tiêu đề.',
-      'description.required' => 'Vui lòng nhập mô tả.',
-      'category_id.required' => 'Vui lòng chọn danh mục.',
-      'price.required'       => 'Vui lòng nhập giá.',
-      'address.required'     => 'Vui lòng nhập địa chỉ.',
-      'province.required'    => 'Vui lòng chọn tỉnh/thành phố.',
-      'district.required'    => 'Vui lòng chọn quận/huyện.',
-      'ward.required'        => 'Vui lòng chọn phường/xã.',
-      'street.required'      => 'Vui lòng nhập tên đường.',
-      'house_number.required' => 'Vui lòng nhập số nhà.',
-      'images.max'           => 'Bạn chỉ có thể tải lên tối đa 20 ảnh.',
-    ]);
+    public function PosterPostStore(Request $request)
+    {
+        $request->validate([
+            'title'        => 'required|string|max:255',
+            'description'  => 'required|string',
+            'category_id'  => 'required',
+            'price'        => 'required|numeric|min:0',
+            'area'         => 'required|numeric|min:0',
+            'province'     => 'required',
+            'province_name' => 'required',
+            'district'     => 'required',
+            'district_name' => 'required',
+            'ward'         => 'required',
+            'ward_name'    => 'required',
+            'street'       => 'required|string',
+            'house_number' => 'required|string',
+            'address'      => 'required|string',
+            'images'       => 'nullable|array|max:20',
+            'images.*'     => 'image|mimes:jpeg,png,jpg,gif|max:2048',
+            'video_url'    => 'nullable|string|url|regex:/^(https?:\/\/(www\.)?(youtube\.com|youtu\.be|tiktok\.com)\/)/', // Validate URL cho YouTube/TikTok
+        ], [
+            'title.required'       => 'Vui lòng nhập tiêu đề.',
+            'title.max'            => 'Tiêu đề không được vượt quá 255 ký tự.',
+            'description.required' => 'Vui lòng nhập mô tả.',
+            'category_id.required' => 'Vui lòng chọn danh mục.',
+            'price.required'       => 'Vui lòng nhập giá.',
+            'price.numeric'        => 'Giá phải là số.',
+            'price.min'            => 'Giá không được nhỏ hơn 0.',
+            'area.required'        => 'Vui lòng nhập diện tích.',
+            'area.numeric'         => 'Diện tích phải là số.',
+            'area.min'             => 'Diện tích không được nhỏ hơn 0.',
+            'province.required'    => 'Vui lòng chọn tỉnh/thành phố.',
+            'province_name.required' => 'Tên tỉnh/thành phố không được để trống.',
+            'district.required'    => 'Vui lòng chọn quận/huyện.',
+            'district_name.required' => 'Tên quận/huyện không được để trống.',
+            'ward.required'        => 'Vui lòng chọn phường/xã.',
+            'ward_name.required'   => 'Tên phường/xã không được để trống.',
+            'street.required'      => 'Vui lòng nhập tên đường.',
+            'house_number.required' => 'Vui lòng nhập số nhà.',
+            'address.required'     => 'Vui lòng nhập địa chỉ.',
+            'images.max'           => 'Bạn chỉ có thể tải lên tối đa 20 ảnh.',
+            'images.*.image'       => 'File tải lên phải là hình ảnh.',
+            'images.*.mimes'       => 'Hình ảnh phải có định dạng jpeg, png, jpg hoặc gif.',
+            'images.*.max'         => 'Hình ảnh không được vượt quá 2MB.',
+            'video_url.url'        => 'Link video không hợp lệ.',
+            'video_url.regex'      => 'Link video chỉ hỗ trợ YouTube hoặc TikTok.',
+        ]);
 
     $videoUrl = $request->video_url ? $this->convertVideoUrl($request->video_url) : null;
 

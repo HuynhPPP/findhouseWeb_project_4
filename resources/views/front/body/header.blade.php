@@ -40,8 +40,8 @@
                     <!-- Header Widget -->
                     <div class="header-widget">
 
-                        <a href="{{ route('user.verification') }}" class="button border" style="width: 210px">
-                            Bạn muốn đăng tin<i class="fas fa-laptop-house ml-2"></i>
+                        <a href="{{ route('user.verification') }}" class="button border">
+                            Đăng tin<i class="fas fa-laptop-house ml-2"></i>
                         </a>
 
                     </div>
@@ -99,12 +99,7 @@
                         <li class="show-reg-form modal-open">
                             <a href="javascript:void(0)"> Đăng nhập</a>
                         </li>
-
-                        {{-- <li class="show-reg-form modal-open">
-                            <a href="{{ route('register') }}"> Tạo tài khoản mới</a>
-                        </li> --}}
                     @endauth
-
                 </ul>
             </div>
             <!-- Right Side Content / End -->

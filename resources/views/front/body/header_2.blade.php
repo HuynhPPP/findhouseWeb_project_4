@@ -36,6 +36,18 @@
                     </div>
                     <!-- Header Widget / End -->
                 </div>
+            @elseif ($profileData->role === 'user')
+                <div class="right-side d-none d-none d-lg-none d-xl-flex">
+                    <!-- Header Widget -->
+                    <div class="header-widget">
+
+                        <a href="{{ route('user.verification') }}" class="button border">
+                            Đăng tin<i class="fas fa-laptop-house ml-2"></i>
+                        </a>
+
+                    </div>
+                    <!-- Header Widget / End -->
+                </div>
             @endif
             <!-- Right Side Content / End -->
             <!-- Right Side Content / End -->
@@ -67,22 +79,29 @@
                 <ul>
                     @auth
                         @if (Auth::user()->role === 'poster')
-                            <li><a href="{{ route('poster.profile') }}"> Tài khoản</a></li>
+                            <li>
+                                <img src="{{ asset('front\images\setting.svg') }}" alt="">
+                                <a href="{{ route('poster.dashboard') }}">Cài đặt tài khoản</a>
+                            </li>
                         @else
-                            <li><a href="{{ route('user.dashboard') }}"> Tài khoản</a></li>
+                            <li>
+                                <img src="{{ asset('front\images\setting.svg') }}" alt="">
+                                <a href="{{ route('user.dashboard') }}">Cài đặt tài khoản</a>
+                            </li>
                         @endif
-                        
-                        <li class="fas fa-sign-out-alt"><a href="{{ route('logout') }}">Đăng xuất</a></li>
-                    @else
-                        <li class="">
-                            <a href="{{ route('login') }}"> Đăng nhập</a>
+                        <li>
+                            <img src="{{ asset('front\images\menu-saved-ad.svg') }}" alt="">
+                            <a href="{{ route('user.list.SavedPost') }}">Tin đăng đã lưu</a>
                         </li>
-
-                        <li class="">
-                            <a href="{{ route('register') }}"> Tạo tài khoản mới</a>
+                        <li>
+                            <img src="{{ asset('front\images\logout.svg') }}" alt="">
+                            <a href="{{ route('logout') }}">Đăng xuất</a>
+                        </li>
+                    @else
+                        <li class="show-reg-form modal-open">
+                            <a href="javascript:void(0)"> Đăng nhập</a>
                         </li>
                     @endauth
-
                 </ul>
             </div>
         </div>
