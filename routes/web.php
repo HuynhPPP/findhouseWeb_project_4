@@ -101,6 +101,9 @@ Route::middleware(['auth', 'roles:poster'])->group(function () {
 
   // Review Post
   Route::get('/poster/review', [ReviewController::class, 'PosterReview'])->name('poster.review');
+  Route::get('/poster/delete/review/{id}', [ReviewController::class, 'PosterDeleteReview'])->name('poster.delete.review');
+  Route::post('/review/toggle-status/{id}', [ReviewController::class, 'PosterToggleReview'])->name('review.toggle.status');
+  Route::get('/reviews/sort', [ReviewController::class, 'PosterReviewSort'])->name('reviews.list.sort');
 }); // End Poster group middleware
 
 /// User group middleware
