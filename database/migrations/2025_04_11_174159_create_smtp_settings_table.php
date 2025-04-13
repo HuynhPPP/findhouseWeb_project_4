@@ -2,6 +2,7 @@
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
@@ -22,6 +23,17 @@ return new class extends Migration
       $table->string('from_address')->nullable();
       $table->timestamps();
     });
+    DB::table('smtp_settings')->insert([
+      'mailer' => 'smtp',
+      'host' => 'sandbox.smtp.mailtrap.io',
+      'port' => '2525',
+      'username' => '2f8ca72232a654',
+      'password' => '4ea232aa95dfd7',
+      'encryption' => 'tls',
+      'from_address' => 'hotro.findhouse@gmail.com',
+      'created_at' => now(),
+      'updated_at' => now(),
+    ]);
   }
 
   /**

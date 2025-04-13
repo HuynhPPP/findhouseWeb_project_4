@@ -83,78 +83,53 @@
                   </a>
                 </li>
               </ul>
+              @php
+                $ncount = Auth::user()->unreadNotifications()->count();
+              @endphp
               <ul class="nav-right">
                 <li class="header-notification">
                   <div class="dropdown-primary dropdown">
                     <div class="dropdown-toggle" data-bs-toggle="dropdown">
                       <i class="feather icon-bell"></i>
-                      <span class="badge bg-c-red">5</span>
+                      @if ($ncount > 0)
+                        <span class="badge bg-c-red">{{ $ncount }}</span>
+                      @endif
                     </div>
                     <ul
                       class="show-notification notification-view dropdown-menu"
                       data-dropdown-in="fadeIn" data-dropdown-out="fadeOut">
                       <li>
-                        <h6>Notifications</h6>
-                        <label class="form-label label label-danger">New</label>
+                        <h6>Thông báo</h6>
                       </li>
-                      <li>
-                        <div class="d-flex">
-                          <div class="flex-shrink-0">
-                            <img class="img-radius"
-                              src="{{ asset('admin/images/avatar-4.jpg') }}"
-                              alt="Generic placeholder image">
-                          </div>
-                          <div class="flex-grow-1">
-                            <h5 class="notification-user">John Doe</h5>
-                            <p class="notification-msg">Lorem ipsum dolor sit
-                              amet, consectetuer elit.</p>
-                            <span class="notification-time">30 minutes
-                              ago</span>
-                          </div>
-                        </div>
-                      </li>
-                      <li>
-                        <div class="d-flex">
-                          <div class="flex-shrink-0">
-                            <img class="img-radius"
-                              src="{{ asset('admin/images/avatar-4.jpg') }}"
-                              alt="Generic placeholder image">
-                          </div>
-                          <div class="flex-grow-1">
-                            <h5 class="notification-user">Joseph William</h5>
-                            <p class="notification-msg">Lorem ipsum dolor sit
-                              amet, consectetuer elit.</p>
-                            <span class="notification-time">30 minutes
-                              ago</span>
-                          </div>
-                        </div>
-                      </li>
-                      <li>
-                        <div class="d-flex">
-                          <div class="flex-shrink-0">
-                            <img class="img-radius"
-                              src="{{ asset('admin/images/avatar-4.jpg') }}"
-                              alt="Generic placeholder image">
-                          </div>
-                          <div class="flex-grow-1">
-                            <h5 class="notification-user">Sara Soudein</h5>
-                            <p class="notification-msg">Lorem ipsum dolor sit
-                              amet, consectetuer elit.</p>
-                            <span class="notification-time">30 minutes
-                              ago</span>
-                          </div>
-                        </div>
-                      </li>
+                      @php
+                        $notifications = Auth::user()->unreadNotifications;
+                      @endphp
+                      @forelse ($notifications as $notification)
+                        <li>
+                          <a onclick="notificationRead('{{ $notification->id }}')"
+                            href="edit/post/{{ $notification->data['post_id'] }}/{{ $notification->data['post_slug'] }}.html"
+                            class="bg-transparent">
+                            <div class="d-flex">
+                              <div class="flex-shrink-0">
+                                <img class="img-radius"
+                                  src="{{ $notification->data['user_image'] ? asset('upload/user_images/' . $notification->data['user_image']) : asset('admin/images/no_image.jpg') }}"
+                                  alt="Generic placeholder image">
+                              </div>
+                              <div class="flex-grow-1">
+                                <h5 class="notification-user">
+                                  {{ $notification->data['user'] }}</h5>
+                                <p class="notification-msg">
+                                  {{ $notification->data['title'] }}</p>
+                                <span
+                                  class="notification-time">{{ Carbon\Carbon::parse($notification->created_at)->diffForHumans() }}</span>
+                              </div>
+                            </div>
+                          </a>
+                        </li>
+                      @empty
+                        <li>Không có thông báo!</li>
+                      @endforelse
                     </ul>
-                  </div>
-                </li>
-                <li class="header-notification">
-                  <div class="dropdown-primary dropdown">
-                    <div class="displayChatbox dropdown-toggle"
-                      data-bs-toggle="dropdown">
-                      <i class="feather icon-message-square"></i>
-                      <span class="badge bg-c-green">3</span>
-                    </div>
                   </div>
                 </li>
                 <li class="user-profile header-notification">
@@ -188,164 +163,6 @@
             </div>
           </div>
         </nav>
-        <!-- [ chat user list ] start -->
-        <div id="sidebar" class="users p-chat-user showChat">
-          <div class="had-container">
-            <div class="p-fixed users-main">
-              <div class="user-box">
-                <div class="chat-search-box">
-                  <a class="back_friendlist">
-                    <i class="feather icon-x"></i>
-                  </a>
-                  <div class="right-icon-control">
-                    <div class="input-group input-group-button">
-                      <input type="text" id="search-friends"
-                        name="footer-email" class="form-control"
-                        placeholder="Search Friend">
-                      <button class="btn btn-primary waves-effect waves-light"
-                        type="button">
-                        <i class="feather icon-search"></i>
-                      </button>
-                    </div>
-                  </div>
-                </div>
-                <div class="main-friend-list">
-                  <div class="media userlist-box waves-effect waves-light"
-                    data-id="1" data-status="online"
-                    data-username="Josephin Doe">
-                    <a class="media-left" href="#!">
-                      <img class="media-object img-radius"
-                        src="{{ asset('admin/images/avatar-4.jpg') }}"
-                        alt="Generic placeholder image ">
-                      <div class="live-status bg-success"></div>
-                    </a>
-                    <div class="media-body">
-                      <div class="chat-header">Josephin Doe</div>
-                    </div>
-                  </div>
-                  <div class="media userlist-box waves-effect waves-light"
-                    data-id="2" data-status="online"
-                    data-username="Lary Doe">
-                    <a class="media-left" href="#!">
-                      <img class="media-object img-radius"
-                        src="{{ asset('admin/images/avatar-4.jpg') }}"
-                        alt="Generic placeholder image">
-                      <div class="live-status bg-success"></div>
-                    </a>
-                    <div class="media-body">
-                      <div class="f-13 chat-header">Lary Doe</div>
-                    </div>
-                  </div>
-                  <div class="media userlist-box waves-effect waves-light"
-                    data-id="3" data-status="online"
-                    data-username="Alice">
-                    <a class="media-left" href="#!">
-                      <img class="media-object img-radius"
-                        src="{{ asset('admin/images/avatar-4.jpg') }}"
-                        alt="Generic placeholder image">
-                      <div class="live-status bg-success"></div>
-                    </a>
-                    <div class="media-body">
-                      <div class="f-13 chat-header">Alice</div>
-                    </div>
-                  </div>
-                  <div class="media userlist-box waves-effect waves-light"
-                    data-id="4" data-status="offline"
-                    data-username="Alia">
-                    <a class="media-left" href="#!">
-                      <img class="media-object img-radius"
-                        src="{{ asset('admin/images/avatar-4.jpg') }}"
-                        alt="Generic placeholder image">
-                      <div class="live-status bg-default"></div>
-                    </a>
-                    <div class="media-body">
-                      <div class="f-13 chat-header">Alia<small
-                          class="d-block text-muted">10 min ago</small></div>
-                    </div>
-                  </div>
-                  <div class="media userlist-box waves-effect waves-light"
-                    data-id="5" data-status="offline"
-                    data-username="Suzen">
-                    <a class="media-left" href="#!">
-                      <img class="media-object img-radius"
-                        src="{{ asset('admin/images/avatar-4.jpg') }}"
-                        alt="Generic placeholder image">
-                      <div class="live-status bg-default"></div>
-                    </a>
-                    <div class="media-body">
-                      <div class="f-13 chat-header">Suzen<small
-                          class="d-block text-muted">15 min ago</small></div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <!-- [ chat user list ] end -->
-
-        <!-- [ chat message ] start -->
-        <div class="showChat_inner">
-          <div class="d-flex chat-inner-header">
-            <a class="back_chatBox">
-              <i class="feather icon-x"></i> Josephin Doe
-            </a>
-          </div>
-          <div class="main-friend-chat">
-            <div class="d-flex chat-messages">
-              <a class="media-left photo-table" href="#!">
-                <div class="flex-shrink-0">
-                  <img class="media-object img-radius m-t-5"
-                    src="{{ asset('admin/images/avatar-4.jpg') }}"
-                    alt="Generic placeholder image">
-                </div>
-              </a>
-              <div class="flex-grow-1 chat-menu-content">
-                <div class="">
-                  <p class="chat-cont">I'm just looking around. Will you tell
-                    me something about yourself?</p>
-                </div>
-                <p class="chat-time">8:20 a.m.</p>
-              </div>
-            </div>
-            <div class="d-flex chat-messages">
-              <div class="flex-grow-1 chat-menu-reply">
-                <div class="">
-                  <p class="chat-cont">Ohh! very nice</p>
-                </div>
-                <p class="chat-time">8:22 a.m.</p>
-              </div>
-            </div>
-            <div class="d-flex chat-messages">
-              <a class="media-left photo-table" href="#!">
-                <div class="flex-shrink-0">
-                  <img class="media-object img-radius m-t-5"
-                    src="{{ asset('admin/images/avatar-4.jpg') }}"
-                    alt="Generic placeholder image">
-                </div>
-              </a>
-              <div class="media-body chat-menu-content">
-                <div class="">
-                  <p class="chat-cont">can you come with me?</p>
-                </div>
-                <p class="chat-time">8:20 a.m.</p>
-              </div>
-            </div>
-          </div>
-          <div class="chat-reply-box">
-            <div class="right-icon-control">
-              <div class="input-group input-group-button">
-                <input type="text" class="form-control"
-                  placeholder="Write hear . . ">
-                <button class="btn btn-primary waves-effect waves-light"
-                  type="button">
-                  <i class="feather icon-message-circle"></i>
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-        <!-- [ chat message ] end -->
         <div class="pcoded-main-container">
           <div class="pcoded-wrapper">
             <!-- [ navigation menu ] start -->
@@ -440,6 +257,23 @@
     </script>
     <script src="{{ asset('admin/sweetalert2/sweetalert2.min.js') }}"></script>
     <script src="{{ asset('admin/sweetalert2/extended-sweetalerts.js') }}">
+    </script>
+    <script>
+      function notificationRead(notificationId) {
+        fetch('/mark/notification-as-read/' + notificationId)
+        fetch('/mark-notification-as-read/' + notificationId, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/josn',
+              'X-CSRF-TOKEN': '{{ csrf_token() }}'
+            },
+            body: JSON.stringify({})
+          })
+          .then(response => response.json())
+          .catch(error => {
+            console.log('Error', error)
+          });
+      }
     </script>
     @yield('customJs')
   </body>

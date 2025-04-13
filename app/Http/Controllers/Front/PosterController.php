@@ -11,6 +11,7 @@ use App\Models\Image;
 use App\Models\Category;
 use App\Mail\ResetPasswordMail;
 use App\Mail\EmailVerificationMail;
+use App\Notifications\NewPostNotification;
 use Cocur\Slugify\Slugify;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
@@ -19,7 +20,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Mail;
-
+use Illuminate\Support\Facades\Notification;
 
 class PosterController extends Controller
 {
@@ -53,13 +54,13 @@ class PosterController extends Controller
     $data->email = $request->email;
     $data->phone = $request->phone;
 
-        if ($request->file('photo')) {
-            $file = $request->file('photo');
-            @unlink(public_path('upload/user_images/' . $data->photo));
-            $filename = 'poster_' . $id . '_' . date('YmdHi') . '.' . $file->getClientOriginalExtension();
-            $file->move(public_path('upload/user_images'), $filename);
-            $data['photo'] = $filename;
-        }
+    if ($request->file('photo')) {
+      $file = $request->file('photo');
+      @unlink(public_path('upload/user_images/' . $data->photo));
+      $filename = 'poster_' . $id . '_' . date('YmdHi') . '.' . $file->getClientOriginalExtension();
+      $file->move(public_path('upload/user_images'), $filename);
+      $data['photo'] = $filename;
+    }
 
     $data->save();
 
@@ -112,53 +113,53 @@ class PosterController extends Controller
     return $url;
   }
 
-    public function PosterPostStore(Request $request)
-    {
-        $request->validate([
-            'title'        => 'required|string|max:255',
-            'description'  => 'required|string',
-            'category_id'  => 'required',
-            'price'        => 'required|numeric|min:0',
-            'area'         => 'required|numeric|min:0',
-            'province'     => 'required',
-            'province_name' => 'required',
-            'district'     => 'required',
-            'district_name' => 'required',
-            'ward'         => 'required',
-            'ward_name'    => 'required',
-            'street'       => 'required|string',
-            'house_number' => 'required|string',
-            'address'      => 'required|string',
-            'images'       => 'nullable|array|max:20',
-            'images.*'     => 'image|mimes:jpeg,png,jpg,gif|max:2048',
-            'video_url'    => 'nullable|string|url|regex:/^(https?:\/\/(www\.)?(youtube\.com|youtu\.be|tiktok\.com)\/)/', // Validate URL cho YouTube/TikTok
-        ], [
-            'title.required'       => 'Vui lòng nhập tiêu đề.',
-            'title.max'            => 'Tiêu đề không được vượt quá 255 ký tự.',
-            'description.required' => 'Vui lòng nhập mô tả.',
-            'category_id.required' => 'Vui lòng chọn danh mục.',
-            'price.required'       => 'Vui lòng nhập giá.',
-            'price.numeric'        => 'Giá phải là số.',
-            'price.min'            => 'Giá không được nhỏ hơn 0.',
-            'area.required'        => 'Vui lòng nhập diện tích.',
-            'area.numeric'         => 'Diện tích phải là số.',
-            'area.min'             => 'Diện tích không được nhỏ hơn 0.',
-            'province.required'    => 'Vui lòng chọn tỉnh/thành phố.',
-            'province_name.required' => 'Tên tỉnh/thành phố không được để trống.',
-            'district.required'    => 'Vui lòng chọn quận/huyện.',
-            'district_name.required' => 'Tên quận/huyện không được để trống.',
-            'ward.required'        => 'Vui lòng chọn phường/xã.',
-            'ward_name.required'   => 'Tên phường/xã không được để trống.',
-            'street.required'      => 'Vui lòng nhập tên đường.',
-            'house_number.required' => 'Vui lòng nhập số nhà.',
-            'address.required'     => 'Vui lòng nhập địa chỉ.',
-            'images.max'           => 'Bạn chỉ có thể tải lên tối đa 20 ảnh.',
-            'images.*.image'       => 'File tải lên phải là hình ảnh.',
-            'images.*.mimes'       => 'Hình ảnh phải có định dạng jpeg, png, jpg hoặc gif.',
-            'images.*.max'         => 'Hình ảnh không được vượt quá 2MB.',
-            'video_url.url'        => 'Link video không hợp lệ.',
-            'video_url.regex'      => 'Link video chỉ hỗ trợ YouTube hoặc TikTok.',
-        ]);
+  public function PosterPostStore(Request $request)
+  {
+    $request->validate([
+      'title'        => 'required|string|max:255',
+      'description'  => 'required|string',
+      'category_id'  => 'required',
+      'price'        => 'required|numeric|min:0',
+      'area'         => 'required|numeric|min:0',
+      'province'     => 'required',
+      'province_name' => 'required',
+      'district'     => 'required',
+      'district_name' => 'required',
+      'ward'         => 'required',
+      'ward_name'    => 'required',
+      'street'       => 'required|string',
+      'house_number' => 'required|string',
+      'address'      => 'required|string',
+      'images'       => 'nullable|array|max:20',
+      'images.*'     => 'image|mimes:jpeg,png,jpg,gif|max:2048',
+      'video_url'    => 'nullable|string|url|regex:/^(https?:\/\/(www\.)?(youtube\.com|youtu\.be|tiktok\.com)\/)/', // Validate URL cho YouTube/TikTok
+    ], [
+      'title.required'       => 'Vui lòng nhập tiêu đề.',
+      'title.max'            => 'Tiêu đề không được vượt quá 255 ký tự.',
+      'description.required' => 'Vui lòng nhập mô tả.',
+      'category_id.required' => 'Vui lòng chọn danh mục.',
+      'price.required'       => 'Vui lòng nhập giá.',
+      'price.numeric'        => 'Giá phải là số.',
+      'price.min'            => 'Giá không được nhỏ hơn 0.',
+      'area.required'        => 'Vui lòng nhập diện tích.',
+      'area.numeric'         => 'Diện tích phải là số.',
+      'area.min'             => 'Diện tích không được nhỏ hơn 0.',
+      'province.required'    => 'Vui lòng chọn tỉnh/thành phố.',
+      'province_name.required' => 'Tên tỉnh/thành phố không được để trống.',
+      'district.required'    => 'Vui lòng chọn quận/huyện.',
+      'district_name.required' => 'Tên quận/huyện không được để trống.',
+      'ward.required'        => 'Vui lòng chọn phường/xã.',
+      'ward_name.required'   => 'Tên phường/xã không được để trống.',
+      'street.required'      => 'Vui lòng nhập tên đường.',
+      'house_number.required' => 'Vui lòng nhập số nhà.',
+      'address.required'     => 'Vui lòng nhập địa chỉ.',
+      'images.max'           => 'Bạn chỉ có thể tải lên tối đa 20 ảnh.',
+      'images.*.image'       => 'File tải lên phải là hình ảnh.',
+      'images.*.mimes'       => 'Hình ảnh phải có định dạng jpeg, png, jpg hoặc gif.',
+      'images.*.max'         => 'Hình ảnh không được vượt quá 2MB.',
+      'video_url.url'        => 'Link video không hợp lệ.',
+      'video_url.regex'      => 'Link video chỉ hỗ trợ YouTube hoặc TikTok.',
+    ]);
 
     $videoUrl = $request->video_url ? $this->convertVideoUrl($request->video_url) : null;
 
@@ -190,13 +191,16 @@ class PosterController extends Controller
         $imageName = time() . '_' . $image->getClientOriginalName();
         $image->move($imageDir, $imageName);
 
-                Image::create([
-                    'post_id'    => $post->id,
-                    'image_url'  => $imageName,
-                    'created_at' => Carbon::now(),
-                ]);
-            }
-        }
+        Image::create([
+          'post_id'    => $post->id,
+          'image_url'  => $imageName,
+          'created_at' => Carbon::now(),
+        ]);
+      }
+    }
+    // notification
+    $admins = User::where('role', 'admin')->get();
+    Notification::send($admins, new NewPostNotification($post));
 
     $notification = array(
       'message' => 'Đăng tin thành công !',
@@ -276,19 +280,19 @@ class PosterController extends Controller
       'updated_at'   => now(),
     ]);
 
-        $imageDir = public_path('upload/post_images');
-        if ($request->hasFile('images')) {
-            foreach ($request->file('images') as $image) {
-                $imageName = time() . '_' . $image->getClientOriginalName();
-                $image->move($imageDir, $imageName);
+    $imageDir = public_path('upload/post_images');
+    if ($request->hasFile('images')) {
+      foreach ($request->file('images') as $image) {
+        $imageName = time() . '_' . $image->getClientOriginalName();
+        $image->move($imageDir, $imageName);
 
-                Image::create([
-                    'post_id'    => $post_id,
-                    'image_url'  => $imageName,
-                    'created_at' => Carbon::now(),
-                ]);
-            }
-        }
+        Image::create([
+          'post_id'    => $post_id,
+          'image_url'  => $imageName,
+          'created_at' => Carbon::now(),
+        ]);
+      }
+    }
 
 
     // Thông báo cập nhật thành công
@@ -305,22 +309,22 @@ class PosterController extends Controller
   {
     $image = Image::find($request->id);
 
-        if (!$image) {
-            return response()->json(['error' => true, 'message' => 'Ảnh không tồn tại!']);
-        }
+    if (!$image) {
+      return response()->json(['error' => true, 'message' => 'Ảnh không tồn tại!']);
+    }
 
-        $imagePath = public_path('upload/post_images/' . $image->image_url);
+    $imagePath = public_path('upload/post_images/' . $image->image_url);
 
-        if (file_exists($imagePath)) {
-            if (!unlink($imagePath)) {
-                return response()->json(['error' => true, 'message' => 'Không thể xóa ảnh!']);
-            }
-        }
+    if (file_exists($imagePath)) {
+      if (!unlink($imagePath)) {
+        return response()->json(['error' => true, 'message' => 'Không thể xóa ảnh!']);
+      }
+    }
 
     $image->delete();
 
-        return response()->json(['success' => true]);
-    }
+    return response()->json(['success' => true]);
+  }
 
 
   public function PosterDeletePost($id)
@@ -334,14 +338,14 @@ class PosterController extends Controller
       ]);
     }
 
-        $images = Image::where('post_id', $post->id)->get();
-        foreach ($images as $image) {
-            $imagePath = public_path($image->image_url); // Đường dẫn ảnh
-            if (File::exists($imagePath)) {
-                File::delete($imagePath);
-            }
-            $image->delete();
-        }
+    $images = Image::where('post_id', $post->id)->get();
+    foreach ($images as $image) {
+      $imagePath = public_path($image->image_url); // Đường dẫn ảnh
+      if (File::exists($imagePath)) {
+        File::delete($imagePath);
+      }
+      $image->delete();
+    }
 
     $post->delete();
 
@@ -499,11 +503,11 @@ class PosterController extends Controller
     // Xóa token sau khi đặt lại mật khẩu thành công
     DB::table('password_reset_tokens')->where('email', $request->email)->delete();
 
-        return redirect('/login')->with([
-            'message' => 'Mật khẩu đã được đặt lại thành công!',
-            'alert-type' => 'success',
-        ]);
-    }
+    return redirect('/login')->with([
+      'message' => 'Mật khẩu đã được đặt lại thành công!',
+      'alert-type' => 'success',
+    ]);
+  }
 
   public function sendVerificationCode(Request $request)
   {
@@ -575,11 +579,21 @@ class PosterController extends Controller
       'alert-type' => 'success',
     ];
 
-        return redirect('/poster/verification')->with($notification);
-    }
+    return redirect('/poster/verification')->with($notification);
+  }
 
-    public function PosterContacts()
-    {
-        return view('front.poster.poster_contacts');
+  public function PosterContacts()
+  {
+    return view('front.poster.poster_contacts');
+  }
+  // Notification new post
+  public function MarkAsRead($notificationId)
+  {
+    $user = Auth::user();
+    $notification = $user->notifications()->where('id', $notificationId)->first();
+    if ($notification) {
+      $notification->markAsRead();
     }
+    return response()->json();
+  }
 }

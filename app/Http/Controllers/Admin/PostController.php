@@ -16,28 +16,28 @@ class PostController extends Controller
   public function AllPost()
   {
     $posts = Post::all();
-    return view('admin.post.all_post', compact('posts'), ['title' => 'Tất cả tin']);
+    return view('admin.post.all_post', compact('posts'));
   }
   public function approvedPost()
   {
     $posts = Post::where('status', 'approved')->get();
-    return view('admin.post.approved_post', compact('posts'), ['title' => 'Tin đã duyệt']);
+    return view('admin.post.approved_post', compact('posts'));
   }
   public function PendingPost()
   {
     $posts = Post::where('status', 'pending')->get();
-    return view('admin.post.pending_post', compact('posts'), ['title' => 'Tin chờ duyệt']);
+    return view('admin.post.pending_post', compact('posts'));
   }
   public function HiddenPost()
   {
     $posts = Post::where('status', 'hidden')->get();
-    return view('admin.post.hidden_post', compact('posts'), ['title' => 'Tin đã ẩn']);
+    return view('admin.post.hidden_post', compact('posts'));
   }
   public function EditPost($post_id)
   {
     $post = Post::with(['images'])->findOrFail($post_id);
     $categories = Category::orderBy('id', 'desc')->get();
-    return view('admin.post.edit_post', compact('post', 'categories'), ['title' => 'Cập nhật tin']);
+    return view('admin.post.edit_post', compact('post', 'categories'));
   }
   public function UpdateStatusPost(Request $request, $id)
   {
