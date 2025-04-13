@@ -8,6 +8,7 @@ export default {
         openChatPopup() {
             // Gọi sự kiện mở popup chat
             this.$emit("open-chat");
+            this.fetchMessages();
         },
     },
 };

@@ -10,7 +10,9 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <!-- FAVICON -->
     <link rel="shortcut icon" type="image/x-icon" href="{{ asset('front/favicon.ico') }}">
-
+    <script>
+        window.authId = {{ auth()->user()->id }};
+    </script>
     @vite(['resources/js/app.js'])
     <!-- GOOGLE FONTS -->
     <link href="https://fonts.googleapis.com/css?family=Lato:300,300i,400,400i%7CMontserrat:600,800" rel="stylesheet">

@@ -80,9 +80,13 @@ class MainControler extends Controller
             return $post;
         });
 
+        $categories = Category::where('status', 'show')
+            ->withCount('posts')
+            ->get();
+
         return view(
             'front.main.all_post_recommend',
-            compact('posts_all_featured')
+            compact('posts_all_featured', 'categories')
         );
     }
 
@@ -119,10 +123,14 @@ class MainControler extends Controller
             return $post; // Trả về đối tượng đã được cập nhật trong map()
         });
 
+        $categories = Category::where('status', 'show')
+            ->withCount('posts')
+            ->get();
+
         // Lấy thông tin danh mục một lần duy nhất
         $category = Category::find($id);
 
-        return view('front.main.all_post_category', compact('posts_category', 'category'));
+        return view('front.main.all_post_category', compact('posts_category', 'category', 'categories'));
     }
 
     public function filterByProvince($province)
@@ -130,8 +138,12 @@ class MainControler extends Controller
         // Lọc danh sách bài đăng theo tỉnh/thành phố
         $posts = Post::where('province', $province)->paginate(9);
 
+        $categories = Category::where('status', 'show')
+            ->withCount('posts')
+            ->get();
+
         // Trả về view hiển thị danh sách bài đăng
-        return view('front.main.all_post_province', compact('posts', 'province'));
+        return view('front.main.all_post_province', compact('posts', 'province', 'categories'));
     }
 
     public function SearchPost(Request $request)
@@ -160,9 +172,13 @@ class MainControler extends Controller
             $query->where('province', $provinceName);
         }
 
+        $categories = Category::where('status', 'show')
+            ->withCount('posts')
+            ->get();
+
         $posts = $query->paginate(9)->appends($request->all());
 
-        return view('front.main.search_results', compact('posts', 'search_keyword'));
+        return view('front.main.search_results', compact('posts', 'search_keyword', 'categories'));
     }
 
     public function FilterPost(Request $request)
