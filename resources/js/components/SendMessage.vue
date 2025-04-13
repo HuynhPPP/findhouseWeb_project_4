@@ -1,5 +1,4 @@
 <template>
-
   <!-- Popup chat -->
   <div class="chat-popup" id="chatPopup">
     <!-- Tiêu đề popup -->
@@ -9,21 +8,6 @@
     </div>
     <!-- Nội dung 2 cột -->
     <div class="chat-popup-body">
-      <!-- Cột trái: Danh sách chat -->
-      <!-- <div class="chat-list-col">
-        <div class="chat-list">
-          <a href="javascript:void(0)" class="chat-list-item active">
-            <div class="user-info">
-              <img :src="poster_avatar" alt="Avatar" class="user-avatar">
-              <div>
-                <h6>{{ poster_name }}</h6>
-                <small>Hoạt động 2 ngày trước</small>
-              </div>
-            </div>
-          </a>
-        </div>
-      </div> -->
-      <!-- Cột phải: Khung chat chính -->
       <div class="chat-content-col">
         <!-- Header khung chat -->
         <div class="chat-content-header">
@@ -43,12 +27,10 @@
           </div>
           <!-- Danh sách tin nhắn -->
           <div class="chat-container">
-            <div v-for="(message, index) in messages" :key="index" class="message-bubble-2">
-              <p class="message-text">{{ message.text }}</p>
-              <div class="message-footer">
-                <span>Đã gửi</span>
-                <button class="delete-btn" @click="deleteMessage(index)">&times;</button>
-              </div>
+            <div v-for="(message, index) in messages" :key="index"
+              :class="{ 'message-bubble-sender': message.sender_id === currentUserId, 'message-bubble-receiver': message.sender_id !== currentUserId }">
+              <p class="message-text">{{ message.message }}</p>
+              <span class="time_date">{{ formatDate(message.created_at) }}</span>
             </div>
           </div>
         </div>
@@ -80,11 +62,35 @@ export default {
       newMessage: "", // Nội dung tin nhắn mới
       messages: [], // Danh sách tin nhắn hiển thị
       receiver_id: this.poster_id,
+      currentUserId: null,
       errors: {},
     };
   },
 
+  created() {
+    this.currentUserId = window.authId; // Gán ID người dùng hiện tại
+  },
+
+  mounted() {
+    this.fetchMessages(); // Tải tin nhắn khi component được mount
+    this.intervalId = setInterval(this.fetchMessages, 1000);
+  },
+
   methods: {
+
+    async fetchMessages() {
+      try {
+        const response = await axios.get(`/messages-of-group/${this.post_id}`);
+        if (response.data.success) {
+          this.messages = response.data.messages;
+        } else {
+          this.errors.message = response.data.message || 'Không thể tải tin nhắn';
+        }
+      } catch (error) {
+        console.error('Lỗi khi lấy tin nhắn:', error);
+        this.errors.message = 'Không thể tải tin nhắn';
+      }
+    },
 
     async sendMessage() {
       if (!this.newMessage.trim()) {
@@ -103,6 +109,7 @@ export default {
           this.messages.push({ text: this.newMessage });
           this.newMessage = ""; // Xoá nội dung input
           this.errors = {}; // Xóa lỗi nếu có trước đó
+          await this.fetchMessages();
         }
       } catch (error) {
         console.error("Lỗi khi gửi tin nhắn:", error);
@@ -112,15 +119,21 @@ export default {
       }
     },
 
+    formatDate(date) {
+      return new Date(date).toLocaleString('vi-VN', {
+        hour: '2-digit',
+        minute: '2-digit',
+        day: '2-digit',
+        month: '2-digit',
+        year: 'numeric',
+      });
+    },
+
     closeChatPopup() {
       document.getElementById('chatPopup').classList.remove('active');
     },
   },
 
-  mounted() {
-    window.openChatPopup = this.openChatPopup;
-    window.closeChatPopup = this.closeChatPopup;
-  },
 
   computed: {
     formattedPrice() {
