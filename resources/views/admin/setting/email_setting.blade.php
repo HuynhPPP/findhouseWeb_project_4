@@ -61,16 +61,21 @@
                       <div class="mb-3">
                         <label class="form-label col-form-label">Phương thức mã
                           hóa (Encryption)</label>
-                        <div class="">
-                          <input type="text"
-                            class="form-control @error('encryption') is-invalid @enderror"
-                            id="encryption" name="encryption"
-                            value="{{ old('encryption', $smtp->encryption) }}">
-                          @error('encryption')
-                            <span
-                              class="invalid-feedback">{{ $message }}</span>
-                          @enderror
-                        </div>
+                        <select
+                          class="border form-select form-control fill @error('encryption') is-invalid @enderror"
+                          name="encryption">
+                          <option {{ $smtp->encryption == '' ? 'selected' : '' }}
+                            value="">Không mã hóa</option>
+                          <option
+                            {{ $smtp->encryption == 'tls' ? 'selected' : '' }}
+                            value="tls">TLS</option>
+                          <option
+                            {{ $smtp->encryption == 'ssl' ? 'selected' : '' }}
+                            value="ssl">SSL</option>
+                        </select>
+                        @error('encryption')
+                          <span class="invalid-feedback">{{ $message }}</span>
+                        @enderror
                       </div>
                       <div class="mb-3">
                         <label class="form-label col-form-label">Email người
@@ -119,7 +124,7 @@
                       <div class="mb-3">
                         <label class="form-label col-form-label">Mật khẩu</label>
                         <div class="">
-                          <input type="text"
+                          <input type="password"
                             class="form-control @error('password') is-invalid @enderror"
                             id="password" name="password"
                             value="{{ old('password', $smtp->password) }}">
