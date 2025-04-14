@@ -14,7 +14,7 @@
                                 </p>
                             </div>
                             <h3>
-                                Kết quả tìm kiếm 
+                                Kết quả tìm kiếm
                                 @if ($search_keyword)
                                     với từ khóa "<span class="text-primary">{{ $search_keyword }}</span>"
                                 @else
@@ -133,23 +133,23 @@
                                     </a>
                                 </div>
                                 <div class="button-effect">
-                                    <a href="single-property-1.html" class="btn"><i class="fa fa-link"></i></a>
+                                    <a href="#" class="btn copy-link"
+                                        data-link="{{ route('post.detail', $post->id) }}"><i class="fa fa-link"
+                                            style="line-height: 30px"></i></a>
                                     <a href="{{ $video_url_fixed }}" class="btn popup-video popup-youtube"><i
-                                            class="fas fa-video"></i></a>
-                                    <a href="single-property-2.html" class="img-poppu btn"><i
-                                            class="fa fa-photo"></i></a>
+                                            class="fas fa-video" style="line-height: 30px"></i></a>
                                 </div>
                             </div>
                             <!-- homes content -->
                             <div class="homes-content">
                                 <!-- homes address -->
                                 <h3>
-                                    <a href="single-property-1.html">
+                                    <a href="{{ route('post.detail', $post->id) }}">
                                         {{ Str::words(strip_tags($post->title), 10) }}
                                     </a>
                                 </h3>
                                 <p class="homes-address mb-3">
-                                    <a href="single-property-1.html">
+                                    <a href="{{ route('post.detail', $post->id) }}">
                                         <i class="fa fa-map-marker"></i>
                                         <span>
                                             {{ $post->full_address }}
@@ -178,7 +178,7 @@
                                 <!-- Price -->
                                 <div class="price-properties">
                                     <h3 class="title mt-3">
-                                        <a href="single-property-1.html">
+                                        <a href="{{ route('post.detail', $post->id) }}">
                                             @if ($post->price >= 1000000)
                                                 {{ number_format($post->price / 1000000, 1) }} triệu/tháng
                                             @else
@@ -187,19 +187,20 @@
                                         </a>
                                     </h3>
                                     <div class="compare">
-                                        <a href="#" title="Compare">
-                                            <i class="fas fa-exchange-alt"></i>
-                                        </a>
-                                        <a href="#" title="Share">
+                                        <a href="#" title="Chia sẻ" class="share-post"
+                                            data-link="{{ route('post.detail', $post->id) }}"
+                                            data-title="{{ $post->title }}" data-post-id="{{ $post->id }}">
                                             <i class="fas fa-share-alt"></i>
                                         </a>
-                                        <a href="#" title="Favorites">
-                                            <i class="fa fa-heart-o"></i>
+                                        <a href="javascript:void(0)" title="Bấm để lưu tin" id="{{ $post->id }}"
+                                            onclick="addToWishList(this.id, event)" class="save-post">
+                                            <i class="{{ $post->isSavedByUser(auth()->user()) ? 'fas fa-heart' : 'far fa-heart' }}"
+                                                id="heart-icon-{{ $post->id }}"></i>
                                         </a>
                                     </div>
                                 </div>
                                 <div class="footer">
-                                    <a href="agent-details.html">
+                                    <a href="{{ route('poster.detail', $post->user->id) }}">
                                         <img src="{{ !empty($post->users->photo) ? url('upload/poster_images/' . $post->users->photo) : url('upload/no_img.jpg') }}"
                                             alt="" class="mr-2"
                                             style="width: 35px; height: 35px; object-fit: cover; border-radius: 50%;">
@@ -325,6 +326,9 @@
         </div>
     </div>
 </div>
+
+
+
 
 @section('customJs')
     <script>

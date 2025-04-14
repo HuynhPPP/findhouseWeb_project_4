@@ -130,6 +130,7 @@
     });
 </script>
 
+{{-- Add to WishList --}}
 <script type="text/javascript">
     $.ajaxSetup({
         headers: {
@@ -190,6 +191,7 @@
     }
 </script>
 
+{{-- Remove WishList --}}
 <script type="text/javascript">
     function removeSavedPost(savedPostId) {
         Swal.fire({
@@ -223,35 +225,33 @@
     }
 </script>
 
-<script type="text/javascript">
-    function removeSavedPostPoster(savedPostId) {
-        Swal.fire({
-            title: "Bạn có chắc chắn?",
-            text: "Tin này sẽ bị xóa khỏi danh sách đã lưu!",
-            icon: "warning",
-            showCancelButton: true,
-            confirmButtonColor: "#3085d6",
-            cancelButtonColor: "#d33",
-            confirmButtonText: "Xóa",
-            cancelButtonText: "Hủy"
-        }).then((result) => {
-            if (result.isConfirmed) {
-                $.ajax({
-                    url: "/poster/remove-saved-post/" + savedPostId,
-                    type: "DELETE",
-                    data: {
-                        _token: "{{ csrf_token() }}"
-                    },
-                    success: function(response) {
-                        if (response.success) {
-                            Swal.fire("Xóa thành công!", response.message, "success");
-                            location.reload();
-                        } else {
-                            Swal.fire("Lỗi!", response.message, "error");
-                        }
-                    }
+<!-- Get link post -->
+<script>
+    document.querySelectorAll('.copy-link').forEach(button => {
+        button.addEventListener('click', function(event) {
+            event.preventDefault();
+
+            const Toast = Swal.mixin({
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 3000
+            });
+
+            const link = this.getAttribute('data-link');
+            navigator.clipboard.writeText(link).then(() => {
+                Toast.fire({
+                    icon: 'success',
+                    title: 'Đã sao chép liên kết'
                 });
-            }
+            }).catch(err => {
+                console.error('Lỗi khi sao chép: ', err);
+                Toast.fire({
+                    icon: 'error',
+                    title: 'Không thể sao chép liên kết!'
+                });
+            });
         });
-    }
+    });
 </script>
+

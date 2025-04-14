@@ -11,7 +11,7 @@
     <!-- FAVICON -->
     <link rel="shortcut icon" type="image/x-icon" href="{{ asset('front/favicon.ico') }}">
     <script>
-        window.authId = {{ auth()->user()->id }};
+        window.authId = {{ auth()->check() ? auth()->user()->id : 'null' }};
     </script>
     @vite(['resources/js/app.js'])
     <!-- GOOGLE FONTS -->
