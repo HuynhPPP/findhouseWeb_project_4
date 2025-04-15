@@ -272,11 +272,15 @@ class MainControler extends Controller
             }
         }
 
+        $categories = Category::where('status', 'show')
+            ->withCount('posts')
+            ->get();
+
         // dump($query->toSql(), $query->getBindings());
 
         $posts = $query->paginate(9);
 
-        return view('front.main.search_results', compact('posts', 'search_keyword'));
+        return view('front.main.search_results', compact('posts', 'search_keyword', 'categories'));
     }
 
     public function ForgetPassword()

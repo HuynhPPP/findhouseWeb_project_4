@@ -131,7 +131,7 @@ class PosterController extends Controller
             'address'      => 'required|string',
             'images'       => 'nullable|array|max:20',
             'images.*'     => 'image|mimes:jpeg,png,jpg,gif|max:2048',
-            'video_url'    => 'nullable|string|url|regex:/^(https?:\/\/(www\.)?(youtube\.com|youtu\.be|tiktok\.com)\/)/', // Validate URL cho YouTube/TikTok
+            'video_url'    => 'nullable|string', // Validate URL cho YouTube/TikTok
         ], [
             'title.required'       => 'Vui lòng nhập tiêu đề.',
             'title.max'            => 'Tiêu đề không được vượt quá 255 ký tự.',
