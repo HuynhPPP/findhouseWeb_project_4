@@ -17,7 +17,7 @@
     <div class="main-overlay"></div>
     <div class="main-register-holder">
         <div class="main-register fl-wrap">
-            <div class="close-reg"><i class="fa fa-times"></i></div>
+            <div class="close-reg"><i class="fa fa-times" style="line-height: 40px;"></i></div>
             <h3><span>Find<strong>Houses</strong></span></h3>
             <div class="soc-log fl-wrap">
                 <p>Đăng nhập</p>
