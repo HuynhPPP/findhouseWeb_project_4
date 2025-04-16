@@ -1,5 +1,5 @@
 <template>
-    <input class="multiple-send-message-2" @click="$emit('open-chat')" value="Nhắn tin" />
+    <input class="multiple-send-message-2" @click="$emit('open-chat')" value="Liên hệ" />
 </template>
 
 <script>

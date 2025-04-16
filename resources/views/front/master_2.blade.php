@@ -94,27 +94,20 @@
 
         <script type="text/javascript" src="{{ asset('front/toastr/toastr.min.js') }}"></script>
 
-        <!-- Toast -->
+        <!-- Sweetalert2 -->
         <script>
-            @if (Session::has('message'))
-                var type = "{{ Session::get('alert-type', 'info') }}"
-                switch (type) {
-                    case 'info':
-                        toastr.info(" {{ Session::get('message') }} ");
-                        break;
+            @if (session('alert-type'))
+                const Toast = Swal.mixin({
+                    toast: true,
+                    position: 'top-end',
+                    showConfirmButton: false,
+                    timer: 3000,
+                });
 
-                    case 'success':
-                        toastr.success(" {{ Session::get('message') }} ");
-                        break;
-
-                    case 'warning':
-                        toastr.warning(" {{ Session::get('message') }} ");
-                        break;
-
-                    case 'error':
-                        toastr.error(" {{ Session::get('message') }} ");
-                        break;
-                }
+                Toast.fire({
+                    icon: '{{ session('alert-type') }}',
+                    title: '{{ session('message') }}'
+                });
             @endif
         </script>
 
@@ -137,7 +130,7 @@
 
         @include('front.body.script')
 
-        
+
     </div>
     <!-- Wrapper / End -->
 </body>

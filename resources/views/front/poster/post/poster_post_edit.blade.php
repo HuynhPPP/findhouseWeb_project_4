@@ -11,7 +11,7 @@
         }
 
         .custom-select-price {
-            width: 120px; 
+            width: 120px;
         }
 
         .selected-option {
@@ -111,15 +111,9 @@
                             <div class="form-group">
                                 <label for="gia_thue">Giá cho thuê <span class="text-danger">(*)</span></label>
                                 <div class="input-group">
-                                    <input type="number" 
-                                           class="form-control" 
-                                           name="price" 
-                                           min="0" step="1"
-                                           id="rental_price" 
-                                           placeholder="Nhập giá"
-                                           value="{{ old('price', $post->price) }}"
-                                           style="height: 50px;"
-                                    >
+                                    <input type="number" class="form-control" name="price" min="0" step="1"
+                                        id="rental_price" placeholder="Nhập giá" value="{{ old('price', $post->price) }}"
+                                        style="height: 50px;">
                                     <div class="input-group-append">
                                         <select id="rental_unit" class="custom-select-price">
                                             <option value="đồng/tháng">đồng/tháng</option>
@@ -138,14 +132,9 @@
                             <div class="form-group">
                                 <label for="area">Diện tích <span class="text-danger">(*)</span></label>
                                 <div class="input-group">
-                                    <input type="number" 
-                                           class="form-control" 
-                                           id="area" 
-                                           name="area"
-                                           placeholder="Nhập diện tích"
-                                           value="{{ old('area', $post->area) }}"
-                                           style="height: 50px;"
-                                    >
+                                    <input type="number" class="form-control" id="area" name="area"
+                                        placeholder="Nhập diện tích" value="{{ old('area', $post->area) }}"
+                                        style="height: 50px;">
                                     <div class="input-group-append">
                                         <span class="input-group-text">m²</span>
                                     </div>
@@ -175,7 +164,8 @@
                             <div class="image-preview" id="imagePreview">
                                 @foreach ($images as $image)
                                     <div id="image-{{ $image->id }}" style="position: relative; display: inline-block;">
-                                        <img src="{{ asset('upload/post_images/' . $image->image_url) }}" class="preview-img">
+                                        <img src="{{ asset('upload/post_images/' . $image->image_url) }}"
+                                            class="preview-img">
                                         <button class="remove-img delete-image"
                                             data-id="{{ $image->id }}">&times;</button>
                                     </div>
@@ -329,6 +319,11 @@
                             </p>
                         </div>
                     </div>
+                    <div class="row mt-4">
+                        <div class="col-lg-12 col-md-12">
+                            <button id="find-location" class="btn btn-primary">Tìm vị trí trên bản đồ</button>
+                        </div>
+                    </div>
                 </div>
             </div>
 
@@ -338,7 +333,6 @@
                 <div id="map"></div>
             </div>
 
-           
             @php
                 $id = Auth::user()->id;
                 $profileData = App\Models\User::find($id);
@@ -398,7 +392,7 @@
 
 @section('customJs')
     <script src="https://unpkg.com/leaflet@1.3.1/dist/leaflet.js"></script>
-    <script src="{{ asset('front/js/map_post_view.js') }}"></script>
+    <script src="{{ asset('front/leaflet/map_post_view.js') }}"></script>
 
     {{-- Lấy API tỉnh thành --}}
     <script type="text/javascript">
@@ -498,7 +492,7 @@
         });
     </script>
 
-
+    {{-- Hiển thị video --}}
     <script>
         document.addEventListener("DOMContentLoaded", function() {
             const videoInput = document.getElementById("videoLink");
@@ -703,14 +697,16 @@
 
         function numberToWords(number) {
             if (isNaN(number) || number <= 0) return "";
-            
+
             let ones = ["", "một", "hai", "ba", "bốn", "năm", "sáu", "bảy", "tám", "chín"];
-            let tens = ["", "mười", "hai mươi", "ba mươi", "bốn mươi", "năm mươi", "sáu mươi", "bảy mươi", "tám mươi", "chín mươi"];
+            let tens = ["", "mười", "hai mươi", "ba mươi", "bốn mươi", "năm mươi", "sáu mươi", "bảy mươi", "tám mươi",
+                "chín mươi"
+            ];
             let thousands = ["", "nghìn", "triệu", "tỷ"];
 
-            let numStr = number.toString().split("").reverse().join(""); 
+            let numStr = number.toString().split("").reverse().join("");
             let wordArray = [];
-            
+
             for (let i = 0; i < numStr.length; i += 3) {
                 let numPart = numStr.substr(i, 3).split("").reverse().join("");
                 let partWord = threeDigitToWords(parseInt(numPart));
@@ -724,9 +720,11 @@
 
         function threeDigitToWords(num) {
             if (num === 0) return "";
-            
+
             let ones = ["", "một", "hai", "ba", "bốn", "năm", "sáu", "bảy", "tám", "chín"];
-            let tens = ["", "mười", "hai mươi", "ba mươi", "bốn mươi", "năm mươi", "sáu mươi", "bảy mươi", "tám mươi", "chín mươi"];
+            let tens = ["", "mười", "hai mươi", "ba mươi", "bốn mươi", "năm mươi", "sáu mươi", "bảy mươi", "tám mươi",
+                "chín mươi"
+            ];
 
             let str = "";
             if (num >= 100) {
@@ -746,7 +744,7 @@
 
     <!-- Chỉ cho phép nhập số -->
     <script>
-        document.getElementById("rental_price").addEventListener("keypress", function (event) {
+        document.getElementById("rental_price").addEventListener("keypress", function(event) {
             if (event.key === "." || event.key === ",") {
                 event.preventDefault(); // Ngăn nhập dấu "." hoặc ","
             }
@@ -755,9 +753,95 @@
             }
         });
 
-        document.getElementById("rental_price").addEventListener("input", function () {
+        document.getElementById("rental_price").addEventListener("input", function() {
             this.value = this.value.replace(/[^0-9]/g, ""); // Xóa toàn bộ ký tự không phải số
         });
     </script>
 
+    {{-- Lấy vị trí trên bản đồ --}}
+    <script>
+        $(document).ready(function() {
+
+            // Hàm lấy địa chỉ đầy đủ và cập nhật trường address
+            function updateAddressField() {
+                let houseNumber = $('input[name="house_number"]').val().trim();
+                let street = $('input[name="street"]').val().trim();
+                let ward = $('#wards option:selected').text().trim();
+                let district = $('#district option:selected').text().trim();
+                let province = $('#province option:selected').text().trim();
+
+                // Kiểm tra giá trị value của select để đảm bảo không lấy placeholder
+                let wardValue = $('#wards').val();
+                let districtValue = $('#district').val();
+                let provinceValue = $('#province').val();
+
+                // Tạo mảng chứa các thành phần địa chỉ hợp lệ
+                let addressParts = [];
+
+                if (houseNumber) {
+                    addressParts.push(houseNumber);
+                }
+                if (street) {
+                    addressParts.push(street);
+                }
+                if (ward && ward !== "-- Chọn Phường/Xã --" && wardValue) {
+                    addressParts.push(ward);
+                }
+                if (district && district !== "-- Chọn Quận/Huyện --" && districtValue) {
+                    addressParts.push(district);
+                }
+                if (province && province !== "-- Chọn Tỉnh/Thành phố --" && provinceValue) {
+                    addressParts.push(province);
+                }
+
+                // Ghép các thành phần thành chuỗi địa chỉ
+                let address = addressParts.join(", ");
+
+                if (address) {
+                    address += ", Việt Nam";
+                }
+
+                // Cập nhật trường address
+                $('input[name="address"]').val(address);
+            }
+
+            // Cập nhật địa chỉ khi các trường thay đổi
+            $('input[name="house_number"], input[name="street"], #wards, #district, #province').on('change',
+                function() {
+                    updateAddressField();
+                });
+
+            // Gọi ngay khi trang tải để cập nhật địa chỉ ban đầu (nếu có old values)
+            updateAddressField();
+
+            // Xử lý khi nhấn nút tìm vị trí
+            $("#find-location").click(function(event) {
+                event.preventDefault();
+
+                let fullAddress = $('input[name="address"]').val().trim();
+                let simplifiedAddress = fullAddress.replace(/^.*?, /, '');
+
+                if (!simplifiedAddress || simplifiedAddress === "Việt Nam") {
+                    Swal.fire({
+                        title: "Vui lòng nhập đầy đủ địa chỉ!",
+                        icon: "error",
+                    });
+                    return;
+                }
+
+                tryGeocodeVariants(fullAddress, simplifiedAddress, function(coords) {
+                    if (coords) {
+                        updateMap(coords.lat, coords.lon);
+                    } else {
+                        Swal.fire({
+                            title: "Không tìm thấy vị trí!",
+                            text: "Vui lòng kiểm tra lại địa chỉ.",
+                            icon: "warning",
+                        });
+                    }
+                });
+            });
+
+        });
+    </script>
 @endsection

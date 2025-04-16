@@ -295,7 +295,7 @@ class MainControler extends Controller
         ], [
             'email.required' => 'Vui lòng nhập email.',
             'email.email' => 'Email không hợp lệ.',
-            'email.exists' => 'Email này không tồn tại trong hệ thống.',
+            'email.exists' => 'Email này chưa được đăng ký trong hệ thống.',
         ]);
 
         $user = User::where('email', $request->email)->first();

@@ -28,7 +28,7 @@ class SocialliteController extends Controller
                 Auth::login($user);
 
                 $notification = [
-                    'message' => 'Đăng nhập thành công',
+                    'message' => 'Đăng nhập thành công!',
                     'alert-type' => 'success',
                 ];
 
@@ -50,7 +50,7 @@ class SocialliteController extends Controller
                 Auth::login($userData);
 
                 $notification = [
-                    'message' => 'Đăng nhập thành công',
+                    'message' => 'Đăng nhập thành công!',
                     'alert-type' => 'success',
                 ];
 

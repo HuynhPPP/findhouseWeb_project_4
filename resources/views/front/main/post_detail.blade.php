@@ -241,15 +241,6 @@
                                                     </div>
                                                     <div class="clearfix"></div>
                                                 </div>
-                                                <div class="col-md-6">
-                                                    <!-- Uplaod Photos -->
-                                                    <div class="add-review-photos margin-bottom-30">
-                                                        <div class="photoUpload">
-                                                            <span><i class="sl sl-icon-arrow-up-circle"></i> Tải ảnh lên</span>
-                                                            <input type="file" class="upload" />
-                                                        </div>
-                                                    </div>
-                                                </div>
                                             </div>
                                             <div class="row">
                                                 <div class="col-md-12 data">
@@ -310,81 +301,51 @@
                                             </li>
                                         </ul>
                                         @if (auth()->id() != $post->user_id)
-                                        <div class="agent-contact-form-sidebar">
-                                            <h4>Liên hệ để thuê</h4>
+                                            <div class="agent-contact-form-sidebar">
+                                                <h4>Liên hệ để thuê</h4>
 
-                                            @auth
-                                                @php
-                                                    $booking = App\Models\Bookings::where('post_id', $post->id)
-                                                        ->where('user_id', Auth::user()->id)
-                                                        ->first();
-                                                @endphp
+                                                @auth
+                                                    @php
+                                                        $booking = App\Models\Bookings::where('post_id', $post->id)
+                                                            ->where('user_id', Auth::user()->id)
+                                                            ->first();
+                                                    @endphp
 
-                                                @php
-                                                    $profileData = Auth::user(); // Lấy user hiện tại
-                                                @endphp
-                                                <!-- Nếu đã đăng nhập, hiển thị form -->
-                                                @if ($booking && $booking->status == 'pending')
-                                                    <form method="POST"
-                                                        action="{{ route('bookings.cancel', $booking->id) }}">
-                                                        @csrf
-                                                        <input type="hidden" name="post_id" value="{{ $post->id }}">
-                                                        <input type="hidden" name="user_id" value="{{ $profileData->id }}">
+                                                    @php
+                                                        $profileData = Auth::user(); // Lấy user hiện tại
+                                                    @endphp
+                                                    <input type="hidden" name="post_id" value="{{ $post->id }}">
+                                                    <input type="hidden" name="user_id" value="{{ $profileData->id }}">
 
-                                                        <input type="text" id="fname" name="full_name"
-                                                            value="{{ $profileData->name }}" readonly />
+                                                    <label for="fname">Họ tên</label>
+                                                    <input type="text" id="fname" name="full_name"
+                                                        value="{{ $profileData->name }}" readonly />
 
-                                                        <input type="number" id="pnumber" name="phone_number"
-                                                            value="{{ $profileData->phone ?? 'Chưa cập nhật' }}" readonly />
+                                                    <label for="fname">Số điện thoại</label>
+                                                    <input type="text" id="pnumber" name="phone_number"
+                                                        value="{{ $profileData->phone ?? 'Chưa cập nhật' }}" readonly />
 
-                                                        <input type="email" id="emailid" name="email_address"
-                                                            value="{{ $profileData->email ?? 'Chưa cập nhật' }}" readonly />
-
-                                                        <input type="submit" id="cancel_booking"
-                                                            class="multiple-send-message" value="Huỷ yêu cầu" />
-                                                    </form>
-                                                @else
-                                                    <form name="contact_form" method="post"
-                                                        action="{{ route('bookings.store') }}">
-                                                        @csrf
-                                                        <input type="hidden" name="post_id" value="{{ $post->id }}">
-                                                        <input type="hidden" name="user_id" value="{{ $profileData->id }}">
-
-                                                        <label for="fname">Họ tên</label>
-                                                        <input type="text" id="fname" name="full_name"
-                                                            value="{{ $profileData->name }}" readonly />
-
-                                                        <label for="fname">Số điện thoại</label>
-                                                        <input type="text" id="pnumber" name="phone_number"
-                                                            value="{{ $profileData->phone ?? 'Chưa cập nhật' }}" readonly />
-
-                                                        <label for="fname">Email</label>
-                                                        <input type="email" id="emailid" name="email_address"
-                                                            value="{{ $profileData->email ?? 'Chưa cập nhật' }}" readonly />
-
-                                                        <input type="submit" id="submit_booking"
-                                                            class="multiple-send-message" value="Gửi yêu cầu" />
-
-                                                    </form>
+                                                    <label for="fname">Email</label>
+                                                    <input type="email" id="emailid" name="email_address"
+                                                        value="{{ $profileData->email ?? 'Chưa cập nhật' }}" readonly />
                                                     <!-- Nút mở chat (sẽ được thay thế bởi Vue) -->
 
                                                     <div id="chatButtonApp">
                                                         <chat-button @open-chat="openChatPopup"></chat-button>
                                                     </div>
-                                                @endif
-                                            @else
-                                                <!-- Nếu chưa đăng nhập, hiển thị thông báo -->
-                                                <div class="alert alert-warning">
-                                                    Bạn cần <a class="text-danger"
-                                                        href="{{ route('login', ['redirect' => request()->fullUrl()]) }}">
-                                                        đăng nhập
-                                                    </a>
-                                                    </a> trước khi gửi yêu cầu liên hệ.
-                                                </div>
+                                                @else
+                                                    <!-- Nếu chưa đăng nhập, hiển thị thông báo -->
+                                                    <div class="alert alert-warning">
+                                                        Bạn cần <a class="text-danger"
+                                                            href="{{ route('login', ['redirect' => request()->fullUrl()]) }}">
+                                                            đăng nhập
+                                                        </a>
+                                                        </a> trước khi gửi yêu cầu liên hệ.
+                                                    </div>
 
-                                            @endauth
+                                                @endauth
 
-                                        </div>
+                                            </div>
                                         @endif
 
                                     </div>
@@ -607,51 +568,75 @@
 
 @section('customJs')
     <script src="{{ asset('front/leaflet/leaflet.js') }}"></script>
-    <script src="{{ asset('front/js/map_post_view.js') }}"></script>
+    {{-- <script src="{{ asset('front/leaflet/map_post_view.js') }}"></script> --}}
 
+    {{-- Lấy vị trí bản đồ --}}
     <script>
-        $(function() {
-            $(document).on('click', '#submit_booking', function(e) {
-                e.preventDefault(); // Ngăn form submit ngay
-                var form = $(this).closest('form'); // Lấy đối tượng form chứa nút này
-                Swal.fire({
-                    title: 'Bạn có chắc chắn?',
-                    text: "Bạn muốn yêu cầu thuê ",
-                    icon: 'info',
-                    showCancelButton: true,
-                    confirmButtonColor: '#3085d6',
-                    cancelButtonColor: '#d33',
-                    confirmButtonText: 'Đồng ý',
-                    cancelButtonText: 'Không'
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        form.submit();
-                    }
-                });
-            });
-        });
-    </script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const fullAddress = @json($post->full_address ?? '');
+            const mapElement = document.getElementById('map');
+            let marker;
 
-    <script>
-        $(function() {
-            $(document).on('click', '#cancel_booking', function(e) {
-                e.preventDefault(); // Ngăn form submit ngay
-                var form = $(this).closest('form'); // Lấy đối tượng form chứa nút này
-                Swal.fire({
-                    title: 'Bạn có chắc chắn?',
-                    text: "Bạn muốn huỷ yêu cầu thuê này?",
-                    icon: 'warning',
-                    showCancelButton: true,
-                    confirmButtonColor: '#3085d6',
-                    cancelButtonColor: '#d33',
-                    confirmButtonText: 'Huỷ yêu cầu',
-                    cancelButtonText: 'Không'
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        form.submit();
+            if (!fullAddress || fullAddress.trim() === "") {
+                mapElement.innerHTML = "<p style='color:red;'>Không có địa chỉ để hiển thị bản đồ.</p>";
+                return;
+            }
+
+            // Gọi Nominatim để lấy lat/lon từ địa chỉ
+            const geocodeUrl =
+                `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(fullAddress)}`;
+
+            fetch(geocodeUrl)
+                .then(response => response.json())
+                .then(data => {
+                    if (data && data.length > 0) {
+                        const lat = parseFloat(data[0].lat);
+                        const lon = parseFloat(data[0].lon);
+
+                        const map = L.map('map').setView([lat, lon], 16);
+
+                        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                            maxZoom: 19,
+                            attribution: '&copy; OpenStreetMap'
+                        }).addTo(map);
+
+                        // Tạo custom icon (tùy chỉnh marker)
+                        const customIcon = L.icon({
+                            iconUrl: '{{ asset('front/location-pin.png') }}',
+
+                            // Đường dẫn đến biểu tượng của bạn
+                            iconSize: [32, 32], // Kích thước marker
+                            iconAnchor: [16, 32], // Mỏ neo của marker (điểm chạm đất)
+                            popupAnchor: [0, -32] // Vị trí hiển thị popup
+                        });
+
+                        function updateMap(lat, lon) {
+                            // Di chuyển bản đồ đến vị trí mới
+                            map.setView([lat, lon], 14);
+
+                            // Xóa marker cũ nếu có
+                            if (marker) {
+                                map.removeLayer(marker);
+                            }
+
+                            // Thêm marker mới với custom icon
+                            marker = L.marker([lat, lon], {
+                                    icon: customIcon
+                                })
+                                .addTo(map)
+                        }
+
+                        // GỌI updateMap tại đây
+                        updateMap(lat, lon);
+
+                    } else {
+                        mapElement.innerHTML = "<p style='color:red;'>Không tìm thấy vị trí trên bản đồ.</p>";
                     }
+                })
+                .catch(error => {
+                    console.error("Geocoding error:", error);
+                    mapElement.innerHTML = "<p style='color:red;'>Có lỗi khi tải bản đồ.</p>";
                 });
-            });
         });
     </script>
 @endsection

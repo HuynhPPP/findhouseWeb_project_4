@@ -100,6 +100,7 @@
                         $video_url_fixed = str_replace('embed/', 'watch?v=', $video_url);
 
                         $fixedImage = $post->images()->first();
+                        $totalImages = $post->images()->count();
                     @endphp
                     <div class="item col-lg-4 col-md-6 col-xs-12 landscapes sale">
                         <div class="project-single" data-aos="fade-up">
@@ -125,10 +126,16 @@
                                     </a>
                                 </div>
                                 <div class="button-effect">
-                                    <a href="single-property-1.html" class="btn"><i class="fa fa-link"
+                                    <a href="#" class="btn copy-link"
+                                        data-link="{{ route('post.detail', $post->id) }}"><i class="fa fa-link"
                                             style="line-height: 30px"></i></a>
-                                    <a href="{{ $video_url_fixed }}" class="btn popup-video popup-youtube"><i
-                                            class="fas fa-video" style="line-height: 30px"></i></a>
+                                    @if ($video_url)
+                                        <a href="{{ $video_url_fixed }}" class="btn popup-video popup-youtube"><i
+                                                class="fas fa-video" style="line-height: 30px"></i></a>
+                                    @endif
+                                    <a class="img-poppu btn" style="color: black;">
+                                        {{ $totalImages }} <i class="fa fa-photo"></i>
+                                    </a>
                                 </div>
                             </div>
                             <!-- homes content -->
@@ -150,20 +157,8 @@
                                 <!-- homes List -->
                                 <ul class="homes-list clearfix pb-3">
                                     <li class="the-icons">
-                                        <i class="flaticon-bed mr-2" aria-hidden="true"></i>
-                                        <span>6 Bedrooms</span>
-                                    </li>
-                                    <li class="the-icons">
-                                        <i class="flaticon-bathtub mr-2" aria-hidden="true"></i>
-                                        <span>3 Bathrooms</span>
-                                    </li>
-                                    <li class="the-icons">
                                         <i class="flaticon-square mr-2" aria-hidden="true"></i>
                                         <span>{{ $post->area }} m&sup2;</span>
-                                    </li>
-                                    <li class="the-icons">
-                                        <i class="flaticon-car mr-2" aria-hidden="true"></i>
-                                        <span>2 Garages</span>
                                     </li>
                                 </ul>
                                 <!-- Price -->
@@ -178,9 +173,6 @@
                                         </a>
                                     </h3>
                                     <div class="compare">
-                                        <a href="#" title="Compare">
-                                            <i class="fas fa-exchange-alt"></i>
-                                        </a>
                                         <a href="#" title="Share">
                                             <i class="fas fa-share-alt"></i>
                                         </a>

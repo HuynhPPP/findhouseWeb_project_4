@@ -104,7 +104,8 @@
                     @csrf
                     <div class="form-group">
                         <label for="phone">Email</label>
-                        <input type="text" id="email" name="email" class="form-control" value="{{ old('email') }}">
+                        <input type="text" id="email" name="email" class="form-control"
+                            value="{{ old('email') }}">
                         @if ($errors->has('email'))
                             <p class="text-danger">{{ $errors->first('email') }}</p>
                         @endif
@@ -140,28 +141,21 @@
         <script src="{{ asset('front/js/inner.js') }}"></script>
 
         <script type="text/javascript" src="{{ asset('front/toastr/toastr.min.js') }}"></script>
-        
-        <!-- Toast -->
+
+        <!-- Sweetalert2 -->
         <script>
-            @if (Session::has('message'))
-                var type = "{{ Session::get('alert-type', 'info') }}"
-                switch (type) {
-                    case 'info':
-                        toastr.info(" {{ Session::get('message') }} ");
-                        break;
+            @if (session('alert-type'))
+                const Toast = Swal.mixin({
+                    toast: true,
+                    position: 'top-end',
+                    showConfirmButton: false,
+                    timer: 3000,
+                });
 
-                    case 'success':
-                        toastr.success(" {{ Session::get('message') }} ");
-                        break;
-
-                    case 'warning':
-                        toastr.warning(" {{ Session::get('message') }} ");
-                        break;
-
-                    case 'error':
-                        toastr.error(" {{ Session::get('message') }} ");
-                        break;
-                }
+                Toast.fire({
+                    icon: '{{ session('alert-type') }}',
+                    title: '{{ session('message') }}'
+                });
             @endif
         </script>
 

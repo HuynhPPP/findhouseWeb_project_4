@@ -180,6 +180,7 @@ class PosterController extends Controller
         $post->video_url     = $videoUrl;
         $post->status        = 'pending';
         $post->created_at    = now();
+
         $post->save();
 
 
