@@ -283,6 +283,257 @@ class MainControler extends Controller
         return view('front.main.search_results', compact('posts', 'search_keyword', 'categories'));
     }
 
+    public function sortSearchPosts(Request $request)
+    {
+        $query = Post::query();
+        $search_keyword = $request->input('keyword');
+
+        // Tìm kiếm theo từ khóa
+        if ($request->filled('keyword')) {
+            $query->where(function ($q) use ($search_keyword) {
+                $q->where('title', 'LIKE', "%$search_keyword%")
+                    ->orWhere('price', 'LIKE', "%$search_keyword%")
+                    ->orWhere('area', 'LIKE', "%$search_keyword%")
+                    ->orWhere('province', 'LIKE', "%$search_keyword%")
+                    ->orWhere('district', 'LIKE', "%$search_keyword%")
+                    ->orWhere('ward', 'LIKE', "%$search_keyword%");
+            });
+        }
+
+        // Lọc theo danh mục
+        if ($request->filled('category') && $request->category != '-- Danh mục --') {
+            $query->where('category_id', $request->category);
+        }
+
+        // Lọc theo tỉnh/thành
+        if ($request->filled('provinceName')) {
+            $query->where('province', $request->provinceName);
+        }
+
+        // Lọc theo quận/huyện, xã/phường
+        if ($request->filled('province_name')) {
+            $query->where('province', $request->province_name);
+        }
+        if ($request->filled('district_name')) {
+            $query->where('district', $request->district_name);
+        }
+        if ($request->filled('ward_name')) {
+            $query->where('ward', $request->ward_name);
+        }
+
+        // Lọc theo danh mục từ bộ lọc
+        if ($request->filled('category_id') && $request->category_id !== 'all') {
+            $query->where('category_id', $request->category_id);
+        }
+
+        // Lọc theo khoảng giá
+        if ($request->filled('price_range') && $request->price_range !== 'all') {
+            $priceConditions = [
+                'under-1m' => ['price', '<', 1000000],
+                '1-2m' => ['price', '>=', 1000000, '<=', 2000000],
+                '2-3m' => ['price', '>=', 2000000, '<=', 3000000],
+                '3-5m' => ['price', '>=', 3000000, '<=', 5000000],
+                '5-7m' => ['price', '>=', 5000000, '<=', 7000000],
+                '7-10m' => ['price', '>=', 7000000, '<=', 10000000],
+                '10-15m' => ['price', '>=', 10000000, '<=', 15000000],
+                'over-15m' => ['price', '>', 15000000]
+            ];
+
+            if (isset($priceConditions[$request->price_range])) {
+                $condition = $priceConditions[$request->price_range];
+                if (count($condition) === 3) {
+                    $query->where($condition[0], $condition[1], $condition[2]);
+                } else {
+                    $query->whereBetween($condition[0], [$condition[2], $condition[3]]);
+                }
+            }
+        }
+
+        // Lọc theo diện tích
+        if ($request->filled('area_range') && $request->area_range !== 'all') {
+            $areaConditions = [
+                'under-20m' => ['area', '<', 20],
+                '20-30m' => ['area', '>=', 20, '<=', 30],
+                '30-50m' => ['area', '>=', 30, '<=', 50],
+                '50-70m' => ['area', '>=', 50, '<=', 70],
+                '70-90m' => ['area', '>=', 70, '<=', 90],
+                'over-90m' => ['area', '>', 90]
+            ];
+
+            if (isset($areaConditions[$request->area_range])) {
+                $condition = $areaConditions[$request->area_range];
+                if (count($condition) === 3) {
+                    $query->where($condition[0], $condition[1], $condition[2]);
+                } else {
+                    $query->whereBetween($condition[0], [$condition[2], $condition[3]]);
+                }
+            }
+        }
+
+        // Sắp xếp theo giá
+        $sort = $request->query('sort', 'price_asc');
+        $query->when($sort == 'price_asc', function ($q) {
+            return $q->orderBy('price', 'asc');
+        })->when($sort == 'price_desc', function ($q) {
+            return $q->orderBy('price', 'desc');
+        });
+
+        // Load quan hệ
+        $query->with(['category', 'images', 'user']);
+
+        // Phân trang
+        $posts = $query->paginate(9)->appends($request->all());
+
+        // Lấy danh mục
+        $categories = Category::where('status', 'show')->withCount('posts')->get();
+
+        if ($request->ajax()) {
+            $posts_html = view('front.main.sort_page.posts_list_sort', compact('posts'))->render();
+            $pagination_html = $posts->links('pagination::bootstrap-4')->toHtml();
+            return response()->json([
+                'posts_html' => $posts_html,
+                'pagination_html' => $pagination_html
+            ]);
+        }
+
+        return view('front.main.search_results', compact('posts', 'search_keyword', 'categories'));
+    }
+
+    public function sortRecommendPosts(Request $request)
+    {
+        $sort = $request->query('sort', 'price_asc');
+
+        $query = Post::where('is_featured', '1')
+            ->with(['category', 'images', 'user'])
+            ->when($sort == 'price_asc', function ($q) {
+                return $q->orderBy('price', 'asc');
+            })
+            ->when($sort == 'price_desc', function ($q) {
+                return $q->orderBy('price', 'desc');
+            });
+
+        $posts = $query->paginate(9)->through(function ($post) {
+            $addressParts = array_filter([
+                $post->house_number,
+                $post->street,
+                $post->ward,
+                $post->district,
+                $post->province
+            ]);
+
+            $post->full_address = implode(', ', $addressParts);
+            $post->formatted_price = $this->formatPrice($post->price);
+
+            return $post;
+        })->appends($request->all());
+
+        $categories = Category::where('status', 'show')->withCount('posts')->get();
+
+        if ($request->ajax()) {
+            $posts_html = view('front.main.sort_page.posts_list_sort_recommend', ['posts' => $posts])->render();
+            $pagination_html = $posts->links('pagination::bootstrap-4')->toHtml();
+            return response()->json([
+                'posts_html' => $posts_html,
+                'pagination_html' => $pagination_html
+            ]);
+        }
+
+        return view('front.main.all_post_recommend', ['posts_all_featured' => $posts, 'categories' => $categories]);
+    }
+
+    public function sortPostsByCategory($id, Request $request)
+    {
+        $sort = $request->query('sort', 'price_asc');
+
+        $query = Post::where('category_id', $id)
+            ->with(['category', 'images', 'user'])
+            ->when($sort == 'price_asc', function ($q) {
+                return $q->orderBy('price', 'asc');
+            })
+            ->when($sort == 'price_desc', function ($q) {
+                return $q->orderBy('price', 'desc');
+            });
+
+        $posts = $query->paginate(9)->through(function ($post) {
+            $addressParts = array_filter([
+                $post->house_number,
+                $post->street,
+                $post->ward,
+                $post->district,
+                $post->province
+            ]);
+
+            $post->full_address = implode(', ', $addressParts);
+            $post->formatted_price = $this->formatPrice($post->price);
+
+            return $post;
+        })->appends($request->all());
+
+        $categories = Category::where('status', 'show')->withCount('posts')->get();
+        $category = Category::findOrFail($id);
+
+        if ($request->ajax()) {
+            $posts_html = view('front.main.sort_page.posts_list_sort_category', ['posts' => $posts])->render();
+            $pagination_html = $posts->links('pagination::bootstrap-4')->toHtml();
+            return response()->json([
+                'posts_html' => $posts_html,
+                'pagination_html' => $pagination_html
+            ]);
+        }
+
+        return view('front.main.all_post_category', [
+            'posts_category' => $posts,
+            'category' => $category,
+            'categories' => $categories
+        ]);
+    }
+
+    public function sortPostsByProvince($province, Request $request)
+    {
+        $sort = $request->query('sort', 'price_asc');
+
+        $query = Post::where('province', $province)
+            ->with(['category', 'images', 'user'])
+            ->when($sort == 'price_asc', function ($q) {
+                return $q->orderBy('price', 'asc');
+            })
+            ->when($sort == 'price_desc', function ($q) {
+                return $q->orderBy('price', 'desc');
+            });
+
+        $posts = $query->paginate(9)->through(function ($post) {
+            $addressParts = array_filter([
+                $post->house_number,
+                $post->street,
+                $post->ward,
+                $post->district,
+                $post->province
+            ]);
+
+            $post->full_address = implode(', ', $addressParts);
+            $post->formatted_price = $this->formatPrice($post->price);
+
+            return $post;
+        })->appends($request->all());
+
+        $categories = Category::where('status', 'show')->withCount('posts')->get();
+
+        if ($request->ajax()) {
+            $posts_html = view('front.main.sort_page.posts_list_sort_province', ['posts' => $posts])->render();
+            $pagination_html = $posts->links('pagination::bootstrap-4')->toHtml();
+            return response()->json([
+                'posts_html' => $posts_html,
+                'pagination_html' => $pagination_html
+            ]);
+        }
+
+        return view('front.main.all_post_province', [
+            'posts' => $posts,
+            'province' => $province,
+            'categories' => $categories
+        ]);
+    }
+
     public function ForgetPassword()
     {
         return view('front.main.forget_password_form');
@@ -366,9 +617,11 @@ class MainControler extends Controller
     public function PosterDetail($id)
     {
         $poster = User::find($id);
-        $posts = Post::where('user_id',$id)->paginate(4);
+        $posts = Post::where('user_id', $id)->paginate(4);
 
-        return view('front.main.poster_details',
-        compact('poster','posts'));
+        return view(
+            'front.main.poster_details',
+            compact('poster', 'posts')
+        );
     }
 }

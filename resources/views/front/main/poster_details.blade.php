@@ -1,4 +1,4 @@
-@extends('front.master_2')
+@extends('front.SecondPage')
 @section('home_2')
     <title>{{ $poster->name }}</title>
 

@@ -1,4 +1,4 @@
-@extends('front.master')
+@extends('front.HomePage')
 @section('home')
 
 @section('title')

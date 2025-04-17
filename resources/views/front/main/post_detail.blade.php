@@ -1,4 +1,4 @@
-@extends('front.master_2')
+@extends('front.SecondPage')
 @section('home_2')
     <link rel="stylesheet" href="{{ asset('front/leaflet/leaflet.css') }}" />
     <style>

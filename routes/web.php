@@ -51,7 +51,10 @@ Route::controller(SavedPostController::class)->group(function () {
 });
 
 Route::post('/store/review', [ReviewController::class, 'StoreReview'])->name('store.review');
-
+Route::get('/posts/search/sort', [MainControler::class, 'sortSearchPosts'])->name('posts.search.sort');
+Route::get('/posts/recommend/sort', [MainControler::class, 'sortRecommendPosts'])->name('posts.recommend.sort');
+Route::get('/posts/category/sort/{id}', [MainControler::class, 'sortPostsByCategory'])->name('posts.category.sort');
+Route::get('/posts/province/{province}/sort', [MainControler::class, 'sortPostsByProvince'])->name('posts.province.sort');
 
 
 require __DIR__ . '/auth.php';
