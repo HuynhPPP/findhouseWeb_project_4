@@ -131,49 +131,7 @@
                 </div>
             </div>
         </div>
-        <div class="dashborad-box">
-            <h4 class="title">Danh sách những người yêu cầu thuê</h4>
-            <div class="section-body listing-table">
-                <div class="table-responsive-2">
-                    <table class="table table-striped">
-                        <thead>
-                            <tr>
-                                <th>Bài đăng</th>
-                                <th>Họ tên</th>
-                                <th>Số điện thoại</th>
-                                <th>Email</th>
-                                <th>Trạng thái</th>
-                                <th>Thời gian gửi yêu cầu</th>
-                            </tr>
-                        </thead>
-                        @foreach ($posts as $post)
-                            <tr>
-                                <td>{{ $post->title }}</td>
-                                <td>{{ $post->name }}</td>
-                                <td>{{ $post->phone }}</td>
-                                <td>{{ $post->email }}</td>
-                                <td>
-                                    <select class="status-select" data-id="{{ $post->id }}">
-                                        <option value="pending" {{ $post->status == 'pending' ? 'selected' : '' }}>Đang chờ
-                                            duyệt</option>
-                                        <option value="confirmed" {{ $post->status == 'confirmed' ? 'selected' : '' }}>Đã
-                                            duyệt</option>
-                                        <option value="canceled" {{ $post->status == 'canceled' ? 'selected' : '' }}>Đã hủy
-                                            yêu cầu
-                                        </option>
-                                    </select>
-                                </td>
-                                <td>{{ \Carbon\Carbon::parse($post->created_at)->format('d/m/Y H:i') }}</td>
-                            </tr>
-                        @endforeach
-                    </table>
-                </div>
-                <!-- Phân trang -->
-                <div class="d-flex justify-content-end mt-3">
-                    {{ $posts->links('pagination::bootstrap-4') }}
-                </div>
-            </div>
-        </div>
+        
         {{-- <div class="dashborad-box">
             <div class="row no-gutters chat-container">
                 <!-- DANH SÁCH CHAT BÊN TRÁI -->

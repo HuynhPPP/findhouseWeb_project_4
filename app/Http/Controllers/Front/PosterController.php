@@ -27,16 +27,8 @@ class PosterController extends Controller
     {
         $id = Auth::user()->id;
 
-        $posts = DB::table('posts as p')
-            ->join('bookings as b', 'p.id', '=', 'b.post_id') // Chỉ lấy bài đăng có trong bookings
-            ->join('users as u', 'b.user_id', '=', 'u.id') // Lấy thông tin người thuê
-            ->where('p.user_id', $id) // Lọc theo người đăng bài
-            ->select('p.title', 'u.name', 'u.phone', 'u.email', 'b.id', 'b.status', 'b.created_at') // Lấy thông tin cần thiết
-            ->paginate(4);
-
-        return view('front.poster.index', compact('posts'));
+        return view('front.poster.index');
     }
-
 
     public function PosterProfile()
     {
@@ -76,13 +68,17 @@ class PosterController extends Controller
         return view('front.poster.post.poster_post_view');
     }
 
-    public function PosterListPost()
+    public function PosterListPost(Request $request)
     {
         $id = Auth::user()->id;
         $list_post = Post::where('user_id', $id)
             ->with('images')
             ->orderBy('id', 'desc')
-            ->get();
+            ->paginate(3);
+
+        if ($request->ajax()) {
+            return view('front.poster.post.sort_page_poster.list_post_sort', compact('list_post'))->render();
+        }
 
 
         return view('front.poster.post.poster_list_post_view', compact('list_post',));

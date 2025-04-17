@@ -29,7 +29,8 @@
                         <a href="{{ $video_url_fixed }}" class="btn popup-video popup-youtube"><i class="fas fa-video"
                                 style="line-height: 30px"></i></a>
                     @endif
-                    <a class="img-poppu btn" style="color: black;">{{ $totalImages }} <i class="fa fa-photo"></i></a>
+                    <a href="{{ route('post.detail', $post->id) }}" class="img-poppu btn"
+                        style="color: black; width: 40px;">{{ $totalImages }} <i class="fa fa-photo"></i></a>
                 </div>
             </div>
             <div class="homes-content">
@@ -86,3 +87,4 @@
         </div>
     </div>
 @endforeach
+<script src="{{ asset('front/js/popup.js') }}"></script>

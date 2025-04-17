@@ -11,6 +11,7 @@ use App\Models\User;
 use App\Models\Image;
 use App\Models\Post;
 use App\Models\Category;
+use App\Models\Review;
 use Illuminate\Support\Facades\Validator;
 use App\Mail\ResetPasswordMail;
 use App\Mail\EmailVerificationMail;
@@ -135,16 +136,20 @@ class MainControler extends Controller
 
     public function filterByProvince($province)
     {
-        // Lọc danh sách bài đăng theo tỉnh/thành phố
         $posts = Post::where('province', $province)->paginate(9);
+
+        // Gán formatted_price cho từng post
+        foreach ($posts as $post) {
+            $post->formatted_price = $this->formatPrice($post->price);
+        }
 
         $categories = Category::where('status', 'show')
             ->withCount('posts')
             ->get();
 
-        // Trả về view hiển thị danh sách bài đăng
         return view('front.main.all_post_province', compact('posts', 'province', 'categories'));
     }
+
 
     public function SearchPost(Request $request)
     {
@@ -614,14 +619,20 @@ class MainControler extends Controller
         return redirect()->route('login')->with($notification);
     }
 
-    public function PosterDetail($id)
+    public function PosterDetail(Request $request, $id)
     {
-        $poster = User::find($id);
+        $poster = User::findOrFail($id);
         $posts = Post::where('user_id', $id)->paginate(4);
 
-        return view(
-            'front.main.poster_details',
-            compact('poster', 'posts')
-        );
+        $reviews = Review::where('poster_id', $poster->id)
+            ->where('status', 1)
+            ->latest()
+            ->paginate(5); 
+
+        if ($request->ajax()) {
+            return view('front.main.sort_page.reviews_sort', compact('reviews'))->render();
+        }
+
+        return view('front.main.poster_details', compact('poster', 'posts', 'reviews'));
     }
 }

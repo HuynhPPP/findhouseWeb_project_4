@@ -305,11 +305,6 @@
                                                 <h4>Liên hệ để thuê</h4>
 
                                                 @auth
-                                                    @php
-                                                        $booking = App\Models\Bookings::where('post_id', $post->id)
-                                                            ->where('user_id', Auth::user()->id)
-                                                            ->first();
-                                                    @endphp
 
                                                     @php
                                                         $profileData = Auth::user(); // Lấy user hiện tại
