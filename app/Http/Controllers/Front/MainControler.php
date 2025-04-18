@@ -100,11 +100,16 @@ class MainControler extends Controller
             ->limit(3)
             ->get();
 
+        $other_poster_post = Post::where('user_id', $post->user_id)
+            ->where('id', '!=', $id)
+            ->limit(3)
+            ->get();
+
         $post->formatted_price = $this->formatPrice($post->price);
 
         $images = $post->images;
 
-        return view('front.main.post_detail', compact('post', 'images', 'relatedPosts'));
+        return view('front.main.post_detail', compact('post', 'images', 'relatedPosts', 'other_poster_post'));
     }
 
     public function getPostsByCategory($id)
@@ -627,7 +632,7 @@ class MainControler extends Controller
         $reviews = Review::where('poster_id', $poster->id)
             ->where('status', 1)
             ->latest()
-            ->paginate(5); 
+            ->paginate(5);
 
         if ($request->ajax()) {
             return view('front.main.sort_page.reviews_sort', compact('reviews'))->render();

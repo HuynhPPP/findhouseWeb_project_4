@@ -121,7 +121,8 @@
                                 <label for="gia_thue">Giá cho thuê <span class="text-danger">(*)</span></label>
                                 <div class="input-group">
                                     <input type="number" class="form-control" name="price" min="0" step="1"
-                                        id="rental_price" placeholder="Nhập giá" style="height: 50px;">
+                                        id="rental_price" placeholder="Nhập giá" style="height: 50px;"
+                                        value="{{ old('price') }}">
                                     <div class="input-group-append">
                                         <select id="rental_unit" class="custom-select-price">
                                             <option value="đồng/tháng">đồng/tháng</option>
@@ -141,7 +142,7 @@
                                 <label for="area">Diện tích <span class="text-danger">(*)</span></label>
                                 <div class="input-group">
                                     <input type="number" class="form-control" id="area" name="area"
-                                        placeholder="Nhập diện tích" style="height: 50px;">
+                                        placeholder="Nhập diện tích" style="height: 50px;"  value="{{ old('area') }}">
                                     <div class="input-group-append">
                                         <span class="input-group-text">m²</span>
                                     </div>
@@ -335,97 +336,6 @@
                 <div id="map"></div>
             </div>
 
-            {{-- <div class="single-add-property">
-                <h3>Đặc điểm nổi bật</h3>
-                <div class="property-form-group">
-                    <div class="row">
-                        <div class="col-md-12">
-                            <ul class="pro-feature-add pl-0">
-                                <li class="fl-wrap filter-tags clearfix">
-                                    <div class="checkboxes float-left">
-                                        <div class="filter-tags-wrap">
-                                            <input id="check-a" type="checkbox" name="features[]" value="Đầy đủ nội thất">
-                                            <label for="check-a">Đầy đủ nội thất</label>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li class="fl-wrap filter-tags clearfix">
-                                    <div class="checkboxes float-left">
-                                        <div class="filter-tags-wrap">
-                                            <input id="check-b" type="checkbox" name="features[]" value="Có máy lạnh">
-                                            <label for="check-b">Có máy lạnh</label>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li class="fl-wrap filter-tags clearfix">
-                                    <div class="checkboxes float-left">
-                                        <div class="filter-tags-wrap">
-                                            <input id="check-c" type="checkbox" name="features[]" value="Có thang máy">
-                                            <label for="check-c">Có thang máy</label>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li class="fl-wrap filter-tags clearfix">
-                                    <div class="checkboxes float-left">
-                                        <div class="filter-tags-wrap">
-                                            <input id="check-d" type="checkbox" name="features[]" value="Có kệ bếp">
-                                            <label for="check-d">Có kệ bếp</label>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li class="fl-wrap filter-tags clearfix">
-                                    <div class="checkboxes float-left">
-                                        <div class="filter-tags-wrap">
-                                            <input id="check-e" type="checkbox" name="features[]" value="Có hầm để xe">
-                                            <label for="check-e">Có hầm để xe</label>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li class="fl-wrap filter-tags clearfix">
-                                    <div class="checkboxes float-left">
-                                        <div class="filter-tags-wrap">
-                                            <input id="check-g" type="checkbox" name="features[]" value="Có gác">
-                                            <label for="check-g">Có gác</label>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li class="fl-wrap filter-tags clearfix">
-                                    <div class="checkboxes float-left">
-                                        <div class="filter-tags-wrap">
-                                            <input id="check-h" type="checkbox" name="features[]" value="Có bảo vệ 24/24">
-                                            <label for="check-h">Có bảo vệ 24/24</label>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li class="fl-wrap filter-tags clearfix">
-                                    <div class="checkboxes float-left">
-                                        <div class="filter-tags-wrap">
-                                            <input id="check-i" type="checkbox" name="features[]" value="Có hồ bơi">
-                                            <label for="check-i">Có hồ bơi</label>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li class="fl-wrap filter-tags clearfix">
-                                    <div class="checkboxes float-left">
-                                        <div class="filter-tags-wrap">
-                                            <input id="check-j" type="checkbox" name="features[]" value="Giờ giấc tự do">
-                                            <label for="check-j">Giờ giấc tự do</label>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li class="fl-wrap filter-tags clearfix">
-                                    <div class="checkboxes float-left">
-                                        <div class="filter-tags-wrap">
-                                            <input id="check-k" type="checkbox" name="features[]" value="Không chung chủ">
-                                            <label for="check-k">Không chung chủ</label>
-                                        </div>
-                                    </div>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </div> --}}
 
 
             @php

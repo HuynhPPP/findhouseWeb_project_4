@@ -21,9 +21,6 @@ var satellite = L.tileLayer(
 osm.addTo(map);
 
 
-
-L.control.addTo(map);
-
 function geocodeAddress(address, callback) {
     const url = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(
         address

@@ -302,7 +302,7 @@
                                         </ul>
                                         @if (auth()->id() != $post->user_id)
                                             <div class="agent-contact-form-sidebar">
-                                                <h4>Liên hệ để thuê</h4>
+                                                <h4>Thông tin của bạn</h4>
 
                                                 @auth
 
@@ -346,87 +346,6 @@
                                     </div>
                                 </div>
                             </div>
-
-                            <div class="main-search-field-2">
-                                <div class="widget-boxed mt-5">
-                                    <div class="widget-boxed-header">
-                                        <h4>Bài đăng mới nhất</h4>
-                                    </div>
-                                    <div class="widget-boxed-body">
-                                        <div class="recent-post">
-                                            <div class="recent-main">
-                                                <div class="recent-img">
-                                                    <a href="blog-details.html"><img
-                                                            src="images/feature-properties/fp-1.jpg" alt=""></a>
-                                                </div>
-                                                <div class="info-img">
-                                                    <a href="blog-details.html">
-                                                        <h6>Family Home</h6>
-                                                    </a>
-                                                    <p>$230,000</p>
-                                                </div>
-                                            </div>
-                                            <div class="recent-main my-4">
-                                                <div class="recent-img">
-                                                    <a href="blog-details.html"><img
-                                                            src="images/feature-properties/fp-2.jpg" alt=""></a>
-                                                </div>
-                                                <div class="info-img">
-                                                    <a href="blog-details.html">
-                                                        <h6>Family Home</h6>
-                                                    </a>
-                                                    <p>$230,000</p>
-                                                </div>
-                                            </div>
-                                            <div class="recent-main">
-                                                <div class="recent-img">
-                                                    <a href="blog-details.html"><img
-                                                            src="images/feature-properties/fp-3.jpg" alt=""></a>
-                                                </div>
-                                                <div class="info-img">
-                                                    <a href="blog-details.html">
-                                                        <h6>Family Home</h6>
-                                                    </a>
-                                                    <p>$230,000</p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="widget-boxed popular mt-5">
-                                    <div class="widget-boxed-header">
-                                        <h4>Tìm kiếm theo từ khoá</h4>
-                                    </div>
-                                    <div class="widget-boxed-body">
-                                        <div class="recent-post">
-                                            <div class="tags">
-                                                <span><a href="#" class="btn btn-outline-primary">Houses</a></span>
-                                                <span><a href="#" class="btn btn-outline-primary">Real
-                                                        Home</a></span>
-                                            </div>
-                                            <div class="tags">
-                                                <span><a href="#" class="btn btn-outline-primary">Baths</a></span>
-                                                <span><a href="#" class="btn btn-outline-primary">Beds</a></span>
-                                            </div>
-                                            <div class="tags">
-                                                <span><a href="#" class="btn btn-outline-primary">Garages</a></span>
-                                                <span><a href="#" class="btn btn-outline-primary">Family</a></span>
-                                            </div>
-                                            <div class="tags">
-                                                <span><a href="#" class="btn btn-outline-primary">Real
-                                                        Estates</a></span>
-                                                <span><a href="#"
-                                                        class="btn btn-outline-primary">Properties</a></span>
-                                            </div>
-                                            <div class="tags no-mb">
-                                                <span><a href="#"
-                                                        class="btn btn-outline-primary">Location</a></span>
-                                                <span><a href="#" class="btn btn-outline-primary">Price</a></span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
                         </div>
                     </div>
                 </aside>
@@ -443,6 +362,7 @@
                                     $video_url_fixed = str_replace('embed/', 'watch?v=', $video_url);
 
                                     $fixedImage = $post->images()->first();
+                                    $totalImages = $related->images()->count();
                                 @endphp
                                 <div class="item col-lg-4 col-md-6 col-xs-12 landscapes">
                                     <div class="project-single">
@@ -473,15 +393,22 @@
                                                 @endif
                                             </div>
                                             <div class="button-effect">
-                                                <a href="{{ $video_url_fixed }}" class="btn popup-video popup-youtube"><i
-                                                        class="fas fa-video"></i></a>
+                                                <a class="btn copy-link"
+                                                    data-link="{{ route('post.detail', $related->id) }}"><i
+                                                        class="fa fa-link" style="line-height: 30px"></i></a>
+                                                @if ($video_url)
+                                                    <a href="{{ $video_url_fixed }}"
+                                                        class="btn popup-video popup-youtube"><i class="fas fa-video"
+                                                            style="line-height: 30px"></i></a>
+                                                @endif
                                             </div>
                                         </div>
                                         <!-- homes content -->
                                         <div class="homes-content">
                                             <!-- homes address -->
-                                            <h3><a
-                                                    href="{{ route('post.detail', $related->id) }}">{{ $related->title }}</a>
+                                            <h3><a href="{{ route('post.detail', $related->id) }}">
+                                                    {{ Str::words(strip_tags($related->title), 10) }}
+                                                </a>
                                             </h3>
                                             <p class="homes-address mb-3">
                                                 <a href="single-property-1.html">
@@ -492,20 +419,113 @@
                                             <!-- homes List -->
                                             <ul class="homes-list clearfix pb-3">
                                                 <li class="the-icons">
-                                                    <i class="flaticon-bed mr-2" aria-hidden="true"></i>
-                                                    <span>6 Bedrooms</span>
+                                                    <i class="flaticon-square mr-2" aria-hidden="true"></i>
+                                                    <span>{{ $related->area }} m&sup2;</span>
                                                 </li>
-                                                <li class="the-icons">
-                                                    <i class="flaticon-bathtub mr-2" aria-hidden="true"></i>
-                                                    <span>3 Bathrooms</span>
-                                                </li>
+                                            </ul>
+                                            <div class="footer">
+                                                <a href="{{ route('poster.detail', $related->user->id) }}">
+                                                    @php
+                                                        $imagePath = 'upload/user_images/';
+                                                        $userPhoto = $related->user->photo ?? null;
+
+                                                        if (!empty($userPhoto)) {
+                                                            $imageUrl = url($imagePath . $userPhoto);
+                                                        } else {
+                                                            $imageUrl = url('upload/no_img.jpg');
+                                                        }
+                                                    @endphp
+
+                                                    <img src="{{ $imageUrl }}" alt="User Image" class="mr-2"
+                                                        style="width: 35px; height: 35px; object-fit: cover; border-radius: 50%;">
+                                                    {{ $related->user->name }}
+                                                </a>
+                                                <span
+                                                    style="margin-top: 7px">{{ \Carbon\Carbon::parse($related->created_at)->locale('vi')->diffForHumans() }}</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            @endforeach
+                        </div>
+                    </div>
+                @endif
+
+            </section>
+            <!-- END SIMILAR PROPERTIES -->
+
+            <!-- START SIMILAR PROPERTIES -->
+            <section class="similar-property featured portfolio p-0 bg-white-inner">
+                @if ($other_poster_post->count() > 0)
+                    <div class="container mt-5">
+                        <h5>Các tin đăng khác của {{ $post->user->name }}</h5>
+                        <div class="row portfolio-items">
+                            @foreach ($other_poster_post as $related)
+                                @php
+                                    $video_url = $related->video_url;
+                                    $video_url_fixed = str_replace('embed/', 'watch?v=', $video_url);
+
+                                    $fixedImage = $post->images()->first();
+                                    $totalImages = $post->images()->count();
+                                @endphp
+                                <div class="item col-lg-4 col-md-6 col-xs-12 landscapes">
+                                    <div class="project-single">
+                                        <div class="project-inner project-head">
+                                            <div class="project-bottom">
+                                                <h4><a href="{{ route('post.detail', $related->id) }}">
+                                                        Xem chi tiết
+                                                    </a>
+                                                </h4>
+                                            </div>
+                                            <div class="homes">
+                                                <!-- homes img -->
+                                                <div class="homes-tag button alt sale">
+                                                    {{ $related->category->category_name }}</div>
+                                                <div class="homes-price">
+                                                    @if ($related->price >= 1000000)
+                                                        {{ number_format($related->price / 1000000, 1) }} triệu/tháng
+                                                    @else
+                                                        {{ number_format($related->price, 0, ',', '.') }} đồng/tháng
+                                                    @endif
+                                                </div>
+                                                @if ($fixedImage)
+                                                    <img src="{{ asset('upload/post_images/' . $fixedImage->image_url) }}"
+                                                        alt="home-1" class="img-responsive" style="height: 270px;">
+                                                @else
+                                                    <img src="{{ asset('upload/no_image.jpg') }}" alt="No Image"
+                                                        class="img-responsive">
+                                                @endif
+                                            </div>
+                                            <div class="button-effect">
+                                                <a class="btn copy-link"
+                                                    data-link="{{ route('post.detail', $related->id) }}"><i
+                                                        class="fa fa-link" style="line-height: 30px"></i></a>
+                                                @if ($video_url)
+                                                    <a href="{{ $video_url_fixed }}"
+                                                        class="btn popup-video popup-youtube"><i class="fas fa-video"
+                                                            style="line-height: 30px"></i></a>
+                                                @endif
+                                            </div>
+                                        </div>
+                                        <!-- homes content -->
+                                        <div class="homes-content">
+                                            <!-- homes address -->
+                                            <h3>
+                                                <a href="{{ route('post.detail', $related->id) }}">
+                                                    {{ Str::words(strip_tags($related->title), 10) }}
+                                                </a>
+                                            </h3>
+                                            <p class="homes-address mb-3">
+                                                <a href="single-property-1.html">
+                                                    <i
+                                                        class="fa fa-map-marker"></i><span>{{ $related->full_address }}</span>
+                                                </a>
+                                            </p>
+                                            <!-- homes List -->
+                                            <ul class="homes-list clearfix pb-3">
                                                 <li class="the-icons">
                                                     <i class="flaticon-square mr-2" aria-hidden="true"></i>
-                                                    <span>720 sq ft</span>
-                                                </li>
-                                                <li class="the-icons">
-                                                    <i class="flaticon-car mr-2" aria-hidden="true"></i>
-                                                    <span>2 Garages</span>
+                                                    <span>{{ $related->area }} m&sup2;</span>
                                                 </li>
                                             </ul>
                                             <div class="footer">

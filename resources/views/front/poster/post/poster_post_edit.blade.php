@@ -59,6 +59,7 @@
         <form action="{{ route('poster.post.update') }}" method="post" enctype="multipart/form-data">
             @csrf
             <input type="hidden" name="id" value="{{ $post->id }}">
+            <input type="hidden" name="poster_name" value="{{ $post->user->name }}">
 
             <!-- Information common -->
             <div class="single-add-property">
@@ -171,6 +172,31 @@
                                     </div>
                                 @endforeach
                             </div>
+
+                            <!-- Hiển thị lỗi cho images -->
+                            @if ($errors->has('images') || $errors->has('images.*'))
+                                <div class="error-message">
+                                    <!-- Hiển thị lỗi tổng thể (images.max) -->
+                                    @if ($errors->has('images'))
+                                        <p class="error-message">{{ $errors->first('images') }}</p>
+                                    @endif
+
+                                    <!-- Hiển thị lỗi từng file (images.*) nhưng không lặp lại -->
+                                    @php
+                                        $uniqueImageErrors = [];
+                                        foreach ($errors->get('images.*') as $imageErrors) {
+                                            foreach ($imageErrors as $error) {
+                                                if (!in_array($error, $uniqueImageErrors)) {
+                                                    $uniqueImageErrors[] = $error;
+                                                }
+                                            }
+                                        }
+                                    @endphp
+                                    @foreach ($uniqueImageErrors as $error)
+                                        <p class="error-message">{{ $error }}</p>
+                                    @endforeach
+                                </div>
+                            @endif
                             @error('images')
                                 <p style="color:red">{{ $message }}</p>
                             @enderror

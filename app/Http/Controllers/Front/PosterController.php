@@ -74,11 +74,7 @@ class PosterController extends Controller
         $list_post = Post::where('user_id', $id)
             ->with('images')
             ->orderBy('id', 'desc')
-            ->paginate(3);
-
-        if ($request->ajax()) {
-            return view('front.poster.post.sort_page_poster.list_post_sort', compact('list_post'))->render();
-        }
+            ->paginate(4);
 
 
         return view('front.poster.post.poster_list_post_view', compact('list_post',));
@@ -127,7 +123,7 @@ class PosterController extends Controller
             'address'      => 'required|string',
             'images'       => 'nullable|array|max:20',
             'images.*'     => 'image|mimes:jpeg,png,jpg,gif|max:2048',
-            'video_url'    => 'nullable|string', // Validate URL cho YouTube/TikTok
+            'video_url'    => 'nullable|string',
         ], [
             'title.required'       => 'Vui lòng nhập tiêu đề.',
             'title.max'            => 'Tiêu đề không được vượt quá 255 ký tự.',
@@ -153,7 +149,7 @@ class PosterController extends Controller
             'images.*.mimes'       => 'Hình ảnh phải có định dạng jpeg, png, jpg hoặc gif.',
             'images.*.max'         => 'Hình ảnh không được vượt quá 2MB.',
             'video_url.url'        => 'Link video không hợp lệ.',
-            'video_url.regex'      => 'Link video chỉ hỗ trợ YouTube hoặc TikTok.',
+            'video_url.regex'      => 'Link video chỉ hỗ trợ YouTube',
         ]);
 
         $videoUrl = $request->video_url ? $this->convertVideoUrl($request->video_url) : null;
@@ -184,7 +180,12 @@ class PosterController extends Controller
 
         if ($request->hasFile('images')) {
             foreach ($request->file('images') as $image) {
-                $imageName = time() . '_' . $image->getClientOriginalName();
+                $username = Auth::user()->name ?? 'poster'; // hoặc fullname nếu bạn dùng
+                $timestamp = now()->format('Ymd_His');
+                $uniqueId = uniqid();
+                $extension = $image->getClientOriginalExtension();
+                $imageName = "{$username}_{$timestamp}_{$uniqueId}.{$extension}";
+
                 $image->move($imageDir, $imageName);
 
                 Image::create([
@@ -203,53 +204,56 @@ class PosterController extends Controller
         return redirect()->route('poster.list-post')->with($notification);
     }
 
-    public function PosterEditPost($id)
-    {
-        $post = Post::findOrFail($id);
-        $categories = Category::latest()->get();
-        $images = Image::where('post_id', $id)->get();
-
-        $selectedFeatures = json_decode($post->features, true) ?? [];
-
-
-        return view(
-            'front.poster.post.poster_post_edit',
-            compact('post', 'categories', 'images', 'selectedFeatures')
-        );
-    }
-
     public function PosterPostUpdate(Request $request)
     {
         $request->validate([
-            'title'       => 'required|string|max:255',
-            'description' => 'required|string',
-            'category_id' => 'required',
-            'price'       => 'required',
-            'province' => 'required',
+            'title'        => 'required|string|max:255',
+            'description'  => 'required|string',
+            'category_id'  => 'required',
+            'price'        => 'required|numeric|min:0',
+            'area'         => 'required|numeric|min:0',
+            'province'     => 'required',
             'province_name' => 'required',
-            'district' => 'required',
+            'district'     => 'required',
             'district_name' => 'required',
-            'ward' => 'required',
-            'ward_name' => 'required',
-            'images'      => 'nullable|array|max:20',
-            'images.*'    => 'image|mimes:jpeg,png,jpg,gif|max:2048',
-            'video_url'   => 'nullable|string',
+            'ward'         => 'required',
+            'ward_name'    => 'required',
+            'street'       => 'required|string',
+            'house_number' => 'required|string',
+            'address'      => 'required|string',
+            'images'       => 'nullable|array|max:20',
+            'images.*'     => 'image|mimes:jpeg,png,jpg,gif|max:2048',
+            'video_url'    => 'nullable|string', // Validate URL cho YouTube/TikTok
         ], [
             'title.required'       => 'Vui lòng nhập tiêu đề.',
+            'title.max'            => 'Tiêu đề không được vượt quá 255 ký tự.',
             'description.required' => 'Vui lòng nhập mô tả.',
             'category_id.required' => 'Vui lòng chọn danh mục.',
             'price.required'       => 'Vui lòng nhập giá.',
-            'address.required'     => 'Vui lòng nhập địa chỉ.',
+            'price.numeric'        => 'Giá phải là số.',
+            'price.min'            => 'Giá không được nhỏ hơn 0.',
+            'area.required'        => 'Vui lòng nhập diện tích.',
+            'area.numeric'         => 'Diện tích phải là số.',
+            'area.min'             => 'Diện tích không được nhỏ hơn 0.',
             'province.required'    => 'Vui lòng chọn tỉnh/thành phố.',
+            'province_name.required' => 'Tên tỉnh/thành phố không được để trống.',
             'district.required'    => 'Vui lòng chọn quận/huyện.',
+            'district_name.required' => 'Tên quận/huyện không được để trống.',
             'ward.required'        => 'Vui lòng chọn phường/xã.',
+            'ward_name.required'   => 'Tên phường/xã không được để trống.',
             'street.required'      => 'Vui lòng nhập tên đường.',
             'house_number.required' => 'Vui lòng nhập số nhà.',
+            'address.required'     => 'Vui lòng nhập địa chỉ.',
             'images.max'           => 'Bạn chỉ có thể tải lên tối đa 20 ảnh.',
+            'images.*.image'       => 'File tải lên phải là hình ảnh.',
+            'images.*.mimes'       => 'Hình ảnh phải có định dạng jpeg, png, jpg hoặc gif.',
+            'images.*.max'         => 'Hình ảnh không được vượt quá 2MB.',
+            'video_url.url'        => 'Link video không hợp lệ.',
+            'video_url.regex'      => 'Link video chỉ hỗ trợ YouTube',
         ]);
 
         $post_id = $request->id;
-
+        $poster_name = $request->poster_name;
 
         $slugify = new Slugify();
 
@@ -274,22 +278,16 @@ class PosterController extends Controller
         ]);
 
         $imageDir = public_path('upload/post_images');
-        $oldImages = Image::where('post_id', $post_id)->get();
 
         if ($request->hasFile('images')) {
-            // Xóa ảnh cũ trong thư mục
-            foreach ($oldImages as $oldImage) {
-                $oldImagePath = $imageDir . '/' . $oldImage->image_url;
-                if (File::exists($oldImagePath)) {
-                    File::delete($oldImagePath); // Xóa file ảnh cũ
-                }
-            }
-
-            // Xóa dữ liệu ảnh cũ trong database
-            Image::where('post_id', $post_id)->delete();
             // Lưu ảnh mới
             foreach ($request->file('images') as $image) {
-                $imageName = time() . '_' . $image->getClientOriginalName();
+                $username = $poster_name ?? 'poster';
+                $timestamp = now()->format('Ymd_His');
+                $uniqueId = uniqid();
+                $extension = $image->getClientOriginalExtension();
+                $imageName = "{$username}_{$timestamp}_{$uniqueId}.{$extension}";
+
                 $image->move($imageDir, $imageName);
 
                 Image::create([
@@ -310,6 +308,20 @@ class PosterController extends Controller
         return redirect()->route('poster.list-post')->with($notification);
     }
 
+    public function PosterEditPost($id)
+    {
+        $post = Post::findOrFail($id);
+        $categories = Category::latest()->get();
+        $images = Image::where('post_id', $id)->get();
+
+        $selectedFeatures = json_decode($post->features, true) ?? [];
+
+
+        return view(
+            'front.poster.post.poster_post_edit',
+            compact('post', 'categories', 'images', 'selectedFeatures')
+        );
+    }
 
     public function PosterDeleteImage(Request $request)
     {
