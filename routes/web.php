@@ -93,6 +93,8 @@ Route::middleware(['auth', 'roles:admin'])->group(function () {
   Route::controller(SettingController::class)->group(function () {
     Route::get('admin/smtp/setting', 'SmtpSetting')->name('smtp.setting');
     Route::post('update/smtp', 'UpdateSmtp')->name('update.smtp');
+    Route::get('admin/site/setting', 'SiteSetting')->name('site.setting');
+    Route::post('update/site/setting', 'UpdateSiteSetting')->name('update.site.setting');
   });
 }); // End Admin group middleware
 
