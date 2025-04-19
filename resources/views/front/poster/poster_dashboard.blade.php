@@ -118,6 +118,8 @@
         <script src="{{ asset('front/trumbowyg/trumbowyg.min.js') }}"></script>
         <script src="{{ asset('front/js/sweetalert2.js') }}"></script>
         <script src="{{ asset('front/js/code.js') }}"></script>
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
 
 
         <script>

@@ -9,6 +9,9 @@ use App\Models\User;
 use App\Models\Post;
 use App\Models\Image;
 use App\Models\Category;
+use App\Models\ChatMessage;
+use App\Models\Review;
+use App\Models\SavedPost;
 use App\Mail\ResetPasswordMail;
 use App\Mail\EmailVerificationMail;
 use Cocur\Slugify\Slugify;
@@ -25,9 +28,34 @@ class PosterController extends Controller
 {
     public function PosterDashboard()
     {
-        $id = Auth::user()->id;
+        $userId = auth()->id();
 
-        return view('front.poster.index');
+        $approvedPosts = Post::where('user_id', $userId)->where('status', 'approved')->count();
+        $pendingPosts = Post::where('user_id', $userId)->where('status', 'pending')->count();
+        $savedCount = SavedPost::whereHas('post', function ($q) use ($userId) {
+            $q->where('user_id', $userId);
+        })->count();
+        $messagesCount =  ChatMessage::where('receiver_id', $userId)
+            ->select('post_id', 'sender_id')
+            ->distinct()
+            ->count('sender_id');
+        $reviewsCount = Review::where('poster_id', $userId)->count();
+
+        // Lấy bài đăng gần đây
+        $recentPosts = Post::where('user_id', $userId)
+            ->latest()
+            ->take(5)
+            ->get();
+
+
+        return view('front.poster.sumary_page', compact(
+            'approvedPosts',
+            'pendingPosts',
+            'savedCount',
+            'messagesCount',
+            'reviewsCount',
+            'recentPosts',
+        ));
     }
 
     public function PosterProfile()
