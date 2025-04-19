@@ -6,7 +6,6 @@ use App\Http\Controllers\Front\PosterController;
 use App\Http\Controllers\Front\UserController;
 use App\Http\Controllers\Front\ApiController;
 use App\Http\Controllers\Front\MainControler;
-use App\Http\Controllers\Front\ContactController;
 use App\Http\Controllers\Front\ChatController;
 use App\Http\Controllers\Front\SocialliteController;
 use App\Http\Controllers\Front\SavedPostController;
@@ -58,7 +57,10 @@ Route::controller(SavedPostController::class)->group(function () {
 });
 
 Route::post('/store/review', [ReviewController::class, 'StoreReview'])->name('store.review');
-
+Route::get('/posts/search/sort', [MainControler::class, 'sortSearchPosts'])->name('posts.search.sort');
+Route::get('/posts/recommend/sort', [MainControler::class, 'sortRecommendPosts'])->name('posts.recommend.sort');
+Route::get('/posts/category/sort/{id}', [MainControler::class, 'sortPostsByCategory'])->name('posts.category.sort');
+Route::get('/posts/province/{province}/sort', [MainControler::class, 'sortPostsByProvince'])->name('posts.province.sort');
 
 
 require __DIR__ . '/auth.php';
@@ -172,8 +174,6 @@ Route::middleware(['auth', 'roles:user'])->group(function () {
   Route::get('/user/profile', [UserController::class, 'UserProfile'])->name('user.profile');
   Route::get('/user/contacts', [UserController::class, 'UserContacts'])->name('user.contacts');
   Route::post('/user/store/profile', [UserController::class, 'UserStoreProfile'])->name('user.store.profile');
-  Route::post('/bookings/store', [ContactController::class, 'BookingStore'])->name('bookings.store');
-  Route::post('/bookings/cancel/{id}', [ContactController::class, 'CancelBooking'])->name('bookings.cancel');
 
   Route::get('/user/change-password', [UserController::class, 'UserChangePassword'])->name('user.change-password');
   Route::post('/user/reset/password', [UserController::class, 'ChangePassword'])->name('user.reset.password');

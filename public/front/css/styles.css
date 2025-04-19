@@ -1515,12 +1515,12 @@ section.recently.portfolio {
 }
 
 .homepage-1 .portfolio.full-l .project-head {
-    border-radius: 3px 0 0 3px;
-    max-width: -webkit-fill-available;
-    max-height: 320px;
-    margin: 0;
-    position: relative;
-    width: 410px;
+  border-radius: 3px 0 0 3px;
+  max-width: -webkit-fill-available;
+  max-height: 280px;
+  margin: 0;
+  position: relative;
+  width: 410px;
 }
 
 .homepage-1 .portfolio .homes-content .homes-list li i {
@@ -6979,20 +6979,20 @@ a.button,
     background: #696565;
 }
 
-.header-user-name span:after {
-    position: absolute;
-    content: "";
-    height: 12px;
-    width: 12px;
-    bottom: -5px;
-    right: -5px;
-    background-color: #38b653;
-    display: block;
-    border: 2px solid #fff;
-    -webkit-box-shadow: 0 2px 3px rgba(0, 0, 0, 0.2);
-    box-shadow: 0 2px 3px rgba(0, 0, 0, 0.2);
-    border-radius: 50%;
-}
+/* .header-user-name span:after {
+  position: absolute;
+  content: "";
+  height: 12px;
+  width: 12px;
+  bottom: -5px;
+  right: -5px;
+  background-color: #38b653;
+  display: block;
+  border: 2px solid #fff;
+  -webkit-box-shadow: 0 2px 3px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 2px 3px rgba(0, 0, 0, 0.2);
+  border-radius: 50%;
+} */
 
 .homepage-4 a.button.border,
 a.button,

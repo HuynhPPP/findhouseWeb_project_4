@@ -118,6 +118,8 @@
         <script src="{{ asset('front/trumbowyg/trumbowyg.min.js') }}"></script>
         <script src="{{ asset('front/js/sweetalert2.js') }}"></script>
         <script src="{{ asset('front/js/code.js') }}"></script>
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
 
 
         <script>
@@ -132,26 +134,20 @@
 
         <script type="text/javascript" src="{{ asset('front/toastr/toastr.min.js') }}"></script>
 
+        <!-- Sweetalert2 -->
         <script>
-            @if (Session::has('message'))
-                var type = "{{ Session::get('alert-type', 'info') }}"
-                switch (type) {
-                    case 'info':
-                        toastr.info(" {{ Session::get('message') }} ");
-                        break;
+            @if (session('alert-type'))
+                const Toast = Swal.mixin({
+                    toast: true,
+                    position: 'top-end',
+                    showConfirmButton: false,
+                    timer: 3000,
+                });
 
-                    case 'success':
-                        toastr.success(" {{ Session::get('message') }} ");
-                        break;
-
-                    case 'warning':
-                        toastr.warning(" {{ Session::get('message') }} ");
-                        break;
-
-                    case 'error':
-                        toastr.error(" {{ Session::get('message') }} ");
-                        break;
-                }
+                Toast.fire({
+                    icon: '{{ session('alert-type') }}',
+                    title: '{{ session('message') }}'
+                });
             @endif
         </script>
 

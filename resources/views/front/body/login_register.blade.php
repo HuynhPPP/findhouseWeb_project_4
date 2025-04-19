@@ -44,7 +44,7 @@
                                 <div class="clearfix"></div>
                             </form>
                             <div class="lost_password">
-                                <a href="#">Quên mật khẩu?</a>
+                                <a href="{{ route('forget.password') }}">Quên mật khẩu?</a>
                             </div>
                         </div>
                     </div>

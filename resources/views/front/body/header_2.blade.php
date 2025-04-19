@@ -6,8 +6,8 @@
             <div class="left-side">
                 <!-- Logo -->
                 <div id="logo">
-                    <a href="{{ route('index') }}"><img src="{{ asset('front/images/logo-red.svg') }}"
-                            data-sticky-logo="{{ asset('front/images/logo-red.svg') }}" alt=""></a>
+                    <a href="{{ route('index') }}"><img src="{{ asset('front/images/logo/logo-red.jpg') }}"
+                            data-sticky-logo="{{ asset('front/images/logo/logo-red.jpg') }}" alt=""></a>
                 </div>
                 <!-- Mobile Navigation -->
                 <div class="mmenu-trigger">

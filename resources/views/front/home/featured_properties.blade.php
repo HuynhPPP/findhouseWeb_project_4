@@ -11,6 +11,7 @@
                     $video_url_fixed = str_replace('embed/', 'watch?v=', $video_url);
 
                     $fixedImage = $post->images()->first();
+                    $totalImages = $post->images()->count();
 
                 @endphp
                 <div class="item col-xl-6 col-lg-12 col-md-12 col-xs-12 landscapes sale">
@@ -23,18 +24,26 @@
                                     <div class="homes-tag button alt sale">{{ $post->category->category_name }}</div>
                                     @if ($fixedImage)
                                         <img src="{{ asset('upload/post_images/' . $fixedImage->image_url) }}"
-                                            alt="home-1" class="img-responsive" style="height: 320px;">
+                                            alt="home-1" class="img-responsive" style="height: 270px">
                                     @else
                                         <img src="{{ asset('upload/no_image.jpg') }}" alt="No Image"
-                                            class="img-responsive">
+                                            class="img-responsive" style="height: 270px">
                                     @endif
 
                                 </a>
                             </div>
 
                             <div class="button-effect">
-                                <a href="{{ $video_url_fixed }}" class="btn popup-video popup-youtube"
-                                    title="Bấm để xem video"><i class="fas fa-video"></i></a>
+                                <a class="btn copy-link"
+                                    data-link="{{ route('post.detail', $post->id) }}"><i class="fa fa-link"
+                                        style="line-height: 30px"></i></a>
+                                @if ($video_url)
+                                    <a href="{{ $video_url_fixed }}" class="btn popup-video popup-youtube"><i
+                                            class="fas fa-video" style="line-height: 30px"></i></a>
+                                @endif
+                                <a class="img-poppu btn">
+                                    {{ $totalImages }} <i class="fa fa-photo"></i>
+                                </a>
                             </div>
                         </div>
                         <!-- homes content -->
@@ -53,23 +62,19 @@
                                     </span>
                                 </a>
                             </p>
+
+                            {{-- <p class="homes-address">
+                                <a href="{{ route('post.detail', $post->id) }}">
+                                    <span>
+                                        {{ Str::words(strip_tags($post->description), 30) }}
+                                    </span>
+                                </a>
+                            </p> --}}
                             <!-- homes List -->
                             <ul class="homes-list clearfix pb-3">
                                 <li class="the-icons">
-                                    <i class="flaticon-bed mr-2" aria-hidden="true"></i>
-                                    <span>6 Bedrooms</span>
-                                </li>
-                                <li class="the-icons">
-                                    <i class="flaticon-bathtub mr-2" aria-hidden="true"></i>
-                                    <span>3 Bathrooms</span>
-                                </li>
-                                <li class="the-icons">
                                     <i class="flaticon-square mr-2" aria-hidden="true"></i>
                                     <span>{{ $post->area }} m&sup2;</span>
-                                </li>
-                                <li class="the-icons">
-                                    <i class="flaticon-car mr-2" aria-hidden="true"></i>
-                                    <span>2 Garages</span>
                                 </li>
                             </ul>
                             <div class="price-properties footer pt-3 pb-0">
@@ -114,6 +119,4 @@
             });
         });
     </script>
-
-    
 @endsection

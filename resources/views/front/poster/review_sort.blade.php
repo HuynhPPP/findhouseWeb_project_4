@@ -77,11 +77,83 @@
                         </a>
                     </li>
                     <li>
-                        <a href="{{ route('poster.delete.review', $review->id) }}"
-                            id="delete_comment"><i class="far fa-trash-alt"></i></a>
+                        <a href="{{ route('poster.delete.review', $review->id) }}" id="delete_comment"><i
+                                class="far fa-trash-alt"></i></a>
                     </li>
                 </ul>
             </div>
         </div>
     </div>
 @endforeach
+
+<script>
+    $(document).ready(function() {
+        $('.toggle-status').on('click', function(e) {
+            e.preventDefault();
+
+            var reviewId = $(this).data('id');
+            var currentStatus = $(this).data('status');
+            var icon = $(this).find('i');
+
+            const Toast = Swal.mixin({
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 3000
+            });
+
+            $.ajax({
+                url: '{{ route('review.toggle.status', ':id') }}'.replace(':id', reviewId),
+                type: 'POST',
+                data: {
+                    _token: '{{ csrf_token() }}'
+                },
+                success: function(response) {
+                    if (response.success) {
+                        // Cập nhật biểu tượng
+                        if (response.status == '1') {
+                            icon.removeClass('fas fa-eye-slash').addClass('fa fa-eye');
+                        } else {
+                            icon.removeClass('fa fa-eye').addClass('fas fa-eye-slash');
+                        }
+                        // Cập nhật data-status
+                        $(this).data('status', response.status);
+                        Toast.fire({
+                            icon: 'success',
+                            title: response.message
+                        });
+                    }
+                }.bind(this),
+                error: function(xhr) {
+                    Toast.fire({
+                        icon: 'success',
+                        title: 'Đã có lỗi xảy ra. Vui lòng thử lại!'
+                    });
+                }
+            });
+        });
+    });
+</script>
+
+<script>
+    $(function() {
+        $(document).on('click', '#delete_comment', function(e) {
+            e.preventDefault();
+            var link = $(this).attr("href");
+            Swal.fire({
+                title: 'Bạn có chắc chắn ?',
+                text: "Bạn muốn xoá đánh giá này?",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Xoá',
+                cancelButtonText: "Huỷ"
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    window.location.href = link
+                }
+            })
+        });
+    });
+</script>

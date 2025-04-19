@@ -1,4 +1,4 @@
-@extends('front.master_2')
+@extends('front.SecondPage')
 @section('home_2')
     <link rel="stylesheet" href="{{ asset('front/leaflet/leaflet.css') }}" />
     <style>
@@ -241,15 +241,6 @@
                                                     </div>
                                                     <div class="clearfix"></div>
                                                 </div>
-                                                <div class="col-md-6">
-                                                    <!-- Uplaod Photos -->
-                                                    <div class="add-review-photos margin-bottom-30">
-                                                        <div class="photoUpload">
-                                                            <span><i class="sl sl-icon-arrow-up-circle"></i> Tải ảnh lên</span>
-                                                            <input type="file" class="upload" />
-                                                        </div>
-                                                    </div>
-                                                </div>
                                             </div>
                                             <div class="row">
                                                 <div class="col-md-12 data">
@@ -310,213 +301,68 @@
                                             </li>
                                         </ul>
                                         @if (auth()->id() != $post->user_id)
-                                        <div class="agent-contact-form-sidebar">
-                                            <h4>Liên hệ để thuê</h4>
+                                            <div class="agent-contact-form-sidebar">
+                                                <h4>Thông tin của bạn</h4>
 
-                      @auth
-                        @php
-                          $booking = App\Models\Bookings::where(
-                              'post_id',
-                              $post->id,
-                          )
-                              ->where('user_id', Auth::user()->id)
-                              ->first();
-                        @endphp
+                                                @auth
 
-                        @php
-                          $profileData = Auth::user(); // Lấy user hiện tại
-                        @endphp
-                        <!-- Nếu đã đăng nhập, hiển thị form -->
-                        @if ($booking && $booking->status == 'pending')
-                          <form method="POST"
-                            action="{{ route('bookings.cancel', $booking->id) }}">
-                            @csrf
-                            <input type="hidden" name="post_id"
-                              value="{{ $post->id }}">
-                            <input type="hidden" name="user_id"
-                              value="{{ $profileData->id }}">
+                                                    @php
+                                                        $profileData = Auth::user(); // Lấy user hiện tại
+                                                    @endphp
+                                                    <input type="hidden" name="post_id" value="{{ $post->id }}">
+                                                    <input type="hidden" name="user_id" value="{{ $profileData->id }}">
 
-                            <input type="text" id="fname" name="full_name"
-                              value="{{ $profileData->name }}" readonly />
+                                                    <label for="fname">Họ tên</label>
+                                                    <input type="text" id="fname" name="full_name"
+                                                        value="{{ $profileData->name }}" readonly />
 
-                            <input type="number" id="pnumber"
-                              name="phone_number"
-                              value="{{ $profileData->phone ?? 'Chưa cập nhật' }}"
-                              readonly />
+                                                    <label for="fname">Số điện thoại</label>
+                                                    <input type="text" id="pnumber" name="phone_number"
+                                                        value="{{ $profileData->phone ?? 'Chưa cập nhật' }}" readonly />
 
-                            <input type="email" id="emailid"
-                              name="email_address"
-                              value="{{ $profileData->email ?? 'Chưa cập nhật' }}"
-                              readonly />
-
-                            <input type="submit" id="cancel_booking"
-                              class="multiple-send-message" value="Huỷ yêu cầu" />
-                          </form>
-                        @else
-                          <form name="contact_form" method="post"
-                            action="{{ route('bookings.store') }}">
-                            @csrf
-                            <input type="hidden" name="post_id"
-                              value="{{ $post->id }}">
-                            <input type="hidden" name="user_id"
-                              value="{{ $profileData->id }}">
-
-                            <label for="fname">Họ tên</label>
-                            <input type="text" id="fname" name="full_name"
-                              value="{{ $profileData->name }}" readonly />
-
-                            <label for="fname">Số điện thoại</label>
-                            <input type="text" id="pnumber"
-                              name="phone_number"
-                              value="{{ $profileData->phone ?? 'Chưa cập nhật' }}"
-                              readonly />
-
-                            <label for="fname">Email</label>
-                            <input type="email" id="emailid"
-                              name="email_address"
-                              value="{{ $profileData->email ?? 'Chưa cập nhật' }}"
-                              readonly />
-
-                            <input type="submit" id="submit_booking"
-                              class="multiple-send-message" value="Gửi yêu cầu" />
-
-                                                    </form>
+                                                    <label for="fname">Email</label>
+                                                    <input type="email" id="emailid" name="email_address"
+                                                        value="{{ $profileData->email ?? 'Chưa cập nhật' }}" readonly />
                                                     <!-- Nút mở chat (sẽ được thay thế bởi Vue) -->
 
                                                     <div id="chatButtonApp">
                                                         <chat-button @open-chat="openChatPopup"></chat-button>
                                                     </div>
-                                                @endif
-                                            @else
-                                                <!-- Nếu chưa đăng nhập, hiển thị thông báo -->
-                                                <div class="alert alert-warning">
-                                                    Bạn cần <a class="text-danger"
-                                                        href="{{ route('login', ['redirect' => request()->fullUrl()]) }}">
-                                                        đăng nhập
-                                                    </a>
-                                                    </a> trước khi gửi yêu cầu liên hệ.
-                                                </div>
+                                                @else
+                                                    <!-- Nếu chưa đăng nhập, hiển thị thông báo -->
+                                                    <div class="alert alert-warning">
+                                                        Bạn cần <a class="text-danger"
+                                                            href="{{ route('login', ['redirect' => request()->fullUrl()]) }}">
+                                                            đăng nhập
+                                                        </a>
+                                                        </a> trước khi gửi yêu cầu liên hệ.
+                                                    </div>
 
-                      @endauth
+                                                @endauth
 
-                                        </div>
+                                            </div>
                                         @endif
 
-                  </div>
-                </div>
-              </div>
-
-              <div class="main-search-field-2">
-                <div class="widget-boxed mt-5">
-                  <div class="widget-boxed-header">
-                    <h4>Bài đăng mới nhất</h4>
-                  </div>
-                  <div class="widget-boxed-body">
-                    <div class="recent-post">
-                      <div class="recent-main">
-                        <div class="recent-img">
-                          <a href="blog-details.html"><img
-                              src="images/feature-properties/fp-1.jpg"
-                              alt=""></a>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                        <div class="info-img">
-                          <a href="blog-details.html">
-                            <h6>Family Home</h6>
-                          </a>
-                          <p>$230,000</p>
-                        </div>
-                      </div>
-                      <div class="recent-main my-4">
-                        <div class="recent-img">
-                          <a href="blog-details.html"><img
-                              src="images/feature-properties/fp-2.jpg"
-                              alt=""></a>
-                        </div>
-                        <div class="info-img">
-                          <a href="blog-details.html">
-                            <h6>Family Home</h6>
-                          </a>
-                          <p>$230,000</p>
-                        </div>
-                      </div>
-                      <div class="recent-main">
-                        <div class="recent-img">
-                          <a href="blog-details.html"><img
-                              src="images/feature-properties/fp-3.jpg"
-                              alt=""></a>
-                        </div>
-                        <div class="info-img">
-                          <a href="blog-details.html">
-                            <h6>Family Home</h6>
-                          </a>
-                          <p>$230,000</p>
-                        </div>
-                      </div>
                     </div>
-                  </div>
-                </div>
-                <div class="widget-boxed popular mt-5">
-                  <div class="widget-boxed-header">
-                    <h4>Tìm kiếm theo từ khoá</h4>
-                  </div>
-                  <div class="widget-boxed-body">
-                    <div class="recent-post">
-                      <div class="tags">
-                        <span><a href="#"
-                            class="btn btn-outline-primary">Houses</a></span>
-                        <span><a href="#"
-                            class="btn btn-outline-primary">Real
-                            Home</a></span>
-                      </div>
-                      <div class="tags">
-                        <span><a href="#"
-                            class="btn btn-outline-primary">Baths</a></span>
-                        <span><a href="#"
-                            class="btn btn-outline-primary">Beds</a></span>
-                      </div>
-                      <div class="tags">
-                        <span><a href="#"
-                            class="btn btn-outline-primary">Garages</a></span>
-                        <span><a href="#"
-                            class="btn btn-outline-primary">Family</a></span>
-                      </div>
-                      <div class="tags">
-                        <span><a href="#"
-                            class="btn btn-outline-primary">Real
-                            Estates</a></span>
-                        <span><a href="#"
-                            class="btn btn-outline-primary">Properties</a></span>
-                      </div>
-                      <div class="tags no-mb">
-                        <span><a href="#"
-                            class="btn btn-outline-primary">Location</a></span>
-                        <span><a href="#"
-                            class="btn btn-outline-primary">Price</a></span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
+                </aside>
             </div>
-          </div>
-        </aside>
-      </div>
-      <!-- START SIMILAR PROPERTIES -->
-      <section class="similar-property featured portfolio p-0 bg-white-inner">
-        @if ($relatedPosts->count() > 0)
-          <div class="container mt-5">
-            <h5>Bài đăng có liên quan</h5>
-            <div class="row portfolio-items">
-              @foreach ($relatedPosts as $related)
-                @php
-                  $video_url = $related->video_url;
-                  $video_url_fixed = str_replace(
-                      'embed/',
-                      'watch?v=',
-                      $video_url,
-                  );
+            <!-- START SIMILAR PROPERTIES -->
+            <section class="similar-property featured portfolio p-0 bg-white-inner">
+                @if ($relatedPosts->count() > 0)
+                    <div class="container mt-5">
+                        <h5>Bài đăng có liên quan</h5>
+                        <div class="row portfolio-items">
+                            @foreach ($relatedPosts as $related)
+                                @php
+                                    $video_url = $related->video_url;
+                                    $video_url_fixed = str_replace('embed/', 'watch?v=', $video_url);
 
                                     $fixedImage = $post->images()->first();
+                                    $totalImages = $related->images()->count();
                                 @endphp
                                 <div class="item col-lg-4 col-md-6 col-xs-12 landscapes">
                                     <div class="project-single">
@@ -547,15 +393,22 @@
                                                 @endif
                                             </div>
                                             <div class="button-effect">
-                                                <a href="{{ $video_url_fixed }}" class="btn popup-video popup-youtube"><i
-                                                        class="fas fa-video"></i></a>
+                                                <a class="btn copy-link"
+                                                    data-link="{{ route('post.detail', $related->id) }}"><i
+                                                        class="fa fa-link" style="line-height: 30px"></i></a>
+                                                @if ($video_url)
+                                                    <a href="{{ $video_url_fixed }}"
+                                                        class="btn popup-video popup-youtube"><i class="fas fa-video"
+                                                            style="line-height: 30px"></i></a>
+                                                @endif
                                             </div>
                                         </div>
                                         <!-- homes content -->
                                         <div class="homes-content">
                                             <!-- homes address -->
-                                            <h3><a
-                                                    href="{{ route('post.detail', $related->id) }}">{{ $related->title }}</a>
+                                            <h3><a href="{{ route('post.detail', $related->id) }}">
+                                                    {{ Str::words(strip_tags($related->title), 10) }}
+                                                </a>
                                             </h3>
                                             <p class="homes-address mb-3">
                                                 <a href="single-property-1.html">
@@ -566,20 +419,113 @@
                                             <!-- homes List -->
                                             <ul class="homes-list clearfix pb-3">
                                                 <li class="the-icons">
-                                                    <i class="flaticon-bed mr-2" aria-hidden="true"></i>
-                                                    <span>6 Bedrooms</span>
+                                                    <i class="flaticon-square mr-2" aria-hidden="true"></i>
+                                                    <span>{{ $related->area }} m&sup2;</span>
                                                 </li>
-                                                <li class="the-icons">
-                                                    <i class="flaticon-bathtub mr-2" aria-hidden="true"></i>
-                                                    <span>3 Bathrooms</span>
-                                                </li>
+                                            </ul>
+                                            <div class="footer">
+                                                <a href="{{ route('poster.detail', $related->user->id) }}">
+                                                    @php
+                                                        $imagePath = 'upload/user_images/';
+                                                        $userPhoto = $related->user->photo ?? null;
+
+                                                        if (!empty($userPhoto)) {
+                                                            $imageUrl = url($imagePath . $userPhoto);
+                                                        } else {
+                                                            $imageUrl = url('upload/no_img.jpg');
+                                                        }
+                                                    @endphp
+
+                                                    <img src="{{ $imageUrl }}" alt="User Image" class="mr-2"
+                                                        style="width: 35px; height: 35px; object-fit: cover; border-radius: 50%;">
+                                                    {{ $related->user->name }}
+                                                </a>
+                                                <span
+                                                    style="margin-top: 7px">{{ \Carbon\Carbon::parse($related->created_at)->locale('vi')->diffForHumans() }}</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            @endforeach
+                        </div>
+                    </div>
+                @endif
+
+            </section>
+            <!-- END SIMILAR PROPERTIES -->
+
+            <!-- START SIMILAR PROPERTIES -->
+            <section class="similar-property featured portfolio p-0 bg-white-inner">
+                @if ($other_poster_post->count() > 0)
+                    <div class="container mt-5">
+                        <h5>Các tin đăng khác của {{ $post->user->name }}</h5>
+                        <div class="row portfolio-items">
+                            @foreach ($other_poster_post as $related)
+                                @php
+                                    $video_url = $related->video_url;
+                                    $video_url_fixed = str_replace('embed/', 'watch?v=', $video_url);
+
+                                    $fixedImage = $post->images()->first();
+                                    $totalImages = $post->images()->count();
+                                @endphp
+                                <div class="item col-lg-4 col-md-6 col-xs-12 landscapes">
+                                    <div class="project-single">
+                                        <div class="project-inner project-head">
+                                            <div class="project-bottom">
+                                                <h4><a href="{{ route('post.detail', $related->id) }}">
+                                                        Xem chi tiết
+                                                    </a>
+                                                </h4>
+                                            </div>
+                                            <div class="homes">
+                                                <!-- homes img -->
+                                                <div class="homes-tag button alt sale">
+                                                    {{ $related->category->category_name }}</div>
+                                                <div class="homes-price">
+                                                    @if ($related->price >= 1000000)
+                                                        {{ number_format($related->price / 1000000, 1) }} triệu/tháng
+                                                    @else
+                                                        {{ number_format($related->price, 0, ',', '.') }} đồng/tháng
+                                                    @endif
+                                                </div>
+                                                @if ($fixedImage)
+                                                    <img src="{{ asset('upload/post_images/' . $fixedImage->image_url) }}"
+                                                        alt="home-1" class="img-responsive" style="height: 270px;">
+                                                @else
+                                                    <img src="{{ asset('upload/no_image.jpg') }}" alt="No Image"
+                                                        class="img-responsive">
+                                                @endif
+                                            </div>
+                                            <div class="button-effect">
+                                                <a class="btn copy-link"
+                                                    data-link="{{ route('post.detail', $related->id) }}"><i
+                                                        class="fa fa-link" style="line-height: 30px"></i></a>
+                                                @if ($video_url)
+                                                    <a href="{{ $video_url_fixed }}"
+                                                        class="btn popup-video popup-youtube"><i class="fas fa-video"
+                                                            style="line-height: 30px"></i></a>
+                                                @endif
+                                            </div>
+                                        </div>
+                                        <!-- homes content -->
+                                        <div class="homes-content">
+                                            <!-- homes address -->
+                                            <h3>
+                                                <a href="{{ route('post.detail', $related->id) }}">
+                                                    {{ Str::words(strip_tags($related->title), 10) }}
+                                                </a>
+                                            </h3>
+                                            <p class="homes-address mb-3">
+                                                <a href="single-property-1.html">
+                                                    <i
+                                                        class="fa fa-map-marker"></i><span>{{ $related->full_address }}</span>
+                                                </a>
+                                            </p>
+                                            <!-- homes List -->
+                                            <ul class="homes-list clearfix pb-3">
                                                 <li class="the-icons">
                                                     <i class="flaticon-square mr-2" aria-hidden="true"></i>
-                                                    <span>720 sq ft</span>
-                                                </li>
-                                                <li class="the-icons">
-                                                    <i class="flaticon-car mr-2" aria-hidden="true"></i>
-                                                    <span>2 Garages</span>
+                                                    <span>{{ $related->area }} m&sup2;</span>
                                                 </li>
                                             </ul>
                                             <div class="footer">
@@ -637,53 +583,75 @@
 
 @section('customJs')
     <script src="{{ asset('front/leaflet/leaflet.js') }}"></script>
-    <script src="{{ asset('front/js/map_post_view.js') }}"></script>
+    {{-- <script src="{{ asset('front/leaflet/map_post_view.js') }}"></script> --}}
 
-  <script>
-    $(function() {
-      $(document).on('click', '#submit_booking', function(e) {
-        e.preventDefault(); // Ngăn form submit ngay
-        var form = $(this).closest(
-          'form'); // Lấy đối tượng form chứa nút này
-        Swal.fire({
-          title: 'Bạn có chắc chắn?',
-          text: "Bạn muốn yêu cầu thuê ",
-          icon: 'info',
-          showCancelButton: true,
-          confirmButtonColor: '#3085d6',
-          cancelButtonColor: '#d33',
-          confirmButtonText: 'Đồng ý',
-          cancelButtonText: 'Không'
-        }).then((result) => {
-          if (result.isConfirmed) {
-            form.submit();
-          }
-        });
-      });
-    });
-  </script>
+    {{-- Lấy vị trí bản đồ --}}
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const fullAddress = @json($post->full_address ?? '');
+            const mapElement = document.getElementById('map');
+            let marker;
 
-  <script>
-    $(function() {
-      $(document).on('click', '#cancel_booking', function(e) {
-        e.preventDefault(); // Ngăn form submit ngay
-        var form = $(this).closest(
-          'form'); // Lấy đối tượng form chứa nút này
-        Swal.fire({
-          title: 'Bạn có chắc chắn?',
-          text: "Bạn muốn huỷ yêu cầu thuê này?",
-          icon: 'warning',
-          showCancelButton: true,
-          confirmButtonColor: '#3085d6',
-          cancelButtonColor: '#d33',
-          confirmButtonText: 'Huỷ yêu cầu',
-          cancelButtonText: 'Không'
-        }).then((result) => {
-          if (result.isConfirmed) {
-            form.submit();
-          }
+            if (!fullAddress || fullAddress.trim() === "") {
+                mapElement.innerHTML = "<p style='color:red;'>Không có địa chỉ để hiển thị bản đồ.</p>";
+                return;
+            }
+
+            // Gọi Nominatim để lấy lat/lon từ địa chỉ
+            const geocodeUrl =
+                `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(fullAddress)}`;
+
+            fetch(geocodeUrl)
+                .then(response => response.json())
+                .then(data => {
+                    if (data && data.length > 0) {
+                        const lat = parseFloat(data[0].lat);
+                        const lon = parseFloat(data[0].lon);
+
+                        const map = L.map('map').setView([lat, lon], 16);
+
+                        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                            maxZoom: 19,
+                            attribution: '&copy; OpenStreetMap'
+                        }).addTo(map);
+
+                        // Tạo custom icon (tùy chỉnh marker)
+                        const customIcon = L.icon({
+                            iconUrl: '{{ asset('front/location-pin.png') }}',
+
+                            // Đường dẫn đến biểu tượng của bạn
+                            iconSize: [32, 32], // Kích thước marker
+                            iconAnchor: [16, 32], // Mỏ neo của marker (điểm chạm đất)
+                            popupAnchor: [0, -32] // Vị trí hiển thị popup
+                        });
+
+                        function updateMap(lat, lon) {
+                            // Di chuyển bản đồ đến vị trí mới
+                            map.setView([lat, lon], 14);
+
+                            // Xóa marker cũ nếu có
+                            if (marker) {
+                                map.removeLayer(marker);
+                            }
+
+                            // Thêm marker mới với custom icon
+                            marker = L.marker([lat, lon], {
+                                    icon: customIcon
+                                })
+                                .addTo(map)
+                        }
+
+                        // GỌI updateMap tại đây
+                        updateMap(lat, lon);
+
+                    } else {
+                        mapElement.innerHTML = "<p style='color:red;'>Không tìm thấy vị trí trên bản đồ.</p>";
+                    }
+                })
+                .catch(error => {
+                    console.error("Geocoding error:", error);
+                    mapElement.innerHTML = "<p style='color:red;'>Có lỗi khi tải bản đồ.</p>";
+                });
         });
-      });
-    });
-  </script>
+    </script>
 @endsection

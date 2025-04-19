@@ -1,4 +1,4 @@
-@extends('front.master_2')
+@extends('front.SecondPage')
 @section('home_2')
     <title>Danh sách tin đăng đề xuất</title>
     <link rel="stylesheet" href="{{ asset('front/css/main_ui/all_post.css') }}">
@@ -75,147 +75,24 @@
                                 class="input-group-text bg-transparent border-0 text-uppercase letter-spacing-093 pr-1 pl-3"
                                 for="inputGroupSelect01"><i class="fas fa-align-left fs-16 pr-2"></i>Sắp xếp theo:</label>
                             <select class="form-control border-0 bg-transparent shadow-none p-0 selectpicker sortby"
-                                data-style="bg-transparent border-0 font-weight-600 btn-lg pl-0 pr-3"
-                                id="inputGroupSelect01" name="sortby">
-                                <option selected value="2">Giá(thấp đến cao)</option>
-                                <option value="3">Giá(cao đến thấp)</option>
+                                id="sortby" name="sortby">
+                                <option value="price_asc" {{ request('sort') == 'price_asc' ? 'selected' : '' }}>Giá (thấp
+                                    đến cao)</option>
+                                <option value="price_desc" {{ request('sort') == 'price_desc' ? 'selected' : '' }}>Giá (cao
+                                    đến thấp)</option>
                             </select>
-                        </div>
-                        <div class="sorting-options">
-                            <a href="properties-full-list-1.html" class="change-view-btn lde"><i
-                                    class="fa fa-th-list"></i></a>
-                            <a href="#" class="change-view-btn active-view-btn"><i class="fa fa-th-large"></i></a>
                         </div>
                     </div>
                 </div>
             </section>
             <!-- Block heading end -->
-            <div class="row featured portfolio-items">
-                @foreach ($posts_all_featured as $post)
-                    @php
-                        $video_url = $post->video_url;
-                        $video_url_fixed = str_replace('embed/', 'watch?v=', $video_url);
-
-                        $fixedImage = $post->images()->first();
-                    @endphp
-                    <div class="item col-lg-4 col-md-6 col-xs-12 landscapes sale">
-                        <div class="project-single" data-aos="fade-up">
-                            <div class="project-inner project-head">
-                                <div class="project-bottom">
-                                    <h4><a href="{{ route('post.detail', $post->id) }}">
-                                            Xem chi tiết
-                                        </a>
-                                    </h4>
-                                </div>
-                                <div class="homes">
-                                    <!-- homes img -->
-                                    <a href="single-property-1.html" class="homes-img">
-                                        <div class="homes-tag button alt featured">Đề xuất</div>
-                                        <div class="homes-tag button alt sale">{{ $post->category->category_name }}</div>
-
-                                        @if ($fixedImage)
-                                            <img src="{{ asset('upload/post_images/' . $fixedImage->image_url) }}"
-                                                alt="home-1" class="img-responsive" style="height: 270px;">
-                                        @else
-                                            <img src="{{ asset('upload/no_image.jpg') }}" alt="No Image"
-                                                class="img-responsive">
-                                        @endif
-                                    </a>
-                                </div>
-                                <div class="button-effect">
-                                    <a href="single-property-1.html" class="btn"><i class="fa fa-link"
-                                            style="line-height: 30px"></i></a>
-                                    <a href="{{ $video_url_fixed }}" class="btn popup-video popup-youtube"><i
-                                            class="fas fa-video" style="line-height: 30px"></i></a>
-                                </div>
-                            </div>
-                            <!-- homes content -->
-                            <div class="homes-content">
-                                <!-- homes address -->
-                                <h3>
-                                    <a href="single-property-1.html">
-                                        {{ Str::words(strip_tags($post->title), 10) }}
-                                    </a>
-                                </h3>
-                                <p class="homes-address mb-3">
-                                    <a href="single-property-1.html">
-                                        <i class="fa fa-map-marker"></i>
-                                        <span>
-                                            {{ $post->full_address }}
-                                        </span>
-                                    </a>
-                                </p>
-                                <!-- homes List -->
-                                <ul class="homes-list clearfix pb-3">
-                                    <li class="the-icons">
-                                        <i class="flaticon-bed mr-2" aria-hidden="true"></i>
-                                        <span>6 Bedrooms</span>
-                                    </li>
-                                    <li class="the-icons">
-                                        <i class="flaticon-bathtub mr-2" aria-hidden="true"></i>
-                                        <span>3 Bathrooms</span>
-                                    </li>
-                                    <li class="the-icons">
-                                        <i class="flaticon-square mr-2" aria-hidden="true"></i>
-                                        <span>{{ $post->area }} m&sup2;</span>
-                                    </li>
-                                    <li class="the-icons">
-                                        <i class="flaticon-car mr-2" aria-hidden="true"></i>
-                                        <span>2 Garages</span>
-                                    </li>
-                                </ul>
-                                <!-- Price -->
-                                <div class="price-properties">
-                                    <h3 class="title mt-3">
-                                        <a href="single-property-1.html">
-                                            @if ($post->price >= 1000000)
-                                                {{ number_format($post->price / 1000000, 1) }} triệu/tháng
-                                            @else
-                                                {{ number_format($post->price, 0, ',', '.') }} đồng/tháng
-                                            @endif
-                                        </a>
-                                    </h3>
-                                    <div class="compare">
-                                        <a href="#" title="Share">
-                                            <i class="fas fa-share-alt"></i>
-                                        </a>
-                                        <a href="javascript:void(0)" title="Bấm để lưu tin" id="{{ $post->id }}"
-                                            onclick="addToWishList(this.id, event)" class="save-post">
-                                            <i class="{{ $post->isSavedByUser(auth()->user()) ? 'fas fa-heart' : 'far fa-heart' }}"
-                                                id="heart-icon-{{ $post->id }}"></i>
-                                        </a>
-
-                                    </div>
-                                </div>
-                                <div class="footer">
-                                    <a href="{{ route('poster.detail', $post->user->id) }}">
-                                        @php
-                                            $imagePath = 'upload/user_images/';
-                                            $userPhoto = $post->user->photo ?? null;
-
-                                            if (!empty($userPhoto)) {
-                                                $imageUrl = url($imagePath . $userPhoto);
-                                            } else {
-                                                $imageUrl = url('upload/no_img.jpg');
-                                            }
-                                        @endphp
-
-                                        <img src="{{ $imageUrl }}" alt="User Image" class="mr-2"
-                                            style="width: 35px; height: 35px; object-fit: cover; border-radius: 50%;">
-                                        {{ $post->user->name }}
-                                    </a>
-                                    <span
-                                        style="margin-top: 7px">{{ \Carbon\Carbon::parse($post->created_at)->locale('vi')->diffForHumans() }}</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                @endforeach
+            <div class="row featured portfolio-items" id="post-list-recommend">
+                @include('front.main.sort_page.posts_list_sort_recommend', ['posts' => $posts_all_featured])
             </div>
 
             <!-- Phân trang -->
-            <div class="d-flex justify-content-end mt-3">
-                {{ $posts_all_featured->links('pagination::bootstrap-4') }}
+            <div class="d-flex justify-content-end mt-3" id="pagination">
+                {{ $posts_all_featured->appends(request()->all())->links('pagination::bootstrap-4') }}
             </div>
         </div>
     </section>
@@ -602,6 +479,71 @@
                 console.log("area_range:", document.getElementById('areaRange').value);
                 console.log("category_id:", document.getElementById('categoryRange').value);
             });
+        });
+    </script>
+
+    <script>
+        $(document).ready(function() {
+            // Lấy trang hiện tại từ URL
+            function getCurrentPage() {
+                var urlParams = new URLSearchParams(window.location.search);
+                return parseInt(urlParams.get('page')) || 1;
+            }
+
+            // Xử lý sự kiện thay đổi dropdown
+            $('#sortby').on('change', function() {
+                var sort = $(this).val();
+                var currentPage = getCurrentPage(); // Giữ trang hiện tại
+                loadPosts(sort, currentPage);
+            });
+
+            // Xử lý click vào link phân trang
+            $(document).on('click', '.pagination a', function(e) {
+                e.preventDefault();
+                var url = new URL($(this).attr('href'));
+                var page = url.searchParams.get('page') || 1;
+                var sort = $('#sortby').val() || '{{ request('sort', 'price_asc') }}';
+                loadPosts(sort, page);
+            });
+
+            // Hàm load danh sách tin đăng
+            function loadPosts(sort, page) {
+                const Toast = Swal.mixin({
+                    toast: true,
+                    position: 'top-end',
+                    showConfirmButton: false,
+                    timer: 3000
+                });
+
+                $.ajax({
+                    url: '{{ route('posts.recommend.sort') }}',
+                    type: 'GET',
+                    data: {
+                        sort: sort,
+                        page: page
+                    },
+                    success: function(response) {
+                        $('#post-list-recommend').html(response.posts_html);
+                        $('#pagination').html(response.pagination_html);
+                        if ($.fn.selectpicker) {
+                            $('#sortby').selectpicker('refresh');
+                        }
+                        // Cập nhật URL mà không reload trang
+                        var params = {
+                            sort: sort,
+                            page: page
+                        };
+                        var newUrl = window.location.pathname + '?' + $.param(params);
+                        window.history.pushState({}, '', newUrl);
+                    },
+                    error: function(xhr) {
+                        Toast.fire({
+                            icon: 'error',
+                            title: 'Không thể tải danh sách tin đăng. Vui lòng thử lại!'
+                        });
+                    }
+                });
+            }
         });
     </script>
 @endsection
