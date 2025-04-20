@@ -16,15 +16,15 @@ return new class extends Migration
             $table->unsignedBigInteger('post_id')->unsigned();
             $table->unsignedBigInteger('user_id')->unsigned();
             $table->text('comment');
-            $table->string('rating');
+            $table->integer('rating');
             $table->foreign('post_id')
-                  ->references('id')->on('posts')
-                  ->onDelete('cascade');
+                ->references('id')->on('posts')
+                ->onDelete('cascade');
 
             $table->foreign('user_id')
-                  ->references('id')->on('users')
-                  ->onDelete('cascade');
-            $table->integer('poster_id')->nullable();       
+                ->references('id')->on('users')
+                ->onDelete('cascade');
+            $table->unsignedBigInteger('poster_id');
             $table->string('status')->default(0);
             $table->timestamps();
         });

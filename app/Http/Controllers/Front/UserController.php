@@ -267,6 +267,7 @@ class UserController extends Controller
         return view('front.user.user_verification');
     }
 
+
     public function sendVerificationCode(Request $request)
     {
         $request->validate([
@@ -287,6 +288,7 @@ class UserController extends Controller
         // Tạo mã xác minh 6 chữ số
         $verificationCode = rand(100000, 999999);
         $user->verification_token = $verificationCode;
+        $user->email_verification_expires_at = now()->addMinutes(10);
         $user->save();
 
         // Gửi email xác minh
@@ -314,21 +316,30 @@ class UserController extends Controller
             'verification_code.digits'   => 'Mã xác minh phải là 6 chữ số.'
         ]);
 
-        // Tìm user theo mã xác minh
         $user = User::where('verification_token', $request->verification_code)->first();
 
+        // Nếu không tìm thấy user
         if (!$user) {
             $notification = [
-                'message' => 'Mã xác minh không hợp lệ',
+                'message' => 'Mã xác minh không hợp lệ.',
                 'alert-type' => 'error',
             ];
-
             return redirect()->back()->with($notification);
+        }
+
+        // Kiểm tra thời gian hết hạn mã xác minh
+        if (!$user->email_verification_expires_at || now()->greaterThan($user->email_verification_expires_at)) {
+            $notification = [
+                'message' => 'Mã xác minh đã hết hạn. Vui lòng yêu cầu mã mới.',
+                'alert-type' => 'error',
+            ];
+            return redirect('/user/verification')->with($notification);
         }
 
         // Cập nhật trường email_verified_at và xóa mã xác minh
         $user->email_verified_at = Carbon::now();
         $user->verification_token = null;
+        $user->email_verification_expires_at = null;
         $user->role = 'poster';
         $user->save();
 

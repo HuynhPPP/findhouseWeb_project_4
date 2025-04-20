@@ -86,6 +86,7 @@
 
         <!-- ARCHIVES JS -->
         <script src="{{ asset('front/js/jquery-3.5.1.min.js') }}"></script>
+        <script src="{{ asset('front/js/sweetalert2.js') }}"></script>
         <script src="{{ asset('front/js/popper.min.js') }}"></script>
         <script src="{{ asset('front/js/jquery-ui.js') }}"></script>
         <script src="{{ asset('front/js/tether.min.js') }}"></script>
@@ -116,9 +117,9 @@
         <script src="{{ asset('front/js/forms-2.js') }}"></script>
         <script src="{{ asset('front/js/color-switcher.js') }}"></script>
         <script src="{{ asset('front/trumbowyg/trumbowyg.min.js') }}"></script>
-        <script src="{{ asset('front/js/sweetalert2.js') }}"></script>
         <script src="{{ asset('front/js/code.js') }}"></script>
         <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
 
 
 
