@@ -94,12 +94,15 @@
                                                                 data-post-id="{{ $post->id }}">
                                                                 <i class="fas fa-share-alt"></i>
                                                             </a>
-                                                            <a href="javascript:void(0)" title="Bấm để lưu tin"
-                                                                id="{{ $post->id }}"
-                                                                onclick="addToWishList(this.id, event)" class="save-post">
-                                                                <i class="{{ $post->isSavedByUser(auth()->user()) ? 'fas fa-heart' : 'far fa-heart' }}"
-                                                                    id="heart-icon-{{ $post->id }}"></i>
-                                                            </a>
+                                                            @if (auth()->check() && auth()->id() !== $post->user_id)
+                                                                <a href="javascript:void(0)" title="Bấm để lưu tin"
+                                                                    id="{{ $post->id }}"
+                                                                    onclick="addToWishList(this.id, event)"
+                                                                    class="save-post">
+                                                                    <i class="{{ $post->isSavedByUser(auth()->user()) ? 'fas fa-heart' : 'far fa-heart' }}"
+                                                                        id="heart-icon-{{ $post->id }}"></i>
+                                                                </a>
+                                                            @endif
                                                         </div>
                                                     </div>
                                                 </div>

@@ -18,7 +18,7 @@ return new class extends Migration
       $table->string('title');
       $table->string('post_slug');
       $table->text('description');
-      $table->string('price');
+      $table->bigInteger('price');
       $table->string('area');
       $table->string('province');
       $table->string('district');

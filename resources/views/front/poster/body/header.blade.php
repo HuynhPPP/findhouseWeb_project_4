@@ -35,6 +35,11 @@
                     $profileData = App\Models\User::find($id);
                 @endphp
 
+                @php
+                    $userId = Auth::id();
+                    $latestMessage = \App\Models\ChatMessage::where('receiver_id', $userId)->latest()->first();
+                @endphp
+
                 <div class="header-user-menu user-menu">
                     <div class="header-user-name">
                         <span>
@@ -45,13 +50,28 @@
                         </span>{{ $profileData->name }}
                     </div>
                     <ul>
-                        <li><a href="user-profile.html"> Edit profile</a></li>
-                        <li><a href="add-property.html"> Add Property</a></li>
-                        <li><a href="payment-method.html"> Payments</a></li>
-                        <li><a href="change-password.html"> Change Password</a></li>
-                        <li><a href="{{ route('user.logout') }}">Log Out</a></li>
+                        <li>
+                            <a href="{{ route('user.logout') }}">
+                                <i class="fas fa-sign-out-alt"></i> Đăng xuất
+                            </a>
+                        </li>
                     </ul>
                 </div>
+
+                {{-- <div class="header-user-menu user-menu">
+                    <div class="header-user-name">
+                        <i class="fa fa-bell"></i>
+                    </div>
+                    <ul>
+                        <li>
+                            <a href="">
+                                <strong>Huỳnh Phan</strong>: Xin chào !
+                                <br>
+                                <small class="text-muted">19/4/2025</small>
+                            </a>
+                        </li>
+                    </ul>
+                </div> --}}
                 <!-- Right Side Content / End -->
             </div>
         </div>

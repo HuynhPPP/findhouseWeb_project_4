@@ -8,9 +8,12 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 use App\Models\User;
-use App\Models\Image;
 use App\Models\Post;
+use App\Models\Image;
 use App\Models\Category;
+use App\Models\ChatMessage;
+use App\Models\Review;
+use App\Models\SavedPost;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
@@ -21,7 +24,34 @@ class UserController extends Controller
 {
     public function UserDashboard()
     {
-        return view('front.user.index');
+        $userId = auth()->id();
+
+        $approvedPosts = Post::where('user_id', $userId)->where('status', 'approved')->count();
+        $pendingPosts = Post::where('user_id', $userId)->where('status', 'pending')->count();
+        $savedCount = SavedPost::whereHas('post', function ($q) use ($userId) {
+            $q->where('user_id', $userId);
+        })->count();
+        $messagesCount =  ChatMessage::where('receiver_id', $userId)
+            ->select('post_id', 'sender_id')
+            ->distinct()
+            ->count('sender_id');
+        $reviewsCount = Review::where('poster_id', $userId)->count();
+
+        // Lấy bài đăng gần đây
+        $recentPosts = Post::where('user_id', $userId)
+            ->latest()
+            ->take(5)
+            ->get();
+
+
+        return view('front.user.sumary_page', compact(
+            'approvedPosts',
+            'pendingPosts',
+            'savedCount',
+            'messagesCount',
+            'reviewsCount',
+            'recentPosts',
+        ));
     }
 
     public function UserLogout(Request $request)
@@ -237,6 +267,7 @@ class UserController extends Controller
         return view('front.user.user_verification');
     }
 
+
     public function sendVerificationCode(Request $request)
     {
         $request->validate([
@@ -257,6 +288,7 @@ class UserController extends Controller
         // Tạo mã xác minh 6 chữ số
         $verificationCode = rand(100000, 999999);
         $user->verification_token = $verificationCode;
+        $user->email_verification_expires_at = now()->addMinutes(10);
         $user->save();
 
         // Gửi email xác minh
@@ -284,21 +316,30 @@ class UserController extends Controller
             'verification_code.digits'   => 'Mã xác minh phải là 6 chữ số.'
         ]);
 
-        // Tìm user theo mã xác minh
         $user = User::where('verification_token', $request->verification_code)->first();
 
+        // Nếu không tìm thấy user
         if (!$user) {
             $notification = [
-                'message' => 'Mã xác minh không hợp lệ',
+                'message' => 'Mã xác minh không hợp lệ.',
                 'alert-type' => 'error',
             ];
-
             return redirect()->back()->with($notification);
+        }
+
+        // Kiểm tra thời gian hết hạn mã xác minh
+        if (!$user->email_verification_expires_at || now()->greaterThan($user->email_verification_expires_at)) {
+            $notification = [
+                'message' => 'Mã xác minh đã hết hạn. Vui lòng yêu cầu mã mới.',
+                'alert-type' => 'error',
+            ];
+            return redirect('/user/verification')->with($notification);
         }
 
         // Cập nhật trường email_verified_at và xóa mã xác minh
         $user->email_verified_at = Carbon::now();
         $user->verification_token = null;
+        $user->email_verification_expires_at = null;
         $user->role = 'poster';
         $user->save();
 
@@ -310,6 +351,4 @@ class UserController extends Controller
 
         return redirect('/poster/verification')->with($notification);
     }
-
-   
 }
