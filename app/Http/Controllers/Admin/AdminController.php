@@ -57,7 +57,6 @@ class AdminController extends Controller
       'photo' => 'image|mimes:jpg,jpeg,png',
       'name' => 'required|max:200',
       'email' => 'required|email',
-      'phone' => 'nullable'
     ], [
       'photo.mimes' => 'Ảnh phải có định dạng jpg, jpeg, hoặc png.',
       'photo.image' => 'Ảnh không hợp lệ.',
@@ -65,14 +64,11 @@ class AdminController extends Controller
       'name.max' => 'Tên không được vượt quá 200 ký tự.',
       'email.required' => 'Email là bắt buộc.',
       'email.email' => 'Email không hợp lệ.',
-      'phone.required' => 'Số điện thoại là bắt buộc.',
-      'phone.nullable' => 'Số điện thoại không được để trống nếu có.',
     ]);
     if ($validator->passes()) {
       $data = User::find($id);
       $data->name = $request->name;
       $data->email = $request->email;
-      $data->phone = $request->phone;
       if ($file) {
         File::delete(public_path('/admin/upload/' . Auth::user()->photo));
         $fileName = $id . '-' . time() . '.' . $file->getClientOriginalExtension();

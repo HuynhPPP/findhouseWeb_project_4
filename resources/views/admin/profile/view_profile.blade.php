@@ -1,4 +1,7 @@
 @extends('admin.master')
+@section('title')
+  Tài khoản: {{ $adminAccount->name }}
+@endsection
 @section('content')
   <div class="pcoded-content">
     <div class="pcoded-inner-content">
@@ -89,16 +92,6 @@
                                     <p class="invalid-feedback">{{ $message }}
                                     </p>
                                   @enderror
-                                </div>
-                              </div>
-                              <div class="mb-3">
-                                <label class="form-label col-form-label">Số điện
-                                  thoại</label>
-                                <div class="">
-                                  <input type="text" class="form-control "
-                                    id="phone" name="phone"
-                                    value="{{ $adminAccount->phone }}">
-                                  <p></p>
                                 </div>
                               </div>
                               <button type="submit" class="btn btn-primary">Cập
