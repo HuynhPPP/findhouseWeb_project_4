@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
+use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Front\PosterController;
 use App\Http\Controllers\Front\UserController;
 use App\Http\Controllers\Front\ApiController;
@@ -31,7 +32,9 @@ Route::match(['get', 'post'], '/search/post', [MainControler::class, 'SearchPost
 Route::post('/filter/post', [MainControler::class, 'FilterPost'])->name('filter.post');
 
 Route::get('/forget/password', [MainControler::class, 'ForgetPassword'])->name('forget.password');
-Route::post('/confirm/password/code', [MainControler::class, 'CodePasswordConfirm'])->name('confirm.password.code');
+Route::post('/confirm/password/code', [MainControler::class, 'sendResetCodeEmail'])->name('confirm.password.code');
+Route::get('/password/verify/code/form', [MainControler::class, 'FormVerifyCode'])->name('form.verify.code');
+Route::post('/password/verify/code', [MainControler::class, 'verifyResetCode'])->name('password.verify.code');
 Route::get('/password/reset/form', [MainControler::class, 'PasswordResetForm'])->name('password.reset.form');
 Route::post('/reset/password', [MainControler::class, 'ResetPassword'])->name('reset.password');
 Route::get('/poster-detail/{id}', [MainControler::class, 'PosterDetail'])->name('poster.detail');
@@ -55,6 +58,8 @@ Route::get('/posts/search/sort', [MainControler::class, 'sortSearchPosts'])->nam
 Route::get('/posts/recommend/sort', [MainControler::class, 'sortRecommendPosts'])->name('posts.recommend.sort');
 Route::get('/posts/category/sort/{id}', [MainControler::class, 'sortPostsByCategory'])->name('posts.category.sort');
 Route::get('/posts/province/{province}/sort', [MainControler::class, 'sortPostsByProvince'])->name('posts.province.sort');
+
+Route::get('/user-online-status/{id}', [UserController::class, 'GetUserStatus']);
 
 
 require __DIR__ . '/auth.php';
@@ -99,7 +104,7 @@ Route::middleware(['auth', 'roles:poster'])->group(function () {
 
   // Saved Post
   Route::get('/poster/list-SavedPost', [SavedPostController::class, 'PosterListSavedPost'])->name('poster.list.SavedPost');
-  Route::delete('/poster/remove-saved-post/{id}', [SavedPostController::class, 'removeSavedPostPoster'])->name('poster.removeSavedPost');
+  Route::get('/poster/remove-saved-post/{id}', [SavedPostController::class, 'removeSavedPostPoster'])->name('poster.removeSavedPost');
 
   // Review Post
   Route::get('/poster/review', [ReviewController::class, 'PosterReview'])->name('poster.review');
@@ -119,7 +124,7 @@ Route::middleware(['auth', 'roles:user'])->group(function () {
   Route::post('/user/reset/password', [UserController::class, 'ChangePassword'])->name('user.reset.password');
 
   Route::get('/user/list-SavedPost', [SavedPostController::class, 'UserListSavedPost'])->name('user.list.SavedPost');
-  Route::delete('/user/remove-saved-post/{id}', [SavedPostController::class, 'removeSavedPost'])->name('user.removeSavedPost');
+  Route::get('/user/remove-saved-post/{id}', [SavedPostController::class, 'removeSavedPost'])->name('user.removeSavedPost');
 
   // verification mail
   Route::get('/user/verification', [UserController::class, 'UserVerification'])->name('user.verification');

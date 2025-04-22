@@ -28,9 +28,7 @@ class UserController extends Controller
 
         $approvedPosts = Post::where('user_id', $userId)->where('status', 'approved')->count();
         $pendingPosts = Post::where('user_id', $userId)->where('status', 'pending')->count();
-        $savedCount = SavedPost::whereHas('post', function ($q) use ($userId) {
-            $q->where('user_id', $userId);
-        })->count();
+        $savedCount = SavedPost::where('user_id', $userId)->count();
         $messagesCount =  ChatMessage::where('receiver_id', $userId)
             ->select('post_id', 'sender_id')
             ->distinct()
@@ -150,6 +148,15 @@ class UserController extends Controller
             return response()->json([
                 'status' => false,
                 'errors' => ['email' => ['Email không tồn tại !']],
+            ]);
+        }
+
+        // Kiểm tra trạng thái tài khoản
+        if ($user->status === 'unactive') {
+            return response()->json([
+                'status' => false,
+                'account_locked' => true,
+                'message' => 'Tài khoản của bạn đã bị khóa!',
             ]);
         }
 
@@ -350,5 +357,31 @@ class UserController extends Controller
         ];
 
         return redirect('/poster/verification')->with($notification);
+    }
+
+    public function GetUserStatus($id)
+    {
+        $user = User::find($id);
+
+        if (!$user || !$user->last_seen) {
+            return response()->json(['status' => 'offline']);
+        }
+
+        try {
+            $lastSeen = Carbon::parse($user->last_seen); // ép kiểu an toàn
+        } catch (\Exception $e) {
+            return response()->json(['status' => 'offline', 'error' => 'Lỗi định dạng last_seen']);
+        }
+
+        $diffInMinutes = now()->diffInMinutes($lastSeen);
+
+        if ($diffInMinutes < 2) {
+            return response()->json(['status' => 'online']);
+        }
+
+        return response()->json([
+            'status' => 'offline',
+            'last_seen' => $lastSeen->diffForHumans()
+        ]);
     }
 }

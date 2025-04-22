@@ -38,6 +38,18 @@
                     });
 
                     if (response.status === false) {
+
+                        // Nếu là tài khoản bị khóa
+                        if (response.account_locked) {
+                            Swal.fire({
+                                icon: 'error',
+                                text: response.message,
+                            });
+                            submitButton.prop("disabled", false).html(
+                                '<span>Đăng nhập</span>');
+                            return;
+                        }
+
                         $.each(response.errors, function(field, messages) {
                             $("#" + field + "_error").html(messages[0]);
                             $("#" + field).addClass("input-error");
@@ -254,4 +266,3 @@
         });
     });
 </script>
-

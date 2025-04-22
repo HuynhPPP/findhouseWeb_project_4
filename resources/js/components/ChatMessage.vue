@@ -11,7 +11,8 @@
                         </div>
                         <div class="srch_bar">
                             <div class="stylish-input-group">
-                                <input type="text" class="search-bar" placeholder="Tìm kiếm..." />
+                                <input type="text" class="search-bar" placeholder="Tìm kiếm theo tên bài đăng ..." v-model="searchQuery" />
+
                                 <span class="input-group-addon">
                                     <button type="button">
                                         <i class="fa fa-search" aria-hidden="true"></i>
@@ -21,7 +22,7 @@
                         </div>
                     </div>
                     <div class="inbox_chat">
-                        <div v-for="group in chatsGrouped" :key="group.post.id" class="chat_list"
+                        <div v-for="group in filteredChatsGrouped" :key="group.post.id" class="chat_list"
                             :class="{ active_chat: selectedGroup && selectedGroup.post.id === group.post.id }">
                             <div class="chat_people" @click="selectGroup(group)">
                                 <div class="chat_img">
@@ -29,7 +30,12 @@
                                         style="height: 60px; width: 60px;" />
                                 </div>
                                 <div class="chat_ib">
-                                    <h5>{{ group.post.title }}</h5>
+                                    <h5>
+                                        {{ group.post.title }}
+                                        <span v-if="group.post.user_id === authId" class="badge badge-primary ml-1">Bài
+                                            của bạn</span>
+                                    </h5>
+
                                 </div>
                             </div>
                             <!-- Danh sách người gửi tin nhắn -->
@@ -95,6 +101,7 @@ export default {
             newMessage: '',
             authId: null,
             errors: {},
+            searchQuery: '',
         };
     },
     created() {
@@ -209,6 +216,14 @@ export default {
                     (msg.sender_id === this.selectedReceiverId && msg.receiver_id === this.authId)
                 )
                 .sort((a, b) => new Date(a.created_at) - new Date(b.created_at));
+        },
+        filteredChatsGrouped() {
+            if (!this.searchQuery) return this.chatsGrouped;
+
+            const keyword = this.searchQuery.toLowerCase();
+            return this.chatsGrouped.filter(group =>
+                group.post.title.toLowerCase().includes(keyword)
+            );
         },
     },
 };

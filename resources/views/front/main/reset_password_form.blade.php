@@ -10,7 +10,7 @@
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="description" content="html 5 template">
     <meta name="author" content="">
-    <title>Đăng nhập</title>
+    <title>Đặt lại mật khẩu</title>
     <!-- FAVICON -->
     <link rel="shortcut icon" type="image/x-icon" href="{{ asset('front/favicon.ico') }}">
     <link rel="stylesheet" href="{{ asset('front/css/jquery-ui.css') }}">

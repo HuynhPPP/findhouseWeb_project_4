@@ -14,7 +14,11 @@
           <img :src="poster_avatar" alt="Avatar" class="user-avatar">
           <div>
             <h6>{{ poster_name }}</h6>
-            <small>Hoạt động 2 ngày trước</small>
+            <small v-if="onlineStatus">
+              <span v-if="onlineStatus.status === 'online'" class="text-success">Đang hoạt động</span>
+              <span v-else>Hoạt động {{ onlineStatus.last_seen }}</span>
+            </small>
+
           </div>
         </div>
         <!-- Nội dung tin nhắn -->
@@ -64,6 +68,7 @@ export default {
       receiver_id: this.poster_id,
       currentUserId: null,
       errors: {},
+      onlineStatus: null,
     };
   },
 
@@ -74,6 +79,10 @@ export default {
   mounted() {
     this.fetchMessages(); // Tải tin nhắn khi component được mount
     this.intervalId = setInterval(this.fetchMessages, 1000);
+
+    this.fetchUserOnlineStatus();
+    setInterval(this.fetchUserOnlineStatus, 60000); // Kiểm tra mỗi phút
+
   },
 
   methods: {
@@ -118,6 +127,16 @@ export default {
         }
       }
     },
+
+    async fetchUserOnlineStatus() {
+      try {
+        const response = await axios.get(`/user-online-status/${this.poster_id}`);
+        this.onlineStatus = response.data;
+      } catch (error) {
+        console.error('Không thể lấy trạng thái hoạt động:', error);
+      }
+    },
+
 
     formatDate(date) {
       return new Date(date).toLocaleString('vi-VN', {

@@ -1,5 +1,6 @@
 @extends('front.user.user_dashboard')
 @section('user')
+<title>Danh sách liên hệ</title>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 

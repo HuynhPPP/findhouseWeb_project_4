@@ -1,5 +1,6 @@
 @extends('front.poster.poster_dashboard')
 @section('poster')
+<title>Đổi mật khẩu</title>
     <style>
         .card .btn-block {
             border-radius: 10px;

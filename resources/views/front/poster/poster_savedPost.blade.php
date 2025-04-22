@@ -1,5 +1,6 @@
 @extends('front.poster.poster_dashboard')
 @section('poster')
+    <title>Tin đăng đã lưu</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <div class="col-lg-9 col-md-12 col-xs-12 pl-0 user-dash2">
         <div class="col-lg-12 mobile-dashbord dashbord">
@@ -61,14 +62,15 @@
             <table class="table-responsive">
                 <thead>
                     <tr>
-                        <th class="pl-0" style="width: 300px">Danh sách tin đăng đã lưu ({{ $savedPostsCount }})</th>
+                        <th class="pl-0" style="width: 300px">Danh sách tin đăng đã lưu <span
+                                id="saved-count">({{ $savedPostsCount }})</span></th>
                         <th class="p-0" style="width: 800px">Tiêu đề bài đăng</th>
                         <th class="p-0"></th>
                     </tr>
                 </thead>
                 <tbody>
                     @foreach ($savedPosts as $savedPost)
-                        <tr>
+                        <tr data-id="{{ $savedPost->id }}">
                             <td class="image myelist">
                                 <a href="{{ route('post.detail', $savedPost->post->id) }}">
                                     @if ($savedPost->post->images->count() > 0)
@@ -96,7 +98,7 @@
                                 </div>
                             </td>
                             <td class="actions" style="text-align: left">
-                                <a href="#" onclick="removeSavedPostPoster({{ $savedPost->id }})">
+                                <a href="{{ route('poster.removeSavedPost', $savedPost->id) }}">
                                     <i class="far fa-trash-alt"></i>
                                 </a>
                             </td>

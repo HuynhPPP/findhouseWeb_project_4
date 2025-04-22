@@ -1,5 +1,6 @@
 @extends('front.user.user_dashboard')
 @section('user')
+    <title>Trang thống kê</title>
     <style>
         .stat-card {
             background-color: #fff;
@@ -131,7 +132,8 @@
                     </table>
                 </div>
             @else
-                <p class="text-muted px-3 py-2">Vui lòng xác minh tài khoản để có thể đăng tin.</p>
+                <p class="text-muted px-3 py-2">Vui lòng <a href="{{ route('user.verification') }}">xác minh tài khoản</a>
+                    để có thể đăng tin.</p>
             @endif
         </div>
 

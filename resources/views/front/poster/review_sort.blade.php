@@ -16,7 +16,7 @@
         </div>
         <div class="body">
             <h5>{{ $review->posts->title }}</h5>
-            <h6>{{ $review->user->name }}</h6>
+            <h6 style="color: #FF385C">{{ $review->user->name }}</h6>
             <p class="post-time"> {{ Carbon\Carbon::parse($review->created_at)->diffForHumans() }}</p>
             <p class="content mb-0 mt-2">{{ $review->comment }}</p>
             @if ($review->rating == null)

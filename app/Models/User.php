@@ -25,7 +25,8 @@ class User extends Authenticatable
         'role',
         'email_verified_at',
         'verification_token',
-        'google_id'
+        'google_id',
+        'status'
     ];
 
     /**

@@ -1,16 +1,13 @@
 <!DOCTYPE html>
 <html lang="zxx">
 
-
-<!-- Mirrored from code-theme.com/html/findhouses/login.html by HTTrack Website Copier/3.x [XR&CO'2014], Mon, 30 Dec 2024 03:45:10 GMT -->
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="description" content="html 5 template">
     <meta name="author" content="">
-    <title>Quên mật khẩu</title>
+    <title>Nhập mã xác nhận</title>
     <!-- FAVICON -->
     <link rel="shortcut icon" type="image/x-icon" href="{{ asset('front/favicon.ico') }}">
     <link rel="stylesheet" href="{{ asset('front/css/jquery-ui.css') }}">
@@ -87,7 +84,7 @@
         <section class="headings">
             <div class="text-heading text-center">
                 <div class="container">
-                    <h1>Quên mật khẩu</h1>
+                    <h1>Nhập mã xác nhận</h1>
                     <h2><a href="{{ route('index') }}">Trang chủ </a> &nbsp;/&nbsp; đăng nhập</h2>
                 </div>
             </div>
@@ -97,17 +94,17 @@
         <!-- START SECTION LOGIN -->
         <div class="d-flex justify-content-center align-items-center">
             <div class="card p-4">
-                <h3 class="text-center font-weight-bold">Đặt lại mật khẩu</h3>
-                <p class="text-center text-muted">Nhập Email của bạn để nhận mã đặt lại mật khẩu</p>
+                <h3 class="text-center font-weight-bold">Nhập mã xác nhận</h3>
+                <p class="text-center text-muted">Mã xác nhận đã gửi đến Email của bạn</p>
 
-                <form method="POST" action="{{ route('confirm.password.code') }}" id="forgetPassForm">
+                <form method="POST" action="{{ route('password.verify.code') }}" id="forgetPassForm">
                     @csrf
                     <div class="form-group">
-                        <label for="phone">Email</label>
-                        <input type="text" id="email" name="email" class="form-control"
-                            value="{{ old('email') }}">
-                        @if ($errors->has('email'))
-                            <p class="text-danger">{{ $errors->first('email') }}</p>
+                        <label for="code">Mã xác nhận</label>
+                        <input type="text" id="code" name="code" class="form-control"
+                            value="{{ old('code') }}">
+                        @if ($errors->has('code'))
+                            <p class="text-danger">{{ $errors->first('code') }}</p>
                         @endif
                     </div>
 
@@ -140,6 +137,8 @@
         <script src="{{ asset('front/js/color-switcher.js') }}"></script>
         <script src="{{ asset('front/js/inner.js') }}"></script>
         <script src="{{ asset('front/js/sweetalert2.js') }}"></script>
+
+        <script type="text/javascript" src="{{ asset('front/toastr/toastr.min.js') }}"></script>
 
         <!-- Sweetalert2 -->
         <script>

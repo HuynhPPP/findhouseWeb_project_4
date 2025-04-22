@@ -51,6 +51,11 @@
                     </div>
                     <ul>
                         <li>
+                            <a href="{{ route('poster.profile') }}">
+                                <i class="fa fa-user"></i> Tài khoản
+                            </a>
+                        </li>
+                        <li>
                             <a href="{{ route('user.logout') }}">
                                 <i class="fas fa-sign-out-alt"></i> Đăng xuất
                             </a>
