@@ -1,5 +1,6 @@
 @extends('front.poster.poster_dashboard')
 @section('poster')
+<title>Danh sách đánh giá</title>
     <style>
         .dashborad-box {
             max-height: 80vh;

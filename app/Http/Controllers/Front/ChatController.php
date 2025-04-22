@@ -21,12 +21,6 @@ class ChatController extends Controller
             'post_id' => 'required|exists:posts,id',
         ]);
 
-        // Kiểm tra xem người gửi có quyền nhắn tin cho bài đăng không
-        $post = Post::findOrFail($request->post_id);
-        if ($post->user_id != $request->receiver_id && $post->user_id != Auth::id()) {
-            return response()->json(['success' => false, 'message' => 'Bạn không có quyền nhắn tin cho bài đăng này'], 403);
-        }
-
         // Lưu tin nhắn
         $message = ChatMessage::create([
             'sender_id' => Auth::id(),

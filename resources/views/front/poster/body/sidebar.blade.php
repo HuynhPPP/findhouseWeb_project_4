@@ -30,16 +30,17 @@
                 </a>
             </li>
             <li>
+                <a href="{{ route('poster.post') }}" class="{{ request()->routeIs('poster.post') ? 'active' : '' }}">
+                    <i class="fa fa-list" aria-hidden="true"></i>Đăng tin
+                </a>
+            </li>
+            <li>
                 <a href="{{ route('poster.list-post') }}"
                     class="{{ request()->routeIs('poster.list-post') ? 'active' : '' }}">
                     <i class="fa fa-list" aria-hidden="true"></i>Danh sách tin đăng
                 </a>
             </li>
-            <li>
-                <a href="{{ route('poster.post') }}" class="{{ request()->routeIs('poster.post') ? 'active' : '' }}">
-                    <i class="fa fa-list" aria-hidden="true"></i>Đăng tin
-                </a>
-            </li>
+            
             <li>
                 <a href="{{ route('poster.contacts') }}"
                     class="{{ request()->routeIs('poster.contacts') ? 'active' : '' }}">
@@ -67,14 +68,14 @@
                         <i class="fa fa-lock"></i> Xác minh tài khoản
                     </a>
                 </li>
-                <li>
-                    <a href="{{ route('poster.change-password') }}"
-                        class="{{ request()->routeIs('poster.change-password') ? 'active' : '' }}">
-                        <i class="fa fa-lock"></i> Đổi mật khẩu
-                    </a>
-                </li>
+                
             @endif
-
+            <li>
+                <a href="{{ route('poster.change-password') }}"
+                    class="{{ request()->routeIs('poster.change-password') ? 'active' : '' }}">
+                    <i class="fa fa-lock"></i> Đổi mật khẩu
+                </a>
+            </li>
             <li>
                 <a href="{{ route('logout') }}">
                     <i class="fas fa-sign-out-alt"></i>Đăng xuất

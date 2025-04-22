@@ -56,7 +56,7 @@ class SavedPostController extends Controller
     public function UserListSavedPost()
     {
         $userId = Auth::id();
-        $savedPosts = SavedPost::where('user_id', $userId)->with('post')->paginate(6);
+        $savedPosts = SavedPost::where('user_id', $userId)->with('post')->paginate(4);
 
         $savedPostsCount = SavedPost::where('user_id', $userId)->count();
 
@@ -67,7 +67,7 @@ class SavedPostController extends Controller
     public function PosterListSavedPost()
     {
         $userId = Auth::id();
-        $savedPosts = SavedPost::where('user_id', $userId)->with('post')->paginate(6);
+        $savedPosts = SavedPost::where('user_id', $userId)->with('post')->paginate(4);
 
         $savedPostsCount = SavedPost::where('user_id', $userId)->count();
 
@@ -93,9 +93,15 @@ class SavedPostController extends Controller
 
         if ($savedPost) {
             $savedPost->delete();
-            return response()->json(['success' => true, 'message' => 'Tin đã được xóa khỏi danh sách.']);
+            return redirect()->route('poster.list.SavedPost')->with([
+                'message' => 'Đã xoá khỏi danh sách tin đăng đã lưu!',
+                'alert-type' => 'success'
+            ]);
         }
 
-        return response()->json(['success' => false, 'message' => 'Không tìm thấy tin đã lưu.']);
+        return redirect()->route('poster.list.SavedPost')->with([
+            'message' => 'Không tìm thấy tin đã lưu!',
+            'alert-type' => 'error'
+        ]);
     }
 }

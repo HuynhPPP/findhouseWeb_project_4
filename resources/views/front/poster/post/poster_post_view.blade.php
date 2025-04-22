@@ -1,5 +1,6 @@
 @extends('front.poster.poster_dashboard')
 @section('poster')
+    <title>Đăng tin</title>
     <link rel="stylesheet" href="{{ asset('front/css/poster_post_view.css') }}">
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.3.1/dist/leaflet.css" />
 
@@ -66,7 +67,7 @@
             @csrf
 
             <!-- Information common -->
-            <div class="single-add-property">
+            <div class="single-add-property mt-5">
                 <h3>Thông tin mô tả</h3>
                 <div class="property-form-group">
                     <div class="row">
@@ -142,7 +143,7 @@
                                 <label for="area">Diện tích <span class="text-danger">(*)</span></label>
                                 <div class="input-group">
                                     <input type="number" class="form-control" id="area" name="area"
-                                        placeholder="Nhập diện tích" style="height: 50px;"  value="{{ old('area') }}">
+                                        placeholder="Nhập diện tích" style="height: 50px;" value="{{ old('area') }}">
                                     <div class="input-group-append">
                                         <span class="input-group-text">m²</span>
                                     </div>

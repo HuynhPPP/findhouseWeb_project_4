@@ -1,6 +1,6 @@
 @extends('front.poster.poster_dashboard')
-
 @section('poster')
+    <title>Trang thống kê</title>
     <style>
         .stat-card {
             background-color: #fff;
@@ -118,11 +118,22 @@
                                     @endif
                                 </td>
                                 <td>
-                                    @if ($post->status == 'approved')
-                                        <span class="badge badge-success">Đã duyệt</span>
-                                    @else
-                                        <span class="badge badge-secondary">Chưa duyệt</span>
-                                    @endif
+                                    @switch($post->status)
+                                        @case('pending')
+                                            <span class="badge badge-warning">Chờ duyệt</span>
+                                        @break
+
+                                        @case('approved')
+                                            <span class="badge badge-success">Đã duyệt</span>
+                                        @break
+
+                                        @case('hidden')
+                                            <span class="badge badge-secondary">Đã ẩn</span>
+                                        @break
+
+                                        @default
+                                            <span class="badge badge-light">Không xác định</span>
+                                    @endswitch
                                 </td>
                             </tr>
                         @endforeach

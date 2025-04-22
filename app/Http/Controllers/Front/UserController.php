@@ -28,9 +28,7 @@ class UserController extends Controller
 
         $approvedPosts = Post::where('user_id', $userId)->where('status', 'approved')->count();
         $pendingPosts = Post::where('user_id', $userId)->where('status', 'pending')->count();
-        $savedCount = SavedPost::whereHas('post', function ($q) use ($userId) {
-            $q->where('user_id', $userId);
-        })->count();
+        $savedCount = SavedPost::where('user_id', $userId)->count();
         $messagesCount =  ChatMessage::where('receiver_id', $userId)
             ->select('post_id', 'sender_id')
             ->distinct()
@@ -153,6 +151,15 @@ class UserController extends Controller
             ]);
         }
 
+        // Kiểm tra trạng thái tài khoản
+        if ($user->status === 'unactive') {
+            return response()->json([
+                'status' => false,
+                'account_locked' => true,
+                'message' => 'Tài khoản của bạn đã bị khóa!',
+            ]);
+        }
+
         // Xác thực đăng nhập
         if (!Auth::attempt(['email' => $request->email, 'password' => $request->password])) {
             return response()->json([
@@ -267,7 +274,6 @@ class UserController extends Controller
         return view('front.user.user_verification');
     }
 
-
     public function sendVerificationCode(Request $request)
     {
         $request->validate([
@@ -341,6 +347,16 @@ class UserController extends Controller
         $user->verification_token = null;
         $user->email_verification_expires_at = null;
         $user->role = 'poster';
+        if ($user->photo && str_starts_with($user->photo, 'user_')) {
+            $oldPath = public_path('upload/user_images/' . $user->photo);
+            $newFilename = str_replace('user_', 'poster_', $user->photo);
+            $newPath = public_path('upload/user_images/' . $newFilename);
+        
+            if (file_exists($oldPath)) {
+                rename($oldPath, $newPath); // đổi tên file
+                $user->photo = $newFilename; // cập nhật lại trong DB
+            }
+        }
         $user->save();
 
 
@@ -350,5 +366,31 @@ class UserController extends Controller
         ];
 
         return redirect('/poster/verification')->with($notification);
+    }
+
+    public function GetUserStatus($id)
+    {
+        $user = User::find($id);
+
+        if (!$user || !$user->last_seen) {
+            return response()->json(['status' => 'offline']);
+        }
+
+        try {
+            $lastSeen = Carbon::parse($user->last_seen); // ép kiểu an toàn
+        } catch (\Exception $e) {
+            return response()->json(['status' => 'offline', 'error' => 'Lỗi định dạng last_seen']);
+        }
+
+        $diffInMinutes = now()->diffInMinutes($lastSeen);
+
+        if ($diffInMinutes < 2) {
+            return response()->json(['status' => 'online']);
+        }
+
+        return response()->json([
+            'status' => 'offline',
+            'last_seen' => $lastSeen->diffForHumans()
+        ]);
     }
 }

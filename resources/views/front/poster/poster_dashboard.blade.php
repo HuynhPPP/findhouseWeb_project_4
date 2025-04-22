@@ -10,7 +10,6 @@
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="description" content="html 5 template">
     <meta name="author" content="">
-    <title>Find Houses</title>
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <script>
         window.authId = {{ auth()->user()->id }};
@@ -118,7 +117,6 @@
         <script src="{{ asset('front/js/color-switcher.js') }}"></script>
         <script src="{{ asset('front/trumbowyg/trumbowyg.min.js') }}"></script>
         <script src="{{ asset('front/js/code.js') }}"></script>
-        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 
 

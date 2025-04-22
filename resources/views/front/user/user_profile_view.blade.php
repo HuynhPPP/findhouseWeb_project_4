@@ -1,5 +1,6 @@
 @extends('front.user.user_dashboard')
 @section('user')
+<title>{{ $profileData->name }}</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 
     <div class="col-lg-6 col-md-6 col-xs-6 widget-boxed mt-33 mt-0 offset-lg-2 offset-md-3 mt-4">

@@ -10,7 +10,6 @@
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="description" content="html 5 template">
     <meta name="author" content="">
-    <title>Find Houses - HTML5 Template</title>
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <script>
         window.authId = {{ auth()->user()->id }};
@@ -18,7 +17,7 @@
 
     @vite(['resources/js/app.js'])
     <!-- FAVICON -->
-    <link rel="shortcut icon" type="image/x-icon" href="favicon.ico">
+    <link rel="shortcut icon" type="image/x-icon" href="{{ asset('front/favicon.ico') }}">
     <link rel="stylesheet" href="{{ asset('front/css/jquery-ui.css') }}">
     <!-- GOOGLE FONTS -->
     <link href="https://fonts.googleapis.com/css?family=Lato:300,300i,400,400i%7CMontserrat:600,800" rel="stylesheet">
@@ -40,9 +39,9 @@
     <link rel="stylesheet" href="{{ asset('front/css/styles.css') }}">
     <link rel="stylesheet" id="color" href="{{ asset('front/css/default.css') }}">
 
-     <!-- Toastr -->
-     <link rel="stylesheet" type="text/css" href="{{ asset('front/toastr/toastr.css') }}">
-     <!-- End Toastr -->
+    <!-- Toastr -->
+    <link rel="stylesheet" type="text/css" href="{{ asset('front/toastr/toastr.css') }}">
+    <!-- End Toastr -->
 </head>
 
 <body class="maxw1600 m0a dashboard-bd">

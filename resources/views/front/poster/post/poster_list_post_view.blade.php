@@ -1,5 +1,15 @@
 @extends('front.poster.poster_dashboard')
 @section('poster')
+    <title>Danh sách tin đăng</title>
+    <style>
+        .badge {
+            padding: 4px 8px;
+            border-radius: 5px;
+            font-size: 13px;
+            color: white;
+        }
+    </style>
+
     <div class="col-lg-9 col-md-12 col-xs-12 pl-0 user-dash2">
         <div class="my-properties">
             <table class="table-responsive">
@@ -11,6 +21,7 @@
                             <th class="pl-2">Danh sách tin đăng</th>
                             <th class="p-0"></th>
                             <th>Ngày đăng</th>
+                            <th>Trạng thái</th>
                             <th></th>
                         </tr>
                     </thead>
@@ -36,7 +47,7 @@
                                     <div class="inner">
                                         <a
                                             href="{{ route('poster.edit.post', ['id' => $post->id, 'post_slug' => $post->post_slug]) }}">
-                                            <h2>{{ $post->title }}</h2>
+                                            <h2>{{ Str::words(strip_tags($post->title), 20) }}</h2>
                                         </a>
                                         <figure><i class="lni-map-marker"></i> {{ $post->address }}</figure>
 
@@ -125,10 +136,29 @@
                                     </div>
                                 </td>
                                 <td>{{ $post->created_at->format('d/m/Y') }}</td>
+                                <td>
+                                    @switch($post->status)
+                                        @case('pending')
+                                            <span class="badge badge-warning">Chờ duyệt</span>
+                                        @break
+
+                                        @case('approved')
+                                            <span class="badge badge-success">Đã duyệt</span>
+                                        @break
+
+                                        @case('hidden')
+                                            <span class="badge badge-secondary">Đã ẩn</span>
+                                        @break
+
+                                        @default
+                                            <span class="badge badge-light">Không xác định</span>
+                                    @endswitch
+                                </td>
+
                                 <td class="actions">
                                     <a href="{{ route('poster.edit.post', ['id' => $post->id, 'post_slug' => $post->post_slug]) }}"
                                         class="edit">
-                                        <i class="lni-pencil"></i> Chỉnh sửa
+                                        <i class="fas fa-edit"></i>
                                     </a>
 
                                     <a href="{{ route('poster.delete.post', $post->id) }}" id="delete_post">

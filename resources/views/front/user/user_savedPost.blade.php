@@ -1,5 +1,6 @@
 @extends('front.user.user_dashboard')
 @section('user')
+<title>Tin đăng đã lưu</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <div class="col-lg-9 col-md-12 col-xs-12 pl-0 user-dash2">
         <div class="col-lg-12 mobile-dashbord dashbord">

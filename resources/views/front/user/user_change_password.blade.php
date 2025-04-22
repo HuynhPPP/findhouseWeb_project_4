@@ -1,5 +1,6 @@
 @extends('front.user.user_dashboard')
 @section('user')
+<title>Đổi mật khẩu</title>
     <style>
         .card .btn-block {
             border-radius: 10px;

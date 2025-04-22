@@ -20025,8 +20025,7 @@ body.dashboard-bd {
 }
 
 .my-properties table tbody tr td.actions .edit {
-    float: left;
-    color: #008000;
+  float: left;
 }
 
 .my-properties table tbody tr td.actions .edit i {

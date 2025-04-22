@@ -1,7 +1,8 @@
 @extends('front.poster.poster_dashboard')
 @section('poster')
-  <link rel="stylesheet" href="{{ asset('front/css/poster_post_view.css') }}">
-  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.3.1/dist/leaflet.css" />
+    <title>{{ $post->title }}</title>
+    <link rel="stylesheet" href="{{ asset('front/css/poster_post_view.css') }}">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.3.1/dist/leaflet.css" />
 
 
   <style>
@@ -63,7 +64,7 @@
             <input type="hidden" name="poster_name" value="{{ $post->user->name }}">
 
             <!-- Information common -->
-            <div class="single-add-property">
+            <div class="single-add-property mt-5">
                 <h3>Thông tin mô tả</h3>
                 <div class="property-form-group">
                     <div class="row">

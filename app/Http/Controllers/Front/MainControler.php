@@ -24,6 +24,7 @@ class MainControler extends Controller
     public function Index()
     {
         $posts_featured = Post::where('is_featured', '1')
+            ->where('status', 'approved')
             ->take(6)
             ->get()
             ->each(function ($post) {
@@ -43,6 +44,7 @@ class MainControler extends Controller
             ->get();
 
         $provinceCounts = Post::selectRaw('province, COUNT(*) as total')
+            ->where('status', 'approved')
             ->groupBy('province')
             ->pluck('total', 'province');
 
@@ -97,11 +99,13 @@ class MainControler extends Controller
 
         $relatedPosts = Post::where('category_id', $post->category_id)
             ->where('id', '!=', $id)
+            ->where('status', 'approved')
             ->limit(3)
             ->get();
 
         $other_poster_post = Post::where('user_id', $post->user_id)
             ->where('id', '!=', $id)
+            ->where('status', 'approved')
             ->limit(3)
             ->get();
 
@@ -114,20 +118,23 @@ class MainControler extends Controller
 
     public function getPostsByCategory($id)
     {
-        $posts_category = Post::where('category_id', $id)->paginate(9)->through(function ($post) {
-            $addressParts = array_filter([
-                $post->house_number,
-                $post->street,
-                $post->ward,
-                $post->district,
-                $post->province
-            ]);
+        $posts_category = Post::where('category_id', $id)
+            ->where('status', 'approved')
+            ->paginate(9)
+            ->through(function ($post) {
+                $addressParts = array_filter([
+                    $post->house_number,
+                    $post->street,
+                    $post->ward,
+                    $post->district,
+                    $post->province
+                ]);
 
-            $post->full_address = implode(', ', $addressParts);
-            $post->formatted_price = $this->formatPrice($post->price);
+                $post->full_address = implode(', ', $addressParts);
+                $post->formatted_price = $this->formatPrice($post->price);
 
-            return $post; // Trả về đối tượng đã được cập nhật trong map()
-        });
+                return $post; // Trả về đối tượng đã được cập nhật trong map()
+            });
 
         $categories = Category::where('status', 'show')
             ->withCount('posts')
@@ -141,7 +148,7 @@ class MainControler extends Controller
 
     public function filterByProvince($province)
     {
-        $posts = Post::where('province', $province)->paginate(9);
+        $posts = Post::where('province', $province)->where('status', 'approved')->paginate(9);
 
         // Gán formatted_price cho từng post
         foreach ($posts as $post) {
@@ -154,7 +161,6 @@ class MainControler extends Controller
 
         return view('front.main.all_post_province', compact('posts', 'province', 'categories'));
     }
-
 
     public function SearchPost(Request $request)
     {
@@ -186,7 +192,7 @@ class MainControler extends Controller
             ->withCount('posts')
             ->get();
 
-        $posts = $query->paginate(9)->appends($request->all());
+        $posts = $query->where('status', 'approved')->paginate(9)->appends($request->all());
 
         return view('front.main.search_results', compact('posts', 'search_keyword', 'categories'));
     }
@@ -288,7 +294,7 @@ class MainControler extends Controller
 
         // dump($query->toSql(), $query->getBindings());
 
-        $posts = $query->paginate(9);
+        $posts = $query->where('status', 'approved')->paginate(9);
 
         return view('front.main.search_results', compact('posts', 'search_keyword', 'categories'));
     }
@@ -392,7 +398,7 @@ class MainControler extends Controller
         $query->with(['category', 'images', 'user']);
 
         // Phân trang
-        $posts = $query->paginate(9)->appends($request->all());
+        $posts = $query->where('status', 'approved')->paginate(9)->appends($request->all());
 
         // Lấy danh mục
         $categories = Category::where('status', 'show')->withCount('posts')->get();
@@ -422,7 +428,7 @@ class MainControler extends Controller
                 return $q->orderBy('price', 'desc');
             });
 
-        $posts = $query->paginate(9)->through(function ($post) {
+        $posts = $query->where('status', 'approved')->paginate(9)->through(function ($post) {
             $addressParts = array_filter([
                 $post->house_number,
                 $post->street,
@@ -456,6 +462,7 @@ class MainControler extends Controller
         $sort = $request->query('sort', 'price_asc');
 
         $query = Post::where('category_id', $id)
+            ->where('status', 'approved')
             ->with(['category', 'images', 'user'])
             ->when($sort == 'price_asc', function ($q) {
                 return $q->orderBy('price', 'asc');
@@ -503,6 +510,7 @@ class MainControler extends Controller
         $sort = $request->query('sort', 'price_asc');
 
         $query = Post::where('province', $province)
+            ->where('status', 'approved')
             ->with(['category', 'images', 'user'])
             ->when($sort == 'price_asc', function ($q) {
                 return $q->orderBy('price', 'asc');
@@ -549,46 +557,81 @@ class MainControler extends Controller
         return view('front.main.forget_password_form');
     }
 
-    public function CodePasswordConfirm(Request $request)
+    public function sendResetCodeEmail(Request $request)
     {
         $request->validate([
-            'email' => 'required|email|exists:users,email',
+            'email' => 'required|email',
         ], [
             'email.required' => 'Vui lòng nhập email.',
             'email.email' => 'Email không hợp lệ.',
-            'email.exists' => 'Email này chưa được đăng ký trong hệ thống.',
         ]);
 
         $user = User::where('email', $request->email)->first();
 
-        if (!$user->email_verified_at) {
-            $notification = [
-                'message' => 'Email chưa được xác minh!',
+        if (!$user || !$user->email_verified_at) {
+            return back()->with([
+                'message' => 'Email không tồn tại hoặc chưa được xác minh!',
                 'alert-type' => 'error',
-            ];
-
-            return redirect()->back()->with($notification);
+            ]);
         }
 
-        $user = User::where('email', $request->email)->first();
         $token = Str::random(6);
-
-        // Lưu token vào bảng password_resets
         DB::table('password_reset_tokens')->updateOrInsert(
             ['email' => $user->email],
             ['token' => $token, 'created_at' => now()]
         );
 
-        session(['reset_email' => $request->email]);
-
-        $notification = [
-            'message' => 'Mã xác nhận đã được gửi tới email của bạn',
-            'alert-type' => 'success',
-        ];
+        session(['reset_email' => $user->email]);
 
         Mail::to($user->email)->send(new ResetPasswordMail($token));
 
-        return redirect('/password/reset/form')->with($notification);
+        return redirect()->route('form.verify.code')->with([
+            'message' => 'Mã xác nhận đã được gửi tới email của bạn.',
+            'alert-type' => 'success',
+        ]);
+    }
+
+    public function FormVerifyCode()
+    {
+        return view('front.main.verify_code');
+    }
+
+    public function verifyResetCode(Request $request)
+    {
+        $request->validate([
+            'code' => 'required|string|size:6',
+        ], [
+            'code.required' => 'Vui lòng nhập mã xác nhận.',
+            'code.size' => 'Mã xác nhận gồm 6 ký tự.',
+        ]);
+
+        $email = session('reset_email');
+
+        $record = DB::table('password_reset_tokens')
+            ->where('email', $email)
+            ->where('token', $request->code)
+            ->first();
+
+        if (!$record) {
+            return back()->with([
+                'message' => 'Mã xác nhận không đúng.',
+                'alert-type' => 'error',
+            ]);
+        }
+
+        // Kiểm tra thời gian hết hạn mã (10 phút)
+        if (now()->diffInMinutes($record->created_at) > 10) {
+            DB::table('password_reset_tokens')->where('email', $email)->delete();
+
+            return back()->with([
+                'message' => 'Mã xác nhận đã hết hạn, vui lòng yêu cầu mã mới.',
+                'alert-type' => 'error',
+            ]);
+        }
+
+        session(['verified_code' => true]);
+
+        return redirect()->route('password.reset.form');
     }
 
     public function PasswordResetForm()
@@ -627,7 +670,7 @@ class MainControler extends Controller
     public function PosterDetail(Request $request, $id)
     {
         $poster = User::findOrFail($id);
-        $posts = Post::where('user_id', $id)->paginate(4);
+        $posts = Post::where('user_id', $id)->where('status', 'approved')->paginate(4);
 
         $reviews = Review::where('poster_id', $poster->id)
             ->where('status', 1)

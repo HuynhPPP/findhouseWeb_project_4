@@ -33,9 +33,8 @@ class PosterController extends Controller
 
         $approvedPosts = Post::where('user_id', $userId)->where('status', 'approved')->count();
         $pendingPosts = Post::where('user_id', $userId)->where('status', 'pending')->count();
-        $savedCount = SavedPost::whereHas('post', function ($q) use ($userId) {
-            $q->where('user_id', $userId);
-        })->count();
+    
+        $savedCount = SavedPost::where('user_id', $userId)->count();
         $messagesCount =  ChatMessage::where('receiver_id', $userId)
             ->select('post_id', 'sender_id')
             ->distinct()
@@ -101,6 +100,7 @@ class PosterController extends Controller
     {
         $id = Auth::user()->id;
         $list_post = Post::where('user_id', $id)
+
             ->with('images')
             ->orderBy('id', 'desc')
             ->paginate(4);
@@ -148,8 +148,7 @@ class PosterController extends Controller
             'ward'         => 'required',
             'ward_name'    => 'required',
             'street'       => 'required|string',
-            'house_number' => 'required|string',
-            'address'      => 'required|string',
+            'address'      => 'string',
             'images'       => 'nullable|array|max:20',
             'images.*'     => 'image|mimes:jpeg,png,jpg,gif|max:2048',
             'video_url'    => 'nullable|string',
@@ -171,8 +170,6 @@ class PosterController extends Controller
             'ward.required'        => 'Vui lòng chọn phường/xã.',
             'ward_name.required'   => 'Tên phường/xã không được để trống.',
             'street.required'      => 'Vui lòng nhập tên đường.',
-            'house_number.required' => 'Vui lòng nhập số nhà.',
-            'address.required'     => 'Vui lòng nhập địa chỉ.',
             'images.max'           => 'Bạn chỉ có thể tải lên tối đa 20 ảnh.',
             'images.*.image'       => 'File tải lên phải là hình ảnh.',
             'images.*.mimes'       => 'Hình ảnh phải có định dạng jpeg, png, jpg hoặc gif.',
@@ -251,7 +248,6 @@ class PosterController extends Controller
             'ward'         => 'required',
             'ward_name'    => 'required',
             'street'       => 'required|string',
-            'house_number' => 'required|string',
             'address'      => 'required|string',
             'images'       => 'nullable|array|max:20',
             'images.*'     => 'image|mimes:jpeg,png,jpg,gif|max:2048',
@@ -274,8 +270,6 @@ class PosterController extends Controller
             'ward.required'        => 'Vui lòng chọn phường/xã.',
             'ward_name.required'   => 'Tên phường/xã không được để trống.',
             'street.required'      => 'Vui lòng nhập tên đường.',
-            'house_number.required' => 'Vui lòng nhập số nhà.',
-            'address.required'     => 'Vui lòng nhập địa chỉ.',
             'images.max'           => 'Bạn chỉ có thể tải lên tối đa 20 ảnh.',
             'images.*.image'       => 'File tải lên phải là hình ảnh.',
             'images.*.mimes'       => 'Hình ảnh phải có định dạng jpeg, png, jpg hoặc gif.',
@@ -632,18 +626,9 @@ class PosterController extends Controller
     return redirect('/poster/verification')->with($notification);
   }
 
-  public function PosterContacts()
-  {
-    return view('front.poster.poster_contacts');
-  }
-  // Notification new post
-  public function MarkAsRead($notificationId)
-  {
-    $user = Auth::user();
-    $notification = $user->notifications()->where('id', $notificationId)->first();
-    if ($notification) {
-      $notification->markAsRead();
+    public function PosterContacts()
+    {
+        return view('front.poster.poster_contacts');
     }
-    return response()->json();
-  }
+
 }

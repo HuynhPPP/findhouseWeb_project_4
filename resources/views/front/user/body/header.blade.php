@@ -46,11 +46,16 @@
                         </span>{{ $profileData->name }}
                     </div>
                     <ul>
-                        <li><a href="user-profile.html"> Edit profile</a></li>
-                        <li><a href="add-property.html"> Add Property</a></li>
-                        <li><a href="payment-method.html"> Payments</a></li>
-                        <li><a href="change-password.html"> Change Password</a></li>
-                        <li><a href="{{ route('user.logout') }}">Log Out</a></li>
+                        <li>
+                            <a href="{{ route('user.profile') }}">
+                                <i class="fa fa-user"></i> Tài khoản
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{ route('user.logout') }}">
+                                <i class="fas fa-sign-out-alt"></i> Đăng xuất
+                            </a>
+                        </li>
                     </ul>
                 </div>
                 <!-- Right Side Content / End -->
