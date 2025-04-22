@@ -47,7 +47,7 @@
                                     <div class="inner">
                                         <a
                                             href="{{ route('poster.edit.post', ['id' => $post->id, 'post_slug' => $post->post_slug]) }}">
-                                            <h2>{{ $post->title }}</h2>
+                                            <h2>{{ Str::words(strip_tags($post->title), 20) }}</h2>
                                         </a>
                                         <figure><i class="lni-map-marker"></i> {{ $post->address }}</figure>
 

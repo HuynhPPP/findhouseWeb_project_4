@@ -68,56 +68,33 @@
         <!-- START SECTION 404 -->
         <div id="login">
             <div class="login">
-                <form autocomplete="off" name="registerform" class="main-register-form" id="registrationForm2">
+                <form name="registerform" class="main-register-form" id="registrationForm">
                     @csrf
                     <div class="form-group">
                         <label>Họ tên</label>
-                        <input class="form-control" 
-                               value="{{ old('name') }}"
-                               type="text"
-                               id="name"
-                               name="name"
-                        >
-                        <span id="name_error_register" class="error-message"></span>
+                        <input class="form-control" id="name" name="name_register" type="text"
+                            value="{{ old('name') }}">
+                        <span id="name_register_error" class="error-message"></span>
                         <i class="ti-user"></i>
                     </div>
                     <div class="form-group">
-                        <label>Email hoặc số điện thoại</label>
-                        <input class="form-control" 
-                               type="email"
-                               id="contact_register" 
-                               name="contact"
-                               value="{{ old('contact') }}"
-                        >
-                        <span id="contact_error_register" class="error-message"></span>
+                        <label>Email </label>
+                        <input class="form-control" id="contact_register" name="contact_register" type="email"
+                            value="{{ old('contact') }}">
+                        <span id="contact_register_error" class="error-message"></span>
                         <i class="icon_mail_alt"></i>
                     </div>
                     <div class="form-group">
                         <label>Mật khẩu</label>
-                        <input class="form-control" 
-                               type="password" 
-                               id="password1"
-                               id="password_register" 
-                               name="password"
-                        >
-                        <span id="password_error_register" class="error-message"></span>
+                        <input class="form-control" id="password_register" name="password_register" type="password">
+                        <span id="password_register_error" class="error-message"></span>
                         <i class="icon_lock_alt"></i>
                     </div>
 
 
-                    <label>Loại tài khoản</label>
-                    <div>
-                        <input type="radio" name="account_type" value="user"
-                            {{ old('account_type') == 'user' ? 'checked' : '' }}>
-                        <span style="margin-right: 5px">Tìm kiếm</span>
-                        <input type="radio" name="account_type" value="poster"
-                            {{ old('account_type') == 'poster' ? 'checked' : '' }}>
-                        <span>Chính chủ</span>
-                    </div>
-                    <span id="account_type_error_register" class="error-message"></span>
-
-                    <button type="submit" class="btn_1 rounded full-width add_top_30">Đăng ký ngay!</button>
-                    <div class="text-center add_top_10">Bạn đã có tài khoản ? <strong><a href="{{ route('login') }}">Đăng
+                    <button type="submit" class="btn_1 rounded full-width add_top_30">Đăng ký ngay</button>
+                    <div class="text-center add_top_10">Bạn đã có tài khoản ? <strong><a
+                                href="{{ route('login') }}">Đăng
                                 nhập</a></strong></div>
                 </form>
             </div>
@@ -125,132 +102,7 @@
         <!-- END SECTION 404 -->
 
         <!-- START FOOTER -->
-        <footer class="first-footer">
-            <div class="top-footer">
-                <div class="container">
-                    <div class="row">
-                        <div class="col-lg-3 col-md-6">
-                            <div class="netabout">
-                                <a href="index.html" class="logo">
-                                    <img src="images/logo-footer.svg" alt="netcom">
-                                </a>
-                                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Cum incidunt architecto
-                                    soluta laboriosam, perspiciatis, aspernatur officiis esse.</p>
-                            </div>
-                            <div class="contactus">
-                                <ul>
-                                    <li>
-                                        <div class="info">
-                                            <i class="fa fa-map-marker" aria-hidden="true"></i>
-                                            <p class="in-p">95 South Park Avenue, USA</p>
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <div class="info">
-                                            <i class="fa fa-phone" aria-hidden="true"></i>
-                                            <p class="in-p">+456 875 369 208</p>
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <div class="info">
-                                            <i class="fa fa-envelope" aria-hidden="true"></i>
-                                            <p class="in-p ti">support@findhouses.com</p>
-                                        </div>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                        <div class="col-lg-3 col-md-6">
-                            <div class="navigation">
-                                <h3>Navigation</h3>
-                                <div class="nav-footer">
-                                    <ul>
-                                        <li><a href="index.html">Home One</a></li>
-                                        <li><a href="properties-right-sidebar.html">Properties Right</a></li>
-                                        <li><a href="properties-full-list.html">Properties List</a></li>
-                                        <li><a href="properties-details.html">Property Details</a></li>
-                                        <li class="no-mgb"><a href="agents-listing-grid.html">Agents Listing</a></li>
-                                    </ul>
-                                    <ul class="nav-right">
-                                        <li><a href="agent-details.html">Agents Details</a></li>
-                                        <li><a href="about.html">About Us</a></li>
-                                        <li><a href="blog.html">Blog Default</a></li>
-                                        <li><a href="blog-details.html">Blog Details</a></li>
-                                        <li class="no-mgb"><a href="contact-us.html">Contact Us</a></li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-3 col-md-6">
-                            <div class="widget">
-                                <h3>Twitter Feeds</h3>
-                                <div class="twitter-widget contuct">
-                                    <div class="twitter-area">
-                                        <div class="single-item">
-                                            <div class="icon-holder">
-                                                <i class="fa fa-twitter" aria-hidden="true"></i>
-                                            </div>
-                                            <div class="text">
-                                                <h5><a href="#">@findhouses</a> all share them with me baby said
-                                                    inspet.</h5>
-                                                <h4>about 5 days ago</h4>
-                                            </div>
-                                        </div>
-                                        <div class="single-item">
-                                            <div class="icon-holder">
-                                                <i class="fa fa-twitter" aria-hidden="true"></i>
-                                            </div>
-                                            <div class="text">
-                                                <h5><a href="#">@findhouses</a> all share them with me baby said
-                                                    inspet.</h5>
-                                                <h4>about 5 days ago</h4>
-                                            </div>
-                                        </div>
-                                        <div class="single-item">
-                                            <div class="icon-holder">
-                                                <i class="fa fa-twitter" aria-hidden="true"></i>
-                                            </div>
-                                            <div class="text">
-                                                <h5><a href="#">@findhouses</a> all share them with me baby said
-                                                    inspet.</h5>
-                                                <h4>about 5 days ago</h4>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-3 col-md-6">
-                            <div class="newsletters">
-                                <h3>Newsletters</h3>
-                                <p>Sign Up for Our Newsletter to get Latest Updates and Offers. Subscribe to receive
-                                    news in your inbox.</p>
-                            </div>
-                            <form class="bloq-email mailchimp form-inline" method="post">
-                                <label for="subscribeEmail" class="error"></label>
-                                <div class="email">
-                                    <input type="email" id="subscribeEmail" name="EMAIL"
-                                        placeholder="Enter Your Email">
-                                    <input type="submit" value="Subscribe">
-                                    <p class="subscription-success"></p>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="second-footer">
-                <div class="container">
-                    <p>2021 © Copyright - All Rights Reserved.</p>
-                    <ul class="netsocials">
-                        <li><a href="#"><i class="fa fa-facebook" aria-hidden="true"></i></a></li>
-                        <li><a href="#"><i class="fa fa-twitter" aria-hidden="true"></i></a></li>
-                        <li><a href="#"><i class="fab fa-instagram"></i></a></li>
-                        <li><a href="#"><i class="fa fa-youtube" aria-hidden="true"></i></a></li>
-                    </ul>
-                </div>
-            </div>
-        </footer>
+        @include('front.body.footer')
 
         <a data-scroll href="#wrapper" class="go-up"><i class="fa fa-angle-double-up" aria-hidden="true"></i></a>
         <!-- END FOOTER -->
@@ -267,6 +119,7 @@
         <script src="{{ asset('front/js/newsletter.js') }}"></script>
         <script src="{{ asset('front/js/color-switcher.js') }}"></script>
         <script src="{{ asset('front/js/inner.js') }}"></script>
+        <script src="{{ asset('front/js/sweetalert2.js') }}"></script>
 
         <script type="text/javascript" src="{{ asset('front/toastr/toastr.min.js') }}"></script>
 
@@ -288,39 +141,7 @@
         </script>
 
         <!-- Register -->
-        <script>
-            $("#registrationForm2").submit(function(e) {
-                e.preventDefault();
-                $.ajax({
-                    url: '{{ route('user.register') }}',
-                    type: 'post',
-                    data: $('#registrationForm2').serialize(),
-                    dataType: 'json',
-                    success: function(response) {
-                        $(".error-message").html(""); // Xóa lỗi cũ
-                        $("#registrationForm2 input").removeClass(
-                        "input-error"); // Chỉ ảnh hưởng đến đăng ký
-    
-                        if (response.status === false) {
-                            $.each(response.errors, function(field, messages) {
-                                let errorField = $("#" + field +
-                                "_error_register"); // Chọn lỗi đúng form
-                                let inputField = $("#registrationForm2 [name='" + field + "']");
-    
-                                if (errorField.length) {
-                                    errorField.html(messages[0]); // Hiển thị lỗi
-                                }
-                                if (inputField.length) {
-                                    inputField.addClass("input-error"); // Tô viền đỏ input lỗi
-                                }
-                            });
-                        } else {
-                            window.location.href = '{{ route('index') }}';
-                        }
-                    }
-                });
-            });
-        </script>
+        @include('front.body.script')
 
 
     </div>

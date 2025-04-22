@@ -104,4 +104,36 @@ class ReviewController extends Controller
 
         return view('front.poster.review_list', compact('reviews'));
     }
+
+    public function loadReviews(Request $request)
+    {
+        try {
+            $postId = $request->post_id;
+    
+            if (!$postId) {
+                return response()->json(['error' => 'Post ID is missing.'], 400);
+            }
+    
+            $reviews = Review::with('user')
+                ->where('post_id', $postId)
+                ->where('status', 1)
+                ->latest()
+                ->paginate(4)
+                ->appends(['post_id' => $postId]);
+    
+            $reviewCount = Review::where('post_id', $postId)->where('status', 1)->count();
+            $avarage = Review::where('post_id', $postId)->where('status', 1)->avg('rating');
+    
+            $html = view('front.main.sort_page.reviews_post', compact('reviews'))->render();
+    
+            return response()->json([
+                'html' => $html,
+                'reviewCount' => $reviewCount,
+                'avarage' => round($avarage, 1)
+            ]);
+    
+        } catch (\Exception $e) {
+            return response()->json(['error' => $e->getMessage()], 500);
+        }
+    }
 }

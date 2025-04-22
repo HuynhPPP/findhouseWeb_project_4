@@ -60,6 +60,8 @@ Route::get('/posts/category/sort/{id}', [MainControler::class, 'sortPostsByCateg
 Route::get('/posts/province/{province}/sort', [MainControler::class, 'sortPostsByProvince'])->name('posts.province.sort');
 
 Route::get('/user-online-status/{id}', [UserController::class, 'GetUserStatus']);
+Route::get('/load-reviews', [ReviewController::class, 'loadReviews'])->name('load.reviews');
+
 
 
 require __DIR__ . '/auth.php';

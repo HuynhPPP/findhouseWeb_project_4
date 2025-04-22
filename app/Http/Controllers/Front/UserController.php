@@ -274,7 +274,6 @@ class UserController extends Controller
         return view('front.user.user_verification');
     }
 
-
     public function sendVerificationCode(Request $request)
     {
         $request->validate([
@@ -348,6 +347,16 @@ class UserController extends Controller
         $user->verification_token = null;
         $user->email_verification_expires_at = null;
         $user->role = 'poster';
+        if ($user->photo && str_starts_with($user->photo, 'user_')) {
+            $oldPath = public_path('upload/user_images/' . $user->photo);
+            $newFilename = str_replace('user_', 'poster_', $user->photo);
+            $newPath = public_path('upload/user_images/' . $newFilename);
+        
+            if (file_exists($oldPath)) {
+                rename($oldPath, $newPath); // đổi tên file
+                $user->photo = $newFilename; // cập nhật lại trong DB
+            }
+        }
         $user->save();
 
 

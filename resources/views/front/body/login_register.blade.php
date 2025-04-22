@@ -32,7 +32,7 @@
                 <div class="tab">
                     <div id="tab-1" class="tab-contents">
                         <div class="custom-form">
-                            <form method="POST"id="loginForm">
+                            <form method="POST" id="loginForm">
                                 @csrf
                                 <label>Email</label>
                                 <input name="email" type="email" id="email" value="{{ old('email') }}">

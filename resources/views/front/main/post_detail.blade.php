@@ -11,6 +11,7 @@
     {{ $post->title }}
 @endsection
 <!-- START SECTION PROPERTIES LISTING -->
+<div id="post-data" data-post-id="{{ $post->id }}"></div>
 <section class="single-proper blog details">
     <div class="container">
         <div class="row">
@@ -112,88 +113,18 @@
                     </div>
                 </div>
 
-                @php
-                    $reviewCount = App\Models\Review::where('post_id', $post->id)->where('status', 1)->latest()->get();
-                    $avarage = $reviewCount->avg('rating');
-                @endphp
 
                 <!-- Star Reviews -->
                 <section class="reviews comments">
-                    <h3 class="mb-5">{{ $reviewCount->count() }} Đánh giá</h3>
-
-                    @foreach ($reviewCount as $item)
-                        @php
-                            $imagePath = 'upload/user_images/';
-                            $userPhoto = $item->user->photo ?? null;
-
-                            if (!empty($userPhoto)) {
-                                $imageUrl = url($imagePath . $userPhoto);
-                            } else {
-                                $imageUrl = url('upload/no_img.jpg');
-                            }
-                        @endphp
-
-                        <div class="row mb-5">
-                            <ul class="col-12 commented pl-0">
-                                <li class="comm-inf">
-                                    <div class="col-md-2">
-                                        <img src="{{ $imageUrl }}" class="img-fluid" alt="">
-                                    </div>
-                                    <div class="col-md-10 comments-info">
-                                        <div class="conra">
-                                            <h5 class="mb-2">{{ $item->user->name }}</h5>
-                                            <div class="rating-box">
-                                                <div class="detail-list-rating mr-0">
-                                                    @if ($item->rating == null)
-                                                        <i class="fa fa-star-o"></i>
-                                                        <i class="fa fa-star-o"></i>
-                                                        <i class="fa fa-star-o"></i>
-                                                        <i class="fa fa-star-o"></i>
-                                                        <i class="fa fa-star-o"></i>
-                                                    @elseif ($item->rating == 1)
-                                                        <i class="fa fa-star"></i>
-                                                        <i class="fa fa-star-o"></i>
-                                                        <i class="fa fa-star-o"></i>
-                                                        <i class="fa fa-star-o"></i>
-                                                        <i class="fa fa-star-o"></i>
-                                                    @elseif ($item->rating == 2)
-                                                        <i class="fa fa-star"></i>
-                                                        <i class="fa fa-star"></i>
-                                                        <i class="fa fa-star-o"></i>
-                                                        <i class="fa fa-star-o"></i>
-                                                        <i class="fa fa-star-o"></i>
-                                                    @elseif ($item->rating == 3)
-                                                        <i class="fa fa-star"></i>
-                                                        <i class="fa fa-star"></i>
-                                                        <i class="fa fa-star"></i>
-                                                        <i class="fa fa-star-o"></i>
-                                                        <i class="fa fa-star-o"></i>
-                                                    @elseif ($item->rating == 4)
-                                                        <i class="fa fa-star"></i>
-                                                        <i class="fa fa-star"></i>
-                                                        <i class="fa fa-star"></i>
-                                                        <i class="fa fa-star"></i>
-                                                        <i class="fa fa-star-o"></i>
-                                                    @elseif ($item->rating == 5)
-                                                        <i class="fa fa-star"></i>
-                                                        <i class="fa fa-star"></i>
-                                                        <i class="fa fa-star"></i>
-                                                        <i class="fa fa-star"></i>
-                                                        <i class="fa fa-star"></i>
-                                                    @endif
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <p>
-                                            {{ Carbon\Carbon::parse($item->created_at)->diffForHumans() }}
-                                        </p>
-                                        <p>{{ $item->comment }}</p>
-                                    </div>
-                                </li>
-                            </ul>
-                        </div>
-                    @endforeach
-
+                    <div class="d-flex justify-content-between mb-4">
+                        <h3 class="mb-0" id="review-count"></h3>
+                        <span class="" id="avg-rating" style="font-size: 20px; color: #f7b614;"></span>
+                    </div>
+                    
+                    
+                    <div id="reviews-container">
+                        {{-- Review sẽ được load tại đây --}}
+                    </div>
                 </section>
                 <!-- End Reviews -->
 
@@ -683,6 +614,45 @@
             } else {
                 mapElement.innerHTML = "<p style='color:red;'>Không tìm thấy vị trí trên bản đồ.</p>";
             }
+        });
+    });
+</script>
+
+<script>
+    function loadReviews(page = 1) {
+        let postId = $('#post-data').data('post-id');
+        $.ajax({
+            url: "{{ route('load.reviews') }}?page=" + page,
+            method: "GET",
+            data: {
+                post_id: postId
+            },
+            success: function(response) {
+                $('#reviews-container').html(response.html);
+                $('#review-count').text(response.reviewCount + ' Đánh giá');
+
+                // Hiển thị sao trung bình
+                let stars = '';
+                let rating = Math.round(response.avarage);
+                for (let i = 1; i <= 5; i++) {
+                    stars += '<i class="fa ' + (i <= rating ? 'fa-star' : 'fa-star-o') + '"></i>';
+                }
+
+                $('#avg-rating').html(stars + ' (' + response.avarage + ')');
+            },
+            error: function() {
+                alert("Không thể tải đánh giá!");
+            }
+        });
+    }
+
+    $(document).ready(function() {
+        loadReviews();
+
+        $(document).on('click', '.pagination a', function(e) {
+            e.preventDefault();
+            const page = $(this).attr('href').split('page=')[1];
+            loadReviews(page);
         });
     });
 </script>
