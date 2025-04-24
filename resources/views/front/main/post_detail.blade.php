@@ -135,7 +135,7 @@
                             <h3 class="listing-desc-headline margin-bottom-20 mb-4">Thêm đánh giá</h3>
                             <div class="alert alert-warning">
                                 Bạn cần <a class="text-danger"
-                                    href="http://127.0.0.1:8000/user/login?redirect=http%3A%2F%2F127.0.0.1%3A8000%2Fpost%2Fdetails%2F102">
+                                    href="{{ route('user.login.page', ['redirect' => request()->fullUrl()]) }}">
                                     đăng nhập
                                 </a>
                                 trước khi gửi đánh giá.
@@ -267,7 +267,7 @@
                                                 <!-- Nếu chưa đăng nhập, hiển thị thông báo -->
                                                 <div class="alert alert-warning">
                                                     Bạn cần <a class="text-danger"
-                                                        href="{{ route('login', ['redirect' => request()->fullUrl()]) }}">
+                                                        href="{{ route('user.login.page', ['redirect' => request()->fullUrl()]) }}">
                                                         đăng nhập
                                                     </a>
                                                     </a> trước khi gửi yêu cầu liên hệ.
@@ -342,7 +342,8 @@
                                     <!-- homes content -->
                                     <div class="homes-content">
                                         <!-- homes address -->
-                                        <h3><a href="{{ route('post.detail', ['id' => $related->id, 'post_slug' => $related->post_slug]) }}">
+                                        <h3><a
+                                                href="{{ route('post.detail', ['id' => $related->id, 'post_slug' => $related->post_slug]) }}">
                                                 {{ Str::words(strip_tags($related->title), 10) }}
                                             </a>
                                         </h3>
@@ -408,7 +409,8 @@
                                 <div class="project-single">
                                     <div class="project-inner project-head">
                                         <div class="project-bottom">
-                                            <h4><a href="{{ route('post.detail', ['id' => $related->id, 'post_slug' => $related->post_slug]) }}">
+                                            <h4><a
+                                                    href="{{ route('post.detail', ['id' => $related->id, 'post_slug' => $related->post_slug]) }}">
                                                     Xem chi tiết
                                                 </a>
                                             </h4>
@@ -447,7 +449,8 @@
                                     <div class="homes-content">
                                         <!-- homes address -->
                                         <h3>
-                                            <a href="{{ route('post.detail', ['id' => $related->id, 'post_slug' => $related->post_slug]) }}">
+                                            <a
+                                                href="{{ route('post.detail', ['id' => $related->id, 'post_slug' => $related->post_slug]) }}">
                                                 {{ Str::words(strip_tags($related->title), 10) }}
                                             </a>
                                         </h3>
@@ -655,6 +658,29 @@
             const page = $(this).attr('href').split('page=')[1];
             loadReviews(page);
         });
+    });
+</script>
+
+<script>
+    $(document).ready(function() {
+        const urlParams = new URLSearchParams(window.location.search);
+        if (urlParams.get('logged_in') === '1') {
+            const Toast = Swal.mixin({
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 3000
+            });
+            Toast.fire({
+                icon: 'success',
+                title: 'Đăng nhập thành công!'
+            });
+
+            // Xóa param khỏi URL (optional)
+            const url = new URL(window.location.href);
+            url.searchParams.delete('logged_in');
+            window.history.replaceState({}, document.title, url.toString());
+        }
     });
 </script>
 @endsection

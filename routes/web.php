@@ -26,6 +26,9 @@ Route::get('/user/logout', [UserController::class, 'UserLogout'])->name('user.lo
 Route::post('/user/register', [UserController::class, 'UserRegister'])->name('user.register');
 Route::post('/user/login', [UserController::class, 'UserLogin'])->name('user.login');
 
+Route::get('/user/login/page', [UserController::class, 'UserLoginPage'])->name('user.login.page');
+Route::get('/user/register/page', [UserController::class, 'UserRegisterPage'])->name('user.register.page');
+
 Route::get('/api/proxy/provinces', [ApiController::class, 'getProvinces']);
 Route::get('/api/proxy/districts/{provinceId}', [ApiController::class, 'getDistricts']);
 Route::get('/api/proxy/wards/{districtId}', [ApiController::class, 'getWards']);

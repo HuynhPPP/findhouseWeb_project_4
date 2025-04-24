@@ -8,6 +8,27 @@
     }
 </style>
 
+<script>
+    $('#loginForm').submit(function(e) {
+        e.preventDefault();
+
+        $.ajax({
+            url: '/user/login',
+            method: 'POST',
+            data: $(this).serialize(), // bao gồm cả hidden `redirect`
+            success: function(response) {
+                if (response.status) {
+                    let redirectUrl = new URL(response.redirect_url);
+                    redirectUrl.searchParams.set('logged_in', 1); // gắn query param
+                    window.location.href = redirectUrl.toString();
+                } else {
+                    // xử lý lỗi hiển thị
+                }
+            }
+        });
+    });
+</script>
+
 {{-- Login --}}
 <script>
     $(document).ready(function() {
@@ -68,11 +89,7 @@
                 },
                 error: function(xhr) {
                     submitButton.prop("disabled", false).html('<span>Đăng nhập</span>');
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Có lỗi xảy ra!',
-                        text: 'Vui lòng thử lại sau.',
-                    });
+
 
                 }
             });

@@ -95,7 +95,7 @@
 
                     <button type="submit" class="btn_1 rounded full-width add_top_30">Đăng ký ngay</button>
                     <div class="text-center add_top_10">Bạn đã có tài khoản ? <strong><a
-                                href="{{ route('login') }}">Đăng
+                                href="{{ route('user.login.page') }}">Đăng
                                 nhập</a></strong></div>
                 </form>
             </div>

@@ -72,6 +72,8 @@
             <div class="login">
                 <form name="registerform" id="loginForm">
                     @csrf
+                    <input type="hidden" name="redirect" value="{{ request('redirect') }}">
+
                     <div class="access_social">
                         <a href="{{ route('auth.google') }}" class="social_bt google">Đăng nhập bằng Google</a>
                     </div>
@@ -97,7 +99,7 @@
                     </div>
                     <button type="submit" href="#0" class="btn_1 rounded full-width">Đăng nhập</button>
                     <div class="text-center add_top_10">Bạn chưa có tài khoản ? <strong><a
-                                href="{{ route('register') }}">Đăng
+                                href="{{ route('user.register.page') }}">Đăng
                                 ký!</a></strong></div>
                 </form>
             </div>

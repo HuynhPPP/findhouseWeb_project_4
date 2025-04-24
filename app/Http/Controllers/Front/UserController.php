@@ -122,6 +122,16 @@ class UserController extends Controller
         ], 201);
     }
 
+    public function UserLoginPage()
+    {
+        return view('front.login');
+    }
+
+    public function UserRegisterPage()
+    {
+        return view('front.register');
+    }
+
     public function UserLogin(Request $request)
     {
         // Kiểm tra hợp lệ
