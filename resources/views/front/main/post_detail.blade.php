@@ -120,8 +120,8 @@
                         <h3 class="mb-0" id="review-count"></h3>
                         <span class="" id="avg-rating" style="font-size: 20px; color: #f7b614;"></span>
                     </div>
-                    
-                    
+
+
                     <div id="reviews-container">
                         {{-- Review sẽ được load tại đây --}}
                     </div>
@@ -303,7 +303,8 @@
                                 <div class="project-single">
                                     <div class="project-inner project-head">
                                         <div class="project-bottom">
-                                            <h4><a href="{{ route('post.detail', $related->id) }}">
+                                            <h4><a
+                                                    href="{{ route('post.detail', ['id' => $related->id, 'post_slug' => $related->post_slug]) }}">
                                                     Xem chi tiết
                                                 </a>
                                             </h4>
@@ -329,7 +330,7 @@
                                         </div>
                                         <div class="button-effect">
                                             <a class="btn copy-link"
-                                                data-link="{{ route('post.detail', $related->id) }}"><i
+                                                data-link="{{ route('post.detail', ['id' => $related->id, 'post_slug' => $related->post_slug]) }}"><i
                                                     class="fa fa-link" style="line-height: 30px"></i></a>
                                             @if ($video_url)
                                                 <a href="{{ $video_url_fixed }}"
@@ -341,7 +342,7 @@
                                     <!-- homes content -->
                                     <div class="homes-content">
                                         <!-- homes address -->
-                                        <h3><a href="{{ route('post.detail', $related->id) }}">
+                                        <h3><a href="{{ route('post.detail', ['id' => $related->id, 'post_slug' => $related->post_slug]) }}">
                                                 {{ Str::words(strip_tags($related->title), 10) }}
                                             </a>
                                         </h3>
@@ -407,7 +408,7 @@
                                 <div class="project-single">
                                     <div class="project-inner project-head">
                                         <div class="project-bottom">
-                                            <h4><a href="{{ route('post.detail', $related->id) }}">
+                                            <h4><a href="{{ route('post.detail', ['id' => $related->id, 'post_slug' => $related->post_slug]) }}">
                                                     Xem chi tiết
                                                 </a>
                                             </h4>
@@ -433,7 +434,7 @@
                                         </div>
                                         <div class="button-effect">
                                             <a class="btn copy-link"
-                                                data-link="{{ route('post.detail', $related->id) }}"><i
+                                                data-link="{{ route('post.detail', ['id' => $related->id, 'post_slug' => $related->post_slug]) }}"><i
                                                     class="fa fa-link" style="line-height: 30px"></i></a>
                                             @if ($video_url)
                                                 <a href="{{ $video_url_fixed }}"
@@ -446,7 +447,7 @@
                                     <div class="homes-content">
                                         <!-- homes address -->
                                         <h3>
-                                            <a href="{{ route('post.detail', $related->id) }}">
+                                            <a href="{{ route('post.detail', ['id' => $related->id, 'post_slug' => $related->post_slug]) }}">
                                                 {{ Str::words(strip_tags($related->title), 10) }}
                                             </a>
                                         </h3>

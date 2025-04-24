@@ -35,7 +35,7 @@
 
                             <div class="button-effect">
                                 <a class="btn copy-link"
-                                    data-link="{{ route('post.detail', $post->id) }}"><i class="fa fa-link"
+                                    data-link="{{ route('post.detail', ['id' => $post->id, 'post_slug' => $post->post_slug]) }}"><i class="fa fa-link"
                                         style="line-height: 30px"></i></a>
                                 @if ($video_url)
                                     <a href="{{ $video_url_fixed }}" class="btn popup-video popup-youtube"><i
@@ -49,27 +49,19 @@
                         <!-- homes content -->
                         <div class="homes-content">
                             <!-- homes address -->
-                            <h3><a href="{{ route('post.detail', $post->id) }}">
+                            <h3><a href="{{ route('post.detail', ['id' => $post->id, 'post_slug' => $post->post_slug]) }}">
                                     {{ Str::words(strip_tags($post->title), 14) }}
                                 </a>
                             </h3>
 
                             <p class="homes-address mb-3">
-                                <a href="{{ route('post.detail', $post->id) }}">
+                                <a href="{{ route('post.detail', ['id' => $post->id, 'post_slug' => $post->post_slug]) }}">
                                     <i class="fa fa-map-marker"></i>
                                     <span>
                                         {{ $post->full_address }}
                                     </span>
                                 </a>
                             </p>
-
-                            {{-- <p class="homes-address">
-                                <a href="{{ route('post.detail', $post->id) }}">
-                                    <span>
-                                        {{ Str::words(strip_tags($post->description), 30) }}
-                                    </span>
-                                </a>
-                            </p> --}}
                             <!-- homes List -->
                             <ul class="homes-list clearfix pb-3">
                                 <li class="the-icons">
@@ -79,7 +71,7 @@
                             </ul>
                             <div class="price-properties footer pt-3 pb-0">
                                 <h3 class="title mt-3">
-                                    <a href="single-property-1.html">
+                                    <a href="{{ route('post.detail', ['id' => $post->id, 'post_slug' => $post->post_slug]) }}">
                                         @if ($post->price >= 1000000)
                                             {{ number_format($post->price / 1000000, 1) }} triệu/tháng
                                         @else

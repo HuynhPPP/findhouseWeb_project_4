@@ -26,14 +26,16 @@
                                         <div class="project-single">
                                             <div class="project-inner project-head">
                                                 <div class="project-bottom">
-                                                    <h4><a href="{{ route('post.detail', $post->id) }}">
+                                                    <h4><a
+                                                            href="{{ route('post.detail', ['id' => $post->id, 'post_slug' => $post->post_slug]) }}">
                                                             Xem chi tiết
                                                         </a>
                                                     </h4>
                                                 </div>
                                                 <div class="homes">
                                                     <!-- homes img -->
-                                                    <a href="{{ route('post.detail', $post->id) }}" class="homes-img">
+                                                    <a href="{{ route('post.detail', ['id' => $post->id, 'post_slug' => $post->post_slug]) }}"
+                                                        class="homes-img">
                                                         <div class="homes-tag button alt sale">
                                                             {{ $post->category->category_name }}</div>
                                                         @if ($fixedImage)
@@ -48,7 +50,7 @@
                                                 </div>
                                                 <div class="button-effect">
                                                     <a href="#" class="btn copy-link"
-                                                        data-link="{{ route('post.detail', $post->id) }}"><i
+                                                        data-link="{{ route('post.detail', ['id' => $post->id, 'post_slug' => $post->post_slug]) }}"><i
                                                             class="fa fa-link" style="line-height: 30px"></i></a>
                                                     @if ($video_url)
                                                         <a href="{{ $video_url_fixed }}"
@@ -91,7 +93,7 @@
 
                                                     <div class="compare">
                                                         <a href="#" title="Chia sẻ" class="share-post"
-                                                            data-link="{{ route('post.detail', $post->id) }}"
+                                                            data-link="{{ route('post.detail', ['id' => $post->id, 'post_slug' => $post->post_slug]) }}"
                                                             data-title="{{ $post->title }}"
                                                             data-post-id="{{ $post->id }}">
                                                             <i class="fas fa-share-alt"></i>

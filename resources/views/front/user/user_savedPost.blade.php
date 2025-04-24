@@ -1,6 +1,6 @@
 @extends('front.user.user_dashboard')
 @section('user')
-<title>Tin đăng đã lưu</title>
+    <title>Tin đăng đã lưu</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <div class="col-lg-9 col-md-12 col-xs-12 pl-0 user-dash2">
         <div class="col-lg-12 mobile-dashbord dashbord">
@@ -71,7 +71,8 @@
                     @foreach ($savedPosts as $savedPost)
                         <tr>
                             <td class="image myelist">
-                                <a href="{{ route('post.detail', $savedPost->post->id) }}">
+                                <a
+                                    href="{{ route('post.detail', ['id' => $savedPost->post->id, 'post_slug' => $savedPost->post->post_slug]) }}">
                                     @if ($savedPost->post->images->count() > 0)
                                         @php
                                             $fixedImage = $savedPost->post->images()->first();
@@ -87,7 +88,8 @@
                             </td>
                             <td>
                                 <div class="inner">
-                                    <a href="{{ route('post.detail', $savedPost->post->id) }}">
+                                    <a
+                                        href="{{ route('post.detail', ['id' => $savedPost->post->id, 'post_slug' => $savedPost->post->post_slug]) }}">
                                         <h2>{{ $savedPost->post->title }}</h2>
                                     </a>
                                     <figure><i class="lni-map-marker"></i> {{ $savedPost->post->full_address }}</figure>

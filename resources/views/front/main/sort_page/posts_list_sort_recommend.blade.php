@@ -9,7 +9,8 @@
         <div class="project-single aos-init aos-animate" data-aos="fade-up">
             <div class="project-inner project-head">
                 <div class="project-bottom">
-                    <h4><a href="{{ route('post.detail', $post->id) }}">Xem chi tiết</a></h4>
+                    <h4><a href="{{ route('post.detail', ['id' => $post->id, 'post_slug' => $post->post_slug]) }}">Xem
+                            chi tiết</a></h4>
                 </div>
                 <div class="homes">
                     <a href="single-property-1.html" class="homes-img">
@@ -24,21 +25,24 @@
                     </a>
                 </div>
                 <div class="button-effect">
-                    <a href="#" class="btn copy-link" data-link="{{ route('post.detail', $post->id) }}"><i
+                    <a href="#" class="btn copy-link"
+                        data-link="{{ route('post.detail', ['id' => $post->id, 'post_slug' => $post->post_slug]) }}"><i
                             class="fa fa-link" style="line-height: 30px"></i></a>
                     @if ($video_url)
                         <a href="{{ $video_url_fixed }}" class="btn popup-video popup-youtube"><i class="fas fa-video"
                                 style="line-height: 30px"></i></a>
                     @endif
-                    <a class="img-poppu btn" href="{{ route('post.detail', $post->id) }}"
+                    <a class="img-poppu btn"
+                        href="{{ route('post.detail', ['id' => $post->id, 'post_slug' => $post->post_slug]) }}"
                         style="color: black; width: 40px;">{{ $totalImages }} <i class="fa fa-photo"></i></a>
                 </div>
             </div>
             <div class="homes-content">
-                <h3><a href="{{ route('post.detail', $post->id) }}">{{ Str::words(strip_tags($post->title), 10) }}</a>
+                <h3><a
+                        href="{{ route('post.detail', ['id' => $post->id, 'post_slug' => $post->post_slug]) }}">{{ Str::words(strip_tags($post->title), 10) }}</a>
                 </h3>
                 <p class="homes-address mb-3">
-                    <a href="{{ route('post.detail', $post->id) }}">
+                    <a href="{{ route('post.detail', ['id' => $post->id, 'post_slug' => $post->post_slug]) }}">
                         <i class="fa fa-map-marker"></i>
                         <span>{{ $post->full_address }}</span>
                     </a>
@@ -61,8 +65,8 @@
                     </h3>
                     <div class="compare">
                         <a href="#" title="Chia sẻ" class="share-post"
-                            data-link="{{ route('post.detail', $post->id) }}" data-title="{{ $post->title }}"
-                            data-post-id="{{ $post->id }}">
+                            data-link="{{ route('post.detail', ['id' => $post->id, 'post_slug' => $post->post_slug]) }}"
+                            data-title="{{ $post->title }}" data-post-id="{{ $post->id }}">
                             <i class="fas fa-share-alt"></i>
                         </a>
                         <a href="javascript:void(0)" title="Bấm để lưu tin" id="{{ $post->id }}"
@@ -73,7 +77,7 @@
                     </div>
                 </div>
                 <div class="footer">
-                    <a href="{{ route('poster.detail', $post->user->id) }}">
+                    <a href="{{ route('post.detail', ['id' => $post->id, 'post_slug' => $post->post_slug]) }}">
                         @php
                             $imagePath = 'upload/user_images/';
                             $userPhoto = $post->user->photo ?? null;
