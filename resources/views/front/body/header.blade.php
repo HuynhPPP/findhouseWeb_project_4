@@ -93,7 +93,7 @@
                         </li>
                         <li>
                             <img src="{{ asset('front\images\logout.svg') }}" alt="">
-                            <a href="{{ route('logout') }}">Đăng xuất</a>
+                            <a href="{{ route('user.logout') }}">Đăng xuất</a>
                         </li>
                     @else
                         <li class="show-reg-form modal-open">

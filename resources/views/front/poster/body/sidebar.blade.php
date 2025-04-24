@@ -77,7 +77,7 @@
                 </a>
             </li>
             <li>
-                <a href="{{ route('logout') }}">
+                <a href="{{ route('user.logout') }}">
                     <i class="fas fa-sign-out-alt"></i>Đăng xuất
                 </a>
             </li>

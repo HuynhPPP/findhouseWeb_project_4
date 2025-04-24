@@ -56,7 +56,7 @@
             @endif
             
             <li>
-                <a href="index.html">
+                <a href="{{ route('user.logout') }}">
                     <i class="fas fa-sign-out-alt"></i>Đăng xuất
                 </a>
             </li>

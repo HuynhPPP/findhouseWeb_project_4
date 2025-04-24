@@ -9,7 +9,7 @@
     <meta name="author" content="">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title> @yield('title')</title>
-    
+
     <script>
         window.authId = {{ auth()->check() ? auth()->user()->id : 'null' }};
     </script>
@@ -129,6 +129,8 @@
                 }, 1000); // Ẩn preloader sau 1 giây
             });
         </script>
+
+        <script src="{{ asset('front/js/script.js') }}"></script>
 
         @include('front.body.script')
 
