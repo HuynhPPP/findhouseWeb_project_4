@@ -1,3 +1,7 @@
+@php
+    $setting = App\Models\SiteSetting::find(1);
+@endphp
+
 <footer class="first-footer rec-pro">
   <div class="top-footer">
     <div class="container-fluid">
@@ -6,7 +10,7 @@
           <div class="netabout row justify-content-center">
             <a href="{{ route('index') }}" class="logo">
               <img width="80px"
-                src="{{ asset('front/images/logo-white-1.svg') }}"
+                src="{{ asset('/front/images/' . $setting->logo) }}"
                 alt="netcom">
             </a>
           </div>
@@ -15,19 +19,19 @@
               <li>
                 <div class="info">
                   <i class="fa fa-map-marker" aria-hidden="true"></i>
-                  <p class="in-p">95 South Park Avenue, USA</p>
+                  <p class="in-p">{{ $setting->address }}</p>
                 </div>
               </li>
               <li>
                 <div class="info">
                   <i class="fa fa-phone" aria-hidden="true"></i>
-                  <p class="in-p">+456 875 369 208</p>
+                  <p class="in-p">{{ $setting->phone }}</p>
                 </div>
               </li>
               <li>
                 <div class="info">
                   <i class="fa fa-envelope" aria-hidden="true"></i>
-                  <p class="in-p">support@findhouses</p>
+                  <p class="in-p">{{ $setting->email }}</p>
                 </div>
               </li>
             </ul>
@@ -39,12 +43,12 @@
   <div class="second-footer rec-pro">
     <div class="container-fluid sd-f d-flex" style="max-width: 1400px;">
       <div>
-        <p>2021 © Copyright</p>
+        <p>{{ $setting->copyright }}</p>
       </div>
       <ul class="netsocials">
-        <li><a href="#"><i class="fa fa-facebook"
+        <li><a href="{{ $setting->facebook }}"><i class="fa fa-facebook"
               aria-hidden="true"></i></a></li>
-        <li><a href="#"><i class="fa fa-youtube"
+        <li><a href="{{ $setting->youtube }}"><i class="fa fa-youtube"
               aria-hidden="true"></i></a></li>
       </ul>
     </div>

@@ -1,13 +1,15 @@
-<header id="header-container">
-    <!-- Header -->
-    <div id="header">
+@php
+    $setting = App\Models\SiteSetting::find(1);
+@endphp
+<header id="header-container" class="header head-tr">
+    <div id="header" class="head-tr bottom">
         <div class="container container-header">
             <!-- Left Side Content -->
             <div class="left-side">
                 <!-- Logo -->
                 <div id="logo">
-                    <a href="{{ route('index') }}"><img src="{{ asset('front/images/logo/logo-red.jpg') }}"
-                            data-sticky-logo="{{ asset('front/images/logo/logo-red.jpg') }}" alt=""></a>
+                    <a href="{{ route('index') }}"><img src="{{ asset('/front/images/' . $setting->logo) }}"
+                            data-sticky-logo="{{ asset('/front/images/' . $setting->logo) }}" alt=""></a>
                 </div>
                 <!-- Mobile Navigation -->
                 <div class="mmenu-trigger">
@@ -20,7 +22,7 @@
             </div>
             <!-- Left Side Content / End -->
 
-            <!-- Right Side Content / End -->
+            <!-- Right Side Content -->
             @php
                 $profileData = Auth::check() ? App\Models\User::find(Auth::user()->id) : null;
             @endphp
@@ -49,7 +51,6 @@
                     <!-- Header Widget / End -->
                 </div>
             @endif
-            <!-- Right Side Content / End -->
             <!-- Right Side Content / End -->
             <div class="header-user-menu user-menu add">
 
@@ -104,8 +105,7 @@
                     @endauth
                 </ul>
             </div>
+            <!-- Right Side Content / End -->
         </div>
     </div>
-    <!-- Header / End -->
-
 </header>

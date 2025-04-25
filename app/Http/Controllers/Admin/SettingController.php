@@ -110,7 +110,7 @@ class SettingController extends Controller
         $manager = new ImageManager(new Driver());
         //dd($url);
         $file_img = $manager->read($url);
-        $file_img->cover(150, 150);
+        // $file_img->cover(250, 250);
         $file_img->save($url);
         $data->logo = $file_name;
       }
