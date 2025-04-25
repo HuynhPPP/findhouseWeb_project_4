@@ -21,7 +21,6 @@ return new class extends Migration
       $table->string('facebook')->nullable();
       $table->string('youtube')->nullable();
       $table->string('copyright')->nullable();
-      $table->timestamps();
     });
     DB::table('site_settings')->insert([
       'logo' => 'logo.png',

@@ -14,14 +14,13 @@ return new class extends Migration
   {
     Schema::create('smtp_settings', function (Blueprint $table) {
       $table->id();
-      $table->string('mailer')->nullable();
-      $table->string('host')->nullable();
-      $table->string('port')->nullable();
-      $table->string('username')->nullable();
-      $table->string('password')->nullable();
-      $table->string('encryption')->nullable();
-      $table->string('from_address')->nullable();
-      $table->timestamps();
+      $table->string('mailer');
+      $table->string('host');
+      $table->string('port');
+      $table->string('username');
+      $table->string('password');
+      $table->string('encryption');
+      $table->string('from_address');
     });
     DB::table('smtp_settings')->insert([
       'mailer' => 'smtp',
@@ -31,8 +30,6 @@ return new class extends Migration
       'password' => '4ea232aa95dfd7',
       'encryption' => 'tls',
       'from_address' => 'hotro.findhouse@gmail.com',
-      'created_at' => now(),
-      'updated_at' => now(),
     ]);
   }
 
