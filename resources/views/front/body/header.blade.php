@@ -1,3 +1,6 @@
+@php
+    $setting = App\Models\SiteSetting::find(1);
+@endphp
 <header id="header-container" class="header head-tr">
     <div id="header" class="head-tr bottom">
         <div class="container container-header">
@@ -5,8 +8,8 @@
             <div class="left-side">
                 <!-- Logo -->
                 <div id="logo">
-                    <a href="{{ route('index') }}"><img src="{{ asset('front/images/logo/logo-white-1.png') }}"
-                            data-sticky-logo="{{ asset('front/images/logo/logo-red.jpg') }}" alt=""></a>
+                    <a href="{{ route('index') }}"><img src="{{ asset('/front/images/' . $setting->logo) }}"
+                            data-sticky-logo="{{ asset('/front/images/' . $setting->logo) }}" alt=""></a>
                 </div>
                 <!-- Mobile Navigation -->
                 <div class="mmenu-trigger">
