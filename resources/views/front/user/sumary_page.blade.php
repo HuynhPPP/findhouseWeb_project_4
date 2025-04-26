@@ -29,7 +29,7 @@
     </style>
 
     <div class="col-lg-9 col-md-12 col-xs-12 pl-0 user-dash2">
-        <div class="dashborad-box stat bg-white">
+        <div class="dashborad-box stat bg-white" style="margin-top: 25px;">
             <h4 class="title">Thống kê tin đăng</h4>
             <div class="section-body">
                 <div class="row">

@@ -112,7 +112,7 @@
 
 <!-- Modal -->
 <div class="modal fade" id="filterModal" tabindex="-1" aria-labelledby="filterModalLabel" aria-hidden="true">
-<div class="modal-dialog" style="max-width: 700px;">
+<div class="modal-dialog" style="max-width: 70%;">
     <div class="modal-content" style="margin-top: 120px;">
         <div class="modal-header">
             <h5 class="modal-title" id="filterModalLabel">Bộ lọc tìm

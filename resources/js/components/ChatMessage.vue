@@ -13,11 +13,6 @@
                             <div class="stylish-input-group">
                                 <input type="text" class="search-bar" placeholder="Tìm kiếm theo tên bài đăng ..." v-model="searchQuery" />
 
-                                <span class="input-group-addon">
-                                    <button type="button">
-                                        <i class="fa fa-search" aria-hidden="true"></i>
-                                    </button>
-                                </span>
                             </div>
                         </div>
                     </div>

@@ -9,7 +9,7 @@
 </style>
 
 <script>
-    $('#loginForm').submit(function(e) {
+    $('#loginForm-2').submit(function(e) {
         e.preventDefault();
 
         $.ajax({

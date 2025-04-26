@@ -36,9 +36,6 @@
     <link rel="stylesheet" href="{{ asset('front/css/maps.css') }}">
     <link rel="stylesheet" id="color" href="{{ asset('front/css/colors/pink.css') }}">
 
-    <!-- Toastr -->
-    <link rel="stylesheet" type="text/css" href="{{ asset('front/toastr/toastr.css') }}">
-    <!-- End Toastr -->
 </head>
 
 <body class="homepage-9 hp-6 homepage-1 mh">
@@ -114,9 +111,6 @@
                 $("#header.cloned #logo img").attr("src", $('#header #logo img').attr('data-sticky-logo'));
             });
         </script>
-
-
-        <script type="text/javascript" src="{{ asset('front/toastr/toastr.min.js') }}"></script>
 
         <!-- Sweetalert2 -->
         <script>

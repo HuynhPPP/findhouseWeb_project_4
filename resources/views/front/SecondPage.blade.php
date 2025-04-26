@@ -94,8 +94,6 @@
         <script src="{{ asset('front/js/sweetalert2.js') }}"></script>
         <script src="{{ asset('front/js/script.js') }}"></script>
 
-        <script type="text/javascript" src="{{ asset('front/toastr/toastr.min.js') }}"></script>
-
         <!-- Sweetalert2 -->
         <script>
             @if (session('alert-type'))

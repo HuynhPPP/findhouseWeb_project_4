@@ -55,7 +55,7 @@
                 </ul>
                 <div class="price-properties">
                     <h3 class="title mt-3">
-                        <a href="{{ route('post.detail', $post->id) }}">
+                        <a href="{{ route('post.detail', ['id' => $post->id, 'post_slug' => $post->post_slug]) }}">
                             @if ($post->price >= 1000000)
                                 {{ number_format($post->price / 1000000, 1) }} triệu/tháng
                             @else

@@ -4,7 +4,6 @@
     <link rel="stylesheet" href="{{ asset('front/css/poster_post_view.css') }}">
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.3.1/dist/leaflet.css" />
 
-
     <style>
         .custom-select-box {
             position: relative;
@@ -62,10 +61,9 @@
     </style>
 
     <div class="col-lg-9 col-md-12 col-xs-12 royal-add-property-area section_100 pl-0 user-dash2">
-
-        <form action="{{ route('poster.post.store') }}" method="post" enctype="multipart/form-data">
+        <form action="{{ route('poster.post.store') }}" method="post" enctype="multipart/form-data"
+            style="margin-right: 50px !important;">
             @csrf
-
             <!-- Information common -->
             <div class="single-add-property mt-5">
                 <h3>Thông tin mô tả</h3>
@@ -336,8 +334,6 @@
                 <h3>Bản đồ</h3>
                 <div id="map"></div>
             </div>
-
-
 
             @php
                 $id = Auth::user()->id;

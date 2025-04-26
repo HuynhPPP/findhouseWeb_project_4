@@ -10,7 +10,7 @@
         }
     </style>
 
-    <div class="col-lg-9 col-md-12 col-xs-12 pl-0 user-dash2">
+    <div class="col-lg-9 col-md-12 col-xs-12 pl-0 user-dash2" style="margin-top: 25px;">
         <div class="my-properties">
             <table class="table-responsive">
                 @if ($list_post->isEmpty())
@@ -47,7 +47,7 @@
                                     <div class="inner">
                                         <a
                                             href="{{ route('poster.edit.post', ['id' => $post->id, 'post_slug' => $post->post_slug]) }}">
-                                            <h2>{{ Str::words(strip_tags($post->title), 20) }}</h2>
+                                            <h2>{{ Str::words(strip_tags($post->title), 15) }}</h2>
                                         </a>
                                         <figure><i class="lni-map-marker"></i> {{ $post->address }}</figure>
 

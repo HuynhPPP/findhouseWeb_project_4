@@ -70,7 +70,7 @@
         <!-- START SECTION LOGIN -->
         <div id="login">
             <div class="login">
-                <form name="registerform" id="loginForm">
+                <form name="registerform" id="loginForm-2">
                     @csrf
                     <input type="hidden" name="redirect" value="{{ request('redirect') }}">
 
