@@ -26,7 +26,7 @@
             <li>
                 <a href="{{ route('poster.profile') }}"
                     class="{{ request()->routeIs('poster.profile') ? 'active' : '' }}">
-                    <i class="fa fa-user"></i>Quản lý tài khoản
+                    <i class="fa fa-user"></i>Cài đặt tài khoản
                 </a>
             </li>
             <li>

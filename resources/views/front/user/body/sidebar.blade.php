@@ -25,7 +25,7 @@
             </li>
             <li>
                 <a href="{{ route('user.profile') }}" class="{{ request()->routeIs('user.profile') ? 'active' : '' }}">
-                    <i class="fa fa-user"></i>Quản lý tài khoản
+                    <i class="fa fa-user"></i>Cài đặt tài khoản
                 </a>
             </li>
             <li>

@@ -94,7 +94,7 @@
         </div>
 
         <div class="dashborad-box stat bg-white">
-            <h4 class="title">Danh sách bài viết gần đây</h4>
+            <h4 class="title">Danh sách tin đăng gần đây</h4>
 
             @if (Auth::user()->email_verified_at)
                 <div class="table-responsive-2">

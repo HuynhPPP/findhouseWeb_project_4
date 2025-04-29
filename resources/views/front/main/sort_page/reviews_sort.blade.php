@@ -13,7 +13,7 @@
                 </div>
                 <div class="col-md-10 comments-info">
                     <div class="conra d-flex justify-content-between align-items-center">
-                        <a href="{{ route('post.detail', $item->posts->id) }}">
+                        <a href="{{ route('post.detail', ['id' => $item->posts->id, 'post_slug' => $item->posts->post_slug]) }}">
                             <p class="mb-2">
                                 {{ Str::words(strip_tags($item->posts->title), 20) }}
                             </p>
