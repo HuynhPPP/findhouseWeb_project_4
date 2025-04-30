@@ -326,7 +326,7 @@
         fetch('/mark-notification-as-read/' + notificationId, {
             method: 'POST',
             headers: {
-              'Content-Type': 'application/josn',
+              'Content-Type': 'application/json',
               'X-CSRF-TOKEN': '{{ csrf_token() }}'
             },
             body: JSON.stringify({})

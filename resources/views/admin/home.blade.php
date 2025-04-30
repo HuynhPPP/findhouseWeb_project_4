@@ -15,7 +15,7 @@
             <div class="card-body">
               <div class="row align-items-center m-b-30">
                 <div class="col">
-                  <h6 class="text-white m-b-5">Tổng số bài đăng</h6>
+                  <h6 class="text-white m-b-5">Tổng số tin đăng</h6>
                   <h3 class="text-white m-b-0 f-w-700">{{ $posts }}</h3>
                 </div>
                 <div class="col-auto">
@@ -74,7 +74,7 @@
           <div class="col-md-12 col-xl-6">
             <div class="card sale-card">
               <div class="card-header">
-                <h5>Thống kê bài đăng</h5>
+                <h5>Thống kê tin đăng</h5>
               </div>
               <div class="card-block">
                 <canvas class="w-100 h-75" id="postChart"></canvas>
@@ -95,7 +95,7 @@
         <div class="col-xl-6 col-md-12">
           <div class="card new-cust-card">
             <div class="card-header">
-              <h5>Bài đăng mới nhất</h5>
+              <h5>Tin đăng mới nhất</h5>
             </div>
             <div class="card-block">
               @foreach ($postNew as $item)

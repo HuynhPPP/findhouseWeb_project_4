@@ -27,36 +27,36 @@ use Illuminate\Support\Facades\Notification;
 
 class PosterController extends Controller
 {
-    public function PosterDashboard()
-    {
-        $userId = auth()->id();
+  public function PosterDashboard()
+  {
+    $userId = auth()->id();
 
-        $approvedPosts = Post::where('user_id', $userId)->where('status', 'approved')->count();
-        $pendingPosts = Post::where('user_id', $userId)->where('status', 'pending')->count();
-    
-        $savedCount = SavedPost::where('user_id', $userId)->count();
-        $messagesCount =  ChatMessage::where('receiver_id', $userId)
-            ->select('post_id', 'sender_id')
-            ->distinct()
-            ->count('sender_id');
-        $reviewsCount = Review::where('poster_id', $userId)->count();
+    $approvedPosts = Post::where('user_id', $userId)->where('status', 'approved')->count();
+    $pendingPosts = Post::where('user_id', $userId)->where('status', 'pending')->count();
 
-        // Lấy bài đăng gần đây
-        $recentPosts = Post::where('user_id', $userId)
-            ->latest()
-            ->take(5)
-            ->get();
+    $savedCount = SavedPost::where('user_id', $userId)->count();
+    $messagesCount =  ChatMessage::where('receiver_id', $userId)
+      ->select('post_id', 'sender_id')
+      ->distinct()
+      ->count('sender_id');
+    $reviewsCount = Review::where('poster_id', $userId)->count();
+
+    // Lấy bài đăng gần đây
+    $recentPosts = Post::where('user_id', $userId)
+      ->latest()
+      ->take(5)
+      ->get();
 
 
-        return view('front.poster.sumary_page', compact(
-            'approvedPosts',
-            'pendingPosts',
-            'savedCount',
-            'messagesCount',
-            'reviewsCount',
-            'recentPosts',
-        ));
-    }
+    return view('front.poster.sumary_page', compact(
+      'approvedPosts',
+      'pendingPosts',
+      'savedCount',
+      'messagesCount',
+      'reviewsCount',
+      'recentPosts',
+    ));
+  }
 
   public function PosterProfile()
   {
@@ -96,14 +96,14 @@ class PosterController extends Controller
     return view('front.poster.post.poster_post_view');
   }
 
-    public function PosterListPost(Request $request)
-    {
-        $id = Auth::user()->id;
-        $list_post = Post::where('user_id', $id)
+  public function PosterListPost(Request $request)
+  {
+    $id = Auth::user()->id;
+    $list_post = Post::where('user_id', $id)
 
-            ->with('images')
-            ->orderBy('id', 'desc')
-            ->paginate(4);
+      ->with('images')
+      ->orderBy('id', 'desc')
+      ->paginate(4);
 
 
     return view('front.poster.post.poster_list_post_view', compact('list_post',));
@@ -133,86 +133,86 @@ class PosterController extends Controller
     return $url;
   }
 
-    public function PosterPostStore(Request $request)
-    {
-        $request->validate([
-            'title'        => 'required|string|max:255',
-            'description'  => 'required|string',
-            'category_id'  => 'required',
-            'price'        => 'required|numeric|min:0',
-            'area'         => 'required|numeric|min:0',
-            'province'     => 'required',
-            'province_name' => 'required',
-            'district'     => 'required',
-            'district_name' => 'required',
-            'ward'         => 'required',
-            'ward_name'    => 'required',
-            'street'       => 'required|string',
-            'address'      => 'string',
-            'images'       => 'nullable|array|max:20',
-            'images.*'     => 'image|mimes:jpeg,png,jpg,gif|max:2048',
-            'video_url'    => 'nullable|string',
-        ], [
-            'title.required'       => 'Vui lòng nhập tiêu đề.',
-            'title.max'            => 'Tiêu đề không được vượt quá 255 ký tự.',
-            'description.required' => 'Vui lòng nhập mô tả.',
-            'category_id.required' => 'Vui lòng chọn danh mục.',
-            'price.required'       => 'Vui lòng nhập giá.',
-            'price.numeric'        => 'Giá phải là số.',
-            'price.min'            => 'Giá không được nhỏ hơn 0.',
-            'area.required'        => 'Vui lòng nhập diện tích.',
-            'area.numeric'         => 'Diện tích phải là số.',
-            'area.min'             => 'Diện tích không được nhỏ hơn 0.',
-            'province.required'    => 'Vui lòng chọn tỉnh/thành phố.',
-            'province_name.required' => 'Tên tỉnh/thành phố không được để trống.',
-            'district.required'    => 'Vui lòng chọn quận/huyện.',
-            'district_name.required' => 'Tên quận/huyện không được để trống.',
-            'ward.required'        => 'Vui lòng chọn phường/xã.',
-            'ward_name.required'   => 'Tên phường/xã không được để trống.',
-            'street.required'      => 'Vui lòng nhập tên đường.',
-            'images.max'           => 'Bạn chỉ có thể tải lên tối đa 20 ảnh.',
-            'images.*.image'       => 'File tải lên phải là hình ảnh.',
-            'images.*.mimes'       => 'Hình ảnh phải có định dạng jpeg, png, jpg hoặc gif.',
-            'images.*.max'         => 'Hình ảnh không được vượt quá 2MB.',
-            'video_url.url'        => 'Link video không hợp lệ.',
-            'video_url.regex'      => 'Link video chỉ hỗ trợ YouTube',
-        ]);
+  public function PosterPostStore(Request $request)
+  {
+    $request->validate([
+      'title'        => 'required|string|max:255',
+      'description'  => 'required|string',
+      'category_id'  => 'required',
+      'price'        => 'required|numeric|min:0',
+      'area'         => 'required|numeric|min:0',
+      'province'     => 'required',
+      'province_name' => 'required',
+      'district'     => 'required',
+      'district_name' => 'required',
+      'ward'         => 'required',
+      'ward_name'    => 'required',
+      'street'       => 'required|string',
+      'address'      => 'string',
+      'images'       => 'nullable|array|max:20',
+      'images.*'     => 'image|mimes:jpeg,png,jpg,gif|max:2048',
+      'video_url'    => 'nullable|string',
+    ], [
+      'title.required'       => 'Vui lòng nhập tiêu đề.',
+      'title.max'            => 'Tiêu đề không được vượt quá 255 ký tự.',
+      'description.required' => 'Vui lòng nhập mô tả.',
+      'category_id.required' => 'Vui lòng chọn danh mục.',
+      'price.required'       => 'Vui lòng nhập giá.',
+      'price.numeric'        => 'Giá phải là số.',
+      'price.min'            => 'Giá không được nhỏ hơn 0.',
+      'area.required'        => 'Vui lòng nhập diện tích.',
+      'area.numeric'         => 'Diện tích phải là số.',
+      'area.min'             => 'Diện tích không được nhỏ hơn 0.',
+      'province.required'    => 'Vui lòng chọn tỉnh/thành phố.',
+      'province_name.required' => 'Tên tỉnh/thành phố không được để trống.',
+      'district.required'    => 'Vui lòng chọn quận/huyện.',
+      'district_name.required' => 'Tên quận/huyện không được để trống.',
+      'ward.required'        => 'Vui lòng chọn phường/xã.',
+      'ward_name.required'   => 'Tên phường/xã không được để trống.',
+      'street.required'      => 'Vui lòng nhập tên đường.',
+      'images.max'           => 'Bạn chỉ có thể tải lên tối đa 20 ảnh.',
+      'images.*.image'       => 'File tải lên phải là hình ảnh.',
+      'images.*.mimes'       => 'Hình ảnh phải có định dạng jpeg, png, jpg hoặc gif.',
+      'images.*.max'         => 'Hình ảnh không được vượt quá 2MB.',
+      'video_url.url'        => 'Link video không hợp lệ.',
+      'video_url.regex'      => 'Link video chỉ hỗ trợ YouTube',
+    ]);
 
     $videoUrl = $request->video_url ? $this->convertVideoUrl($request->video_url) : null;
 
     $slugify = new Slugify();
 
-        $post = new Post();
-        $post->user_id       = Auth::id();
-        $post->category_id   = $request->category_id;
-        $post->title         = $request->title;
-        $post->post_slug     = $slugify->slugify($request->title);
-        $post->description   = $request->description;
-        $post->price         = $request->price;
-        $post->area          = $request->area;
-        $post->province      = $request->province_name;
-        $post->district      = $request->district_name;
-        $post->ward          = $request->ward_name;
-        $post->street        = $request->street;
-        $post->house_number  = $request->house_number;
-        $post->video_url     = $videoUrl;
-        $post->status        = 'pending';
-        $post->created_at    = now();
+    $post = new Post();
+    $post->user_id       = Auth::id();
+    $post->category_id   = $request->category_id;
+    $post->title         = $request->title;
+    $post->post_slug     = $slugify->slugify($request->title);
+    $post->description   = $request->description;
+    $post->price         = $request->price;
+    $post->area          = $request->area;
+    $post->province      = $request->province_name;
+    $post->district      = $request->district_name;
+    $post->ward          = $request->ward_name;
+    $post->street        = $request->street;
+    $post->house_number  = $request->house_number;
+    $post->video_url     = $videoUrl;
+    $post->status        = 'pending';
+    $post->created_at    = now();
 
-        $post->save();
+    $post->save();
 
 
     $imageDir = public_path('upload/post_images');
 
-        if ($request->hasFile('images')) {
-            foreach ($request->file('images') as $image) {
-                $username = Auth::user()->name ?? 'poster'; // hoặc fullname nếu bạn dùng
-                $timestamp = now()->format('Ymd_His');
-                $uniqueId = uniqid();
-                $extension = $image->getClientOriginalExtension();
-                $imageName = "{$username}_{$timestamp}_{$uniqueId}.{$extension}";
+    if ($request->hasFile('images')) {
+      foreach ($request->file('images') as $image) {
+        $username = Auth::user()->name ?? 'poster'; // hoặc fullname nếu bạn dùng
+        $timestamp = now()->format('Ymd_His');
+        $uniqueId = uniqid();
+        $extension = $image->getClientOriginalExtension();
+        $imageName = "{$username}_{$timestamp}_{$uniqueId}.{$extension}";
 
-                $image->move($imageDir, $imageName);
+        $image->move($imageDir, $imageName);
 
         Image::create([
           'post_id'    => $post->id,
@@ -230,56 +230,56 @@ class PosterController extends Controller
       'alert-type' => 'success',
     );
 
-        return redirect()->route('poster.list-post')->with($notification);
-    }
+    return redirect()->route('poster.list-post')->with($notification);
+  }
 
-    public function PosterPostUpdate(Request $request)
-    {
-        $request->validate([
-            'title'        => 'required|string|max:255',
-            'description'  => 'required|string',
-            'category_id'  => 'required',
-            'price'        => 'required|numeric|min:0',
-            'area'         => 'required|numeric|min:0',
-            'province'     => 'required',
-            'province_name' => 'required',
-            'district'     => 'required',
-            'district_name' => 'required',
-            'ward'         => 'required',
-            'ward_name'    => 'required',
-            'street'       => 'required|string',
-            'address'      => 'required|string',
-            'images'       => 'nullable|array|max:20',
-            'images.*'     => 'image|mimes:jpeg,png,jpg,gif|max:2048',
-            'video_url'    => 'nullable|string', // Validate URL cho YouTube/TikTok
-        ], [
-            'title.required'       => 'Vui lòng nhập tiêu đề.',
-            'title.max'            => 'Tiêu đề không được vượt quá 255 ký tự.',
-            'description.required' => 'Vui lòng nhập mô tả.',
-            'category_id.required' => 'Vui lòng chọn danh mục.',
-            'price.required'       => 'Vui lòng nhập giá.',
-            'price.numeric'        => 'Giá phải là số.',
-            'price.min'            => 'Giá không được nhỏ hơn 0.',
-            'area.required'        => 'Vui lòng nhập diện tích.',
-            'area.numeric'         => 'Diện tích phải là số.',
-            'area.min'             => 'Diện tích không được nhỏ hơn 0.',
-            'province.required'    => 'Vui lòng chọn tỉnh/thành phố.',
-            'province_name.required' => 'Tên tỉnh/thành phố không được để trống.',
-            'district.required'    => 'Vui lòng chọn quận/huyện.',
-            'district_name.required' => 'Tên quận/huyện không được để trống.',
-            'ward.required'        => 'Vui lòng chọn phường/xã.',
-            'ward_name.required'   => 'Tên phường/xã không được để trống.',
-            'street.required'      => 'Vui lòng nhập tên đường.',
-            'images.max'           => 'Bạn chỉ có thể tải lên tối đa 20 ảnh.',
-            'images.*.image'       => 'File tải lên phải là hình ảnh.',
-            'images.*.mimes'       => 'Hình ảnh phải có định dạng jpeg, png, jpg hoặc gif.',
-            'images.*.max'         => 'Hình ảnh không được vượt quá 2MB.',
-            'video_url.url'        => 'Link video không hợp lệ.',
-            'video_url.regex'      => 'Link video chỉ hỗ trợ YouTube',
-        ]);
+  public function PosterPostUpdate(Request $request)
+  {
+    $request->validate([
+      'title'        => 'required|string|max:255',
+      'description'  => 'required|string',
+      'category_id'  => 'required',
+      'price'        => 'required|numeric|min:0',
+      'area'         => 'required|numeric|min:0',
+      'province'     => 'required',
+      'province_name' => 'required',
+      'district'     => 'required',
+      'district_name' => 'required',
+      'ward'         => 'required',
+      'ward_name'    => 'required',
+      'street'       => 'required|string',
+      'address'      => 'required|string',
+      'images'       => 'nullable|array|max:20',
+      'images.*'     => 'image|mimes:jpeg,png,jpg,gif|max:2048',
+      'video_url'    => 'nullable|string', // Validate URL cho YouTube/TikTok
+    ], [
+      'title.required'       => 'Vui lòng nhập tiêu đề.',
+      'title.max'            => 'Tiêu đề không được vượt quá 255 ký tự.',
+      'description.required' => 'Vui lòng nhập mô tả.',
+      'category_id.required' => 'Vui lòng chọn danh mục.',
+      'price.required'       => 'Vui lòng nhập giá.',
+      'price.numeric'        => 'Giá phải là số.',
+      'price.min'            => 'Giá không được nhỏ hơn 0.',
+      'area.required'        => 'Vui lòng nhập diện tích.',
+      'area.numeric'         => 'Diện tích phải là số.',
+      'area.min'             => 'Diện tích không được nhỏ hơn 0.',
+      'province.required'    => 'Vui lòng chọn tỉnh/thành phố.',
+      'province_name.required' => 'Tên tỉnh/thành phố không được để trống.',
+      'district.required'    => 'Vui lòng chọn quận/huyện.',
+      'district_name.required' => 'Tên quận/huyện không được để trống.',
+      'ward.required'        => 'Vui lòng chọn phường/xã.',
+      'ward_name.required'   => 'Tên phường/xã không được để trống.',
+      'street.required'      => 'Vui lòng nhập tên đường.',
+      'images.max'           => 'Bạn chỉ có thể tải lên tối đa 20 ảnh.',
+      'images.*.image'       => 'File tải lên phải là hình ảnh.',
+      'images.*.mimes'       => 'Hình ảnh phải có định dạng jpeg, png, jpg hoặc gif.',
+      'images.*.max'         => 'Hình ảnh không được vượt quá 2MB.',
+      'video_url.url'        => 'Link video không hợp lệ.',
+      'video_url.regex'      => 'Link video chỉ hỗ trợ YouTube',
+    ]);
 
-        $post_id = $request->id;
-        $poster_name = $request->poster_name;
+    $post_id = $request->id;
+    $poster_name = $request->poster_name;
 
     $slugify = new Slugify();
 
@@ -303,18 +303,18 @@ class PosterController extends Controller
       'updated_at'   => now(),
     ]);
 
-        $imageDir = public_path('upload/post_images');
+    $imageDir = public_path('upload/post_images');
 
-        if ($request->hasFile('images')) {
-            // Lưu ảnh mới
-            foreach ($request->file('images') as $image) {
-                $username = $poster_name ?? 'poster';
-                $timestamp = now()->format('Ymd_His');
-                $uniqueId = uniqid();
-                $extension = $image->getClientOriginalExtension();
-                $imageName = "{$username}_{$timestamp}_{$uniqueId}.{$extension}";
+    if ($request->hasFile('images')) {
+      // Lưu ảnh mới
+      foreach ($request->file('images') as $image) {
+        $username = $poster_name ?? 'poster';
+        $timestamp = now()->format('Ymd_His');
+        $uniqueId = uniqid();
+        $extension = $image->getClientOriginalExtension();
+        $imageName = "{$username}_{$timestamp}_{$uniqueId}.{$extension}";
 
-                $image->move($imageDir, $imageName);
+        $image->move($imageDir, $imageName);
 
         Image::create([
           'post_id'    => $post_id,
@@ -334,20 +334,20 @@ class PosterController extends Controller
     return redirect()->route('poster.list-post')->with($notification);
   }
 
-    public function PosterEditPost($id)
-    {
-        $post = Post::findOrFail($id);
-        $categories = Category::latest()->get();
-        $images = Image::where('post_id', $id)->get();
+  public function PosterEditPost($id)
+  {
+    $post = Post::findOrFail($id);
+    $categories = Category::latest()->get();
+    $images = Image::where('post_id', $id)->get();
 
-        $selectedFeatures = json_decode($post->features, true) ?? [];
+    $selectedFeatures = json_decode($post->features, true) ?? [];
 
 
-        return view(
-            'front.poster.post.poster_post_edit',
-            compact('post', 'categories', 'images', 'selectedFeatures')
-        );
-    }
+    return view(
+      'front.poster.post.poster_post_edit',
+      compact('post', 'categories', 'images', 'selectedFeatures')
+    );
+  }
 
   public function PosterDeleteImage(Request $request)
   {
@@ -626,9 +626,25 @@ class PosterController extends Controller
     return redirect('/poster/verification')->with($notification);
   }
 
-    public function PosterContacts()
-    {
-        return view('front.poster.poster_contacts');
+  public function PosterContacts()
+  {
+    return view('front.poster.poster_contacts');
+  }
+  public function markAsRead($id)
+  {
+    $user = Auth::user();
+
+    if (!$user) {
+      return response()->json(['error' => 'Bạn chưa đăng nhập.'], 401);
     }
 
+    // Tìm thông báo chưa đọc theo ID
+    $notification = $user->unreadNotifications()->find($id);
+
+    if ($notification) {
+      $notification->markAsRead(); // Đánh dấu là đã đọc
+      return response()->json(['message' => 'Đã đánh dấu đã đọc.']);
+    }
+    return response()->json(['error' => 'Không tìm thấy thông báo hoặc đã được đọc.'], 404);
+  }
 }
