@@ -20,7 +20,6 @@
             <div class="close-reg"><i class="fa fa-times" style="line-height: 40px;"></i></div>
             <h3><span>Find<strong>Houses</strong></span></h3>
             <div class="soc-log fl-wrap">
-                <p>Đăng nhập</p>
                 <a href="{{ route('auth.google') }}" class="social_bt google">Đăng nhập bằng Google</a>
             </div>
             <div class="log-separator fl-wrap"><span>Hoặc</span></div>
